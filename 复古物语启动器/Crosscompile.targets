@@ -1,0 +1,51 @@
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+
+    <PropertyGroup>
+        <IlcUseEnvironmentalTools>true</IlcUseEnvironmentalTools>
+        <DisableUnsupportedError>true</DisableUnsupportedError>
+        <MSVCWineBinPath Condition="'$(MSVCWineBinPath)' == ''">/opt/msvc/bin</MSVCWineBinPath>
+    </PropertyGroup>
+
+    <UsingTask TaskName="PrependPath"
+               TaskFactory="RoslynCodeTaskFactory"
+               AssemblyFile="$(MSBuildToolsPath)\Microsoft.Build.Tasks.Core.dll">
+
+        <ParameterGroup>
+            <Value ParameterType="System.String" Required="true"/>
+        </ParameterGroup>
+
+        <Task>
+            <Using Namespace="System"/>
+            <Using Namespace="System.IO"/>
+            <Code Type="Fragment" Language="cs">
+                <![CDATA[
+                    Environment.SetEnvironmentVariable("PATH", Value + Path.PathSeparator + Environment.GetEnvironmentVariable("PATH"));
+                ]]>
+            </Code>
+        </Task>
+
+    </UsingTask>
+
+    <Target Name="SetPathToClang"
+            BeforeTargets="SetupOSSpecificProps">
+        <PrependPath Value="$(MSVCWineBinPath)/$(_targetArchitecture)"/>
+    </Target>
+
+    <Target Name="OverwriteTargetTriple"
+            AfterTargets="SetupOSSpecificProps"
+            BeforeTargets="LinkNative">
+        <ItemGroup>
+            <LinkerArg Include="@(LinkerArg->'%(Identity)')">
+                <UpdatePath Condition="$([System.String]::Copy(%(Identity)).StartsWith('/home/'))">"Z:%(Identity)"</UpdatePath>
+                <UpdatePath Condition="$([System.String]::Copy(%(Identity)).StartsWith('/home/')) == false">%(Identity)</UpdatePath>
+            </LinkerArg>
+
+            <NewLinkerArg Include="@(LinkerArg->'%(UpdatePath)')"/>
+            <LinkerArg Remove="@(LinkerArg)"/>
+            <LinkerArg Include="@(NewLinkerArg)"/>
+        </ItemGroup>
+        <PropertyGroup>
+            <NativeObject Condition="$(NativeObject.StartsWith('/home/'))">Z:$(NativeObject)</NativeObject>
+        </PropertyGroup>
+    </Target>
+</Project>

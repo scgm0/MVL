@@ -1,0 +1,121 @@
+[gd_scene load_steps=9 format=3 uid="uid://bjgov53faujry"]
+
+[ext_resource type="Texture2D" uid="uid://d3mq4tlr6rr01" path="res://Assets/Icon/VS/gameicon.png" id="1_pwx7m"]
+[ext_resource type="Script" uid="uid://d3pr8a1ki4qjs" path="res://Src/UI/Item/ReleaseItem.cs" id="1_wntvq"]
+[ext_resource type="FontFile" uid="uid://bmgx1vyg6bavd" path="res://Assets/Font/HarmonyOS_Sans_SC_Bold.ttf" id="2_wntvq"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_g8snm"]
+content_margin_left = 10.0
+content_margin_top = 10.0
+content_margin_right = 10.0
+content_margin_bottom = 10.0
+bg_color = Color(0, 0, 0, 0.6)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.8, 0.8, 0.8, 0.207843)
+border_blend = true
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ffyby"]
+content_margin_left = 3.0
+content_margin_top = 3.0
+content_margin_right = 3.0
+content_margin_bottom = 3.0
+bg_color = Color(0.435294, 0.439216, 0.454902, 1)
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_wntvq"]
+bg_color = Color(1, 1, 1, 0.0980392)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+expand_margin_left = 8.0
+expand_margin_top = 8.0
+expand_margin_right = 8.0
+expand_margin_bottom = 8.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_iu184"]
+bg_color = Color(0, 0, 0, 0.294118)
+corner_radius_top_left = 9
+corner_radius_top_right = 9
+corner_radius_bottom_right = 9
+corner_radius_bottom_left = 9
+expand_margin_left = 8.0
+expand_margin_top = 8.0
+expand_margin_right = 8.0
+expand_margin_bottom = 8.0
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_iu184"]
+
+[node name="ReleaseItem" type="PanelContainer" node_paths=PackedStringArray("_icon", "_name", "_version", "_label", "_button")]
+auto_translate_mode = 2
+tooltip_text = "路径"
+theme_override_styles/panel = SubResource("StyleBoxFlat_g8snm")
+script = ExtResource("1_wntvq")
+_icon = NodePath("VBoxContainer/Icon")
+_name = NodePath("VBoxContainer/Name")
+_version = NodePath("VBoxContainer/Version")
+_label = NodePath("VBoxContainer/Icon/Label")
+_button = NodePath("Button")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 2
+mouse_filter = 2
+
+[node name="Icon" type="TextureRect" parent="VBoxContainer"]
+custom_minimum_size = Vector2(125, 125)
+layout_mode = 2
+mouse_filter = 2
+texture = ExtResource("1_pwx7m")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Label" type="Label" parent="VBoxContainer/Icon"]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -18.0
+offset_bottom = 51.0
+grow_horizontal = 0
+theme_override_colors/font_color = Color(0.783191, 0.78319, 7.70092e-07, 1)
+theme_override_constants/line_spacing = 0
+theme_override_font_sizes/font_size = 12
+theme_override_styles/normal = SubResource("StyleBoxFlat_ffyby")
+text = "测
+试
+版"
+horizontal_alignment = 1
+vertical_alignment = 1
+structured_text_bidi_override = 4
+
+[node name="Name" type="Label" parent="VBoxContainer"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_wntvq")
+theme_override_font_sizes/font_size = 18
+text = "复古物语"
+horizontal_alignment = 1
+vertical_alignment = 1
+max_lines_visible = 1
+
+[node name="Version" type="Label" parent="VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 14
+text = "版本"
+horizontal_alignment = 1
+
+[node name="Button" type="Button" parent="."]
+layout_mode = 2
+focus_mode = 0
+theme_override_styles/hover = SubResource("StyleBoxFlat_wntvq")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_iu184")
+theme_override_styles/normal = SubResource("StyleBoxEmpty_iu184")

@@ -1,0 +1,6 @@
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+
+    <Import Project="Crosscompile.targets"
+            Condition="$(RuntimeIdentifier.Contains('win')) and $([MSBuild]::IsOSPlatform('Linux'))"/>
+
+</Project>

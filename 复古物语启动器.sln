@@ -1,0 +1,27 @@
+﻿Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "复古物语启动器", "./复古物语启动器/复古物语启动器.csproj", "{645EFBC2-A13B-4931-96B2-1E2D7417080F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VSRun", "./VSRun/VSRun.csproj", "{48FBFAA5-957D-4C8A-95BD-B0301297A7CB}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+	Debug|Any CPU = Debug|Any CPU
+	ExportDebug|Any CPU = ExportDebug|Any CPU
+	ExportRelease|Any CPU = ExportRelease|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{645EFBC2-A13B-4931-96B2-1E2D7417080F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{645EFBC2-A13B-4931-96B2-1E2D7417080F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{645EFBC2-A13B-4931-96B2-1E2D7417080F}.ExportDebug|Any CPU.ActiveCfg = ExportDebug|Any CPU
+		{645EFBC2-A13B-4931-96B2-1E2D7417080F}.ExportDebug|Any CPU.Build.0 = ExportDebug|Any CPU
+		{645EFBC2-A13B-4931-96B2-1E2D7417080F}.ExportRelease|Any CPU.ActiveCfg = ExportRelease|Any CPU
+		{645EFBC2-A13B-4931-96B2-1E2D7417080F}.ExportRelease|Any CPU.Build.0 = ExportRelease|Any CPU
+		{48FBFAA5-957D-4C8A-95BD-B0301297A7CB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{48FBFAA5-957D-4C8A-95BD-B0301297A7CB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{48FBFAA5-957D-4C8A-95BD-B0301297A7CB}.ExportDebug|Any CPU.ActiveCfg = Debug|Any CPU
+		{48FBFAA5-957D-4C8A-95BD-B0301297A7CB}.ExportDebug|Any CPU.Build.0 = Debug|Any CPU
+		{48FBFAA5-957D-4C8A-95BD-B0301297A7CB}.ExportRelease|Any CPU.ActiveCfg = Debug|Any CPU
+		{48FBFAA5-957D-4C8A-95BD-B0301297A7CB}.ExportRelease|Any CPU.Build.0 = Debug|Any CPU
+	EndGlobalSection
+EndGlobal

@@ -1,0 +1,35 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net7.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+        <TieredPGO>true</TieredPGO>
+        <LangVersion>default</LangVersion>
+        <OutputType>Exe</OutputType>
+    </PropertyGroup>
+
+    <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
+        <DebugType>none</DebugType>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <Reference Include="$(VINTAGE_STORY)/*.dll">
+            <Private>false</Private>
+        </Reference>
+        <Reference Include="$(VINTAGE_STORY)/Mods/*.dll">
+            <Private>false</Private>
+        </Reference>
+        <Reference Include="$(VINTAGE_STORY)/Lib/*.dll">
+            <Private>false</Private>
+        </Reference>
+        <Reference Remove="$(VINTAGE_STORY)/Lib/System*.dll"/>
+        <Reference Remove="$(VINTAGE_STORY)/Lib/CairoSharp.dll"/>
+    </ItemGroup>
+
+    <ItemGroup>
+        <Compile Include="../SharedLibrary/*.cs">
+            <Link>SharedLibrary\*.cs</Link>
+        </Compile>
+    </ItemGroup>
+</Project>
