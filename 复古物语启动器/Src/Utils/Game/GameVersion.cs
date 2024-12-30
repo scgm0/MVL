@@ -1,8 +1,8 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using Godot;
 using Mono.Cecil;
-using 复古物语启动器.UI;
 
 namespace 复古物语启动器.Utils.Game;
 
@@ -23,6 +23,8 @@ public readonly record struct GameVersion {
 		".",
 		"-"
 	];
+
+	public static readonly Comparer<GameVersion> Comparer = Comparer<GameVersion>.Create(ComparerVersion);
 
 	public static EnumGameReleaseType GetReleaseType(string version) {
 		return SplitVersionString(version)[3] switch {
@@ -58,20 +60,20 @@ public readonly record struct GameVersion {
 		return numArray;
 	}
 
-	public static bool IsAtLeastVersion(GameVersion version, GameVersion reference) {
+	public static int ComparerVersion(GameVersion version, GameVersion reference) {
 		var numArray1 = SplitVersionString(reference.ShortGameVersion);
 		var numArray2 = SplitVersionString(version.ShortGameVersion);
 		for (var index = 0; index < numArray1.Length; ++index) {
 			if (index >= numArray2.Length || numArray1[index] > numArray2[index]) {
-				return false;
+				return -1;
 			}
 
 			if (numArray1[index] < numArray2[index]) {
-				return true;
+				return 1;
 			}
 		}
 
-		return true;
+		return 0;
 	}
 
 	public static GameVersion? FromGamePath(string gamePath) {

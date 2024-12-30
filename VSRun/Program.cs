@@ -12,14 +12,14 @@ namespace VSRun;
 
 public static class Program {
 	public static RunConfig Config { get; } =
-		JsonSerializer.Deserialize<RunConfig>(Environment.GetEnvironmentVariable("RUN_CONFIG")!);
+		JsonSerializer.Deserialize(Environment.GetEnvironmentVariable("RUN_CONFIG")!, RunSourceGenerationContext.Default.RunConfig);
 
-	public static string[] AssemblyPaths { get; } = {
+	public static string[] AssemblyPaths { get; } = [
 		Config.VintageStoryPath,
 		Path.Combine(Config.VintageStoryPath, "Mods"),
 		Path.Combine(Config.VintageStoryPath, "Lib"),
 		Path.Combine(Config.VintageStoryDataPath, "Mods")
-	};
+	];
 
 	public static Harmony? Harmony { get; set; }
 
@@ -68,8 +68,7 @@ public static class Program {
 		}
 
 		Console.WriteLine("VS Run");
-		mainMethod?.Invoke(null,
-			new object?[] { args });
+		mainMethod?.Invoke(null, [args]);
 	}
 
 	public static Assembly? AssemblyResolve(object? sender, ResolveEventArgs args) {

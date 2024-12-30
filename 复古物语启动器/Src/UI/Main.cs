@@ -2,16 +2,13 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Text;
 using System.Text.Json;
-using System.Text.RegularExpressions;
-using System.Threading;
 using System.Threading.Tasks;
 using Godot;
 using Mono.Cecil;
 using Mono.Cecil.Cil;
 using SharedLibrary;
-using 复古物语启动器.Utils;
+using 复古物语启动器.Utils.Config;
 using 复古物语启动器.Utils.Extensions;
 using 复古物语启动器.Utils.Game;
 using 复古物语启动器.Utils.Help;
@@ -20,7 +17,10 @@ namespace 复古物语启动器.UI;
 
 public partial class Main : Control {
 	private Vector2I _rootMinSize = new(960, 540);
-	static private readonly ConfigData BaseConfig = new(AppDomain.CurrentDomain.BaseDirectory.PathJoin("data.cfg"));
+
+	static private readonly BaseConfig BaseConfig =
+		BaseConfig.Load(AppDomain.CurrentDomain.BaseDirectory.PathJoin(".config.json"));
+
 	private InstalledGamesImport? _installedGamesImport;
 
 	[Export]
@@ -30,7 +30,8 @@ public partial class Main : Control {
 	private PackedScene? _installedGamesImportScene;
 
 	public static Main? Instance { get; private set; }
-	public static Dictionary<string, GameVersion> GameVersions { get; } = new();
+
+	public static Dictionary<string, ReleaseInfo> Release { get; } = new();
 
 	public Main() { Instance = this; }
 
@@ -39,7 +40,7 @@ public partial class Main : Control {
 		_rootMinSize = GetTree().Root.Size - new Vector2I(100, 100);
 		GetTree().Root.MinSize = _rootMinSize;
 		DisplayServer.SetIcon(_iconTexture.GetImage());
-		if (BaseConfig.GamePaths.Length == 0 && InstalledGamesImport.InstalledGamePaths.Length > 0) {
+		if (BaseConfig.Release.Count == 0 && InstalledGamesImport.InstalledGamePaths.Length > 0) {
 			_ = ImportInstalledGames();
 		}
 
@@ -55,9 +56,15 @@ public partial class Main : Control {
 					return;
 				}
 
-				var gamePaths = BaseConfig.GamePaths.ToList();
-				gamePaths.AddRange(paths);
-				BaseConfig.GamePaths = gamePaths.Distinct().ToArray();
+				foreach (var gamePath in paths) {
+					var info = new ReleaseInfo {
+						Path = gamePath,
+						Version = GameVersion.FromGamePath(gamePath)!.Value
+					};
+					BaseConfig.Release.Add(info);
+				}
+
+				BaseConfig.Save(BaseConfig);
 				CheckGameVersion();
 			};
 		}
@@ -68,14 +75,20 @@ public partial class Main : Control {
 	}
 
 	public static void CheckGameVersion() {
-		foreach (var gamePath in BaseConfig.GamePaths) {
-			var gameVersion = GameVersion.FromGamePath(gamePath);
+		var list = BaseConfig.Release.ToList();
+		foreach (var info in list) {
+			var path = info.Path;
+			var gameVersion = GameVersion.FromGamePath(path);
 			if (gameVersion is null) {
-				GameVersions.Remove(gamePath);
+				Release.Remove(path);
+				BaseConfig.Release.Remove(info);
 			} else {
-				GameVersions[gamePath] = gameVersion.Value;
+				info.Version = gameVersion.Value;
+				Release[path] = info;
 			}
 		}
+
+		BaseConfig.Save(BaseConfig);
 	}
 
 	public static string? GetGameConfigName(string gamePath) {
@@ -123,7 +136,7 @@ public partial class Main : Control {
 			WorkingDirectory = runConfig.VintageStoryPath,
 			Environment = {
 				["VINTAGE_STORY"] = runConfig.VintageStoryPath,
-				["RUN_CONFIG"] = JsonSerializer.Serialize(runConfig, SourceGenerationContext.Default.RunConfig)
+				["RUN_CONFIG"] = JsonSerializer.Serialize(runConfig, RunSourceGenerationContext.Default.RunConfig)
 			}
 		};
 

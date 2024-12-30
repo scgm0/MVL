@@ -91,7 +91,7 @@ public partial class InstalledGamesImport : Control {
 			var installedGameItem = _installedGameItemScene!.Instantiate<Item.InstalledGameItem>();
 			installedGameItem.GameVersion = gameVersion.Value;
 			installedGameItem.GamePath = installedGamePath;
-			installedGameItem.Check = !Main.GameVersions.ContainsKey(installedGamePath);
+			installedGameItem.Check = !Main.Release.ContainsKey(installedGamePath);
 			installedGameItem.Modulate = Colors.Transparent;
 			_installedGameList!.AddChild(installedGameItem);
 			using var tween = installedGameItem.CreateTween();

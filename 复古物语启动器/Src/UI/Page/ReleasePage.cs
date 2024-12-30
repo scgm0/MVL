@@ -1,4 +1,6 @@
+using System.Linq;
 using Godot;
+using 复古物语启动器.Utils.Game;
 using 复古物语启动器.Utils.Help;
 
 namespace 复古物语启动器.UI.Page;
@@ -22,9 +24,7 @@ public partial class ReleasePage : MenuPage {
 		_addReleaseButton.Pressed += AddReleaseButtonOnPressed;
 	}
 
-	private void AddReleaseButtonOnPressed() {
-		
-	}
+	private void AddReleaseButtonOnPressed() { }
 
 	private void OnVisibilityChanged() {
 		if (!Visible) return;
@@ -37,11 +37,12 @@ public partial class ReleasePage : MenuPage {
 		}
 
 		UI.Main.CheckGameVersion();
-		foreach (var (path, version) in UI.Main.GameVersions) {
+		var list = UI.Main.Release.Values.OrderByDescending(info => info.Version, GameVersion.Comparer);
+		foreach (var info in list) {
 			var item = _releaseItemScene!.Instantiate<Item.ReleaseItem>();
-			item.ReleasePath = path;
+			item.ReleasePath = info.Path;
 			item.ReleaseName = "复古物语";
-			item.ReleaseVersion = version;
+			item.ReleaseVersion = info.Version;
 			_grid!.AddChild(item);
 		}
 	}
