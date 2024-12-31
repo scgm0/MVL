@@ -19,7 +19,7 @@ public partial class Main : Control {
 	private Vector2I _rootMinSize = new(960, 540);
 
 	static private readonly BaseConfig BaseConfig =
-		BaseConfig.Load(AppDomain.CurrentDomain.BaseDirectory.PathJoin(".config.json"));
+		BaseConfig.Load(OS.GetUserDataDir().PathJoin("data.json"));
 
 	private InstalledGamesImport? _installedGamesImport;
 

@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Text;
 
 namespace 复古物语启动器.Utils.Extensions;
@@ -25,6 +26,8 @@ public static class StringExtensions {
 		"cyan",
 		"white"
 	];
+
+	static private readonly List<int> Last = [];
 
 	public static string ConvertAnsiToBbCode(this string str) {
 		ArgumentNullException.ThrowIfNull(str);
@@ -103,15 +106,38 @@ public static class StringExtensions {
 						.Append("[color=")
 						.Append(AnsiColors[colorCode - 30])
 						.Append(']');
+					Last.Add(1);
 					break;
 				case >= 90 and <= 97:
 					_builder
 						.Append("[color=")
 						.Append(AnsiColors[colorCode - 82])
 						.Append(']');
+					Last.Add(1);
+					break;
+				case >= 40 and <= 47:
+					_builder
+						.Append("[bgcolor=")
+						.Append(AnsiColors[colorCode - 40])
+						.Append(']');
+					Last.Add(2);
+					break;
+				case >= 100 and <= 107:
+					_builder
+						.Append("[bgcolor=")
+						.Append(AnsiColors[colorCode - 92])
+						.Append(']');
+					Last.Add(2);
 					break;
 				case 0:
-					_builder.Append("[/color]");
+					Last.ForEach(i => {
+						switch (i) {
+							case 1: _builder.Append("[/color]"); break;
+							case 2: _builder.Append("[/bgcolor]"); break;
+						}
+					});
+
+					Last.Clear();
 					break;
 			}
 
