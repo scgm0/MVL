@@ -1,10 +1,12 @@
 using System.Text.Encodings.Web;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using SharedLibrary;
 using 复古物语启动器.Utils.Config;
 
 namespace 复古物语启动器.Utils;
 
+[JsonSerializable(typeof(RunConfig))]
 [JsonSerializable(typeof(BaseConfig))]
 [JsonSourceGenerationOptions(JsonSerializerDefaults.Web,
 	AllowTrailingCommas = true,

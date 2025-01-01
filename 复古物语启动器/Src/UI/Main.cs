@@ -8,6 +8,7 @@ using Godot;
 using Mono.Cecil;
 using Mono.Cecil.Cil;
 using SharedLibrary;
+using 复古物语启动器.Utils;
 using 复古物语启动器.Utils.Config;
 using 复古物语启动器.Utils.Extensions;
 using 复古物语启动器.Utils.Game;
@@ -136,7 +137,7 @@ public partial class Main : Control {
 			WorkingDirectory = runConfig.VintageStoryPath,
 			Environment = {
 				["VINTAGE_STORY"] = runConfig.VintageStoryPath,
-				["RUN_CONFIG"] = JsonSerializer.Serialize(runConfig, RunSourceGenerationContext.Default.RunConfig)
+				["RUN_CONFIG"] = JsonSerializer.Serialize(runConfig, SourceGenerationContext.Default.RunConfig)
 			}
 		};
 

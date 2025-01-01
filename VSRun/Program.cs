@@ -1,6 +1,7 @@
 ﻿using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Text.Json;
+using System.Text.Json.Serialization;
 using HarmonyLib;
 using SharedLibrary;
 using Vintagestory.API.Config;
@@ -12,7 +13,14 @@ namespace VSRun;
 
 public static class Program {
 	public static RunConfig Config { get; } =
-		JsonSerializer.Deserialize(Environment.GetEnvironmentVariable("RUN_CONFIG")!, RunSourceGenerationContext.Default.RunConfig);
+		JsonSerializer.Deserialize<RunConfig>(Environment.GetEnvironmentVariable("RUN_CONFIG")!,
+			new JsonSerializerOptions(JsonSerializerDefaults.Web) {
+				AllowTrailingCommas = true,
+				WriteIndented = true,
+				Converters = {
+					new JsonStringEnumConverter()
+				}
+			});
 
 	public static string[] AssemblyPaths { get; } = [
 		Config.VintageStoryPath,
@@ -40,6 +48,7 @@ public static class Program {
 				if (Config.UseAnsiLogger) {
 					Harmony.PatchCategory(nameof(Console));
 				}
+
 				StartGame(args);
 				break;
 			}
