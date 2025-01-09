@@ -1,4 +1,5 @@
 #if GODOT_WINDOWS
+
 using System;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
@@ -13,6 +14,8 @@ public static partial class WindowExtensions {
 	private const int WmLButtonUp = 0x0202;
 	private const int WmNcLButtonDown = 0x00a1;
 	private const int SwMinimize = 0x6;
+	private const int SwMaximize = 0x3;
+	private const int SwRestore = 0x9;
 
 	[LibraryImport("user32.dll", EntryPoint = "ReleaseCapture")]
 	[return: MarshalAs(UnmanagedType.Bool)]
@@ -29,46 +32,15 @@ public static partial class WindowExtensions {
 	[return: MarshalAs(UnmanagedType.Bool)]
 	static private partial bool ShowWindow(IntPtr hWnd, int nCmdShow);
 
-	static private readonly Dictionary<WindowEdge, HitTestValues> SEdgeLookup =
-		new() {
-			{ WindowEdge.Right, HitTestValues.HtRight },
-			{ WindowEdge.Top, HitTestValues.HtTop },
-			{ WindowEdge.Top | WindowEdge.Right, HitTestValues.HtTopRight },
-			{ WindowEdge.Top | WindowEdge.Left, HitTestValues.HtTopLeft },
-			{ WindowEdge.Bottom, HitTestValues.HtBottom },
-			{ WindowEdge.Bottom | WindowEdge.Right, HitTestValues.HtBottomRight },
-			{ WindowEdge.Bottom | WindowEdge.Left, HitTestValues.HtBottomLeft },
-			{ WindowEdge.Left, HitTestValues.HtLeft }
-		};
-
-	// public static partial void StartMoveDrag(this Godot.Window window) {
-	// 	var handle = new IntPtr(
-	// 		DisplayServer.WindowGetNativeHandle(DisplayServer.HandleType.WindowHandle, window.GetWindowId()));
-	// 	ReleaseCapture();
-	// 	SendMessage(handle, WmSysCommand, ScMousemove, IntPtr.Zero);
-	// 	SendMessage(handle, WmLButtonUp, IntPtr.Zero, IntPtr.Zero);
-	// 	// Dispatcher.SynchronizationContext.Post(_ => {
-	// 	// 		SendMessage(handle, WmSysCommand, ScMousemove, IntPtr.Zero);
-	// 	// 		SendMessage(handle, WmLButtonUp, IntPtr.Zero, IntPtr.Zero);
-	// 	// 	},
-	// 	// 	handle);
-	// }
-
-	public static partial void StartResizeDrag(this Godot.Window window, WindowEdge edge) {
-		var handle = new IntPtr(
-			DisplayServer.WindowGetNativeHandle(DisplayServer.HandleType.WindowHandle, window.GetWindowId()));
-		ReleaseCapture();
-		DefWindowProc(handle,
-			WmNcLButtonDown,
-			(int)SEdgeLookup[edge],
-			IntPtr.Zero);
-	}
-
 	public static partial void Minimize(this Window window) {
 		var handle = new IntPtr(
 			DisplayServer.WindowGetNativeHandle(DisplayServer.HandleType.WindowHandle, window.GetWindowId()));
 		ReleaseCapture();
 		ShowWindow(handle, SwMinimize);
+	}
+
+	public static partial void Maximize(this Window window) {
+		window.Mode = Window.ModeEnum.Maximized;
 	}
 }
 

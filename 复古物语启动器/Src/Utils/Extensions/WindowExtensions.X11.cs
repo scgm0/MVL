@@ -30,17 +30,9 @@ public static partial class WindowExtensions {
 	[LibraryImport("libX11")]
 	static private partial void XIconifyWindow(IntPtr display, IntPtr window, int screen);
 
-	static private readonly Dictionary<WindowEdge, NetWmMoveResize> SEdgeLookup =
-		new() {
-			{ WindowEdge.Right, NetWmMoveResize.NetWmMoveResizeSizeRight },
-			{ WindowEdge.Top, NetWmMoveResize.NetWmMoveResizeSizeTop },
-			{ WindowEdge.Top | WindowEdge.Right, NetWmMoveResize.NetWmMoveResizeSizeTopRight },
-			{ WindowEdge.Top | WindowEdge.Left, NetWmMoveResize.NetWmMoveResizeSizeTopLeft },
-			{ WindowEdge.Bottom, NetWmMoveResize.NetWmMoveResizeSizeBottom },
-			{ WindowEdge.Bottom | WindowEdge.Right, NetWmMoveResize.NetWmMoveResizeSizeBottomRight },
-			{ WindowEdge.Bottom | WindowEdge.Left, NetWmMoveResize.NetWmMoveResizeSizeBottomLeft },
-			{ WindowEdge.Left, NetWmMoveResize.NetWmMoveResizeSizeLeft }
-		};
+	[LibraryImport("libX11")] static private partial void XMapWindow(IntPtr display, IntPtr window);
+
+	[LibraryImport("libX11")] static private partial void XRaiseWindow(IntPtr display, IntPtr window);
 
 	static private IntPtr DisplayHandle { get; } =
 		new(DisplayServer.WindowGetNativeHandle(DisplayServer.HandleType.DisplayHandle));
@@ -92,26 +84,25 @@ public static partial class WindowExtensions {
 			1);
 	}
 
-	// public static partial void StartMoveDrag(this Window window) {
-	// 	var handle = new IntPtr(
-	// 		DisplayServer.WindowGetNativeHandle(DisplayServer.HandleType.WindowHandle, window.GetWindowId()));
-	// 	StartMoveResize(handle, NetWmMoveResize.NetWmMoveResizeMove);
-	// }
-
-	public static partial void StartResizeDrag(this Window window, WindowEdge edge) {
-		var handle = new IntPtr(
-			DisplayServer.WindowGetNativeHandle(DisplayServer.HandleType.WindowHandle, window.GetWindowId()));
-		StartMoveResize(handle, SEdgeLookup.GetValueOrDefault(edge, NetWmMoveResize.NetWmMoveResizeCancel));
-	}
-
 	public static partial void Minimize(this Window window) {
 		var handle = new IntPtr(
 			DisplayServer.WindowGetNativeHandle(DisplayServer.HandleType.WindowHandle, window.GetWindowId()));
 		XIconifyWindow(DisplayHandle, handle, window.CurrentScreen);
 	}
 
+	public static partial void Maximize(this Window window) {
+		window.Mode = Window.ModeEnum.Maximized;
+	}
+
 	static private class Atoms {
 		public static readonly IntPtr NetWmMoveResize = XInternAtom(DisplayHandle, "_NET_WM_MOVERESIZE", false);
+		public static readonly IntPtr NetWmState = XInternAtom(DisplayHandle, "_NET_WM_STATE", false);
+
+		public static readonly IntPtr NetWmStateMaximizedHorz =
+			XInternAtom(DisplayHandle, "_NET_WM_STATE_MAXIMIZED_HORZ", false);
+
+		public static readonly IntPtr NetWmStateMaximizedVert =
+			XInternAtom(DisplayHandle, "_NET_WM_STATE_MAXIMIZED_VERT", false);
 	}
 }
 

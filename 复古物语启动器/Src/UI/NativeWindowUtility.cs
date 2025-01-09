@@ -1,14 +1,13 @@
 using System;
 using System.Diagnostics;
 using Godot;
-using 复古物语启动器.Utils.Extensions;
 
 namespace 复古物语启动器.UI;
 
 [GlobalClass]
 public partial class NativeWindowUtility : Control {
 	static private readonly TimeSpan DoubleClickInterval = TimeSpan.FromMilliseconds(300);
-	private WindowEdge _windowEdge;
+	private DisplayServer.WindowResizeEdge _windowEdge;
 	private bool _isResizable;
 	private bool _pressed;
 	private long _pressedLastTime;
@@ -34,22 +33,22 @@ public partial class NativeWindowUtility : Control {
 		}
 	}
 
-	[Export(PropertyHint.Flags, "左,右,上,下")]
-	public WindowEdge WindowEdge {
+	[Export]
+	public DisplayServer.WindowResizeEdge WindowEdge {
 		get => _windowEdge;
 		set {
 			_windowEdge = value;
 			MouseDefaultCursorShape = IsDraggable || !IsResizable
 				? CursorShape.Arrow
 				: _windowEdge switch {
-					WindowEdge.Left => CursorShape.Hsize,
-					WindowEdge.Right => CursorShape.Hsize,
-					WindowEdge.Top => CursorShape.Vsize,
-					WindowEdge.Bottom => CursorShape.Vsize,
-					WindowEdge.Left | WindowEdge.Top => CursorShape.Fdiagsize,
-					WindowEdge.Right | WindowEdge.Top => CursorShape.Bdiagsize,
-					WindowEdge.Left | WindowEdge.Bottom => CursorShape.Bdiagsize,
-					WindowEdge.Right | WindowEdge.Bottom => CursorShape.Fdiagsize,
+					DisplayServer.WindowResizeEdge.Left => CursorShape.Hsize,
+					DisplayServer.WindowResizeEdge.Right => CursorShape.Hsize,
+					DisplayServer.WindowResizeEdge.Top => CursorShape.Vsize,
+					DisplayServer.WindowResizeEdge.Bottom => CursorShape.Vsize,
+					DisplayServer.WindowResizeEdge.TopLeft => CursorShape.Fdiagsize,
+					DisplayServer.WindowResizeEdge.TopRight => CursorShape.Bdiagsize,
+					DisplayServer.WindowResizeEdge.BottomLeft => CursorShape.Bdiagsize,
+					DisplayServer.WindowResizeEdge.BottomRight => CursorShape.Fdiagsize,
 					_ => CursorShape.Arrow
 				};
 		}
@@ -63,7 +62,7 @@ public partial class NativeWindowUtility : Control {
 	}
 
 	private void OnResized() {
-		if (GetLastExclusiveWindow().Mode != Window.ModeEnum.Windowed && IsResizable) {
+		if (GetWindow().Mode != Window.ModeEnum.Windowed && IsResizable) {
 			Visible = false;
 		} else {
 			Visible = true;
@@ -96,7 +95,7 @@ public partial class NativeWindowUtility : Control {
 
 		if (_pressedLastTime != 0 && Stopwatch.GetElapsedTime(_pressedLastTime) < DoubleClickInterval) {
 			_pressedLastTime = 0;
-			GetLastExclusiveWindow().Mode = GetLastExclusiveWindow().Mode == Window.ModeEnum.Windowed
+			GetWindow().Mode = GetWindow().Mode == Window.ModeEnum.Windowed
 				? Window.ModeEnum.Maximized
 				: Window.ModeEnum.Windowed;
 		} else {
@@ -105,8 +104,8 @@ public partial class NativeWindowUtility : Control {
 	}
 
 	private void HandleResize(InputEvent @event) {
-		if (@event is InputEventMouseButton { ButtonIndex: MouseButton.Left, Pressed: true } && WindowEdge != 0) {
-			GetLastExclusiveWindow().StartResizeDrag(WindowEdge);
+		if (@event is InputEventMouseButton { ButtonIndex: MouseButton.Left, Pressed: true } && IsResizable) {
+			GetWindow().StartResize(WindowEdge);
 		}
 	}
 
@@ -122,12 +121,12 @@ public partial class NativeWindowUtility : Control {
 
 		if (!_pressed || @event is not InputEventMouseMotion) return;
 		StopTimer();
-		GetLastExclusiveWindow().StartMoveDrag();
+		GetWindow().StartDrag();
 	}
 
 	private void OnTimerOnTimeout() {
 		_pressed = false;
-		GetLastExclusiveWindow().StartMoveDrag();
+		GetWindow().StartDrag();
 	}
 
 	private void StopTimer() {
