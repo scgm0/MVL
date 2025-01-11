@@ -39,4 +39,14 @@
         <Copy SourceFiles="@(FilesToCopy)"
               DestinationFolder="Misc/VSRun"/>
     </Target>
+
+    <Target Name="Chmod"
+        AfterTargets="LinkNative"
+        BeforeTargets="UpxCompress"
+        Condition="$(RuntimeIdentifier.Contains('linux')) and $([MSBuild]::IsOSPlatform('Linux'))"
+        Inputs="$(NativeBinary)"
+        Outputs="$(NativeBinary).chmod">
+        <Exec Command="chmod +x &quot;$(NativeBinary)&quot;" IgnoreExitCode="false"/>
+        <Touch Files="$(NativeBinary)" />
+    </Target>
 </Project>

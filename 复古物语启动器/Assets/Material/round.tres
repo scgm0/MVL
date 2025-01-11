@@ -1,0 +1,16 @@
+[gd_resource type="ShaderMaterial" load_steps=2 format=3 uid="uid://d2rejrdmwjskm"]
+
+[ext_resource type="Shader" uid="uid://7m4gfe2jpbam" path="res://Assets/Shader/round.gdshader" id="1_wqc8d"]
+
+[resource]
+shader = ExtResource("1_wqc8d")
+shader_parameter/windowSize = Vector2(1162, 658)
+shader_parameter/edgeSoftness = 1.5
+shader_parameter/cornerRadiuses = Vector4(12, 12, 12, 12)
+shader_parameter/borderThickness = 1.5
+shader_parameter/borderSoftness = 2.0
+shader_parameter/shadowThickness = 5.0
+shader_parameter/shadowOffset = Vector2(0, 0)
+shader_parameter/colorBg = Color(0, 0, 0, 0)
+shader_parameter/colorBorder = Color(1, 1, 1, 0.294118)
+shader_parameter/colorShadow = Color(0, 0, 0, 1)

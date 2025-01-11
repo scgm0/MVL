@@ -1,4 +1,4 @@
-[gd_scene load_steps=40 format=3 uid="uid://514oox50h8yl"]
+[gd_scene load_steps=50 format=3 uid="uid://514oox50h8yl"]
 
 [ext_resource type="Script" uid="uid://cvyeyg8ttnwmu" path="res://Src/UI/Main.cs" id="1_1opgh"]
 [ext_resource type="Texture2D" uid="uid://bhh1jvyj73qxh" path="res://Assets/Gui/Background.png" id="2_1opgh"]
@@ -8,6 +8,7 @@
 [ext_resource type="ButtonGroup" uid="uid://c644g3bgevb7h" path="res://Assets/Gui/menu_button_group.tres" id="4_megpf"]
 [ext_resource type="FontFile" uid="uid://bmgx1vyg6bavd" path="res://Assets/Font/HarmonyOS_Sans_SC_Bold.ttf" id="4_p7a31"]
 [ext_resource type="Shader" uid="uid://bw4cstfk8udci" path="res://Assets/Shader/blur.gdshader" id="4_v5ddw"]
+[ext_resource type="Script" uid="uid://cfa6u8q8grk6o" path="res://Src/UI/MenuPanel.cs" id="7_365jr"]
 [ext_resource type="Script" uid="uid://dvjtigpqee0jw" path="res://Src/UI/Item/MenuItem.cs" id="7_bl4fu"]
 [ext_resource type="Texture2D" uid="uid://bj8poc1xuq8v6" path="res://Assets/Icon/MD/menu-close.svg" id="7_oarc7"]
 [ext_resource type="Texture2D" uid="uid://cgkmtfuap6ibb" path="res://Assets/Icon/MD/home.svg" id="7_p7a31"]
@@ -21,6 +22,8 @@
 [ext_resource type="Script" uid="uid://bx8dqa4avru7x" path="res://Src/UI/Page/ReleasePage.cs" id="18_g8snm"]
 [ext_resource type="PackedScene" uid="uid://bjgov53faujry" path="res://Src/UI/Item/release_item.tscn" id="19_g8snm"]
 [ext_resource type="Texture2D" uid="uid://uxj5o0qny3rm" path="res://Assets/Icon/MD/add.svg" id="20_oarc7"]
+[ext_resource type="Texture2D" uid="uid://cl7joldlu8xyc" path="res://Assets/Icon/MD/window-close.svg" id="22_bmwv3"]
+[ext_resource type="Texture2D" uid="uid://cwgm3hp261ydn" path="res://Assets/Icon/MD/window-minimize.svg" id="22_o4ctv"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_hq21a"]
 shader = ExtResource("4_v5ddw")
@@ -78,14 +81,7 @@ content_margin_top = 12.0
 content_margin_right = 12.0
 content_margin_bottom = 12.0
 bg_color = Color(0, 0, 0, 0.6)
-
-[sub_resource type="GDScript" id="GDScript_v5ddw"]
-script/source = "extends PanelContainer
-
-func _on_button_toggled(toggled_on: bool) -> void:
-	$AnimationPlayer.play(&\"unfold\", -1, 1.0 if toggled_on else -1.0, !toggled_on)
-	pass # Replace with function body.
-"
+anti_aliasing = false
 
 [sub_resource type="Animation" id="Animation_syw1k"]
 length = 0.001
@@ -148,8 +144,8 @@ _data = {
 
 [sub_resource type="StyleBoxLine" id="StyleBoxLine_v5ddw"]
 color = Color(0.6, 0.6, 0.6, 0.490196)
-grow_begin = 0.0
-grow_end = 0.0
+grow_begin = -1.0
+grow_end = -1.0
 vertical = true
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_kq46g"]
@@ -208,43 +204,64 @@ corner_radius_top_right = 10
 corner_radius_bottom_right = 10
 corner_radius_bottom_left = 10
 
-[node name="Main" type="Control"]
-layout_mode = 3
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_a6wm3"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_53u4p"]
+bg_color = Color(1, 1, 1, 0.282353)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_365jr"]
+bg_color = Color(1, 1, 1, 0.352941)
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_08ol6"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_bmwv3"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_o4ctv"]
+bg_color = Color(0.764706, 0, 0, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_a6wm3"]
+bg_color = Color(0.666667, 0, 0, 1)
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_365jr"]
+
+[node name="Main" type="MarginContainer" node_paths=PackedStringArray("MinButton", "CloseButton")]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+theme_override_constants/margin_left = 5
+theme_override_constants/margin_top = 5
+theme_override_constants/margin_right = 5
+theme_override_constants/margin_bottom = 5
 script = ExtResource("1_1opgh")
 _iconTexture = ExtResource("2_xnuua")
 _installedGamesImportScene = ExtResource("3_a5da0")
+MinButton = NodePath("Control/HBoxContainer/MinButton")
+CloseButton = NodePath("Control/HBoxContainer/CloseButton")
+IsDraggable = true
 
 [node name="Background" type="TextureRect" parent="."]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
+layout_mode = 2
 texture = ExtResource("2_1opgh")
 expand_mode = 1
 stretch_mode = 6
 
 [node name="HBoxContainer" type="HBoxContainer" parent="."]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
+layout_mode = 2
+mouse_filter = 2
 theme_override_constants/separation = 0
 
-[node name="MenuPanel" type="PanelContainer" parent="HBoxContainer"]
+[node name="MenuPanel" type="PanelContainer" parent="HBoxContainer" node_paths=PackedStringArray("MenuButton", "AnimationPlayer")]
 material = SubResource("ShaderMaterial_hq21a")
 layout_mode = 2
 theme = SubResource("Theme_megpf")
 theme_override_styles/panel = SubResource("StyleBoxFlat_p7a31")
-script = SubResource("GDScript_v5ddw")
+script = ExtResource("7_365jr")
+MenuButton = NodePath("VBoxContainer/MenuButton")
+AnimationPlayer = NodePath("AnimationPlayer")
+IsDraggable = true
+DoubleClickWindowMaximized = true
 
 [node name="VBoxContainer" type="VBoxContainer" parent="HBoxContainer/MenuPanel"]
 custom_minimum_size = Vector2(36, 0)
@@ -345,6 +362,7 @@ theme_override_styles/separator = SubResource("StyleBoxLine_v5ddw")
 [node name="PageContainer" type="TabContainer" parent="HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
+mouse_filter = 2
 theme_override_styles/panel = SubResource("StyleBoxEmpty_kq46g")
 tab_alignment = 1
 current_tab = 0
@@ -352,6 +370,7 @@ tabs_visible = false
 
 [node name="Home" type="Control" parent="HBoxContainer/PageContainer"]
 layout_mode = 2
+mouse_filter = 2
 script = ExtResource("15_fuji0")
 metadata/_tab_index = 0
 
@@ -359,6 +378,7 @@ metadata/_tab_index = 0
 visible = false
 material = ExtResource("4_bl4fu")
 layout_mode = 2
+mouse_filter = 2
 script = ExtResource("15_fuji0")
 Main = NodePath("Control")
 metadata/_tab_index = 1
@@ -370,6 +390,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+mouse_filter = 2
 
 [node name="Button" type="Button" parent="HBoxContainer/PageContainer/Account/Control"]
 layout_mode = 0
@@ -381,6 +402,7 @@ offset_bottom = 284.0
 [node name="Modpack" type="Control" parent="HBoxContainer/PageContainer"]
 visible = false
 layout_mode = 2
+mouse_filter = 2
 script = ExtResource("15_fuji0")
 metadata/_tab_index = 2
 
@@ -401,11 +423,13 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+mouse_filter = 2
 
 [node name="Release" type="ColorRect" parent="HBoxContainer/PageContainer" node_paths=PackedStringArray("_addReleaseButton", "_grid", "Main")]
 visible = false
 material = ExtResource("4_bl4fu")
 layout_mode = 2
+mouse_filter = 2
 script = ExtResource("18_g8snm")
 _addReleaseButton = NodePath("MarginContainer/ScrollContainer/HFlowContainer/AddRelease")
 _releaseItemScene = ExtResource("19_g8snm")
@@ -455,13 +479,57 @@ expand_icon = true
 [node name="Module" type="Control" parent="HBoxContainer/PageContainer"]
 visible = false
 layout_mode = 2
+mouse_filter = 2
 script = ExtResource("15_fuji0")
 metadata/_tab_index = 4
 
 [node name="Setting" type="Control" parent="HBoxContainer/PageContainer"]
 visible = false
 layout_mode = 2
+mouse_filter = 2
 script = ExtResource("15_fuji0")
 metadata/_tab_index = 5
 
-[connection signal="toggled" from="HBoxContainer/MenuPanel/VBoxContainer/MenuButton" to="HBoxContainer/MenuPanel" method="_on_button_toggled"]
+[node name="Control" type="Control" parent="."]
+layout_mode = 2
+mouse_filter = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Control"]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -8.0
+offset_bottom = 8.0
+grow_horizontal = 0
+theme_override_constants/separation = 0
+alignment = 2
+
+[node name="MinButton" type="Button" parent="Control/HBoxContainer"]
+custom_minimum_size = Vector2(30, 25)
+layout_mode = 2
+focus_mode = 0
+theme_override_colors/icon_normal_color = Color(0.678944, 0.678944, 0.678944, 1)
+theme_override_constants/icon_max_width = 14
+theme_override_styles/focus = SubResource("StyleBoxEmpty_a6wm3")
+theme_override_styles/hover = SubResource("StyleBoxFlat_53u4p")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_365jr")
+theme_override_styles/normal = SubResource("StyleBoxEmpty_08ol6")
+icon = ExtResource("22_o4ctv")
+icon_alignment = 1
+expand_icon = true
+
+[node name="CloseButton" type="Button" parent="Control/HBoxContainer"]
+custom_minimum_size = Vector2(30, 25)
+layout_mode = 2
+size_flags_horizontal = 4
+focus_mode = 0
+theme_override_colors/icon_normal_color = Color(0.678431, 0.678431, 0.678431, 1)
+theme_override_constants/icon_max_width = 14
+theme_override_styles/focus = SubResource("StyleBoxEmpty_bmwv3")
+theme_override_styles/hover = SubResource("StyleBoxFlat_o4ctv")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_a6wm3")
+theme_override_styles/normal = SubResource("StyleBoxEmpty_365jr")
+icon = ExtResource("22_bmwv3")
+icon_alignment = 1
+expand_icon = true

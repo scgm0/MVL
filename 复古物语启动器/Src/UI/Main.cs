@@ -16,7 +16,7 @@ using 复古物语启动器.Utils.Help;
 
 namespace 复古物语启动器.UI;
 
-public partial class Main : Control {
+public partial class Main : NativeWindowUtility {
 	private Vector2I _rootMinSize = new(960, 540);
 
 	static private readonly BaseConfig BaseConfig =
@@ -30,6 +30,12 @@ public partial class Main : Control {
 	[Export]
 	private PackedScene? _installedGamesImportScene;
 
+	[Export]
+	private Button? MinButton { get; set; }
+
+	[Export]
+	private Button? CloseButton { get; set; }
+
 	public static Main? Instance { get; private set; }
 
 	public static Dictionary<string, ReleaseInfo> Release { get; } = new();
@@ -37,10 +43,13 @@ public partial class Main : Control {
 	public Main() { Instance = this; }
 
 	public override void _Ready() {
-		NullExceptionHelper.NotNull(_iconTexture, _installedGamesImportScene);
-		_rootMinSize = GetTree().Root.Size - new Vector2I(100, 100);
+		base._Ready();
+		NullExceptionHelper.NotNull(_iconTexture, _installedGamesImportScene, MinButton, CloseButton);
+		_rootMinSize = GetTree().Root.Size - new Vector2I(90, 90);
 		GetTree().Root.MinSize = _rootMinSize;
 		DisplayServer.SetIcon(_iconTexture.GetImage());
+		MinButton.Pressed += GetTree().Root.Minimize;
+		CloseButton.Pressed += () => GetTree().Quit();
 		if (BaseConfig.Release.Count == 0 && InstalledGamesImport.InstalledGamePaths.Length > 0) {
 			_ = ImportInstalledGames();
 		}

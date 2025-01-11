@@ -12,19 +12,25 @@ config_version=5
 
 config/name="复古物语启动器"
 config/version="0.0.1"
-run/main_scene="res://Src/UI/main.tscn"
+run/main_scene="uid://buuu4ls8t7l4u"
 config/use_custom_user_dir=true
 config/features=PackedStringArray("4.4", "C#", "Mobile")
 run/low_processor_mode=true
+boot_splash/bg_color=Color(0.141176, 0.141176, 0.141176, 0)
 boot_splash/show_image=false
 config/icon="uid://bqv5hbr6w0cu"
 config/windows_native_icon="res://Assets/Icon/icon.ico"
 
 [display]
 
+window/size/viewport_width=1162
+window/size/viewport_height=658
 window/size/initial_position_type=3
+window/size/borderless=true
+window/size/transparent=true
 window/subwindows/embed_subwindows=false
 window/per_pixel_transparency/allowed=true
+window/vsync/vsync_mode=0
 
 [dotnet]
 
@@ -62,5 +68,7 @@ texture={
 
 [rendering]
 
+gl_compatibility/driver.linuxbsd="opengl3_es"
 renderer/rendering_method="gl_compatibility"
 renderer/rendering_method.mobile="gl_compatibility"
+viewport/transparent_background=true
