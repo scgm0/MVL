@@ -1,25 +1,41 @@
 using Godot;
+using 复古物语启动器.Utils;
 using 复古物语启动器.Utils.Help;
 
 namespace 复古物语启动器.UI;
 
 public partial class MenuPanel : NativeWindowUtility {
 	[Export]
-	public Button? MenuButton { get; set; }
+	private Button? _menuButton;
 
 	[Export]
-	public AnimationPlayer? AnimationPlayer { get; set; }
+	private TabContainer? _pageContainer;
 
-	static private readonly StringName AnimationName = new("unfold");
+	[Export]
+	private AnimationPlayer? _animationPlayer;
 
+	[Export]
+	private ShaderMaterial? _blurShaderMaterial;
+	
 	public override void _Ready() {
 		base._Ready();
-		MenuButton.NotNull();
-		AnimationPlayer.NotNull();
-		MenuButton.Toggled += MenuButtonOnToggled;
+		_menuButton.NotNull();
+		_pageContainer.NotNull();
+		_animationPlayer.NotNull();
+		_blurShaderMaterial.NotNull();
+		_menuButton.Toggled += MenuButtonOnToggled;
+		_pageContainer.TabChanged += PageContainerOnTabChanged;
+	}
+
+	private void PageContainerOnTabChanged(long tab) {
+		if (tab != 0) {
+			_blurShaderMaterial!.SetShaderParameter(StringNames.Lod, 2.4);
+		} else {
+			_blurShaderMaterial!.SetShaderParameter(StringNames.Lod, 0);
+		}
 	}
 
 	private void MenuButtonOnToggled(bool toggledOn) {
-		AnimationPlayer?.Play(AnimationName, -1, (float)(toggledOn ? 1.0 : -1.0), !toggledOn);
+		_animationPlayer?.Play(StringNames.Unfold, -1, (float)(toggledOn ? 1.0 : -1.0), !toggledOn);
 	}
 }

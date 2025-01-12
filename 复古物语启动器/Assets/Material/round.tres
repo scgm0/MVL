@@ -4,13 +4,13 @@
 
 [resource]
 shader = ExtResource("1_wqc8d")
-shader_parameter/windowSize = Vector2(1162, 658)
-shader_parameter/edgeSoftness = 1.5
-shader_parameter/cornerRadiuses = Vector4(12, 12, 12, 12)
-shader_parameter/borderThickness = 1.5
-shader_parameter/borderSoftness = 2.0
-shader_parameter/shadowThickness = 5.0
-shader_parameter/shadowOffset = Vector2(0, 0)
-shader_parameter/colorBg = Color(0, 0, 0, 0)
-shader_parameter/colorBorder = Color(1, 1, 1, 0.294118)
-shader_parameter/colorShadow = Color(0, 0, 0, 1)
+shader_parameter/window_size = Vector2(1162, 658)
+shader_parameter/edge_softness = 1.5
+shader_parameter/corner_radius = Vector4(12, 12, 12, 12)
+shader_parameter/border_thickness = 1.5
+shader_parameter/border_softness = 2.0
+shader_parameter/shadow_size = 5.0
+shader_parameter/shadow_offset = Vector2(0, 0)
+shader_parameter/color_bg = Color(0, 0, 0, 0)
+shader_parameter/color_border = Color(1, 1, 1, 0.3)
+shader_parameter/color_shadow = Color(0, 0, 0, 1)

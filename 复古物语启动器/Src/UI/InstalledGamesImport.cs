@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Godot;
+using 复古物语启动器.Utils;
 using 复古物语启动器.Utils.Game;
 using 复古物语启动器.Utils.Help;
 
@@ -67,12 +68,12 @@ public partial class InstalledGamesImport : Control {
 
 	public new async Task Show() {
 		base.Show();
-		_animationPlayer!.Play("show");
+		_animationPlayer!.Play(StringNames.Show);
 		await ToSignal(_animationPlayer, AnimationMixer.SignalName.AnimationFinished);
 	}
 
 	public new async Task Hide() {
-		_animationPlayer!.PlayBackwards("show");
+		_animationPlayer!.PlayBackwards(StringNames.Show);
 		await ToSignal(_animationPlayer, AnimationMixer.SignalName.AnimationFinished);
 		foreach (var child in _installedGameList!.GetChildren()) {
 			child.QueueFree();

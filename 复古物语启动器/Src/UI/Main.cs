@@ -36,25 +36,54 @@ public partial class Main : NativeWindowUtility {
 	[Export]
 	private Button? CloseButton { get; set; }
 
+	[Export]
+	private ShaderMaterial? _roundMaterial;
+
+	public int ShadowSize {
+		get;
+		set {
+			field = value;
+			AddThemeConstantOverride(StringNames.MarginLeft, value);
+			AddThemeConstantOverride(StringNames.MarginRight, value);
+			AddThemeConstantOverride(StringNames.MarginTop, value);
+			AddThemeConstantOverride(StringNames.MarginBottom, value);
+			_roundMaterial!.SetShaderParameter(StringNames.ShadowSize, value);
+		}
+	} = 5;
+
 	public static Main? Instance { get; private set; }
 
 	public static Dictionary<string, ReleaseInfo> Release { get; } = new();
+
+	public static SceneTree SceneTree { get; } = (SceneTree)Engine.GetMainLoop();
 
 	public Main() { Instance = this; }
 
 	public override void _Ready() {
 		base._Ready();
 		NullExceptionHelper.NotNull(_iconTexture, _installedGamesImportScene, MinButton, CloseButton);
-		_rootMinSize = GetTree().Root.Size - new Vector2I(90, 90);
-		GetTree().Root.MinSize = _rootMinSize;
+		_rootMinSize = SceneTree.Root.Size - new Vector2I(90, 90);
+		SceneTree.Root.MinSize = _rootMinSize;
+		SceneTree.Root.SizeChanged += RootOnSizeChanged;
 		DisplayServer.SetIcon(_iconTexture.GetImage());
-		MinButton.Pressed += GetTree().Root.Minimize;
-		CloseButton.Pressed += () => GetTree().Quit();
+		MinButton.Pressed += SceneTree.Root.Minimize;
+		CloseButton.Pressed += () => SceneTree.Quit();
 		if (BaseConfig.Release.Count == 0 && InstalledGamesImport.InstalledGamePaths.Length > 0) {
 			_ = ImportInstalledGames();
 		}
 
 		CheckGameVersion();
+	}
+
+	private void RootOnSizeChanged() {
+		_roundMaterial!.SetShaderParameter(StringNames.WindowSize, SceneTree.Root.Size);
+		if (ShadowSize != 5 || SceneTree.Root.Size != DisplayServer.ScreenGetUsableRect().Size) {
+			ShadowSize = 5;
+			_roundMaterial!.SetShaderParameter(StringNames.CornerRadius, new Vector4(12, 12, 12, 12));
+		} else {
+			ShadowSize = 0;
+			_roundMaterial!.SetShaderParameter(StringNames.CornerRadius, Vector4.Zero);
+		}
 	}
 
 	public async Task<InstalledGamesImport> ImportInstalledGames() {
