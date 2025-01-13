@@ -1,4 +1,4 @@
-[gd_scene load_steps=58 format=3 uid="uid://514oox50h8yl"]
+[gd_scene load_steps=59 format=3 uid="uid://514oox50h8yl"]
 
 [ext_resource type="Script" uid="uid://cvyeyg8ttnwmu" path="res://Src/UI/Main.cs" id="1_1opgh"]
 [ext_resource type="Texture2D" uid="uid://bhh1jvyj73qxh" path="res://Assets/Gui/Background.png" id="2_1opgh"]
@@ -201,6 +201,12 @@ corner_radius_bottom_left = 10
 VScrollBar/styles/scroll = SubResource("StyleBoxFlat_ty1b0")
 
 [sub_resource type="Resource" id="Resource_364to"]
+script = ExtResource("28_7eosv")
+friction = 4.0
+minimum_velocity = 0.4
+rebound_strength = 7.0
+
+[sub_resource type="Resource" id="Resource_7nt4r"]
 script = ExtResource("28_7eosv")
 friction = 4.0
 minimum_velocity = 0.4
@@ -594,6 +600,7 @@ layout_mode = 2
 theme = SubResource("Theme_g8snm")
 script = ExtResource("27_7nt4r")
 wheel_scroll_damper = SubResource("Resource_364to")
+dragging_scroll_damper = SubResource("Resource_7nt4r")
 drag_with_mouse = false
 drag_with_touch = false
 handle_input = false

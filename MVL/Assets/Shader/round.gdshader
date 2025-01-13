@@ -17,6 +17,7 @@ uniform vec4 color_bg: source_color = vec4(0.0, 0.0, 0.0, 0.0); // 背景颜色
 uniform vec4 color_border: source_color = vec4(1.0, 1.0, 1.0, 0.3); // 边框颜色
 uniform vec4 color_shadow: source_color = vec4(0.0, 0.0, 0.0, 1.0); // 阴影颜色
 
+varying vec4 MODULATE;
 // 计算圆角矩形的SDF (Signed Distance Field)
 float roundedBoxSDF(vec2 position, vec2 size, vec4 radius) {
     radius.xy = (position.x > 0.0) ? radius.xy : radius.zw;
@@ -24,6 +25,10 @@ float roundedBoxSDF(vec2 position, vec2 size, vec4 radius) {
 
     vec2 q = abs(position) - size + radius.x;
     return min(max(q.x, q.y), 0.0) + length(max(q, 0.0)) - radius.x;
+}
+
+void vertex() {
+	MODULATE = COLOR;
 }
 
 void fragment() {
@@ -71,5 +76,5 @@ void fragment() {
     );
 
     // 输出最终颜色
-    COLOR = res_shadow_with_rect_with_border;
+    COLOR = res_shadow_with_rect_with_border * MODULATE;
 }

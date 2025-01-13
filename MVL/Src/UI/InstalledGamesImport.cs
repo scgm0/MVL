@@ -16,6 +16,9 @@ public partial class InstalledGamesImport : Control {
 	private PackedScene? _installedGameItemScene;
 
 	[Export]
+	private PanelContainer? _installedGameItemContainer;
+
+	[Export]
 	private Control? _installedGameList;
 
 	[Export]
@@ -35,6 +38,7 @@ public partial class InstalledGamesImport : Control {
 
 	public override void _Ready() {
 		Utils.Help.NullExceptionHelper.NotNull(_installedGameItemScene,
+			_installedGameItemContainer,
 			_installedGameList,
 			_cancelButton,
 			_importButton,
@@ -67,6 +71,8 @@ public partial class InstalledGamesImport : Control {
 	}
 
 	public new async Task Show() {
+		Modulate = Colors.Transparent;
+		_installedGameItemContainer!.Scale = Vector2.Zero;
 		base.Show();
 		_animationPlayer!.Play(StringNames.Show);
 		await ToSignal(_animationPlayer, AnimationMixer.SignalName.AnimationFinished);

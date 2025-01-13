@@ -67,11 +67,14 @@ public partial class Main : NativeWindowUtility {
 		DisplayServer.SetIcon(_iconTexture.GetImage());
 		MinButton.Pressed += SceneTree.Root.Minimize;
 		CloseButton.Pressed += () => SceneTree.Quit();
+	}
+
+	public void Start() {
+		CheckGameVersion();
+
 		if (BaseConfig.Release.Count == 0 && InstalledGamesImport.InstalledGamePaths.Length > 0) {
 			_ = ImportInstalledGames();
 		}
-
-		CheckGameVersion();
 	}
 
 	private void RootOnSizeChanged() {
@@ -86,28 +89,25 @@ public partial class Main : NativeWindowUtility {
 	}
 
 	public async Task<InstalledGamesImport> ImportInstalledGames() {
-		if (_installedGamesImport is null) {
-			_installedGamesImport = _installedGamesImportScene!.Instantiate<InstalledGamesImport>();
-			AddChild(_installedGamesImport);
-			_installedGamesImport.Import += paths => {
-				if (paths.Length == 0) {
-					return;
-				}
+		_installedGamesImport = _installedGamesImportScene!.Instantiate<InstalledGamesImport>();
+		AddChild(_installedGamesImport);
+		_installedGamesImport.Import += paths => {
+			if (paths.Length == 0) {
+				return;
+			}
 
-				foreach (var gamePath in paths) {
-					var info = new ReleaseInfo {
-						Path = gamePath,
-						Version = GameVersion.FromGamePath(gamePath)!.Value
-					};
-					BaseConfig.Release.Add(info);
-				}
+			foreach (var gamePath in paths) {
+				var info = new ReleaseInfo {
+					Path = gamePath,
+					Version = GameVersion.FromGamePath(gamePath)!.Value
+				};
+				BaseConfig.Release.Add(info);
+			}
 
-				BaseConfig.Save(BaseConfig);
-				CheckGameVersion();
-			};
-		}
-
-		await _installedGamesImport.Show();
+			BaseConfig.Save(BaseConfig);
+			CheckGameVersion();
+		};
+		await _installedGamesImport!.Show();
 		_ = _installedGamesImport.ShowInstalledGames();
 		return _installedGamesImport;
 	}

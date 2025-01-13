@@ -116,6 +116,17 @@ tracks/1/keys = {
 "points": PackedFloat32Array(1, -0.25, 0, 0.25, 0),
 "times": PackedFloat32Array(0)
 }
+tracks/2/type = "bezier"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath(".:modulate:a")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"handle_modes": PackedInt32Array(0),
+"points": PackedFloat32Array(1, -0.0005, 0, 0.0005, 0),
+"times": PackedFloat32Array(0)
+}
 
 [sub_resource type="Animation" id="Animation_mqeym"]
 resource_name = "show"
@@ -142,6 +153,17 @@ tracks/1/keys = {
 "points": PackedFloat32Array(0, -0.25, 0, 0.25, 0, 1, -0.25, 0, 0.25, 0),
 "times": PackedFloat32Array(0, 0.5)
 }
+tracks/2/type = "bezier"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath(".:modulate:a")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"handle_modes": PackedInt32Array(0, 0),
+"points": PackedFloat32Array(0, -0.25, 0, 0.25, 0, 1, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0, 0.5)
+}
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_0mth8"]
 _data = {
@@ -149,7 +171,7 @@ _data = {
 &"show": SubResource("Animation_mqeym")
 }
 
-[node name="InstalledGamesImport" type="ColorRect" node_paths=PackedStringArray("_installedGameList", "_cancelButton", "_importButton", "_animationPlayer")]
+[node name="InstalledGamesImport" type="ColorRect" node_paths=PackedStringArray("_installedGameItemContainer", "_installedGameList", "_cancelButton", "_importButton", "_animationPlayer")]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -158,6 +180,7 @@ grow_vertical = 2
 color = Color(0, 0, 0, 0.6)
 script = ExtResource("1_bcuc2")
 _installedGameItemScene = ExtResource("2_mqeym")
+_installedGameItemContainer = NodePath("PanelContainer")
 _installedGameList = NodePath("PanelContainer/VBoxContainer/SmoothScrollContainer/MarginContainer/InstalledGameList")
 _cancelButton = NodePath("PanelContainer/VBoxContainer/HBoxContainer/CancelButton")
 _importButton = NodePath("PanelContainer/VBoxContainer/HBoxContainer/ImportButton")
