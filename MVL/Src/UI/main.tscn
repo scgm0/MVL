@@ -1,4 +1,4 @@
-[gd_scene load_steps=55 format=3 uid="uid://514oox50h8yl"]
+[gd_scene load_steps=58 format=3 uid="uid://514oox50h8yl"]
 
 [ext_resource type="Script" uid="uid://cvyeyg8ttnwmu" path="res://Src/UI/Main.cs" id="1_1opgh"]
 [ext_resource type="Texture2D" uid="uid://bhh1jvyj73qxh" path="res://Assets/Gui/Background.png" id="2_1opgh"]
@@ -27,6 +27,8 @@
 [ext_resource type="Texture2D" uid="uid://cl7joldlu8xyc" path="res://Assets/Icon/MD/window-close.svg" id="22_bmwv3"]
 [ext_resource type="Texture2D" uid="uid://cwgm3hp261ydn" path="res://Assets/Icon/MD/window-minimize.svg" id="22_o4ctv"]
 [ext_resource type="LabelSettings" uid="uid://bdfwqcqufhm6k" path="res://Assets/Setting/page_title.tres" id="23_53u4p"]
+[ext_resource type="Script" uid="uid://cre6m68jy0aad" path="res://addons/SmoothScroll/SmoothScrollContainer.gd" id="27_7nt4r"]
+[ext_resource type="Script" uid="uid://41yydm3vncfj" path="res://addons/SmoothScroll/scroll_damper/expo_scroll_damper.gd" id="28_7eosv"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_hq21a"]
 shader = ExtResource("4_v5ddw")
@@ -197,6 +199,12 @@ corner_radius_bottom_left = 10
 
 [sub_resource type="Theme" id="Theme_g8snm"]
 VScrollBar/styles/scroll = SubResource("StyleBoxFlat_ty1b0")
+
+[sub_resource type="Resource" id="Resource_364to"]
+script = ExtResource("28_7eosv")
+friction = 4.0
+minimum_velocity = 0.4
+rebound_strength = 7.0
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_oarc7"]
 bg_color = Color(0.20871, 0.20871, 0.20871, 0.6)
@@ -424,7 +432,6 @@ mouse_filter = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_08ol6")
 
 [node name="TextureRect" type="TextureRect" parent="HBoxContainer/ColorRect/VBoxContainer/HBoxContainer/MarginContainer/PanelContainer"]
-texture_filter = 4
 use_parent_material = true
 custom_minimum_size = Vector2(40, 40)
 layout_mode = 2
@@ -445,6 +452,7 @@ size_flags_horizontal = 3
 mouse_filter = 2
 
 [node name="MinButton" type="Button" parent="HBoxContainer/ColorRect/VBoxContainer/HBoxContainer"]
+texture_filter = 1
 custom_minimum_size = Vector2(35, 30)
 layout_mode = 2
 size_flags_horizontal = 8
@@ -460,6 +468,7 @@ icon = ExtResource("22_o4ctv")
 icon_alignment = 1
 
 [node name="CloseButton" type="Button" parent="HBoxContainer/ColorRect/VBoxContainer/HBoxContainer"]
+texture_filter = 2
 custom_minimum_size = Vector2(35, 30)
 layout_mode = 2
 size_flags_horizontal = 8
@@ -562,9 +571,9 @@ visible = false
 layout_mode = 2
 mouse_filter = 2
 script = ExtResource("18_g8snm")
-_addReleaseButton = NodePath("MarginContainer/ScrollContainer/HFlowContainer/AddRelease")
+_addReleaseButton = NodePath("MarginContainer/SmoothScrollContainer/HFlowContainer/AddRelease")
 _releaseItemScene = ExtResource("19_g8snm")
-_grid = NodePath("MarginContainer/ScrollContainer/HFlowContainer")
+_grid = NodePath("MarginContainer/SmoothScrollContainer/HFlowContainer")
 Main = NodePath("MarginContainer")
 metadata/_tab_index = 3
 
@@ -580,22 +589,29 @@ theme_override_constants/margin_top = 12
 theme_override_constants/margin_right = 12
 theme_override_constants/margin_bottom = 12
 
-[node name="ScrollContainer" type="ScrollContainer" parent="HBoxContainer/ColorRect/VBoxContainer/MarginContainer/PageContainer/Release/MarginContainer"]
+[node name="SmoothScrollContainer" type="ScrollContainer" parent="HBoxContainer/ColorRect/VBoxContainer/MarginContainer/PageContainer/Release/MarginContainer"]
 layout_mode = 2
 theme = SubResource("Theme_g8snm")
+script = ExtResource("27_7nt4r")
+wheel_scroll_damper = SubResource("Resource_364to")
+drag_with_mouse = false
+drag_with_touch = false
+handle_input = false
+metadata/_custom_type_script = ExtResource("27_7nt4r")
 
-[node name="HFlowContainer" type="HFlowContainer" parent="HBoxContainer/ColorRect/VBoxContainer/MarginContainer/PageContainer/Release/MarginContainer/ScrollContainer"]
+[node name="HFlowContainer" type="HFlowContainer" parent="HBoxContainer/ColorRect/VBoxContainer/MarginContainer/PageContainer/Release/MarginContainer/SmoothScrollContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 theme_override_constants/h_separation = 12
 theme_override_constants/v_separation = 12
 
-[node name="AddRelease" type="Button" parent="HBoxContainer/ColorRect/VBoxContainer/MarginContainer/PageContainer/Release/MarginContainer/ScrollContainer/HFlowContainer"]
+[node name="AddRelease" type="Button" parent="HBoxContainer/ColorRect/VBoxContainer/MarginContainer/PageContainer/Release/MarginContainer/SmoothScrollContainer/HFlowContainer"]
 texture_filter = 1
 custom_minimum_size = Vector2(145, 192)
 layout_mode = 2
 focus_mode = 0
+mouse_filter = 1
 theme_override_colors/icon_hover_color = Color(1, 1, 1, 0.784314)
 theme_override_colors/icon_pressed_color = Color(1, 1, 1, 0.6)
 theme_override_colors/icon_normal_color = Color(1, 1, 1, 0.6)

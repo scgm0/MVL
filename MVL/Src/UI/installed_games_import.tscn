@@ -1,8 +1,10 @@
-[gd_scene load_steps=16 format=3 uid="uid://d21bm32gkwqcr"]
+[gd_scene load_steps=20 format=3 uid="uid://d21bm32gkwqcr"]
 
 [ext_resource type="Script" uid="uid://kioshjbmjlip" path="res://Src/UI/InstalledGamesImport.cs" id="1_bcuc2"]
 [ext_resource type="PackedScene" uid="uid://cpbcd3vre7ii8" path="res://Src/UI/Item/installed_game_item.tscn" id="2_mqeym"]
 [ext_resource type="FontFile" uid="uid://bmgx1vyg6bavd" path="res://Assets/Font/HarmonyOS_Sans_SC_Bold.ttf" id="3_x7vct"]
+[ext_resource type="Script" uid="uid://cre6m68jy0aad" path="res://addons/SmoothScroll/SmoothScrollContainer.gd" id="4_o308j"]
+[ext_resource type="Script" uid="uid://41yydm3vncfj" path="res://addons/SmoothScroll/scroll_damper/expo_scroll_damper.gd" id="5_c7ca5"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_1opgh"]
 content_margin_left = 20.0
@@ -35,6 +37,18 @@ corner_radius_bottom_left = 10
 
 [sub_resource type="Theme" id="Theme_bhu72"]
 VScrollBar/styles/scroll = SubResource("StyleBoxFlat_ty1b0")
+
+[sub_resource type="Resource" id="Resource_6o7np"]
+script = ExtResource("5_c7ca5")
+friction = 4.0
+minimum_velocity = 0.4
+rebound_strength = 7.0
+
+[sub_resource type="Resource" id="Resource_3nw38"]
+script = ExtResource("5_c7ca5")
+friction = 4.0
+minimum_velocity = 0.4
+rebound_strength = 7.0
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_a5da0"]
 
@@ -144,7 +158,7 @@ grow_vertical = 2
 color = Color(0, 0, 0, 0.6)
 script = ExtResource("1_bcuc2")
 _installedGameItemScene = ExtResource("2_mqeym")
-_installedGameList = NodePath("PanelContainer/VBoxContainer/ScrollContainer/MarginContainer/InstalledGameList")
+_installedGameList = NodePath("PanelContainer/VBoxContainer/SmoothScrollContainer/MarginContainer/InstalledGameList")
 _cancelButton = NodePath("PanelContainer/VBoxContainer/HBoxContainer/CancelButton")
 _importButton = NodePath("PanelContainer/VBoxContainer/HBoxContainer/ImportButton")
 _animationPlayer = NodePath("AnimationPlayer")
@@ -186,21 +200,25 @@ layout_mode = 2
 theme_override_constants/separation = 15
 theme_override_styles/separator = SubResource("StyleBoxLine_1opgh")
 
-[node name="ScrollContainer" type="ScrollContainer" parent="PanelContainer/VBoxContainer"]
+[node name="SmoothScrollContainer" type="ScrollContainer" parent="PanelContainer/VBoxContainer"]
 custom_minimum_size = Vector2(0, 150)
 layout_mode = 2
 size_flags_vertical = 3
 theme = SubResource("Theme_bhu72")
 horizontal_scroll_mode = 0
 vertical_scroll_mode = 2
+script = ExtResource("4_o308j")
+wheel_scroll_damper = SubResource("Resource_6o7np")
+dragging_scroll_damper = SubResource("Resource_3nw38")
+metadata/_custom_type_script = ExtResource("4_o308j")
 
-[node name="MarginContainer" type="MarginContainer" parent="PanelContainer/VBoxContainer/ScrollContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="PanelContainer/VBoxContainer/SmoothScrollContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 theme_override_constants/margin_right = 5
 
-[node name="InstalledGameList" type="VBoxContainer" parent="PanelContainer/VBoxContainer/ScrollContainer/MarginContainer"]
+[node name="InstalledGameList" type="VBoxContainer" parent="PanelContainer/VBoxContainer/SmoothScrollContainer/MarginContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
