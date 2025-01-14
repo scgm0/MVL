@@ -1,7 +1,8 @@
-[gd_scene load_steps=20 format=3 uid="uid://d21bm32gkwqcr"]
+[gd_scene load_steps=21 format=3 uid="uid://d21bm32gkwqcr"]
 
 [ext_resource type="Script" uid="uid://kioshjbmjlip" path="res://Src/UI/InstalledGamesImport.cs" id="1_bcuc2"]
 [ext_resource type="PackedScene" uid="uid://cpbcd3vre7ii8" path="res://Src/UI/Item/installed_game_item.tscn" id="2_mqeym"]
+[ext_resource type="Script" uid="uid://dbies7u5fo4sh" path="res://Src/UI/NativeWindowUtility.cs" id="3_c7ca5"]
 [ext_resource type="FontFile" uid="uid://bmgx1vyg6bavd" path="res://Assets/Font/HarmonyOS_Sans_SC_Bold.ttf" id="3_x7vct"]
 [ext_resource type="Script" uid="uid://cre6m68jy0aad" path="res://addons/SmoothScroll/SmoothScrollContainer.gd" id="4_o308j"]
 [ext_resource type="Script" uid="uid://41yydm3vncfj" path="res://addons/SmoothScroll/scroll_damper/expo_scroll_damper.gd" id="5_c7ca5"]
@@ -186,6 +187,17 @@ _cancelButton = NodePath("PanelContainer/VBoxContainer/HBoxContainer/CancelButto
 _importButton = NodePath("PanelContainer/VBoxContainer/HBoxContainer/ImportButton")
 _animationPlayer = NodePath("AnimationPlayer")
 
+[node name="NativeWindowUtility" type="Control" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("3_c7ca5")
+IsDraggable = true
+metadata/_custom_type_script = ExtResource("3_c7ca5")
+
 [node name="PanelContainer" type="PanelContainer" parent="."]
 custom_minimum_size = Vector2(475, 323)
 layout_mode = 1
@@ -203,7 +215,6 @@ grow_vertical = 2
 pivot_offset = Vector2(237.5, 161.5)
 size_flags_horizontal = 4
 size_flags_vertical = 4
-mouse_filter = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_1opgh")
 
 [node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer"]

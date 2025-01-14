@@ -88,17 +88,36 @@ public partial class InstalledGamesImport : Control {
 		base.Hide();
 	}
 
-	public async Task ShowInstalledGames() {
-		foreach (var installedGamePath in InstalledGamePaths) {
+	public async Task ShowInstalledGames() { await ShowInstalledGames(InstalledGamePaths); }
+
+	public async Task ShowInstalledGames(IEnumerable<string> gamePaths) {
+		var list = new List<ReleaseInfo>();
+		foreach (var installedGamePath in gamePaths) {
 			var gameVersion = GameVersion.FromGamePath(installedGamePath);
 			if (gameVersion is null) {
 				continue;
 			}
 
+			list.Add(new() {
+				Path = installedGamePath,
+				Version = gameVersion.Value
+			});
+		}
+
+		if (list.Count <= 0) return;
+		await ShowInstalledGames(list);
+	}
+
+	public async Task ShowInstalledGames(IEnumerable<ReleaseInfo> games) {
+		if (!Visible) {
+			await Show();
+		}
+
+		foreach (var installedGame in games) {
 			var installedGameItem = _installedGameItemScene!.Instantiate<InstalledGameItem>();
-			installedGameItem.GameVersion = gameVersion.Value;
-			installedGameItem.GamePath = installedGamePath;
-			installedGameItem.Check = !Main.Release.ContainsKey(installedGamePath);
+			installedGameItem.GameVersion = installedGame.Version;
+			installedGameItem.GamePath = installedGame.Path;
+			installedGameItem.Check = !Main.Release.ContainsKey(installedGame.Path);
 			installedGameItem.Modulate = Colors.Transparent;
 			_installedGameList!.AddChild(installedGameItem);
 			using var tween = installedGameItem.CreateTween();
@@ -107,7 +126,6 @@ public partial class InstalledGamesImport : Control {
 			await ToSignal(tween, Tween.SignalName.Finished);
 		}
 	}
-
 
 	[field: AllowNull, MaybeNull]
 	public static string[] InstalledGamePaths {

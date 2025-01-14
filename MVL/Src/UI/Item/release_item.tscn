@@ -116,6 +116,7 @@ horizontal_alignment = 1
 [node name="Button" type="Button" parent="."]
 layout_mode = 2
 focus_mode = 0
+mouse_filter = 1
 theme_override_styles/hover = SubResource("StyleBoxFlat_wntvq")
 theme_override_styles/pressed = SubResource("StyleBoxFlat_iu184")
 theme_override_styles/normal = SubResource("StyleBoxEmpty_iu184")

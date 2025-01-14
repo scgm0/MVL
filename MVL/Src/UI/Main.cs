@@ -18,7 +18,7 @@ namespace MVL.UI;
 public partial class Main : NativeWindowUtility {
 	private Vector2I _rootMinSize = new(960, 540);
 
-	static private readonly BaseConfig BaseConfig =
+	public static BaseConfig BaseConfig { get; } =
 		BaseConfig.Load(OS.GetUserDataDir().PathJoin("data.json"));
 
 	private InstalledGamesImport? _installedGamesImport;
@@ -88,27 +88,35 @@ public partial class Main : NativeWindowUtility {
 		}
 	}
 
-	public async Task<InstalledGamesImport> ImportInstalledGames() {
-		_installedGamesImport = _installedGamesImportScene!.Instantiate<InstalledGamesImport>();
-		AddChild(_installedGamesImport);
-		_installedGamesImport.Import += paths => {
-			if (paths.Length == 0) {
-				return;
-			}
+	public async Task<InstalledGamesImport> ImportInstalledGames() { return await ImportInstalledGames(null); }
 
-			foreach (var gamePath in paths) {
-				var info = new ReleaseInfo {
-					Path = gamePath,
-					Version = GameVersion.FromGamePath(gamePath)!.Value
-				};
-				BaseConfig.Release.Add(info);
-			}
+	public async Task<InstalledGamesImport> ImportInstalledGames(IEnumerable<string>? gamePaths) {
+		if (_installedGamesImport is null) {
+			_installedGamesImport = _installedGamesImportScene!.Instantiate<InstalledGamesImport>();
+			AddChild(_installedGamesImport);
+			_installedGamesImport.Import += paths => {
+				if (paths.Length == 0) {
+					return;
+				}
 
-			BaseConfig.Save(BaseConfig);
-			CheckGameVersion();
-		};
-		await _installedGamesImport!.Show();
-		_ = _installedGamesImport.ShowInstalledGames();
+				foreach (var gamePath in paths) {
+					var info = new ReleaseInfo {
+						Path = gamePath,
+						Version = GameVersion.FromGamePath(gamePath)!.Value
+					};
+					BaseConfig.Release.Add(info);
+				}
+
+				CheckGameVersion();
+			};
+		}
+
+		if (gamePaths != null) {
+			await _installedGamesImport.ShowInstalledGames(gamePaths);
+		} else {
+			await _installedGamesImport.ShowInstalledGames();
+		}
+
 		return _installedGamesImport;
 	}
 
