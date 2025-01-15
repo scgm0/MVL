@@ -1,9 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using Godot;
 using MVL.UI.Item;
-using MVL.Utils.Config;
 using MVL.Utils.Game;
 using MVL.Utils.Help;
 
@@ -32,6 +30,10 @@ public partial class ReleasePage : MenuPage {
 	}
 
 	private async void ImportGame(string[] files) {
+		if(!Visible) {
+			return;
+		}
+
 		var list = new List<string>();
 		foreach (var path in files) {
 			if (DirAccess.DirExistsAbsolute(path)) {

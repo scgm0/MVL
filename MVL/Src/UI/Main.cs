@@ -117,9 +117,7 @@ public partial class Main : NativeWindowUtility {
 		}
 	}
 
-	public async Task<InstalledGamesImport> ImportInstalledGames() { return await ImportInstalledGames(null); }
-
-	public async Task<InstalledGamesImport> ImportInstalledGames(IEnumerable<string>? gamePaths) {
+	public async Task<InstalledGamesImport> ImportInstalledGames(IEnumerable<string>? gamePaths = null) {
 		if (_installedGamesImport is null) {
 			_installedGamesImport = _installedGamesImportScene!.Instantiate<InstalledGamesImport>();
 			AddChild(_installedGamesImport);
