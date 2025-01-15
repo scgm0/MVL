@@ -153,10 +153,8 @@ func _process(delta: float) -> void:
 	scroll(false, velocity.x, pos.x, delta)
 	# Update vertical scroll bar
 	get_v_scroll_bar().set_value_no_signal(-pos.y)
-	get_v_scroll_bar().queue_redraw()
 	# Update horizontal scroll bar
 	get_h_scroll_bar().set_value_no_signal(-pos.x)
-	get_h_scroll_bar().queue_redraw()
 	# Always show sroll bars when scrolling or mouse is on any scroll bar
 	if hide_scrollbar_over_time and (is_scrolling or mouse_on_scrollbar):
 		show_scrollbars()
