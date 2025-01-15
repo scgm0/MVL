@@ -26,6 +26,15 @@
         </Compile>
     </ItemGroup>
 
+    <ItemGroup>
+        <Content Include="**\*.gd"/>
+        <Content Include="**\*.uid" DependentUpon="%(Filename).cs" />
+        <Content Include="**\*.json" DependentUpon="%(Filename).cs" />
+        <Content Include="**\*.txt" DependentUpon="%(Filename).cs" />
+        <Compile Update="**\*.*.cs" DependentUpon="$([System.IO.Path]::GetFileNameWithoutExtension('%(Filename)')).cs" />
+        <Content Remove=".godot\**" />
+    </ItemGroup>
+
     <Target Name="PreBuild" BeforeTargets="Build">
         <ItemGroup>
             <FilesToDelete Include="Misc/VSRun/*"/>
