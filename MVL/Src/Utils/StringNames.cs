@@ -13,4 +13,5 @@ public static class StringNames {
 	public static readonly StringName MarginTop = new("margin_top");
 	public static readonly StringName MarginBottom = new("margin_bottom");
 	public static readonly StringName CornerRadius = new("corner_radius");
+	public static readonly StringName ColorShadow = new("color_shadow");
 }

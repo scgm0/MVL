@@ -61,10 +61,39 @@ public partial class Main : NativeWindowUtility {
 	public override void _Ready() {
 		base._Ready();
 		Utils.Help.NullExceptionHelper.NotNull(_iconTexture, _installedGamesImportScene, MinButton, CloseButton);
+		DisplayServer.SetIcon(_iconTexture.GetImage());
+
 		_rootMinSize = SceneTree.Root.Size - new Vector2I(90, 90);
 		SceneTree.Root.MinSize = _rootMinSize;
 		SceneTree.Root.SizeChanged += RootOnSizeChanged;
-		DisplayServer.SetIcon(_iconTexture.GetImage());
+
+		Tween? shadowTween = null;
+		var shadowColor = Colors.Black;
+		var shadowCallable = Callable.From((Color color) => {
+			shadowColor = color;
+			_roundMaterial!.SetShaderParameter(StringNames.ColorShadow, color);
+		});
+		SceneTree.Root.FocusEntered += () => {
+			shadowTween?.Stop();
+			shadowTween = CreateTween();
+			shadowTween.TweenMethod(
+				shadowCallable,
+				shadowColor,
+				Colors.Black,
+				0.3f
+			);
+		};
+		SceneTree.Root.FocusExited += () => {
+			shadowTween?.Stop();
+			shadowTween = CreateTween();
+			shadowTween.TweenMethod(
+				shadowCallable,
+				shadowColor,
+				Colors.Transparent,
+				0.3f
+			);
+		};
+
 		MinButton.Pressed += SceneTree.Root.Minimize;
 		CloseButton.Pressed += () => SceneTree.Quit();
 	}
