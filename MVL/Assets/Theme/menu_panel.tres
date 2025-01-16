@@ -1,0 +1,51 @@
+[gd_resource type="Theme" load_steps=6 format=3 uid="uid://bwauanadesdm6"]
+
+[ext_resource type="FontFile" uid="uid://bmgx1vyg6bavd" path="res://Assets/Font/HarmonyOS_Sans_SC_Bold.ttf" id="1_n8wox"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_gblyu"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_megpf"]
+content_margin_left = 10.0
+content_margin_top = 6.0
+content_margin_right = 10.0
+content_margin_bottom = 6.0
+bg_color = Color(0.6, 0.6, 0.6, 0.6)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_r111f"]
+content_margin_left = 10.0
+content_margin_top = 6.0
+content_margin_right = 10.0
+content_margin_bottom = 6.0
+bg_color = Color(0, 0, 0, 0)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_bhu72"]
+content_margin_left = 10.0
+content_margin_top = 6.0
+content_margin_right = 10.0
+content_margin_bottom = 6.0
+bg_color = Color(0.783523, 0.783523, 0.783523, 0.784314)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+
+[resource]
+default_font = ExtResource("1_n8wox")
+Button/colors/font_pressed_color = Color(0, 0, 0, 0.784314)
+Button/colors/icon_normal_color = Color(1, 1, 1, 0.784314)
+Button/colors/icon_pressed_color = Color(0, 0, 0, 0.784314)
+Button/constants/h_separation = 0
+Button/constants/icon_max_width = 18
+Button/styles/focus = SubResource("StyleBoxEmpty_gblyu")
+Button/styles/hover = SubResource("StyleBoxFlat_megpf")
+Button/styles/normal = SubResource("StyleBoxFlat_r111f")
+Button/styles/pressed = SubResource("StyleBoxFlat_bhu72")
+HSeparator/constants/separation = 0
