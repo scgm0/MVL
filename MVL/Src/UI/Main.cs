@@ -30,6 +30,9 @@ public partial class Main : NativeWindowUtility {
 	private PackedScene? _installedGamesImportScene;
 
 	[Export]
+	private MarginContainer? _marginContainer;
+
+	[Export]
 	private Button? MinButton { get; set; }
 
 	[Export]
@@ -42,11 +45,11 @@ public partial class Main : NativeWindowUtility {
 		get;
 		set {
 			field = value;
-			AddThemeConstantOverride(StringNames.MarginLeft, value);
-			AddThemeConstantOverride(StringNames.MarginRight, value);
-			AddThemeConstantOverride(StringNames.MarginTop, value);
-			AddThemeConstantOverride(StringNames.MarginBottom, value);
-			_roundMaterial!.SetShaderParameter(StringNames.ShadowSize, value);
+			_marginContainer?.AddThemeConstantOverride(StringNames.MarginLeft, value);
+			_marginContainer?.AddThemeConstantOverride(StringNames.MarginRight, value);
+			_marginContainer?.AddThemeConstantOverride(StringNames.MarginTop, value);
+			_marginContainer?.AddThemeConstantOverride(StringNames.MarginBottom, value);
+			_roundMaterial?.SetShaderParameter(StringNames.ShadowSize, value);
 		}
 	} = 5;
 

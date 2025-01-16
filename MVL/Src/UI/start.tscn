@@ -1,8 +1,11 @@
-[gd_scene load_steps=7 format=3 uid="uid://buuu4ls8t7l4u"]
+[gd_scene load_steps=8 format=3 uid="uid://buuu4ls8t7l4u"]
 
 [ext_resource type="PackedScene" uid="uid://514oox50h8yl" path="res://Src/UI/main.tscn" id="1_7ma3r"]
-[ext_resource type="Material" uid="uid://d2rejrdmwjskm" path="res://Assets/Material/round.tres" id="1_jxybm"]
+[ext_resource type="Material" uid="uid://cd0jllr2vxtxa" path="res://Assets/Material/window.material" id="2_874xg"]
 [ext_resource type="Script" uid="uid://dbies7u5fo4sh" path="res://Src/UI/NativeWindowUtility.cs" id="3_874xg"]
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_0eqgt"]
+viewport_path = NodePath("MarginContainer/SubViewportContainer/SubViewport")
 
 [sub_resource type="Animation" id="Animation_0eqgt"]
 length = 0.001
@@ -145,7 +148,7 @@ tracks/5/keys = {
 tracks/6/type = "method"
 tracks/6/imported = false
 tracks/6/enabled = true
-tracks/6/path = NodePath("SubViewportContainer/SubViewport/Main")
+tracks/6/path = NodePath("MarginContainer/SubViewportContainer/SubViewport/Main")
 tracks/6/interp = 1
 tracks/6/loop_wrap = true
 tracks/6/keys = {
@@ -172,26 +175,47 @@ grow_horizontal = 2
 grow_vertical = 2
 pivot_offset = Vector2(581, 329)
 
-[node name="SubViewportContainer" type="SubViewportContainer" parent="."]
-material = ExtResource("1_jxybm")
+[node name="MarginContainer" type="MarginContainer" parent="."]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+theme_override_constants/margin_left = 5
+theme_override_constants/margin_top = 5
+theme_override_constants/margin_right = 5
+theme_override_constants/margin_bottom = 5
+
+[node name="SubViewportContainer" type="SubViewportContainer" parent="MarginContainer"]
+self_modulate = Color(1, 1, 1, 0)
+layout_mode = 2
 stretch = true
 
-[node name="SubViewport" type="SubViewport" parent="SubViewportContainer"]
+[node name="SubViewport" type="SubViewport" parent="MarginContainer/SubViewportContainer"]
 disable_3d = true
 transparent_bg = true
 handle_input_locally = false
 vrs_mode = 2
 canvas_item_default_texture_filter = 2
-size = Vector2i(1162, 658)
+size = Vector2i(1152, 648)
+size_2d_override_stretch = true
 render_target_update_mode = 4
 
-[node name="Main" parent="SubViewportContainer/SubViewport" instance=ExtResource("1_7ma3r")]
+[node name="Main" parent="MarginContainer/SubViewportContainer/SubViewport" node_paths=PackedStringArray("_marginContainer") instance=ExtResource("1_7ma3r")]
+_marginContainer = NodePath("../../..")
+
+[node name="TextureRect" type="TextureRect" parent="."]
+material = ExtResource("2_874xg")
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+texture = SubResource("ViewportTexture_0eqgt")
+expand_mode = 1
 
 [node name="WindowDecoration" type="Control" parent="."]
 layout_mode = 1
