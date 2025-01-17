@@ -4,9 +4,9 @@ namespace MVL.Utils;
 
 [Tool]
 [GlobalClass]
-public partial class SvgTexture2D : CanvasTexture {
+public partial class SvgTexture2D : ImageTexture {
 	private string _svgString = "";
-	private Image _image = new();
+	private Image _image = Image.CreateEmpty(1, 1, true, Image.Format.Rgbaf);
 
 	[Export(PropertyHint.File, "*.svg")]
 	public string SvgPath {
@@ -18,20 +18,23 @@ public partial class SvgTexture2D : CanvasTexture {
 	} = "";
 
 	[Export]
-	public float Scale {
+	public double Scale {
 		get;
 		set {
 			field = value;
 			LoadSvgImage(SvgPath, value);
 		}
-	} = 1.0f;
+	} = 1.0;
 
-	private void LoadSvgImage(string path, float scale) {
+	private void LoadSvgImage(string path, double scale) {
 		if (string.IsNullOrEmpty(path) || !FileAccess.FileExists(path)) {
 			return;
 		}
-		var fileContent = FileAccess.GetFileAsString(path);
-		_image.LoadSvgFromString(fileContent, scale);
-		DiffuseTexture = ImageTexture.CreateFromImage(_image);
+
+		var fileContent = FileAccess.GetFileAsBytes(path);
+		_image.LoadSvgFromBuffer(fileContent, (float)scale);
+		SetImage(_image);
+
+		EmitChanged();
 	}
 }
