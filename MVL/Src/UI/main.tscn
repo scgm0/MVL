@@ -1,4 +1,4 @@
-[gd_scene load_steps=54 format=3 uid="uid://514oox50h8yl"]
+[gd_scene load_steps=58 format=3 uid="uid://514oox50h8yl"]
 
 [ext_resource type="Script" uid="uid://cvyeyg8ttnwmu" path="res://Src/UI/Main.cs" id="1_1opgh"]
 [ext_resource type="Texture2D" uid="uid://bhh1jvyj73qxh" path="res://Assets/Gui/Background.png" id="2_1opgh"]
@@ -11,21 +11,12 @@
 [ext_resource type="Theme" uid="uid://bwauanadesdm6" path="res://Assets/Theme/menu_panel.tres" id="7_7nt4r"]
 [ext_resource type="Script" uid="uid://cfa6u8q8grk6o" path="res://Src/UI/MenuPanel.cs" id="7_365jr"]
 [ext_resource type="Script" uid="uid://dvjtigpqee0jw" path="res://Src/UI/Item/MenuItem.cs" id="7_bl4fu"]
-[ext_resource type="Texture2D" uid="uid://bj8poc1xuq8v6" path="res://Assets/Icon/MD/menu-close.svg" id="7_oarc7"]
-[ext_resource type="Texture2D" uid="uid://cgkmtfuap6ibb" path="res://Assets/Icon/MD/home.svg" id="7_p7a31"]
-[ext_resource type="Texture2D" uid="uid://b6tikxgev2srp" path="res://Assets/Icon/MD/account.svg" id="8_bhu72"]
-[ext_resource type="Texture2D" uid="uid://bwxpumvuq2bfu" path="res://Assets/Icon/MD/modpack.svg" id="10_nxjuw"]
-[ext_resource type="Texture2D" uid="uid://ckpgs33shvcql" path="res://Assets/Icon/MD/release.svg" id="10_syw1k"]
-[ext_resource type="Texture2D" uid="uid://cu5xjrbmmifh7" path="res://Assets/Icon/MD/module.svg" id="12_cfuem"]
-[ext_resource type="Texture2D" uid="uid://drkiwua7vi1kr" path="res://Assets/Icon/MD/setting.svg" id="12_kq46g"]
+[ext_resource type="Script" uid="uid://bk3tot6c35bwu" path="res://Src/Utils/IconTexture2D.cs" id="13_7nt4r"]
 [ext_resource type="Script" uid="uid://diqldycl8cgn2" path="res://Src/UI/Page/MenuPage.cs" id="15_fuji0"]
-[ext_resource type="Texture2D" uid="uid://c1ohkq2u4vr6s" path="res://Assets/Icon/MD/menu-open.svg" id="16_gblyu"]
 [ext_resource type="Script" uid="uid://bx8dqa4avru7x" path="res://Src/UI/Page/ReleasePage.cs" id="18_g8snm"]
 [ext_resource type="Texture2D" uid="uid://cl0lb1d7oai18" path="res://Assets/Gui/avatar.jpg" id="19_a6wm3"]
 [ext_resource type="PackedScene" uid="uid://bjgov53faujry" path="res://Src/UI/Item/release_item.tscn" id="19_g8snm"]
 [ext_resource type="Texture2D" uid="uid://uxj5o0qny3rm" path="res://Assets/Icon/MD/add.svg" id="20_oarc7"]
-[ext_resource type="Texture2D" uid="uid://cl7joldlu8xyc" path="res://Assets/Icon/MD/window-close.svg" id="22_bmwv3"]
-[ext_resource type="Texture2D" uid="uid://cwgm3hp261ydn" path="res://Assets/Icon/MD/window-minimize.svg" id="22_o4ctv"]
 [ext_resource type="LabelSettings" uid="uid://bdfwqcqufhm6k" path="res://Assets/Setting/page_title.tres" id="23_53u4p"]
 [ext_resource type="Script" uid="uid://cre6m68jy0aad" path="res://addons/SmoothScroll/SmoothScrollContainer.gd" id="27_7nt4r"]
 [ext_resource type="Script" uid="uid://41yydm3vncfj" path="res://addons/SmoothScroll/scroll_damper/expo_scroll_damper.gd" id="28_7eosv"]
@@ -35,12 +26,68 @@ shader = ExtResource("4_v5ddw")
 shader_parameter/lod = 5.0
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_p7a31"]
-content_margin_left = 12.0
-content_margin_top = 12.0
-content_margin_right = 12.0
-content_margin_bottom = 12.0
+content_margin_left = 10.0
+content_margin_top = 10.0
+content_margin_right = 10.0
+content_margin_bottom = 10.0
 bg_color = Color(0, 0, 0, 0.6)
 anti_aliasing = false
+
+[sub_resource type="Texture2D" id="Texture2D_o4ctv"]
+resource_local_to_scene = false
+resource_name = ""
+script = ExtResource("13_7nt4r")
+IconName = "menu-close"
+FontSize = 24
+metadata/_custom_type_script = ExtResource("13_7nt4r")
+
+[sub_resource type="Texture2D" id="Texture2D_bmwv3"]
+resource_local_to_scene = false
+resource_name = ""
+script = ExtResource("13_7nt4r")
+IconName = "home"
+FontSize = 23
+metadata/_custom_type_script = ExtResource("13_7nt4r")
+
+[sub_resource type="Texture2D" id="Texture2D_365jr"]
+resource_local_to_scene = false
+resource_name = ""
+script = ExtResource("13_7nt4r")
+IconName = "account"
+FontSize = 24
+metadata/_custom_type_script = ExtResource("13_7nt4r")
+
+[sub_resource type="Texture2D" id="Texture2D_a6wm3"]
+resource_local_to_scene = false
+resource_name = ""
+script = ExtResource("13_7nt4r")
+IconName = "package-variant-closed"
+FontSize = 24
+metadata/_custom_type_script = ExtResource("13_7nt4r")
+
+[sub_resource type="Texture2D" id="Texture2D_53u4p"]
+resource_local_to_scene = false
+resource_name = ""
+script = ExtResource("13_7nt4r")
+IconName = "inbox-full"
+FontSize = 24
+metadata/_custom_type_script = ExtResource("13_7nt4r")
+
+[sub_resource type="Texture2D" id="Texture2D_08ol6"]
+resource_local_to_scene = false
+resource_name = ""
+script = ExtResource("13_7nt4r")
+IconName = "widgets"
+FontSize = 24
+metadata/_custom_type_script = ExtResource("13_7nt4r")
+
+[sub_resource type="Texture2D" id="Texture2D_30yt8"]
+resource_local_to_scene = false
+resource_name = ""
+script = ExtResource("13_7nt4r")
+IconName = "cog"
+FontSize = 24
+metadata/_custom_type_script = ExtResource("13_7nt4r")
 
 [sub_resource type="Animation" id="Animation_syw1k"]
 length = 0.001
@@ -58,14 +105,14 @@ tracks/0/keys = {
 tracks/1/type = "value"
 tracks/1/imported = false
 tracks/1/enabled = true
-tracks/1/path = NodePath("VBoxContainer/MenuButton:icon")
+tracks/1/path = NodePath("VBoxContainer/MenuButton:icon:IconName")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 1,
-"values": [ExtResource("7_oarc7")]
+"values": ["menu-close"]
 }
 
 [sub_resource type="Animation" id="Animation_v5ddw"]
@@ -85,14 +132,14 @@ tracks/0/keys = {
 tracks/1/type = "value"
 tracks/1/imported = false
 tracks/1/enabled = true
-tracks/1/path = NodePath("VBoxContainer/MenuButton:icon")
+tracks/1/path = NodePath("VBoxContainer/MenuButton:icon:IconName")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
 "times": PackedFloat32Array(0, 0.3),
 "transitions": PackedFloat32Array(1, 1),
 "update": 1,
-"values": [ExtResource("7_oarc7"), ExtResource("16_gblyu")]
+"values": ["menu-close", "menu-open"]
 }
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_nxjuw"]
@@ -113,7 +160,7 @@ corner_radius_bottom_left = 20
 corner_detail = 20
 
 [sub_resource type="LabelSettings" id="LabelSettings_30yt8"]
-font_size = 18
+font_size = 20
 shadow_size = 3
 shadow_color = Color(0, 0, 0, 0.67451)
 
@@ -127,6 +174,14 @@ bg_color = Color(1, 1, 1, 0.352941)
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_08ol6"]
 
+[sub_resource type="Texture2D" id="Texture2D_7nt4r"]
+resource_local_to_scene = false
+resource_name = ""
+script = ExtResource("13_7nt4r")
+IconName = "window-minimize"
+FontSize = 14
+metadata/_custom_type_script = ExtResource("13_7nt4r")
+
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_bmwv3"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_o4ctv"]
@@ -137,7 +192,62 @@ bg_color = Color(0.666667, 0, 0, 1)
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_365jr"]
 
+[sub_resource type="Texture2D" id="Texture2D_7eosv"]
+resource_local_to_scene = false
+resource_name = ""
+script = ExtResource("13_7nt4r")
+IconName = "window-close"
+FontSize = 14
+metadata/_custom_type_script = ExtResource("13_7nt4r")
+
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_kq46g"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_5lwjt"]
+bg_color = Color(0.20871, 0.20871, 0.20871, 0.6)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.8, 0.8, 0.8, 0.207843)
+border_blend = true
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_6are0"]
+bg_color = Color(0, 0, 0, 0.686275)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.8, 0.8, 0.8, 0.207843)
+border_blend = true
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_364to"]
+bg_color = Color(0, 0, 0, 0.6)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.8, 0.8, 0.8, 0.207843)
+border_blend = true
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+
+[sub_resource type="Texture2D" id="Texture2D_6are0"]
+resource_local_to_scene = false
+resource_name = ""
+script = ExtResource("13_7nt4r")
+IconName = "plus"
+FontSize = 48
+metadata/_custom_type_script = ExtResource("13_7nt4r")
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ty1b0"]
 content_margin_left = 4.0
@@ -256,14 +366,14 @@ DoubleClickWindowMaximized = true
 [node name="VBoxContainer" type="VBoxContainer" parent="HBoxContainer/MenuPanel"]
 custom_minimum_size = Vector2(36, 0)
 layout_mode = 2
-theme_override_constants/separation = 12
+theme_override_constants/separation = 14
 
 [node name="MenuButton" type="Button" parent="HBoxContainer/MenuPanel/VBoxContainer"]
 layout_mode = 2
 size_flags_vertical = 0
 toggle_mode = true
 text = "菜单"
-icon = ExtResource("7_oarc7")
+icon = SubResource("Texture2D_o4ctv")
 clip_text = true
 icon_alignment = 2
 script = ExtResource("7_bl4fu")
@@ -280,7 +390,7 @@ toggle_mode = true
 button_pressed = true
 button_group = ExtResource("4_megpf")
 text = "主页"
-icon = ExtResource("7_p7a31")
+icon = SubResource("Texture2D_bmwv3")
 clip_text = true
 script = ExtResource("7_bl4fu")
 Page = NodePath("../../../ColorRect/VBoxContainer/MarginContainer/PageContainer/Home")
@@ -291,7 +401,7 @@ layout_mode = 2
 toggle_mode = true
 button_group = ExtResource("4_megpf")
 text = "账号"
-icon = ExtResource("8_bhu72")
+icon = SubResource("Texture2D_365jr")
 clip_text = true
 script = ExtResource("7_bl4fu")
 Page = NodePath("../../../ColorRect/VBoxContainer/MarginContainer/PageContainer/Account")
@@ -302,7 +412,7 @@ layout_mode = 2
 toggle_mode = true
 button_group = ExtResource("4_megpf")
 text = "整合"
-icon = ExtResource("10_nxjuw")
+icon = SubResource("Texture2D_a6wm3")
 clip_text = true
 script = ExtResource("7_bl4fu")
 Page = NodePath("../../../ColorRect/VBoxContainer/MarginContainer/PageContainer/Modpack")
@@ -313,7 +423,7 @@ layout_mode = 2
 toggle_mode = true
 button_group = ExtResource("4_megpf")
 text = "版本"
-icon = ExtResource("10_syw1k")
+icon = SubResource("Texture2D_53u4p")
 clip_text = true
 script = ExtResource("7_bl4fu")
 Page = NodePath("../../../ColorRect/VBoxContainer/MarginContainer/PageContainer/Release")
@@ -324,7 +434,7 @@ layout_mode = 2
 toggle_mode = true
 button_group = ExtResource("4_megpf")
 text = "模组"
-icon = ExtResource("12_cfuem")
+icon = SubResource("Texture2D_08ol6")
 clip_text = true
 script = ExtResource("7_bl4fu")
 Page = NodePath("../../../ColorRect/VBoxContainer/MarginContainer/PageContainer/Module")
@@ -345,7 +455,7 @@ size_flags_vertical = 8
 toggle_mode = true
 button_group = ExtResource("4_megpf")
 text = "设置"
-icon = ExtResource("12_kq46g")
+icon = SubResource("Texture2D_30yt8")
 clip_text = true
 script = ExtResource("7_bl4fu")
 Page = NodePath("../../../ColorRect/VBoxContainer/MarginContainer/PageContainer/Setting")
@@ -387,7 +497,7 @@ theme_override_constants/separation = 0
 layout_mode = 2
 theme_override_constants/margin_left = 5
 theme_override_constants/margin_top = 5
-theme_override_constants/margin_right = 10
+theme_override_constants/margin_right = 5
 theme_override_constants/margin_bottom = 5
 
 [node name="PanelContainer" type="PanelContainer" parent="HBoxContainer/ColorRect/VBoxContainer/HBoxContainer/MarginContainer"]
@@ -403,6 +513,10 @@ layout_mode = 2
 texture = ExtResource("19_a6wm3")
 expand_mode = 1
 stretch_mode = 6
+
+[node name="Control2" type="Control" parent="HBoxContainer/ColorRect/VBoxContainer/HBoxContainer"]
+custom_minimum_size = Vector2(5, 0)
+layout_mode = 2
 
 [node name="Label" type="Label" parent="HBoxContainer/ColorRect/VBoxContainer/HBoxContainer"]
 layout_mode = 2
@@ -429,11 +543,10 @@ theme_override_styles/focus = SubResource("StyleBoxEmpty_a6wm3")
 theme_override_styles/hover = SubResource("StyleBoxFlat_53u4p")
 theme_override_styles/pressed = SubResource("StyleBoxFlat_365jr")
 theme_override_styles/normal = SubResource("StyleBoxEmpty_08ol6")
-icon = ExtResource("22_o4ctv")
+icon = SubResource("Texture2D_7nt4r")
 icon_alignment = 1
 
 [node name="CloseButton" type="Button" parent="HBoxContainer/ColorRect/VBoxContainer/HBoxContainer"]
-texture_filter = 2
 custom_minimum_size = Vector2(35, 30)
 layout_mode = 2
 size_flags_horizontal = 8
@@ -445,7 +558,7 @@ theme_override_styles/focus = SubResource("StyleBoxEmpty_bmwv3")
 theme_override_styles/hover = SubResource("StyleBoxFlat_o4ctv")
 theme_override_styles/pressed = SubResource("StyleBoxFlat_a6wm3")
 theme_override_styles/normal = SubResource("StyleBoxEmpty_365jr")
-icon = ExtResource("22_bmwv3")
+icon = SubResource("Texture2D_7eosv")
 icon_alignment = 1
 expand_icon = true
 
@@ -514,22 +627,37 @@ offset_top = 215.0
 offset_right = 396.0
 offset_bottom = 284.0
 
-[node name="Modpack" type="Control" parent="HBoxContainer/ColorRect/VBoxContainer/MarginContainer/PageContainer"]
+[node name="Modpack" type="Control" parent="HBoxContainer/ColorRect/VBoxContainer/MarginContainer/PageContainer" node_paths=PackedStringArray("Main")]
 visible = false
 layout_mode = 2
 mouse_filter = 2
 script = ExtResource("15_fuji0")
+Main = NodePath("MarginContainer")
 metadata/_tab_index = 2
 
-[node name="Button" type="Button" parent="HBoxContainer/ColorRect/VBoxContainer/MarginContainer/PageContainer/Modpack"]
+[node name="MarginContainer" type="MarginContainer" parent="HBoxContainer/ColorRect/VBoxContainer/MarginContainer/PageContainer/Modpack"]
 layout_mode = 1
-anchors_preset = 2
-anchor_top = 1.0
+anchors_preset = 15
+anchor_right = 1.0
 anchor_bottom = 1.0
-offset_top = -27.0
-offset_right = 72.0
-grow_vertical = 0
-text = "启动游戏"
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="HBoxContainer/ColorRect/VBoxContainer/MarginContainer/PageContainer/Modpack/MarginContainer"]
+layout_mode = 2
+
+[node name="AddButton" type="Button" parent="HBoxContainer/ColorRect/VBoxContainer/MarginContainer/PageContainer/Modpack/MarginContainer/VBoxContainer"]
+custom_minimum_size = Vector2(0, 60)
+layout_mode = 2
+focus_mode = 0
+theme_override_colors/icon_hover_color = Color(1, 1, 1, 0.784314)
+theme_override_colors/icon_pressed_color = Color(1, 1, 1, 0.6)
+theme_override_colors/icon_normal_color = Color(1, 1, 1, 0.6)
+theme_override_styles/hover = SubResource("StyleBoxFlat_5lwjt")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_6are0")
+theme_override_styles/normal = SubResource("StyleBoxFlat_364to")
+icon = SubResource("Texture2D_6are0")
+icon_alignment = 1
 
 [node name="Release" type="Control" parent="HBoxContainer/ColorRect/VBoxContainer/MarginContainer/PageContainer" node_paths=PackedStringArray("_addReleaseButton", "_grid", "Main")]
 visible = false

@@ -5,9 +5,9 @@
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_gblyu"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_megpf"]
-content_margin_left = 10.0
+content_margin_left = 8.0
 content_margin_top = 6.0
-content_margin_right = 10.0
+content_margin_right = 8.0
 content_margin_bottom = 6.0
 bg_color = Color(0.6, 0.6, 0.6, 0.6)
 corner_radius_top_left = 8
@@ -16,9 +16,9 @@ corner_radius_bottom_right = 8
 corner_radius_bottom_left = 8
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_r111f"]
-content_margin_left = 10.0
+content_margin_left = 8.0
 content_margin_top = 6.0
-content_margin_right = 10.0
+content_margin_right = 8.0
 content_margin_bottom = 6.0
 bg_color = Color(0, 0, 0, 0)
 corner_radius_top_left = 8
@@ -27,9 +27,9 @@ corner_radius_bottom_right = 8
 corner_radius_bottom_left = 8
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_bhu72"]
-content_margin_left = 10.0
+content_margin_left = 8.0
 content_margin_top = 6.0
-content_margin_right = 10.0
+content_margin_right = 8.0
 content_margin_bottom = 6.0
 bg_color = Color(0.783523, 0.783523, 0.783523, 0.784314)
 corner_radius_top_left = 8
@@ -43,7 +43,7 @@ Button/colors/font_pressed_color = Color(0, 0, 0, 0.784314)
 Button/colors/icon_normal_color = Color(1, 1, 1, 0.784314)
 Button/colors/icon_pressed_color = Color(0, 0, 0, 0.784314)
 Button/constants/h_separation = 0
-Button/constants/icon_max_width = 18
+Button/constants/icon_max_width = 24
 Button/styles/focus = SubResource("StyleBoxEmpty_gblyu")
 Button/styles/hover = SubResource("StyleBoxFlat_megpf")
 Button/styles/normal = SubResource("StyleBoxFlat_r111f")

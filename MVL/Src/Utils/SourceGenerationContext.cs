@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Text.Encodings.Web;
 using System.Text.Json;
 using System.Text.Json.Serialization;
@@ -6,6 +7,7 @@ using SharedLibrary;
 
 namespace MVL.Utils;
 
+[JsonSerializable(typeof(Dictionary<string, string>))]
 [JsonSerializable(typeof(RunConfig))]
 [JsonSerializable(typeof(BaseConfig))]
 [JsonSourceGenerationOptions(JsonSerializerDefaults.Web,

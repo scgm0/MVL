@@ -2,13 +2,13 @@
 
 importer="font_data_dynamic"
 type="FontFile"
-uid="uid://bmgx1vyg6bavd"
-path="res://.godot/imported/HarmonyOS_Sans_SC_Bold.ttf-d17a84e91c3d865d26cbba721ba1fcf2.fontdata"
+uid="uid://dp7r8itfqvqca"
+path="res://.godot/imported/materialdesignicons-webfont.woff2-5f9270e6a6a066f4f4b5d6af3d2bd327.fontdata"
 
 [deps]
 
-source_file="res://Assets/Font/HarmonyOS_Sans_SC_Bold.ttf"
-dest_files=["res://.godot/imported/HarmonyOS_Sans_SC_Bold.ttf-d17a84e91c3d865d26cbba721ba1fcf2.fontdata"]
+source_file="res://Assets/Font/materialdesignicons-webfont.woff2"
+dest_files=["res://.godot/imported/materialdesignicons-webfont.woff2-5f9270e6a6a066f4f4b5d6af3d2bd327.fontdata"]
 
 [params]
 
@@ -20,7 +20,7 @@ multichannel_signed_distance_field=false
 msdf_pixel_range=8
 msdf_size=48
 allow_system_fallback=true
-force_autohinter=true
+force_autohinter=false
 hinting=1
 subpixel_positioning=0
 keep_rounding_remainders=true
