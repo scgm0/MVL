@@ -62,7 +62,7 @@ public partial class NativeWindowUtility : Control {
 	}
 
 	private void OnResized() {
-		if (GetWindow().Mode != Window.ModeEnum.Windowed && IsResizable) {
+		if (GetWindow().Mode != Godot.Window.ModeEnum.Windowed && IsResizable) {
 			Visible = false;
 		} else {
 			Visible = true;
@@ -95,9 +95,9 @@ public partial class NativeWindowUtility : Control {
 
 		if (_pressedLastTime != 0 && Stopwatch.GetElapsedTime(_pressedLastTime) < DoubleClickInterval) {
 			_pressedLastTime = 0;
-			GetWindow().Mode = GetWindow().Mode == Window.ModeEnum.Windowed
-				? Window.ModeEnum.Maximized
-				: Window.ModeEnum.Windowed;
+			GetWindow().Mode = GetWindow().Mode == Godot.Window.ModeEnum.Windowed
+				? Godot.Window.ModeEnum.Maximized
+				: Godot.Window.ModeEnum.Windowed;
 		} else {
 			_pressedLastTime = Stopwatch.GetTimestamp();
 		}

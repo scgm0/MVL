@@ -1,11 +1,14 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 using Godot;
 using Mono.Cecil;
 
 namespace MVL.Utils.Game;
 
+[JsonConverter(typeof(GameVersionJsonConverter))]
 public readonly record struct GameVersion {
 	public GameVersion(string ShortGameVersion) {
 		this.ShortGameVersion = ShortGameVersion;
@@ -85,6 +88,18 @@ public readonly record struct GameVersion {
 			return gameVersion;
 		} catch {
 			return null;
+		}
+	}
+	
+	public class GameVersionJsonConverter : JsonConverter<GameVersion> {
+
+		public override GameVersion Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options) {
+			var str = reader.GetString();
+			if (str != null) return new(str);
+			return default;
+		}
+		public override void Write(Utf8JsonWriter writer, GameVersion value, JsonSerializerOptions options) {
+			writer.WriteStringValue(value.ShortGameVersion);
 		}
 	}
 }

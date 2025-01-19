@@ -1,12 +1,53 @@
-[gd_scene load_steps=5 format=3 uid="uid://cpbcd3vre7ii8"]
+[gd_scene load_steps=12 format=3 uid="uid://cpbcd3vre7ii8"]
 
 [ext_resource type="Script" uid="uid://deaoh0r6l4aac" path="res://Src/UI/Item/InstalledGameItem.cs" id="1_drgtp"]
+[ext_resource type="Script" uid="uid://bk3tot6c35bwu" path="res://Src/Utils/IconTexture2D.cs" id="1_jot5c"]
+[ext_resource type="ButtonGroup" uid="uid://2vw3esfrb4oc" path="res://Assets/Gui/game_item_check_group.tres" id="2_tdw5g"]
+
+[sub_resource type="Texture2D" id="Texture2D_50jqb"]
+resource_local_to_scene = false
+resource_name = ""
+script = ExtResource("1_jot5c")
+IconName = "checkbox-intermediate"
+FontSize = 16
+metadata/_custom_type_script = ExtResource("1_jot5c")
+
+[sub_resource type="Texture2D" id="Texture2D_fjfp1"]
+resource_local_to_scene = false
+resource_name = ""
+script = ExtResource("1_jot5c")
+IconName = "radiobox-marked"
+FontSize = 16
+metadata/_custom_type_script = ExtResource("1_jot5c")
+
+[sub_resource type="Texture2D" id="Texture2D_052m8"]
+resource_local_to_scene = false
+resource_name = ""
+script = ExtResource("1_jot5c")
+IconName = "radiobox-blank"
+FontSize = 16
+metadata/_custom_type_script = ExtResource("1_jot5c")
+
+[sub_resource type="Texture2D" id="Texture2D_tvqxp"]
+resource_local_to_scene = false
+resource_name = ""
+script = ExtResource("1_jot5c")
+IconName = "checkbox-blank-outline"
+FontSize = 16
+metadata/_custom_type_script = ExtResource("1_jot5c")
+
+[sub_resource type="Theme" id="Theme_frow1"]
+CheckBox/icons/checked = SubResource("Texture2D_50jqb")
+CheckBox/icons/radio_checked = SubResource("Texture2D_fjfp1")
+CheckBox/icons/radio_unchecked = SubResource("Texture2D_052m8")
+CheckBox/icons/unchecked = SubResource("Texture2D_tvqxp")
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_owfdn"]
 content_margin_left = 4.0
 content_margin_top = 4.0
 content_margin_right = 4.0
 content_margin_bottom = 4.0
+bg_color = Color(0.20871, 0.20871, 0.20871, 1)
 corner_radius_top_left = 5
 corner_radius_bottom_left = 5
 
@@ -15,12 +56,14 @@ content_margin_left = 4.0
 content_margin_top = 4.0
 content_margin_right = 4.0
 content_margin_bottom = 4.0
+bg_color = Color(0.20871, 0.20871, 0.20871, 1)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_megpf"]
 content_margin_left = 7.0
 content_margin_top = 4.0
 content_margin_right = 4.0
 content_margin_bottom = 4.0
+bg_color = Color(0.20871, 0.20871, 0.20871, 1)
 corner_radius_top_right = 5
 corner_radius_bottom_right = 5
 
@@ -39,20 +82,20 @@ grow_horizontal = 2
 grow_vertical = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
+theme = SubResource("Theme_frow1")
 theme_override_constants/separation = 1
 script = ExtResource("1_drgtp")
 _gameVersion = NodePath("GameVersion")
 _gamePath = NodePath("GamePath")
 _checkBox = NodePath("CheckBox")
-_stableColor = Color(0.20871, 0.20871, 0.20871, 0.996078)
-_unStableColor = Color(0.35, 0.35, 0, 1)
+_stableColor = Color(0.687215, 0.687215, 0.687215, 1)
+_unStableColor = Color(0.475677, 0.475677, 1.92523e-07, 1)
 
 [node name="GameVersion" type="Label" parent="."]
 custom_minimum_size = Vector2(90, 30)
 layout_mode = 2
 size_flags_vertical = 1
 mouse_filter = 1
-theme_override_colors/font_color = Color(0.20871, 0.20871, 0.20871, 0.996078)
 theme_override_font_sizes/font_size = 14
 theme_override_styles/normal = SubResource("StyleBoxFlat_owfdn")
 text = "版本"
@@ -65,7 +108,6 @@ layout_mode = 2
 size_flags_horizontal = 6
 size_flags_vertical = 1
 mouse_filter = 1
-theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_font_sizes/font_size = 14
 theme_override_styles/normal = SubResource("StyleBoxFlat_r111f")
 text = "路径"
@@ -82,3 +124,4 @@ theme_override_styles/hover_pressed = SubResource("StyleBoxFlat_megpf")
 theme_override_styles/hover = SubResource("StyleBoxFlat_megpf")
 theme_override_styles/pressed = SubResource("StyleBoxFlat_megpf")
 theme_override_styles/normal = SubResource("StyleBoxFlat_megpf")
+button_group = ExtResource("2_tdw5g")

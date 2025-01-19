@@ -21,7 +21,7 @@ public partial class Main : NativeWindowUtility {
 	public static BaseConfig BaseConfig { get; } =
 		BaseConfig.Load(OS.GetUserDataDir().PathJoin("data.json"));
 
-	private InstalledGamesImport? _installedGamesImport;
+	private Window.InstalledGamesImport? _installedGamesImport;
 
 	[Export]
 	private Texture2D? _iconTexture;
@@ -55,8 +55,10 @@ public partial class Main : NativeWindowUtility {
 
 	public static Main? Instance { get; private set; }
 
-	public static Dictionary<string, ReleaseInfo> Release { get; } = new();
+	public static Process? GameProcess { get; set; }
+	public static Dictionary<string, ReleaseInfo> ReleaseInfos { get; } = new();
 
+	public static Dictionary<string, ModpackConfig> ModpackConfigs { get; } = new();
 	public static SceneTree SceneTree { get; } = (SceneTree)Engine.GetMainLoop();
 
 	public Main() { Instance = this; }
@@ -102,9 +104,10 @@ public partial class Main : NativeWindowUtility {
 	}
 
 	public void Start() {
-		CheckGameVersion();
+		CheckReleaseInfo();
+		CheckModpackConfig();
 
-		if (BaseConfig.Release.Count == 0 && InstalledGamesImport.InstalledGamePaths.Length > 0) {
+		if (BaseConfig.Release.Count == 0 && Window.InstalledGamesImport.InstalledGamePaths.Length > 0) {
 			_ = ImportInstalledGames();
 		}
 	}
@@ -120,24 +123,17 @@ public partial class Main : NativeWindowUtility {
 		}
 	}
 
-	public async Task<InstalledGamesImport> ImportInstalledGames(IEnumerable<string>? gamePaths = null) {
+	public async Task<Window.InstalledGamesImport> ImportInstalledGames(IEnumerable<string>? gamePaths = null) {
 		if (_installedGamesImport is null) {
-			_installedGamesImport = _installedGamesImportScene!.Instantiate<InstalledGamesImport>();
+			_installedGamesImport = _installedGamesImportScene!.Instantiate<Window.InstalledGamesImport>();
 			AddChild(_installedGamesImport);
 			_installedGamesImport.Import += paths => {
 				if (paths.Length == 0) {
 					return;
 				}
 
-				foreach (var gamePath in paths) {
-					var info = new ReleaseInfo {
-						Path = gamePath,
-						Version = GameVersion.FromGamePath(gamePath)!.Value
-					};
-					BaseConfig.Release.Add(info);
-				}
-
-				CheckGameVersion();
+				BaseConfig.Release.AddRange(paths);
+				CheckReleaseInfo();
 			};
 		}
 
@@ -150,18 +146,56 @@ public partial class Main : NativeWindowUtility {
 		return _installedGamesImport;
 	}
 
-	public static void CheckGameVersion() {
+	public static void CheckReleaseInfo() {
 		var list = BaseConfig.Release.ToList();
-		foreach (var info in list) {
-			var path = info.Path;
+		foreach (var path in list) {
 			var gameVersion = GameVersion.FromGamePath(path);
 			if (gameVersion is null) {
-				Release.Remove(path);
-				BaseConfig.Release.Remove(info);
+				ReleaseInfos.Remove(path);
+				BaseConfig.Release.Remove(path);
 			} else {
+				var info = ReleaseInfos.GetValueOrDefault(path,
+					new() {
+						Path = path,
+						Name = path.GetFile()
+					});
 				info.Version = gameVersion.Value;
-				Release[path] = info;
+				ReleaseInfos[path] = info;
 			}
+		}
+
+		BaseConfig.Save(BaseConfig);
+	}
+
+	public static void CheckModpackConfig() {
+		var list = BaseConfig.Modpack.ToList();
+		foreach (var path in list) {
+			if (!DirAccess.DirExistsAbsolute(path)) {
+				ModpackConfigs.Remove(path);
+				BaseConfig.Modpack.Remove(path);
+				continue;
+			}
+
+			var modPack = ModpackConfigs.GetValueOrDefault(path, ModpackConfig.Load(path));
+			if (modPack.ReleasePath is not null && (!ReleaseInfos.TryGetValue(modPack.ReleasePath, out var value) ||
+				value.Version != modPack.Version)) {
+				modPack.ReleasePath = null;
+			}
+
+			if (modPack.Version is null) {
+				ModpackConfigs.Remove(path);
+				BaseConfig.Modpack.Remove(path);
+				continue;
+			}
+
+			var info = ReleaseInfos.Values.FirstOrDefault(i => i?.Version == modPack.Version, null);
+			modPack.Path = path;
+			modPack.Version = info?.Version;
+			modPack.ReleasePath ??= info?.Path;
+			modPack.Name ??= path.GetFile();
+
+			ModpackConfig.Save(modPack);
+			ModpackConfigs[path] = modPack;
 		}
 
 		BaseConfig.Save(BaseConfig);
@@ -223,8 +257,12 @@ public partial class Main : NativeWindowUtility {
 		process.ErrorDataReceived += (_, args) => { GD.PrintErr(args.Data); };
 
 		process.OutputDataReceived += (_, args) => {
-			if (args.Data != null) {
-				GD.PrintRich(args.Data.ConvertAnsiToBbCode());
+			if (args.Data == null) return;
+			GD.PrintRich(args.Data.ConvertAnsiToBbCode());
+			if (args.Data.EndsWith("Client logger started.")) {
+				Dispatcher.SynchronizationContext.Post(_ => {
+					SceneTree.Root.Minimize();
+				}, null);
 			}
 		};
 
@@ -243,6 +281,7 @@ public partial class Main : NativeWindowUtility {
 					ExecutableType = ExecutableTypeEnum.InitData
 				},
 				$"dotnet {tmp.GetCurrentDir().PathJoin("VSRun.dll")}");
+			GameProcess = process;
 			await process.WaitForExitAsync();
 		} catch (Exception e) {
 			GD.PrintErr(e);
@@ -263,7 +302,9 @@ public partial class Main : NativeWindowUtility {
 					ExecutableType = ExecutableTypeEnum.StartGame
 				},
 				command.Replace("%command%", $"dotnet {tmp.GetCurrentDir().PathJoin("VSRun.dll")}"));
+			GameProcess = process;
 			await process.WaitForExitAsync();
+			GameProcess = null;
 		} catch (Exception e) {
 			GD.PrintErr(e);
 		}

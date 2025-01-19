@@ -50,6 +50,8 @@ public partial class InstalledGameItem : HBoxContainer {
 		}
 	}
 
+	public bool SingleSelect { get; set; }
+
 	public override void _Ready() {
 		Utils.Help.NullExceptionHelper.NotNull(_gameVersion, _gamePath, _checkBox, GameVersion, GamePath, Check);
 		_gameVersion.Text = GameVersion.ShortGameVersion;
@@ -68,5 +70,8 @@ public partial class InstalledGameItem : HBoxContainer {
 		_gamePath.TooltipText = GamePath;
 		_checkBox.ButtonPressed = Check;
 		_checkBox.TooltipText = Check ? "未导入" : "已导入";
+		if(!SingleSelect) {
+			_checkBox.ButtonGroup = null;
+		}
 	}
 }

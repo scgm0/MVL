@@ -10,6 +10,7 @@ namespace MVL.Utils;
 [JsonSerializable(typeof(Dictionary<string, string>))]
 [JsonSerializable(typeof(RunConfig))]
 [JsonSerializable(typeof(BaseConfig))]
+[JsonSerializable(typeof(ModpackConfig))]
 [JsonSourceGenerationOptions(JsonSerializerDefaults.Web,
 	AllowTrailingCommas = true,
 	UseStringEnumConverter = true,

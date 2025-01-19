@@ -1,11 +1,11 @@
 [gd_scene load_steps=21 format=3 uid="uid://d21bm32gkwqcr"]
 
-[ext_resource type="Script" uid="uid://kioshjbmjlip" path="res://Src/UI/InstalledGamesImport.cs" id="1_bcuc2"]
-[ext_resource type="PackedScene" uid="uid://cpbcd3vre7ii8" path="res://Src/UI/Item/installed_game_item.tscn" id="2_mqeym"]
-[ext_resource type="Script" uid="uid://dbies7u5fo4sh" path="res://Src/UI/NativeWindowUtility.cs" id="3_c7ca5"]
-[ext_resource type="FontFile" uid="uid://bmgx1vyg6bavd" path="res://Assets/Font/HarmonyOS_Sans_SC_Bold.ttf" id="3_x7vct"]
-[ext_resource type="Script" uid="uid://cre6m68jy0aad" path="res://addons/SmoothScroll/SmoothScrollContainer.gd" id="4_o308j"]
-[ext_resource type="Script" uid="uid://41yydm3vncfj" path="res://addons/SmoothScroll/scroll_damper/expo_scroll_damper.gd" id="5_c7ca5"]
+[ext_resource type="Script" uid="uid://kioshjbmjlip" path="res://Src/UI/Window/InstalledGamesImport.cs" id="1_xxpfc"]
+[ext_resource type="PackedScene" uid="uid://cpbcd3vre7ii8" path="res://Src/UI/Item/installed_game_item.tscn" id="2_l32jt"]
+[ext_resource type="Script" uid="uid://dbies7u5fo4sh" path="res://Src/UI/NativeWindowUtility.cs" id="3_hemxd"]
+[ext_resource type="FontFile" uid="uid://bmgx1vyg6bavd" path="res://Assets/Font/HarmonyOS_Sans_SC_Bold.ttf" id="4_vion5"]
+[ext_resource type="Script" uid="uid://cre6m68jy0aad" path="res://addons/SmoothScroll/SmoothScrollContainer.gd" id="5_yal0d"]
+[ext_resource type="Script" uid="uid://41yydm3vncfj" path="res://addons/SmoothScroll/scroll_damper/expo_scroll_damper.gd" id="6_2rgyo"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_1opgh"]
 content_margin_left = 20.0
@@ -18,11 +18,6 @@ corner_radius_top_right = 10
 corner_radius_bottom_right = 10
 corner_radius_bottom_left = 10
 shadow_size = 8
-
-[sub_resource type="StyleBoxLine" id="StyleBoxLine_1opgh"]
-color = Color(1, 1, 1, 0.333333)
-grow_begin = 5.0
-grow_end = 5.0
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ty1b0"]
 content_margin_left = 4.0
@@ -40,16 +35,27 @@ corner_radius_bottom_left = 10
 VScrollBar/styles/scroll = SubResource("StyleBoxFlat_ty1b0")
 
 [sub_resource type="Resource" id="Resource_6o7np"]
-script = ExtResource("5_c7ca5")
+script = ExtResource("6_2rgyo")
 friction = 4.0
 minimum_velocity = 0.4
 rebound_strength = 7.0
 
 [sub_resource type="Resource" id="Resource_3nw38"]
-script = ExtResource("5_c7ca5")
+script = ExtResource("6_2rgyo")
 friction = 4.0
 minimum_velocity = 0.4
 rebound_strength = 7.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_b82ki"]
+content_margin_left = 10.0
+content_margin_top = 10.0
+content_margin_right = 10.0
+content_margin_bottom = 10.0
+bg_color = Color(0.529067, 0.529067, 0.529067, 0.207843)
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_a5da0"]
 
@@ -63,7 +69,6 @@ corner_radius_top_left = 6
 corner_radius_top_right = 6
 corner_radius_bottom_right = 6
 corner_radius_bottom_left = 6
-corner_detail = 5
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_bhu72"]
 content_margin_left = 10.0
@@ -88,6 +93,7 @@ corner_radius_bottom_right = 6
 corner_radius_bottom_left = 6
 
 [sub_resource type="Theme" id="Theme_v5ddw"]
+Button/styles/disabled = SubResource("StyleBoxFlat_b82ki")
 Button/styles/focus = SubResource("StyleBoxEmpty_a5da0")
 Button/styles/hover = SubResource("StyleBoxFlat_v5ddw")
 Button/styles/normal = SubResource("StyleBoxFlat_bhu72")
@@ -179,8 +185,8 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 color = Color(0, 0, 0, 0.6)
-script = ExtResource("1_bcuc2")
-_installedGameItemScene = ExtResource("2_mqeym")
+script = ExtResource("1_xxpfc")
+_installedGameItemScene = ExtResource("2_l32jt")
 _installedGameItemContainer = NodePath("PanelContainer")
 _installedGameList = NodePath("PanelContainer/VBoxContainer/SmoothScrollContainer/MarginContainer/InstalledGameList")
 _cancelButton = NodePath("PanelContainer/VBoxContainer/HBoxContainer/CancelButton")
@@ -194,9 +200,9 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-script = ExtResource("3_c7ca5")
+script = ExtResource("3_hemxd")
 IsDraggable = true
-metadata/_custom_type_script = ExtResource("3_c7ca5")
+metadata/_custom_type_script = ExtResource("3_hemxd")
 
 [node name="PanelContainer" type="PanelContainer" parent="."]
 custom_minimum_size = Vector2(475, 323)
@@ -224,7 +230,7 @@ theme_override_constants/separation = 10
 
 [node name="Label" type="Label" parent="PanelContainer/VBoxContainer"]
 layout_mode = 2
-theme_override_fonts/font = ExtResource("3_x7vct")
+theme_override_fonts/font = ExtResource("4_vion5")
 theme_override_font_sizes/font_size = 20
 text = " 选择已安装版本"
 horizontal_alignment = 1
@@ -232,7 +238,6 @@ horizontal_alignment = 1
 [node name="HSeparator2" type="HSeparator" parent="PanelContainer/VBoxContainer"]
 layout_mode = 2
 theme_override_constants/separation = 15
-theme_override_styles/separator = SubResource("StyleBoxLine_1opgh")
 
 [node name="SmoothScrollContainer" type="ScrollContainer" parent="PanelContainer/VBoxContainer"]
 custom_minimum_size = Vector2(0, 150)
@@ -241,10 +246,10 @@ size_flags_vertical = 3
 theme = SubResource("Theme_bhu72")
 horizontal_scroll_mode = 0
 vertical_scroll_mode = 2
-script = ExtResource("4_o308j")
+script = ExtResource("5_yal0d")
 wheel_scroll_damper = SubResource("Resource_6o7np")
 dragging_scroll_damper = SubResource("Resource_3nw38")
-metadata/_custom_type_script = ExtResource("4_o308j")
+metadata/_custom_type_script = ExtResource("5_yal0d")
 
 [node name="MarginContainer" type="MarginContainer" parent="PanelContainer/VBoxContainer/SmoothScrollContainer"]
 layout_mode = 2
@@ -261,7 +266,6 @@ theme_override_constants/separation = 15
 [node name="HSeparator" type="HSeparator" parent="PanelContainer/VBoxContainer"]
 layout_mode = 2
 theme_override_constants/separation = 15
-theme_override_styles/separator = SubResource("StyleBoxLine_1opgh")
 
 [node name="HBoxContainer" type="HBoxContainer" parent="PanelContainer/VBoxContainer"]
 layout_mode = 2
@@ -279,7 +283,7 @@ text = "取消"
 custom_minimum_size = Vector2(0, 35)
 layout_mode = 2
 size_flags_horizontal = 10
-text = "导入"
+text = "确定"
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {

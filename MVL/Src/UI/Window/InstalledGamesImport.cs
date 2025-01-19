@@ -9,7 +9,7 @@ using MVL.UI.Item;
 using MVL.Utils;
 using MVL.Utils.Game;
 
-namespace MVL.UI;
+namespace MVL.UI.Window;
 
 public partial class InstalledGamesImport : Control {
 	[Export]
@@ -35,6 +35,8 @@ public partial class InstalledGamesImport : Control {
 
 	[Signal]
 	public delegate void ImportEventHandler(string[] gamePaths);
+
+	public bool SingleSelect { get; set; }
 
 	public override void _Ready() {
 		Utils.Help.NullExceptionHelper.NotNull(_installedGameItemScene,
@@ -100,7 +102,8 @@ public partial class InstalledGamesImport : Control {
 
 			list.Add(new() {
 				Path = installedGamePath,
-				Version = gameVersion.Value
+				Version = gameVersion.Value,
+				Name = installedGamePath.GetFile()
 			});
 		}
 
@@ -117,7 +120,8 @@ public partial class InstalledGamesImport : Control {
 			var installedGameItem = _installedGameItemScene!.Instantiate<InstalledGameItem>();
 			installedGameItem.GameVersion = installedGame.Version;
 			installedGameItem.GamePath = installedGame.Path;
-			installedGameItem.Check = !Main.Release.ContainsKey(installedGame.Path);
+			installedGameItem.Check = !Main.ReleaseInfos.ContainsKey(installedGame.Path) && !SingleSelect;
+			installedGameItem.SingleSelect = SingleSelect;
 			installedGameItem.Modulate = Colors.Transparent;
 			_installedGameList!.AddChild(installedGameItem);
 			using var tween = installedGameItem.CreateTween();

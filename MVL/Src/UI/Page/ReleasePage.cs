@@ -18,7 +18,7 @@ public partial class ReleasePage : MenuPage {
 	[Export]
 	private Container? _grid;
 
-	private InstalledGamesImport? _installedGamesImport;
+	private Window.InstalledGamesImport? _installedGamesImport;
 
 	public override void _Ready() {
 		_addReleaseButton.NotNull();
@@ -74,15 +74,13 @@ public partial class ReleasePage : MenuPage {
 			child.QueueFree();
 		}
 
-		UI.Main.CheckGameVersion();
-		var list = UI.Main.Release.Values.OrderByDescending(info => info.Version, GameVersion.Comparer);
+		UI.Main.CheckReleaseInfo();
+		var list = UI.Main.ReleaseInfos.Values.OrderByDescending(info => info.Version, GameVersion.Comparer);
 
 		var i = 1;
 		foreach (var info in list) {
 			var item = _releaseItemScene!.Instantiate<ReleaseItem>();
-			item.ReleasePath = info.Path;
-			item.ReleaseName = "复古物语";
-			item.ReleaseVersion = info.Version;
+			item.ReleaseInfo = info;
 			item.Modulate = item.Modulate with { A = 0 };
 			_grid!.AddChild(item);
 			var tween = item.CreateTween();

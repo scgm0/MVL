@@ -1,7 +1,6 @@
 using System;
 using System.Diagnostics.CodeAnalysis;
 using Godot;
-using MVL.Utils.Extensions;
 using MVL.Utils.Game;
 using MVL.Utils.Help;
 
@@ -23,6 +22,8 @@ public partial class ReleaseItem : PanelContainer {
 	[Export]
 	private Button? _button;
 
+	public ReleaseInfo? ReleaseInfo { get; set; }
+
 	[field: AllowNull, MaybeNull]
 	public Texture2D ReleaseIcon {
 		get => field ?? _icon!.Texture;
@@ -36,55 +37,29 @@ public partial class ReleaseItem : PanelContainer {
 		}
 	}
 
-	public string ReleaseName {
-		get;
-		set {
-			if (_name == null) {
-				return;
-			}
-
-			field = value;
-			_name.Text = value;
-		}
-	} = "";
-
-	public GameVersion ReleaseVersion {
-		get;
-		set {
-			if (_version == null) {
-				return;
-			}
-
-			field = value;
-			_version.Text = value.ShortGameVersion;
-			switch (value.Branch) {
-				case EnumGameBranch.Stable:
-					_label!.Hide();
-					break;
-				case EnumGameBranch.Unstable:
-					_label!.Show();
-					break;
-				default: throw new ArgumentOutOfRangeException();
-			}
-		}
-	}
-
-	public string ReleasePath { get => TooltipText; set => TooltipText = value; }
-
 	public override void _Ready() {
 		_icon.NotNull();
 		_name.NotNull();
 		_version.NotNull();
 		_label.NotNull();
 		_button.NotNull();
+		ReleaseInfo.NotNull();
+		TooltipText = ReleaseInfo.Path;
+		_name.Text = ReleaseInfo.Name;
+		_version.Text = ReleaseInfo.Version.ShortGameVersion;
 		ReleaseIcon = ReleaseIcon;
-		ReleaseName = ReleaseName;
-		ReleaseVersion = ReleaseVersion;
+		switch (ReleaseInfo.Version.Branch) {
+			case EnumGameBranch.Stable:
+				_label!.Hide();
+				break;
+			case EnumGameBranch.Unstable:
+				_label!.Show();
+				break;
+			default: throw new ArgumentOutOfRangeException();
+		}
+
 		_button.Pressed += ButtonOnPressed;
 	}
 
-	private async void ButtonOnPressed() {
-		GetWindow().Minimize();
-		await Main.StartGame(ReleasePath, ReleasePath.PathJoin("VintagestoryData"));
-	}
+	private async void ButtonOnPressed() { }
 }

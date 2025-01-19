@@ -1,20 +1,20 @@
 using System.Collections.Generic;
 using System.Text.Json;
 using Godot;
-using MVL.Utils.Game;
 
 namespace MVL.Utils.Config;
 
 public class BaseConfig {
 	private string _configPath = string.Empty;
 
-	public List<ReleaseInfo> Release { get; set; } = [];
+	public List<string> Release { get; set; } = [];
+	public List<string> Modpack { get; set; } = [];
 
 	public static BaseConfig Load(string configPath) {
 		BaseConfig baseConfig;
 		try {
 			if (FileAccess.FileExists(configPath)) {
-				baseConfig = JsonSerializer.Deserialize(FileAccess.GetFileAsString(configPath), SourceGenerationContext.Default.BaseConfig) as BaseConfig ?? new BaseConfig();
+				baseConfig = JsonSerializer.Deserialize(FileAccess.GetFileAsString(configPath), SourceGenerationContext.Default.BaseConfig) ?? new BaseConfig();
 			} else {
 				baseConfig = new();
 			}

@@ -1,8 +1,10 @@
-[gd_scene load_steps=11 format=3 uid="uid://d3yuqxh7olknc"]
+[gd_scene load_steps=13 format=3 uid="uid://d3yuqxh7olknc"]
 
-[ext_resource type="Texture2D" uid="uid://d3mq4tlr6rr01" path="res://Assets/Icon/VS/gameicon.png" id="1_dksar"]
-[ext_resource type="FontFile" uid="uid://bmgx1vyg6bavd" path="res://Assets/Font/HarmonyOS_Sans_SC_Bold.ttf" id="2_seici"]
-[ext_resource type="Script" uid="uid://bk3tot6c35bwu" path="res://Src/Utils/IconTexture2D.cs" id="3_jptkp"]
+[ext_resource type="Script" uid="uid://cwh0mdeoogvqa" path="res://Src/UI/Item/ModpackItem.cs" id="1_j0hm1"]
+[ext_resource type="PackedScene" uid="uid://d21bm32gkwqcr" path="res://Src/UI/Window/installed_games_import.tscn" id="2_jptkp"]
+[ext_resource type="Texture2D" uid="uid://d3mq4tlr6rr01" path="res://Assets/Icon/VS/gameicon.png" id="2_x6kgn"]
+[ext_resource type="FontFile" uid="uid://bmgx1vyg6bavd" path="res://Assets/Font/HarmonyOS_Sans_SC_Bold.ttf" id="3_3qaia"]
+[ext_resource type="Script" uid="uid://bk3tot6c35bwu" path="res://Src/Utils/IconTexture2D.cs" id="4_32kh6"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_7nt4r"]
 bg_color = Color(0.314316, 0.314316, 0.314316, 0.6)
@@ -46,22 +48,31 @@ corner_radius_bottom_left = 8
 [sub_resource type="Texture2D" id="Texture2D_5lwjt"]
 resource_local_to_scene = false
 resource_name = ""
-script = ExtResource("3_jptkp")
+script = ExtResource("4_32kh6")
 IconName = "unfold-more-horizontal"
 FontSize = 24
-metadata/_custom_type_script = ExtResource("3_jptkp")
+metadata/_custom_type_script = ExtResource("4_32kh6")
 
 [sub_resource type="Texture2D" id="Texture2D_364to"]
 resource_local_to_scene = false
 resource_name = ""
-script = ExtResource("3_jptkp")
+script = ExtResource("4_32kh6")
 IconName = "play"
 FontSize = 30
-metadata/_custom_type_script = ExtResource("3_jptkp")
+metadata/_custom_type_script = ExtResource("4_32kh6")
 
-[node name="PanelContainer" type="PanelContainer"]
+[node name="ModpackItem" type="PanelContainer" node_paths=PackedStringArray("_modpackName", "_modpackPath", "_modCount", "_versionButton", "_releaseButton", "_playButton")]
+custom_minimum_size = Vector2(827, 64)
 theme = SubResource("Theme_bmwv3")
 theme_override_styles/panel = SubResource("StyleBoxFlat_30yt8")
+script = ExtResource("1_j0hm1")
+_listGameScene = ExtResource("2_jptkp")
+_modpackName = NodePath("HBoxContainer/VBoxContainer/Label")
+_modpackPath = NodePath("HBoxContainer/VBoxContainer/HBoxContainer/LinkButton")
+_modCount = NodePath("HBoxContainer/VBoxContainer/HBoxContainer/Label")
+_versionButton = NodePath("HBoxContainer/Button")
+_releaseButton = NodePath("HBoxContainer/Button2")
+_playButton = NodePath("HBoxContainer/Button3")
 
 [node name="HBoxContainer" type="HBoxContainer" parent="."]
 layout_mode = 2
@@ -70,7 +81,7 @@ theme_override_constants/separation = 12
 [node name="TextureRect" type="TextureRect" parent="HBoxContainer"]
 custom_minimum_size = Vector2(40, 40)
 layout_mode = 2
-texture = ExtResource("1_dksar")
+texture = ExtResource("2_x6kgn")
 expand_mode = 1
 stretch_mode = 5
 
@@ -82,8 +93,7 @@ size_flags_horizontal = 3
 layout_mode = 2
 size_flags_vertical = 3
 theme_override_constants/outline_size = 4
-theme_override_fonts/font = ExtResource("2_seici")
-text = "VintagestoryData"
+theme_override_fonts/font = ExtResource("3_3qaia")
 
 [node name="HBoxContainer" type="HBoxContainer" parent="HBoxContainer/VBoxContainer"]
 layout_mode = 2
@@ -91,11 +101,10 @@ size_flags_vertical = 8
 
 [node name="LinkButton" type="LinkButton" parent="HBoxContainer/VBoxContainer/HBoxContainer"]
 layout_mode = 2
+size_flags_horizontal = 0
 theme_override_colors/font_color = Color(0.6, 0.6, 0.6, 1)
 theme_override_font_sizes/font_size = 12
-text = "/home/scgm/下载/vintagestory/VintagestoryData"
 underline = 1
-uri = "/home/scgm/下载/vintagestory/VintagestoryData"
 
 [node name="Label" type="Label" parent="HBoxContainer/VBoxContainer/HBoxContainer"]
 custom_minimum_size = Vector2(100, 15)
@@ -106,28 +115,27 @@ theme_override_font_sizes/font_size = 12
 text = "模组数量: 0"
 horizontal_alignment = 2
 
-[node name="Button2" type="Button" parent="HBoxContainer"]
+[node name="Button" type="Button" parent="HBoxContainer"]
 custom_minimum_size = Vector2(150, 40)
 layout_mode = 2
 size_flags_vertical = 0
 focus_mode = 0
-text = "1.20.1-rc.6"
+text = "选择版本"
 icon = SubResource("Texture2D_5lwjt")
+text_overrun_behavior = 3
+clip_text = true
+icon_alignment = 2
+
+[node name="Button2" type="Button" parent="HBoxContainer"]
+visible = false
+custom_minimum_size = Vector2(150, 0)
+layout_mode = 2
+focus_mode = 0
 text_overrun_behavior = 3
 clip_text = true
 icon_alignment = 2
 
 [node name="Button3" type="Button" parent="HBoxContainer"]
-custom_minimum_size = Vector2(150, 0)
-layout_mode = 2
-focus_mode = 0
-text = "Vintagestory"
-icon = SubResource("Texture2D_5lwjt")
-text_overrun_behavior = 3
-clip_text = true
-icon_alignment = 2
-
-[node name="Button" type="Button" parent="HBoxContainer"]
 custom_minimum_size = Vector2(40, 40)
 layout_mode = 2
 focus_mode = 0
