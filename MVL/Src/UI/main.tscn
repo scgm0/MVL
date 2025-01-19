@@ -19,7 +19,6 @@
 [ext_resource type="Texture2D" uid="uid://cl0lb1d7oai18" path="res://Assets/Gui/avatar.jpg" id="19_a6wm3"]
 [ext_resource type="PackedScene" uid="uid://bjgov53faujry" path="res://Src/UI/Item/release_item.tscn" id="19_g8snm"]
 [ext_resource type="PackedScene" uid="uid://ccfq2fesgeykj" path="res://Src/UI/Window/add_modpack_window.tscn" id="20_gblyu"]
-[ext_resource type="Texture2D" uid="uid://uxj5o0qny3rm" path="res://Assets/Icon/MD/add.svg" id="20_oarc7"]
 [ext_resource type="LabelSettings" uid="uid://bdfwqcqufhm6k" path="res://Assets/Setting/page_title.tres" id="23_53u4p"]
 [ext_resource type="Script" uid="uid://cre6m68jy0aad" path="res://addons/SmoothScroll/SmoothScrollContainer.gd" id="27_7nt4r"]
 [ext_resource type="Script" uid="uid://41yydm3vncfj" path="res://addons/SmoothScroll/scroll_damper/expo_scroll_damper.gd" id="28_7eosv"]
@@ -318,6 +317,14 @@ corner_radius_top_right = 10
 corner_radius_bottom_right = 10
 corner_radius_bottom_left = 10
 
+[sub_resource type="Texture2D" id="Texture2D_364to"]
+resource_local_to_scene = false
+resource_name = ""
+script = ExtResource("13_7nt4r")
+IconName = "plus"
+FontSize = 72
+metadata/_custom_type_script = ExtResource("13_7nt4r")
+
 [node name="Main" type="Control" node_paths=PackedStringArray("MinButton", "CloseButton")]
 layout_mode = 3
 anchors_preset = 15
@@ -580,11 +587,10 @@ size_flags_vertical = 3
 mouse_filter = 2
 theme_override_styles/panel = SubResource("StyleBoxEmpty_kq46g")
 tab_alignment = 1
-current_tab = 2
+current_tab = 0
 tabs_visible = false
 
 [node name="Home" type="Control" parent="HBoxContainer/ColorRect/VBoxContainer/MarginContainer/PageContainer" node_paths=PackedStringArray("Main")]
-visible = false
 layout_mode = 2
 mouse_filter = 2
 script = ExtResource("15_fuji0")
@@ -607,31 +613,15 @@ offset_bottom = 29.0
 text = "主页"
 label_settings = ExtResource("23_53u4p")
 
-[node name="Account" type="Control" parent="HBoxContainer/ColorRect/VBoxContainer/MarginContainer/PageContainer" node_paths=PackedStringArray("Main")]
+[node name="Account" type="Control" parent="HBoxContainer/ColorRect/VBoxContainer/MarginContainer/PageContainer"]
 visible = false
 layout_mode = 2
 mouse_filter = 2
 script = ExtResource("15_fuji0")
-Main = NodePath("Control")
 metadata/_tab_index = 1
 
-[node name="Control" type="Control" parent="HBoxContainer/ColorRect/VBoxContainer/MarginContainer/PageContainer/Account"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-mouse_filter = 2
-
-[node name="Button" type="Button" parent="HBoxContainer/ColorRect/VBoxContainer/MarginContainer/PageContainer/Account/Control"]
-layout_mode = 0
-offset_left = 325.0
-offset_top = 215.0
-offset_right = 396.0
-offset_bottom = 284.0
-
 [node name="Modpack" type="Control" parent="HBoxContainer/ColorRect/VBoxContainer/MarginContainer/PageContainer" node_paths=PackedStringArray("_addModpackButton", "_list", "Main")]
+visible = false
 layout_mode = 2
 mouse_filter = 2
 script = ExtResource("16_gblyu")
@@ -726,9 +716,8 @@ theme_override_constants/icon_max_width = 80
 theme_override_styles/hover = SubResource("StyleBoxFlat_oarc7")
 theme_override_styles/pressed = SubResource("StyleBoxFlat_gblyu")
 theme_override_styles/normal = SubResource("StyleBoxFlat_bmwv3")
-icon = ExtResource("20_oarc7")
+icon = SubResource("Texture2D_364to")
 icon_alignment = 1
-expand_icon = true
 
 [node name="Module" type="Control" parent="HBoxContainer/ColorRect/VBoxContainer/MarginContainer/PageContainer"]
 visible = false

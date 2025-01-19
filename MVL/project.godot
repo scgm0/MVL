@@ -69,6 +69,7 @@ texture={
 
 [internationalization]
 
+locale/translations=PackedStringArray("res://Assets/Translation/Extractable/zh_CN.po")
 locale/fallback="zh_CN"
 
 [rendering]
