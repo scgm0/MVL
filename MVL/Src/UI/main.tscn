@@ -4,13 +4,13 @@
 [ext_resource type="Texture2D" uid="uid://bhh1jvyj73qxh" path="res://Assets/Gui/Background.png" id="2_1opgh"]
 [ext_resource type="Texture2D" uid="uid://bqv5hbr6w0cu" path="res://Assets/Icon/icon.png" id="2_xnuua"]
 [ext_resource type="PackedScene" uid="uid://d21bm32gkwqcr" path="res://Src/UI/Window/installed_games_import.tscn" id="3_a5da0"]
-[ext_resource type="Material" uid="uid://c3ilvj1qsufjr" path="res://Assets/Material/blur.material" id="4_bl4fu"]
 [ext_resource type="ButtonGroup" uid="uid://c644g3bgevb7h" path="res://Assets/Gui/menu_button_group.tres" id="4_megpf"]
 [ext_resource type="Material" uid="uid://d2rejrdmwjskm" path="res://Assets/Material/round.tres" id="4_o4ctv"]
 [ext_resource type="Shader" uid="uid://bw4cstfk8udci" path="res://Assets/Shader/blur.gdshader" id="4_v5ddw"]
 [ext_resource type="Theme" uid="uid://bwauanadesdm6" path="res://Assets/Theme/menu_panel.tres" id="7_7nt4r"]
 [ext_resource type="Script" uid="uid://cfa6u8q8grk6o" path="res://Src/UI/MenuPanel.cs" id="7_365jr"]
 [ext_resource type="Script" uid="uid://dvjtigpqee0jw" path="res://Src/UI/Item/MenuItem.cs" id="7_bl4fu"]
+[ext_resource type="Material" uid="uid://j3isaxpvqgbb" path="res://Assets/Material/blur.tres" id="9_bmwv3"]
 [ext_resource type="Script" uid="uid://bk3tot6c35bwu" path="res://Src/Utils/IconTexture2D.cs" id="13_7nt4r"]
 [ext_resource type="Script" uid="uid://diqldycl8cgn2" path="res://Src/UI/Page/MenuPage.cs" id="15_fuji0"]
 [ext_resource type="Script" uid="uid://crsx3xkxjftam" path="res://Src/UI/Page/ModpackPage.cs" id="16_gblyu"]
@@ -369,7 +369,7 @@ script = ExtResource("7_365jr")
 _menuButton = NodePath("VBoxContainer/MenuButton")
 _pageContainer = NodePath("../ColorRect/VBoxContainer/MarginContainer/PageContainer")
 _animationPlayer = NodePath("AnimationPlayer")
-_blurShaderMaterial = ExtResource("4_bl4fu")
+_blurShaderMaterial = ExtResource("9_bmwv3")
 IsDraggable = true
 DoubleClickWindowMaximized = true
 
@@ -484,7 +484,7 @@ theme_override_constants/separation = 1
 theme_override_styles/separator = SubResource("StyleBoxLine_v5ddw")
 
 [node name="ColorRect" type="ColorRect" parent="HBoxContainer"]
-material = ExtResource("4_bl4fu")
+material = ExtResource("9_bmwv3")
 layout_mode = 2
 size_flags_horizontal = 3
 mouse_filter = 2

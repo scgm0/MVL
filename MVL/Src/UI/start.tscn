@@ -1,7 +1,7 @@
 [gd_scene load_steps=8 format=3 uid="uid://buuu4ls8t7l4u"]
 
 [ext_resource type="PackedScene" uid="uid://514oox50h8yl" path="res://Src/UI/main.tscn" id="1_7ma3r"]
-[ext_resource type="Material" uid="uid://cd0jllr2vxtxa" path="res://Assets/Material/window.material" id="2_874xg"]
+[ext_resource type="Material" uid="uid://b881bblb2gtmo" path="res://Assets/Material/window.tres" id="2_874xg"]
 [ext_resource type="Script" uid="uid://dbies7u5fo4sh" path="res://Src/UI/NativeWindowUtility.cs" id="3_874xg"]
 
 [sub_resource type="ViewportTexture" id="ViewportTexture_0eqgt"]
@@ -204,6 +204,7 @@ render_target_update_mode = 4
 
 [node name="Main" parent="MarginContainer/SubViewportContainer/SubViewport" node_paths=PackedStringArray("_marginContainer") instance=ExtResource("1_7ma3r")]
 _marginContainer = NodePath("../../..")
+_roundMaterial = ExtResource("2_874xg")
 
 [node name="TextureRect" type="TextureRect" parent="."]
 material = ExtResource("2_874xg")
