@@ -116,6 +116,7 @@ public partial class InstalledGamesImport : Control {
 			await Show();
 		}
 
+		var i = 1;
 		foreach (var installedGame in games) {
 			var installedGameItem = _installedGameItemScene!.Instantiate<InstalledGameItem>();
 			installedGameItem.GameVersion = installedGame.Version;
@@ -125,9 +126,9 @@ public partial class InstalledGamesImport : Control {
 			installedGameItem.Modulate = Colors.Transparent;
 			_installedGameList!.AddChild(installedGameItem);
 			using var tween = installedGameItem.CreateTween();
-			tween.TweenProperty(installedGameItem, "modulate:a", 1f, 0.3f);
-			tween.Parallel().TweenProperty(installedGameItem, "scale:x", 1f, 0.3f).From(0f);
-			await ToSignal(tween, Tween.SignalName.Finished);
+			tween.TweenProperty(installedGameItem, "modulate:a", 1f, 0.2f).SetDelay(i * 0.1);
+			tween.Parallel().TweenProperty(installedGameItem, "scale:x", 1f, 0.2f).From(0f).SetDelay(i * 0.1);
+			i++;
 		}
 	}
 
