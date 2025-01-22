@@ -38,6 +38,10 @@ window/vsync/vsync_mode=0
 project/assembly_name="MVL"
 project/solution_directory="../"
 
+[editor_plugins]
+
+enabled=PackedStringArray("res://addons/SmoothScroll/plugin.cfg")
+
 [gui]
 
 theme/custom_font="uid://d0e3mw7yvdf0v"
