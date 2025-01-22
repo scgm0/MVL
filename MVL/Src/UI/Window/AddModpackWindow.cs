@@ -109,6 +109,8 @@ public partial class AddModpackWindow : ColorRect {
 		_modpackPath.TextChanged += OnModpackPathOnTextChanged;
 		_createPath.Toggled += CreatePathOnToggled;
 		_folderButton.Pressed += _fileDialog.Show;
+		_fileDialog.CurrentPath = Paths.ModpackFolder;
+		_fileDialog.CurrentDir = Paths.ModpackFolder;
 		_fileDialog.DirSelected += path => {
 			path = Path.TrimEndingDirectorySeparator(path);
 			if (_createPath!.ButtonPressed) {
@@ -121,7 +123,7 @@ public partial class AddModpackWindow : ColorRect {
 		_okButton.Pressed += OkButtonOnPressed;
 
 		OnGameVersionOnItemSelected(0);
-		SetModpackPath(Path.Combine(Paths.ModpackPath, _modpackName.Text));
+		SetModpackPath(Path.Combine(Paths.ModpackFolder, _modpackName.Text));
 	}
 
 	private void OnGameVersionOnItemSelected(long index) {
