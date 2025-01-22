@@ -1,4 +1,4 @@
-[gd_scene load_steps=61 format=3 uid="uid://514oox50h8yl"]
+[gd_scene load_steps=63 format=3 uid="uid://514oox50h8yl"]
 
 [ext_resource type="Script" uid="uid://cvyeyg8ttnwmu" path="res://Src/UI/Main.cs" id="1_1opgh"]
 [ext_resource type="Texture2D" uid="uid://bhh1jvyj73qxh" path="res://Assets/Gui/Background.png" id="2_1opgh"]
@@ -203,6 +203,18 @@ FontSize = 14
 metadata/_custom_type_script = ExtResource("13_7nt4r")
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_kq46g"]
+
+[sub_resource type="Resource" id="Resource_bmwv3"]
+script = ExtResource("28_7eosv")
+friction = 4.0
+minimum_velocity = 0.4
+rebound_strength = 7.0
+
+[sub_resource type="Resource" id="Resource_o4ctv"]
+script = ExtResource("28_7eosv")
+friction = 4.0
+minimum_velocity = 0.4
+rebound_strength = 7.0
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_5lwjt"]
 bg_color = Color(0.20871, 0.20871, 0.20871, 0.6)
@@ -625,10 +637,10 @@ visible = false
 layout_mode = 2
 mouse_filter = 2
 script = ExtResource("16_gblyu")
-_addModpackButton = NodePath("MarginContainer/VBoxContainer/AddButton")
+_addModpackButton = NodePath("MarginContainer/SmoothScrollContainer/VBoxContainer/AddButton")
 _modpackItemScene = ExtResource("17_bmwv3")
 _modpackAddScene = ExtResource("20_gblyu")
-_list = NodePath("MarginContainer/VBoxContainer")
+_list = NodePath("MarginContainer/SmoothScrollContainer/VBoxContainer")
 Main = NodePath("MarginContainer")
 metadata/_tab_index = 2
 
@@ -645,14 +657,26 @@ theme_override_constants/margin_top = 12
 theme_override_constants/margin_right = 12
 theme_override_constants/margin_bottom = 12
 
-[node name="VBoxContainer" type="VBoxContainer" parent="HBoxContainer/ColorRect/VBoxContainer/MarginContainer/PageContainer/Modpack/MarginContainer"]
+[node name="SmoothScrollContainer" type="ScrollContainer" parent="HBoxContainer/ColorRect/VBoxContainer/MarginContainer/PageContainer/Modpack/MarginContainer"]
 layout_mode = 2
-mouse_filter = 2
+script = ExtResource("27_7nt4r")
+wheel_scroll_damper = SubResource("Resource_bmwv3")
+dragging_scroll_damper = SubResource("Resource_o4ctv")
+drag_with_mouse = false
+drag_with_touch = false
+handle_input = false
+metadata/_custom_type_script = ExtResource("27_7nt4r")
 
-[node name="AddButton" type="Button" parent="HBoxContainer/ColorRect/VBoxContainer/MarginContainer/PageContainer/Modpack/MarginContainer/VBoxContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="HBoxContainer/ColorRect/VBoxContainer/MarginContainer/PageContainer/Modpack/MarginContainer/SmoothScrollContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="AddButton" type="Button" parent="HBoxContainer/ColorRect/VBoxContainer/MarginContainer/PageContainer/Modpack/MarginContainer/SmoothScrollContainer/VBoxContainer"]
 custom_minimum_size = Vector2(0, 60)
 layout_mode = 2
 focus_mode = 0
+mouse_filter = 1
 theme_override_colors/icon_hover_color = Color(1, 1, 1, 0.784314)
 theme_override_colors/icon_pressed_color = Color(1, 1, 1, 0.6)
 theme_override_colors/icon_normal_color = Color(1, 1, 1, 0.6)
