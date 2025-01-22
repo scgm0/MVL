@@ -61,5 +61,7 @@ public partial class ReleaseItem : PanelContainer {
 		_button.Pressed += ButtonOnPressed;
 	}
 
-	private async void ButtonOnPressed() { }
+	private void ButtonOnPressed() {
+		OS.ShellOpen(ReleaseInfo!.Path);
+	}
 }
