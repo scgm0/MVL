@@ -19,7 +19,7 @@ public partial class Main : NativeWindowUtility {
 	private Vector2I _rootMinSize = new(960, 540);
 
 	public static BaseConfig BaseConfig { get; } =
-		BaseConfig.Load(OS.GetUserDataDir().PathJoin("data.json"));
+		BaseConfig.Load(Paths.BaseConfigPath);
 
 	private Window.InstalledGamesImport? _installedGamesImport;
 
@@ -147,6 +147,7 @@ public partial class Main : NativeWindowUtility {
 	}
 
 	public static void CheckReleaseInfo() {
+		BaseConfig.Release = BaseConfig.Release.Distinct().ToList();
 		var list = BaseConfig.Release.ToList();
 		foreach (var path in list) {
 			var gameVersion = GameVersion.FromGamePath(path);
@@ -168,6 +169,7 @@ public partial class Main : NativeWindowUtility {
 	}
 
 	public static void CheckModpackConfig() {
+		BaseConfig.Modpack = BaseConfig.Modpack.Distinct().ToList();
 		var list = BaseConfig.Modpack.ToList();
 		foreach (var path in list) {
 			if (!DirAccess.DirExistsAbsolute(path)) {
@@ -260,9 +262,7 @@ public partial class Main : NativeWindowUtility {
 			if (args.Data == null) return;
 			GD.PrintRich(args.Data.ConvertAnsiToBbCode());
 			if (args.Data.EndsWith("Client logger started.")) {
-				Dispatcher.SynchronizationContext.Post(_ => {
-					SceneTree.Root.Minimize();
-				}, null);
+				Dispatcher.SynchronizationContext.Post(_ => { SceneTree.Root.Minimize(); }, null);
 			}
 		};
 

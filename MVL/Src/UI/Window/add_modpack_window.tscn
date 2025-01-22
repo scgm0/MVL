@@ -1,4 +1,4 @@
-[gd_scene load_steps=25 format=3 uid="uid://ccfq2fesgeykj"]
+[gd_scene load_steps=30 format=3 uid="uid://ccfq2fesgeykj"]
 
 [ext_resource type="Script" uid="uid://dstnk40xqjp6x" path="res://Src/UI/Window/AddModpackWindow.cs" id="1_vgayu"]
 [ext_resource type="Script" uid="uid://dbies7u5fo4sh" path="res://Src/UI/NativeWindowUtility.cs" id="1_x4e8l"]
@@ -19,17 +19,50 @@ shadow_size = 8
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_vgayu"]
 
+[sub_resource type="Texture2D" id="Texture2D_bdark"]
+resource_local_to_scene = false
+resource_name = ""
+script = ExtResource("3_i7wln")
+IconName = "toggle-switch"
+FontSize = 24
+metadata/_custom_type_script = ExtResource("3_i7wln")
+
+[sub_resource type="Texture2D" id="Texture2D_u0mv6"]
+resource_local_to_scene = false
+resource_name = ""
+script = ExtResource("3_i7wln")
+IconName = "toggle-switch-off-outline"
+FontSize = 24
+metadata/_custom_type_script = ExtResource("3_i7wln")
+
+[sub_resource type="Texture2D" id="Texture2D_i7wln"]
+resource_local_to_scene = false
+resource_name = ""
+script = ExtResource("3_i7wln")
+IconName = "close"
+FontSize = 18
+metadata/_custom_type_script = ExtResource("3_i7wln")
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_b82ki"]
+
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_i7wln"]
-content_margin_left = 4.0
-content_margin_top = 4.0
-content_margin_right = 4.0
-content_margin_bottom = 4.0
+content_margin_left = 5.0
+content_margin_top = 5.0
+content_margin_right = 5.0
+content_margin_bottom = 5.0
 bg_color = Color(0.101961, 0.101961, 0.101961, 1)
 corner_radius_top_left = 3
 corner_radius_top_right = 3
 corner_radius_bottom_right = 3
 corner_radius_bottom_left = 3
-corner_detail = 5
+
+[sub_resource type="Texture2D" id="Texture2D_b82ki"]
+resource_local_to_scene = false
+resource_name = ""
+script = ExtResource("3_i7wln")
+IconName = "chevron-down"
+FontSize = 24
+metadata/_custom_type_script = ExtResource("3_i7wln")
 
 [sub_resource type="Texture2D" id="Texture2D_jf4ur"]
 resource_local_to_scene = false
@@ -47,43 +80,61 @@ IconName = "radiobox-blank"
 FontSize = 16
 metadata/_custom_type_script = ExtResource("3_i7wln")
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_jf4ur"]
+content_margin_left = 4.0
+content_margin_top = 4.0
+content_margin_right = 4.0
+content_margin_bottom = 4.0
+bg_color = Color(0.4, 0.4, 0.4, 1)
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
+corner_detail = 5
+
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_vgayu"]
 bg_color = Color(0.20871, 0.20871, 0.20871, 1)
-corner_radius_top_left = 3
-corner_radius_top_right = 3
-corner_radius_bottom_right = 3
-corner_radius_bottom_left = 3
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
+shadow_size = 3
 
 [sub_resource type="Theme" id="Theme_vgayu"]
 Button/styles/focus = SubResource("StyleBoxEmpty_vgayu")
+CheckButton/icons/checked = SubResource("Texture2D_bdark")
+CheckButton/icons/unchecked = SubResource("Texture2D_u0mv6")
+LineEdit/font_sizes/font_size = 14
+LineEdit/icons/clear = SubResource("Texture2D_i7wln")
+LineEdit/styles/focus = SubResource("StyleBoxEmpty_b82ki")
 LineEdit/styles/normal = SubResource("StyleBoxFlat_i7wln")
+OptionButton/icons/arrow = SubResource("Texture2D_b82ki")
 PopupMenu/icons/radio_checked = SubResource("Texture2D_jf4ur")
 PopupMenu/icons/radio_unchecked = SubResource("Texture2D_dsng2")
+PopupMenu/styles/hover = SubResource("StyleBoxFlat_jf4ur")
 PopupMenu/styles/panel = SubResource("StyleBoxFlat_vgayu")
 
-[sub_resource type="Texture2D" id="Texture2D_i7wln"]
+[sub_resource type="Texture2D" id="Texture2D_5jy5j"]
 resource_local_to_scene = false
 resource_name = ""
 script = ExtResource("3_i7wln")
-IconName = "close"
+IconName = "alert-circle-outline"
 FontSize = 18
 metadata/_custom_type_script = ExtResource("3_i7wln")
 
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_i7wln"]
+[sub_resource type="Texture2D" id="Texture2D_2ju0j"]
+resource_local_to_scene = false
+resource_name = ""
+script = ExtResource("3_i7wln")
+IconName = "file-plus-outline"
+FontSize = 24
+metadata/_custom_type_script = ExtResource("3_i7wln")
 
 [sub_resource type="Texture2D" id="Texture2D_vgayu"]
 resource_local_to_scene = false
 resource_name = ""
 script = ExtResource("3_i7wln")
 IconName = "file-settings-outline"
-FontSize = 24
-metadata/_custom_type_script = ExtResource("3_i7wln")
-
-[sub_resource type="Texture2D" id="Texture2D_b82ki"]
-resource_local_to_scene = false
-resource_name = ""
-script = ExtResource("3_i7wln")
-IconName = "chevron-down"
 FontSize = 24
 metadata/_custom_type_script = ExtResource("3_i7wln")
 
@@ -219,7 +270,7 @@ _data = {
 &"show": SubResource("Animation_mqeym")
 }
 
-[node name="AddModpackWindow" type="ColorRect" node_paths=PackedStringArray("_container", "_modpackPath", "_folderButton", "_fileDialog", "_gameVersion", "_cancelButton", "_okButton", "_animationPlayer")]
+[node name="AddModpackWindow" type="ColorRect" node_paths=PackedStringArray("_container", "_modpackName", "_modpackPath", "_createPath", "_folderButton", "_fileDialog", "_gameVersion", "_releasePath", "_tooltip", "_cancelButton", "_okButton", "_animationPlayer")]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -228,10 +279,14 @@ grow_vertical = 2
 color = Color(0, 0, 0, 0.6)
 script = ExtResource("1_vgayu")
 _container = NodePath("PanelContainer")
-_modpackPath = NodePath("PanelContainer/VBoxContainer/HBoxContainer/LineEdit")
-_folderButton = NodePath("PanelContainer/VBoxContainer/HBoxContainer/Button")
+_modpackName = NodePath("PanelContainer/VBoxContainer/VBoxContainer/LineEdit")
+_modpackPath = NodePath("PanelContainer/VBoxContainer/VBoxContainer2/HBoxContainer/LineEdit")
+_createPath = NodePath("PanelContainer/VBoxContainer/VBoxContainer2/HBoxContainer2/CheckButton")
+_folderButton = NodePath("PanelContainer/VBoxContainer/VBoxContainer2/HBoxContainer/Button")
 _fileDialog = NodePath("FileDialog")
-_gameVersion = NodePath("PanelContainer/VBoxContainer/HBoxContainer2/OptionButton")
+_gameVersion = NodePath("PanelContainer/VBoxContainer/VBoxContainer3/HBoxContainer2/OptionButton")
+_releasePath = NodePath("PanelContainer/VBoxContainer/VBoxContainer3/HBoxContainer2/OptionButton2")
+_tooltip = NodePath("PanelContainer/VBoxContainer/VBoxContainer2/Label")
 _cancelButton = NodePath("PanelContainer/VBoxContainer/HBoxContainer3/Button")
 _okButton = NodePath("PanelContainer/VBoxContainer/HBoxContainer3/Button2")
 _animationPlayer = NodePath("AnimationPlayer")
@@ -280,42 +335,87 @@ horizontal_alignment = 1
 layout_mode = 2
 theme_override_constants/separation = 15
 
-[node name="HBoxContainer" type="HBoxContainer" parent="PanelContainer/VBoxContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer/VBoxContainer"]
 layout_mode = 2
 
-[node name="LineEdit" type="LineEdit" parent="PanelContainer/VBoxContainer/HBoxContainer"]
+[node name="Name" type="Label" parent="PanelContainer/VBoxContainer/VBoxContainer"]
+layout_mode = 2
+text = "整合包名称:"
+
+[node name="LineEdit" type="LineEdit" parent="PanelContainer/VBoxContainer/VBoxContainer"]
+layout_mode = 2
+text = "VintagestoryData"
+placeholder_text = "名称不能为空"
+clear_button_enabled = true
+right_icon = SubResource("Texture2D_5jy5j")
+caret_blink = true
+
+[node name="VBoxContainer2" type="VBoxContainer" parent="PanelContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="PanelContainer/VBoxContainer/VBoxContainer2"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="PanelContainer/VBoxContainer/VBoxContainer2/HBoxContainer2"]
+layout_mode = 2
+size_flags_vertical = 8
+text = "整合包路径:"
+
+[node name="CheckButton" type="CheckButton" parent="PanelContainer/VBoxContainer/VBoxContainer2/HBoxContainer2"]
+layout_mode = 2
+size_flags_horizontal = 10
+size_flags_vertical = 4
+button_pressed = true
+text = "创建文件夹"
+icon = SubResource("Texture2D_2ju0j")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="PanelContainer/VBoxContainer/VBoxContainer2"]
+layout_mode = 2
+
+[node name="LineEdit" type="LineEdit" parent="PanelContainer/VBoxContainer/VBoxContainer2/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
-theme_override_icons/clear = SubResource("Texture2D_i7wln")
-theme_override_styles/focus = SubResource("StyleBoxEmpty_i7wln")
-placeholder_text = "整合包路径"
-emoji_menu_enabled = false
+placeholder_text = "路径不能为空"
 clear_button_enabled = true
-shortcut_keys_enabled = false
+right_icon = SubResource("Texture2D_5jy5j")
+caret_blink = true
 
-[node name="Button" type="Button" parent="PanelContainer/VBoxContainer/HBoxContainer"]
+[node name="Button" type="Button" parent="PanelContainer/VBoxContainer/VBoxContainer2/HBoxContainer"]
 layout_mode = 2
 icon = SubResource("Texture2D_vgayu")
 
-[node name="HBoxContainer2" type="HBoxContainer" parent="PanelContainer/VBoxContainer"]
+[node name="Label" type="Label" parent="PanelContainer/VBoxContainer/VBoxContainer2"]
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_font_sizes/font_size = 14
+text = "将自动创建文件夹"
+
+[node name="VBoxContainer3" type="VBoxContainer" parent="PanelContainer/VBoxContainer"]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="PanelContainer/VBoxContainer/HBoxContainer2"]
+[node name="Label" type="Label" parent="PanelContainer/VBoxContainer/VBoxContainer3"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 1
-text = "游戏版本"
+text = "游戏版本:"
 vertical_alignment = 1
 
-[node name="OptionButton" type="OptionButton" parent="PanelContainer/VBoxContainer/HBoxContainer2"]
+[node name="HBoxContainer2" type="HBoxContainer" parent="PanelContainer/VBoxContainer/VBoxContainer3"]
+layout_mode = 2
+
+[node name="OptionButton" type="OptionButton" parent="PanelContainer/VBoxContainer/VBoxContainer3/HBoxContainer2"]
 layout_mode = 2
 size_flags_horizontal = 3
-theme_override_icons/arrow = SubResource("Texture2D_b82ki")
 alignment = 1
 text_overrun_behavior = 3
 clip_text = true
-fit_to_longest_item = false
-allow_reselect = true
+
+[node name="OptionButton2" type="OptionButton" parent="PanelContainer/VBoxContainer/VBoxContainer3/HBoxContainer2"]
+layout_mode = 2
+size_flags_horizontal = 3
+alignment = 1
+text_overrun_behavior = 3
+clip_text = true
 
 [node name="HSeparator2" type="HSeparator" parent="PanelContainer/VBoxContainer"]
 layout_mode = 2
@@ -333,7 +433,6 @@ text = "取消"
 
 [node name="Button2" type="Button" parent="PanelContainer/VBoxContainer/HBoxContainer3"]
 layout_mode = 2
-disabled = true
 text = "确定"
 
 [node name="FileDialog" type="FileDialog" parent="."]

@@ -58,7 +58,7 @@ public partial class ModpackItem : PanelContainer {
 
 		var modsPath = ModpackConfig.Path!.PathJoin("Mods");
 		if (Directory.Exists(modsPath)) {
-			_modCount.Text = $"模组数量: {Directory.GetFiles(modsPath).Length + Directory.GetDirectories(modsPath).Length}";
+			_modCount.Text = $"模组数量: {Directory.GetFileSystemEntries(modsPath).Length}";
 		}
 
 		_versionButton.Pressed += VersionButtonOnPressed;

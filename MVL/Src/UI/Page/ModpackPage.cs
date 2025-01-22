@@ -32,23 +32,23 @@ public partial class ModpackPage : MenuPage {
 
 	private void AddModpackButtonOnPressed() {
 		var addModpack = _modpackAddScene!.Instantiate<AddModpackWindow>();
-		addModpack.AddModpack += (path, version) => {
-			var gameVersion = new GameVersion(version);
-			var info = UI.Main.ReleaseInfos.Values.First(i => i.Version == gameVersion);
-			var modpack = new ModpackConfig {
-				Path = path,
-				Name = path.GetFile(),
-				Version = gameVersion,
-				ReleasePath = info.Path
-			};
-			ModpackConfig.Save(modpack);
-			UI.Main.ModpackConfigs.Add(path, modpack);
-			UI.Main.BaseConfig.Modpack.Insert(0, path);
-			UpdateList();
-		};
+		addModpack.AddModpack += AddModpackOnAddModpack;
 		addModpack.Hidden += addModpack.QueueFree;
 		UI.Main.Instance?.AddChild(addModpack);
 		_ = addModpack.Show();
+	}
+
+	private void AddModpackOnAddModpack(string modpackName, string modpackPath, string gameVersion, string releasePath) {
+		var modpack = new ModpackConfig {
+			Path = modpackPath,
+			Name = modpackName,
+			Version = new GameVersion(gameVersion),
+			ReleasePath = releasePath
+		};
+		ModpackConfig.Save(modpack);
+		UI.Main.ModpackConfigs[modpackPath] = modpack;
+		UI.Main.BaseConfig.Modpack.Insert(0, modpackPath);
+		UpdateList();
 	}
 
 	private void OnVisibilityChanged() {
