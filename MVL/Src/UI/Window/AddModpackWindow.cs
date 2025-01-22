@@ -91,6 +91,12 @@ public partial class AddModpackWindow : ColorRect {
 
 		var name = _modpackName.Text;
 		_modpackName.TextChanged += text => {
+			if (string.IsNullOrEmpty(text)) {
+				_okButton!.Disabled = true;
+				_tooltip!.Text = "请输入名称";
+				return;
+			}
+
 			if (_createPath!.ButtonPressed) {
 				var path = _modpackPath!.Text;
 				path = path.GetFile() == name ? Path.Combine(path.GetBaseDir(), text) : path;
@@ -150,7 +156,7 @@ public partial class AddModpackWindow : ColorRect {
 	}
 
 	private void OnModpackPathOnTextChanged(string text) {
-		if (string.IsNullOrEmpty(text)) {
+		if (string.IsNullOrEmpty(text) || string.IsNullOrEmpty(_modpackName!.Text)) {
 			_okButton!.Disabled = true;
 			return;
 		}
