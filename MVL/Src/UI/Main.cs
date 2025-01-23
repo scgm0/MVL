@@ -114,7 +114,7 @@ public partial class Main : NativeWindowUtility {
 
 	private void RootOnSizeChanged() {
 		_roundMaterial!.SetShaderParameter(StringNames.WindowSize, SceneTree.Root.Size);
-		if (ShadowSize != 5 || SceneTree.Root.Size != DisplayServer.ScreenGetUsableRect().Size) {
+		if (ShadowSize != 5 || SceneTree.Root.Mode != Godot.Window.ModeEnum.Maximized) {
 			ShadowSize = 5;
 			_roundMaterial!.SetShaderParameter(StringNames.CornerRadius, new Vector4(12, 12, 12, 12));
 		} else {
