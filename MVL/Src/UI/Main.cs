@@ -148,59 +148,75 @@ public partial class Main : NativeWindowUtility {
 
 	public static void CheckReleaseInfo() {
 		BaseConfig.Release = BaseConfig.Release.Distinct().ToList();
-		var list = BaseConfig.Release.ToList();
-		foreach (var path in list) {
+		var snapshotPaths = BaseConfig.Release.ToList();
+
+		foreach (var path in snapshotPaths) {
 			var gameVersion = GameVersion.FromGamePath(path);
 			if (gameVersion is null) {
-				ReleaseInfos.Remove(path);
-				BaseConfig.Release.Remove(path);
-			} else {
-				var info = ReleaseInfos.GetValueOrDefault(path,
-					new() {
-						Path = path,
-						Name = path.GetFile()
-					});
-				info.Version = gameVersion.Value;
-				ReleaseInfos[path] = info;
+				RemoveRelease(path);
+				continue;
 			}
+
+			if (!ReleaseInfos.TryGetValue(path, out var releaseInfo)) {
+				releaseInfo = new() {
+					Path = path,
+					Name = path.GetFile()
+				};
+				ReleaseInfos[path] = releaseInfo;
+			}
+
+			releaseInfo.Version = gameVersion.Value;
 		}
 
 		BaseConfig.Save(BaseConfig);
 	}
 
+	static private void RemoveRelease(string path) {
+		ReleaseInfos.Remove(path);
+		BaseConfig.Release.Remove(path);
+	}
+
 	public static void CheckModpackConfig() {
 		BaseConfig.Modpack = BaseConfig.Modpack.Distinct().ToList();
 		var list = BaseConfig.Modpack.ToList();
+
+		var versionLookup = ReleaseInfos.Values
+			.ToLookup(info => info.Version);
+
 		foreach (var path in list) {
 			if (!DirAccess.DirExistsAbsolute(path)) {
-				ModpackConfigs.Remove(path);
-				BaseConfig.Modpack.Remove(path);
+				RemoveModpack(path);
 				continue;
 			}
 
 			var modPack = ModpackConfigs.GetValueOrDefault(path, ModpackConfig.Load(path));
-			if (modPack.ReleasePath is not null && (!ReleaseInfos.TryGetValue(modPack.ReleasePath, out var value) ||
-				value.Version != modPack.Version)) {
+			ModpackConfigs[path] = modPack;
+			modPack.Path = path;
+			modPack.Name ??= path.GetFile();
+
+			if (modPack.ReleasePath != null &&
+				(!ReleaseInfos.TryGetValue(modPack.ReleasePath, out var releaseInfo) ||
+					releaseInfo.Version != modPack.Version)) {
 				modPack.ReleasePath = null;
 			}
 
 			if (modPack.Version is null) {
-				ModpackConfigs.Remove(path);
-				BaseConfig.Modpack.Remove(path);
+				modPack.ReleasePath = null;
 				continue;
 			}
 
-			var info = ReleaseInfos.Values.FirstOrDefault(i => i?.Version == modPack.Version, null);
-			modPack.Path = path;
-			modPack.Version = info?.Version;
+			var info = versionLookup[modPack.Version.Value].FirstOrDefault();
 			modPack.ReleasePath ??= info?.Path;
-			modPack.Name ??= path.GetFile();
 
 			ModpackConfig.Save(modPack);
-			ModpackConfigs[path] = modPack;
 		}
 
 		BaseConfig.Save(BaseConfig);
+	}
+
+	static private void RemoveModpack(string path) {
+		ModpackConfigs.Remove(path);
+		BaseConfig.Modpack.Remove(path);
 	}
 
 	public static string? GetGameConfigName(string gamePath) {
