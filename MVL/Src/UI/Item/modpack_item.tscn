@@ -1,10 +1,12 @@
-[gd_scene load_steps=13 format=3 uid="uid://d3yuqxh7olknc"]
+[gd_scene load_steps=14 format=3 uid="uid://d3yuqxh7olknc"]
 
 [ext_resource type="Script" uid="uid://cwh0mdeoogvqa" path="res://Src/UI/Item/ModpackItem.cs" id="1_j0hm1"]
 [ext_resource type="PackedScene" uid="uid://d21bm32gkwqcr" path="res://Src/UI/Window/installed_games_import.tscn" id="2_jptkp"]
 [ext_resource type="Texture2D" uid="uid://d3mq4tlr6rr01" path="res://Assets/Icon/VS/gameicon.png" id="2_x6kgn"]
 [ext_resource type="FontFile" uid="uid://bmgx1vyg6bavd" path="res://Assets/Font/HarmonyOS_Sans_SC_Bold.ttf" id="3_3qaia"]
 [ext_resource type="Script" uid="uid://bk3tot6c35bwu" path="res://Src/Utils/IconTexture2D.cs" id="4_32kh6"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_jptkp"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_7nt4r"]
 bg_color = Color(0.314316, 0.314316, 0.314316, 0.6)
@@ -24,6 +26,7 @@ corner_radius_bottom_left = 6
 
 [sub_resource type="Theme" id="Theme_bmwv3"]
 Button/constants/h_separation = 0
+Button/styles/disabled = SubResource("StyleBoxEmpty_jptkp")
 Button/styles/hover = SubResource("StyleBoxFlat_7nt4r")
 Button/styles/normal = SubResource("StyleBoxEmpty_7eosv")
 Button/styles/pressed = SubResource("StyleBoxFlat_7eosv")

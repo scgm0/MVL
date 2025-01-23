@@ -56,6 +56,11 @@ public partial class ModpackItem : PanelContainer {
 			}
 		}
 
+		if (ModpackConfig.Version is null) {
+			_playButton.Disabled = true;
+			_playButton.TooltipText = "请选择版本后再启动游戏";
+		}
+
 		var modsPath = ModpackConfig.Path!.PathJoin("Mods");
 		if (Directory.Exists(modsPath)) {
 			_modCount.Text = $"模组数量: {Directory.GetFileSystemEntries(modsPath).Length}";
@@ -77,10 +82,13 @@ public partial class ModpackItem : PanelContainer {
 			var path = paths[0];
 			var info = Main.ReleaseInfos[path];
 			ModpackConfig!.Version = info.Version;
-			ModpackConfig!.ReleasePath = info.Path;
+			ModpackConfig.ReleasePath = info.Path;
 			_versionButton!.Text = info.Version.ShortGameVersion;
-			_releaseButton!.Text = info.Name;
+			_releaseButton!.Visible = true;
+			_releaseButton.Text = info.Name;
 			_releaseButton.TooltipText = info.Path;
+			_playButton!.Disabled = false;
+			_playButton.TooltipText = "";
 			ModpackConfig.Save(ModpackConfig);
 		};
 		Main.Instance?.AddChild(versionSelect);
