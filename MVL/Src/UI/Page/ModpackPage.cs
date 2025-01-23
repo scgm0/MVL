@@ -1,4 +1,3 @@
-using System.Linq;
 using Godot;
 using MVL.UI.Item;
 using MVL.UI.Window;

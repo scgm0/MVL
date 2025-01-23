@@ -28,7 +28,7 @@
 
     <ItemGroup>
         <Content Include="**\*.gd"/>
-        <Content Include="**\*.uid" DependentUpon="%(Filename).cs" />
+        <Content Include="**\*.uid" DependentUpon="%(Filename)" />
         <Content Include="**\*.json" DependentUpon="%(Filename).cs" />
         <Content Include="**\*.txt" DependentUpon="%(Filename).cs" />
         <Compile Update="**\*.*.cs" DependentUpon="$([System.IO.Path]::GetFileNameWithoutExtension('%(Filename)')).cs" />
