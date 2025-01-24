@@ -55,7 +55,9 @@ public partial class Main : NativeWindowUtility {
 
 	public static Main? Instance { get; private set; }
 
-	public static Process? GameProcess { get; set; }
+	public static Process? CurrentGameProcess { get; set; }
+	public static ModpackConfig? CurrentModpack { get; set; }
+
 	public static Dictionary<string, ReleaseInfo> ReleaseInfos { get; } = new();
 
 	public static Dictionary<string, ModpackConfig> ModpackConfigs { get; } = new();
@@ -269,7 +271,8 @@ public partial class Main : NativeWindowUtility {
 		};
 
 		var process = new Process {
-			StartInfo = startInfo
+			StartInfo = startInfo,
+			EnableRaisingEvents = true
 		};
 
 		process.ErrorDataReceived += (_, args) => { GD.PrintErr(args.Data); };
@@ -297,30 +300,34 @@ public partial class Main : NativeWindowUtility {
 					ExecutableType = ExecutableTypeEnum.InitData
 				},
 				$"dotnet {tmp.GetCurrentDir().PathJoin("VSRun.dll")}");
-			GameProcess = process;
+			CurrentGameProcess = process;
 			await process.WaitForExitAsync();
 		} catch (Exception e) {
 			GD.PrintErr(e);
 		}
 	}
 
-	public static async Task StartGame(
+	public static void StartGame(
 		string gamePath,
 		string dataPath,
 		string command = "%command%",
 		string assembleName = "Vintagestory.dll") {
 		try {
-			using var tmp = CopyVsRun();
-			using var process = VsRun(new() {
+			var tmp = CopyVsRun();
+			var process = VsRun(new() {
 					VintageStoryPath = gamePath,
 					VintageStoryDataPath = dataPath,
 					AssemblyPath = assembleName.Replace("%game_path%", gamePath).Replace("%data_path", dataPath),
 					ExecutableType = ExecutableTypeEnum.StartGame
 				},
 				command.Replace("%command%", $"dotnet {tmp.GetCurrentDir().PathJoin("VSRun.dll")}"));
-			GameProcess = process;
-			await process.WaitForExitAsync();
-			GameProcess = null;
+			CurrentGameProcess = process;
+			process.Exited += (_, _) => {
+				tmp.Dispose();
+				process.Dispose();
+				CurrentGameProcess = null;
+				CurrentModpack = null;
+			};
 		} catch (Exception e) {
 			GD.PrintErr(e);
 		}

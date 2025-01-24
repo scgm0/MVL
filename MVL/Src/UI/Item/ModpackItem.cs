@@ -1,3 +1,4 @@
+using System;
 using System.IO;
 using System.Linq;
 using Godot;
@@ -61,6 +62,11 @@ public partial class ModpackItem : PanelContainer {
 			_playButton.TooltipText = "请选择版本后再启动游戏";
 		}
 
+		if (Main.CurrentModpack == ModpackConfig) {
+			_playButton.Modulate = Colors.Red;
+			Main.CurrentGameProcess!.Exited += CurrentGameProcessOnExited;
+		}
+
 		var modsPath = ModpackConfig.Path!.PathJoin("Mods");
 		if (Directory.Exists(modsPath)) {
 			_modCount.Text = $"模组数量: {Directory.GetFileSystemEntries(modsPath).Length}";
@@ -68,6 +74,12 @@ public partial class ModpackItem : PanelContainer {
 
 		_versionButton.Pressed += VersionButtonOnPressed;
 		_playButton.Pressed += PlayButtonOnPressed;
+	}
+
+	public override void _ExitTree() {
+		if (Main.CurrentGameProcess is not null) {
+			Main.CurrentGameProcess.Exited -= CurrentGameProcessOnExited;
+		}
 	}
 
 	private void VersionButtonOnPressed() {
@@ -96,16 +108,24 @@ public partial class ModpackItem : PanelContainer {
 		versionSelect.Hidden += versionSelect.QueueFree;
 	}
 
-	private async void PlayButtonOnPressed() {
-		if (Main.GameProcess is null) {
+	private void PlayButtonOnPressed() {
+		if (Main.CurrentGameProcess is null) {
 			var icon = (IconTexture2D)_playButton!.Icon;
 			icon.IconName = "stop";
 			_playButton.Modulate = Colors.Red;
-			await Main.StartGame(ModpackConfig!.ReleasePath!, ModpackConfig.Path!);
+			Main.CurrentModpack = ModpackConfig;
+			Main.StartGame(ModpackConfig!.ReleasePath!, ModpackConfig.Path!);
+			Main.CurrentGameProcess!.Exited += CurrentGameProcessOnExited;
+		} else {
+			Main.CurrentGameProcess.Kill();
+		}
+	}
+
+	private void CurrentGameProcessOnExited(object? sender, EventArgs e) {
+		Dispatcher.SynchronizationContext.Post(_ => {
+			var icon = (IconTexture2D)_playButton!.Icon;
 			icon.IconName = "play";
 			_playButton.Modulate = Colors.White;
-		} else {
-			Main.GameProcess.Kill();
-		}
+		}, null);
 	}
 }
