@@ -35,6 +35,10 @@
         <Content Remove=".godot\**" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="Generated\" />
+    </ItemGroup>
+
     <Target Name="PreBuild" BeforeTargets="Build">
         <ItemGroup>
             <FilesToDelete Include="Misc/VSRun/*"/>
