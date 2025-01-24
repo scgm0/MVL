@@ -16,7 +16,6 @@
 [ext_resource type="Script" uid="uid://crsx3xkxjftam" path="res://Src/UI/Page/ModpackPage.cs" id="16_gblyu"]
 [ext_resource type="PackedScene" uid="uid://d3yuqxh7olknc" path="res://Src/UI/Item/modpack_item.tscn" id="17_bmwv3"]
 [ext_resource type="Script" uid="uid://bx8dqa4avru7x" path="res://Src/UI/Page/ReleasePage.cs" id="18_g8snm"]
-[ext_resource type="Texture2D" uid="uid://cl0lb1d7oai18" path="res://Assets/Gui/avatar.jpg" id="19_a6wm3"]
 [ext_resource type="PackedScene" uid="uid://bjgov53faujry" path="res://Src/UI/Item/release_item.tscn" id="19_g8snm"]
 [ext_resource type="PackedScene" uid="uid://ccfq2fesgeykj" path="res://Src/UI/Window/add_modpack_window.tscn" id="20_gblyu"]
 [ext_resource type="LabelSettings" uid="uid://bdfwqcqufhm6k" path="res://Assets/Setting/page_title.tres" id="23_53u4p"]
@@ -154,7 +153,19 @@ _data = {
 color = Color(0.6, 0.6, 0.6, 0.490196)
 vertical = true
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_30yt8"]
+content_margin_left = 2.0
+content_margin_top = 2.0
+content_margin_right = 2.0
+content_margin_bottom = 2.0
+corner_radius_top_left = 40
+corner_radius_top_right = 40
+corner_radius_bottom_right = 40
+corner_radius_bottom_left = 40
+corner_detail = 20
+
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_08ol6"]
+bg_color = Color(1, 1, 1, 1)
 corner_radius_top_left = 20
 corner_radius_top_right = 20
 corner_radius_bottom_right = 20
@@ -522,17 +533,21 @@ theme_override_constants/margin_top = 5
 theme_override_constants/margin_right = 5
 theme_override_constants/margin_bottom = 5
 
-[node name="PanelContainer" type="PanelContainer" parent="HBoxContainer/ColorRect/VBoxContainer/HBoxContainer/MarginContainer"]
+[node name="PanelContainer2" type="PanelContainer" parent="HBoxContainer/ColorRect/VBoxContainer/HBoxContainer/MarginContainer"]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_30yt8")
+
+[node name="PanelContainer" type="PanelContainer" parent="HBoxContainer/ColorRect/VBoxContainer/HBoxContainer/MarginContainer/PanelContainer2"]
 clip_children = 2
 layout_mode = 2
 mouse_filter = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_08ol6")
 
-[node name="TextureRect" type="TextureRect" parent="HBoxContainer/ColorRect/VBoxContainer/HBoxContainer/MarginContainer/PanelContainer"]
+[node name="TextureRect" type="TextureRect" parent="HBoxContainer/ColorRect/VBoxContainer/HBoxContainer/MarginContainer/PanelContainer2/PanelContainer"]
 use_parent_material = true
 custom_minimum_size = Vector2(40, 40)
 layout_mode = 2
-texture = ExtResource("19_a6wm3")
+texture = ExtResource("2_xnuua")
 expand_mode = 1
 stretch_mode = 6
 
@@ -543,7 +558,7 @@ layout_mode = 2
 [node name="Label" type="Label" parent="HBoxContainer/ColorRect/VBoxContainer/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 4
-text = "复古物语启动器"
+text = "神麤詭末的复古物语启动器"
 label_settings = SubResource("LabelSettings_30yt8")
 horizontal_alignment = 1
 
