@@ -38,6 +38,7 @@ public static class Program {
 		Harmony = new("VSRun");
 		AppContext.SetData("APP_CONTEXT_BASE_DIRECTORY", Config.VintageStoryPath);
 		GamePaths.DataPath = Config.VintageStoryDataPath;
+		ClientSettings.ModPaths = ["Mods", GamePaths.DataPathMods];
 		switch (Config.ExecutableType) {
 			case ExecutableTypeEnum.InitData: {
 				InitData();
