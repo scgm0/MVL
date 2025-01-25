@@ -24,19 +24,24 @@
         <Compile Include="../SharedLibrary/*.cs">
             <Link>Src/SharedLibrary/*.cs</Link>
         </Compile>
+        <Compile Remove="Generated\IconTexture2D.Icons.g.cs"/>
     </ItemGroup>
 
     <ItemGroup>
         <Content Include="**\*.gd"/>
-        <Content Include="**\*.uid" DependentUpon="%(Filename)" />
-        <Content Include="**\*.json" DependentUpon="%(Filename).cs" />
-        <Content Include="**\*.txt" DependentUpon="%(Filename).cs" />
-        <Compile Update="**\*.*.cs" DependentUpon="$([System.IO.Path]::GetFileNameWithoutExtension('%(Filename)')).cs" />
-        <Content Remove=".godot\**" />
+        <Content Include="**\*.uid" DependentUpon="%(Filename)"/>
+        <Content Include="**\*.json" DependentUpon="%(Filename).cs"/>
+        <Content Include="**\*.txt" DependentUpon="%(Filename).cs"/>
+        <Compile Update="**\*.*.cs" DependentUpon="$([System.IO.Path]::GetFileNameWithoutExtension('%(Filename)')).cs"/>
+        <Content Remove=".godot\**"/>
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="Generated\" />
+        <AdditionalFiles Include="Assets/Icon/MD/icons.json"/>
+    </ItemGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\MVLGenerator\MVLGenerator.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false"/>
     </ItemGroup>
 
     <Target Name="PreBuild" BeforeTargets="Build">

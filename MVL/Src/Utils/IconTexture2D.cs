@@ -1,5 +1,7 @@
+using System.Collections.Generic;
 using System.Globalization;
 using Godot;
+using MVL.Utils.Attribute;
 
 namespace MVL.Utils;
 
@@ -45,4 +47,6 @@ public partial class IconTexture2D : Texture2D {
 
 	static private readonly FontFile FontFile = GD.Load<FontFile>("uid://dp7r8itfqvqca");
 
+	[JsonDictionary("Assets/Icon/MD/icons.json")]
+	static private partial Dictionary<string, string> Icons { get; }
 }
