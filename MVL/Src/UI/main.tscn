@@ -1,4 +1,4 @@
-[gd_scene load_steps=63 format=3 uid="uid://514oox50h8yl"]
+[gd_scene load_steps=64 format=3 uid="uid://514oox50h8yl"]
 
 [ext_resource type="Script" uid="uid://cvyeyg8ttnwmu" path="res://Src/UI/Main.cs" id="1_1opgh"]
 [ext_resource type="Texture2D" uid="uid://bhh1jvyj73qxh" path="res://Assets/Gui/Background.png" id="2_1opgh"]
@@ -17,6 +17,7 @@
 [ext_resource type="PackedScene" uid="uid://d3yuqxh7olknc" path="res://Src/UI/Item/modpack_item.tscn" id="17_bmwv3"]
 [ext_resource type="Script" uid="uid://bx8dqa4avru7x" path="res://Src/UI/Page/ReleasePage.cs" id="18_g8snm"]
 [ext_resource type="PackedScene" uid="uid://bjgov53faujry" path="res://Src/UI/Item/release_item.tscn" id="19_g8snm"]
+[ext_resource type="Script" uid="uid://dt2erdjo6w7pf" path="res://Src/UI/ReorderableContainer.cs" id="20_bmwv3"]
 [ext_resource type="PackedScene" uid="uid://ccfq2fesgeykj" path="res://Src/UI/Window/add_modpack_window.tscn" id="20_gblyu"]
 [ext_resource type="LabelSettings" uid="uid://bdfwqcqufhm6k" path="res://Assets/Setting/page_title.tres" id="23_53u4p"]
 [ext_resource type="Script" uid="uid://cre6m68jy0aad" path="res://addons/SmoothScroll/SmoothScrollContainer.gd" id="27_7nt4r"]
@@ -215,18 +216,6 @@ metadata/_custom_type_script = ExtResource("13_7nt4r")
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_kq46g"]
 
-[sub_resource type="Resource" id="Resource_bmwv3"]
-script = ExtResource("28_7eosv")
-friction = 4.0
-minimum_velocity = 0.4
-rebound_strength = 7.0
-
-[sub_resource type="Resource" id="Resource_o4ctv"]
-script = ExtResource("28_7eosv")
-friction = 4.0
-minimum_velocity = 0.4
-rebound_strength = 7.0
-
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_5lwjt"]
 bg_color = Color(0.20871, 0.20871, 0.20871, 0.6)
 border_width_left = 2
@@ -273,6 +262,18 @@ script = ExtResource("13_7nt4r")
 IconName = "plus"
 FontSize = 48
 metadata/_custom_type_script = ExtResource("13_7nt4r")
+
+[sub_resource type="Resource" id="Resource_bmwv3"]
+script = ExtResource("28_7eosv")
+friction = 4.0
+minimum_velocity = 0.4
+rebound_strength = 7.0
+
+[sub_resource type="Resource" id="Resource_o4ctv"]
+script = ExtResource("28_7eosv")
+friction = 4.0
+minimum_velocity = 0.4
+rebound_strength = 7.0
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ty1b0"]
 content_margin_left = 4.0
@@ -652,10 +653,10 @@ visible = false
 layout_mode = 2
 mouse_filter = 2
 script = ExtResource("16_gblyu")
-_addModpackButton = NodePath("MarginContainer/SmoothScrollContainer/VBoxContainer/AddButton")
+_addModpackButton = NodePath("MarginContainer/VBoxContainer/AddButton")
 _modpackItemScene = ExtResource("17_bmwv3")
 _modpackAddScene = ExtResource("20_gblyu")
-_list = NodePath("MarginContainer/SmoothScrollContainer/VBoxContainer")
+_list = NodePath("MarginContainer/VBoxContainer/SmoothScrollContainer/Container")
 Main = NodePath("MarginContainer")
 metadata/_tab_index = 2
 
@@ -672,22 +673,10 @@ theme_override_constants/margin_top = 12
 theme_override_constants/margin_right = 12
 theme_override_constants/margin_bottom = 12
 
-[node name="SmoothScrollContainer" type="ScrollContainer" parent="HBoxContainer/ColorRect/VBoxContainer/MarginContainer/PageContainer/Modpack/MarginContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="HBoxContainer/ColorRect/VBoxContainer/MarginContainer/PageContainer/Modpack/MarginContainer"]
 layout_mode = 2
-script = ExtResource("27_7nt4r")
-wheel_scroll_damper = SubResource("Resource_bmwv3")
-dragging_scroll_damper = SubResource("Resource_o4ctv")
-drag_with_mouse = false
-drag_with_touch = false
-handle_input = false
-metadata/_custom_type_script = ExtResource("27_7nt4r")
 
-[node name="VBoxContainer" type="VBoxContainer" parent="HBoxContainer/ColorRect/VBoxContainer/MarginContainer/PageContainer/Modpack/MarginContainer/SmoothScrollContainer"]
-layout_mode = 2
-size_flags_horizontal = 3
-size_flags_vertical = 3
-
-[node name="AddButton" type="Button" parent="HBoxContainer/ColorRect/VBoxContainer/MarginContainer/PageContainer/Modpack/MarginContainer/SmoothScrollContainer/VBoxContainer"]
+[node name="AddButton" type="Button" parent="HBoxContainer/ColorRect/VBoxContainer/MarginContainer/PageContainer/Modpack/MarginContainer/VBoxContainer"]
 custom_minimum_size = Vector2(0, 60)
 layout_mode = 2
 focus_mode = 0
@@ -700,6 +689,27 @@ theme_override_styles/pressed = SubResource("StyleBoxFlat_6are0")
 theme_override_styles/normal = SubResource("StyleBoxFlat_364to")
 icon = SubResource("Texture2D_6are0")
 icon_alignment = 1
+
+[node name="SmoothScrollContainer" type="ScrollContainer" parent="HBoxContainer/ColorRect/VBoxContainer/MarginContainer/PageContainer/Modpack/MarginContainer/VBoxContainer"]
+clip_contents = false
+layout_mode = 2
+size_flags_vertical = 3
+script = ExtResource("27_7nt4r")
+wheel_scroll_damper = SubResource("Resource_bmwv3")
+dragging_scroll_damper = SubResource("Resource_o4ctv")
+drag_with_mouse = false
+drag_with_touch = false
+handle_input = false
+metadata/_custom_type_script = ExtResource("27_7nt4r")
+
+[node name="Container" type="Container" parent="HBoxContainer/ColorRect/VBoxContainer/MarginContainer/PageContainer/Modpack/MarginContainer/VBoxContainer/SmoothScrollContainer" node_paths=PackedStringArray("ScrollContainer")]
+process_mode = 1
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 0
+script = ExtResource("20_bmwv3")
+IsVertical = true
+ScrollContainer = NodePath("..")
 
 [node name="Release" type="Control" parent="HBoxContainer/ColorRect/VBoxContainer/MarginContainer/PageContainer" node_paths=PackedStringArray("_addReleaseButton", "_grid", "Main")]
 visible = false

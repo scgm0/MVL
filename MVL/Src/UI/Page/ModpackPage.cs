@@ -18,7 +18,7 @@ public partial class ModpackPage : MenuPage {
 	private PackedScene? _modpackAddScene;
 
 	[Export]
-	private Container? _list;
+	private ReorderableContainer? _list;
 
 	public override void _Ready() {
 		_addModpackButton.NotNull();
@@ -27,6 +27,12 @@ public partial class ModpackPage : MenuPage {
 		_list.NotNull();
 		VisibilityChanged += OnVisibilityChanged;
 		_addModpackButton.Pressed += AddModpackButtonOnPressed;
+		_list.Reordered += ListOnReordered;
+	}
+
+	private void ListOnReordered(int from, int to) {
+		(UI.Main.BaseConfig.Modpack[from], UI.Main.BaseConfig.Modpack[to]) = (UI.Main.BaseConfig.Modpack[to], UI.Main.BaseConfig.Modpack[from]);
+		UI.Main.CheckModpackConfig();
 	}
 
 	private void AddModpackButtonOnPressed() {
