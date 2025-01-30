@@ -99,7 +99,7 @@ public partial class ReorderableContainer : Container {
 			if (child.GetRect().HasPoint(GetLocalMousePosition()) && mouseEvent.IsPressed()) {
 				_focusChild = child;
 				_isPress = true;
-				GetViewport().SetInputAsHandled();
+				AcceptEvent();
 			} else if (!mouseEvent.IsPressed()) {
 				_isPress = false;
 				_isHold = false;

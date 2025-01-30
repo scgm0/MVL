@@ -31,8 +31,10 @@ public partial class ModpackPage : MenuPage {
 	}
 
 	private void ListOnReordered(int from, int to) {
-		(UI.Main.BaseConfig.Modpack[from], UI.Main.BaseConfig.Modpack[to]) = (UI.Main.BaseConfig.Modpack[to], UI.Main.BaseConfig.Modpack[from]);
-		UI.Main.CheckModpackConfig();
+		var fromPath = UI.Main.BaseConfig.Modpack[from];
+		UI.Main.BaseConfig.Modpack.RemoveAt(from);
+		UI.Main.BaseConfig.Modpack.Insert(to, fromPath);
+		BaseConfig.Save(UI.Main.BaseConfig);
 	}
 
 	private void AddModpackButtonOnPressed() {
