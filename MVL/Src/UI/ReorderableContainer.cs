@@ -89,7 +89,7 @@ public partial class ReorderableContainer : Container {
 		ProcessMode = ProcessModeEnum.Pausable;
 		_AdjustExpectedChildRect();
 		SortChildren += () => _OnSortChildren();
-		GetTree().NodeAdded += _OnNodeAdded;
+		ChildEnteredTree += _OnChildEnteredTree;
 	}
 
 	public override void _GuiInput(InputEvent @event) {
@@ -181,7 +181,7 @@ public partial class ReorderableContainer : Container {
 		}
 	}
 
-	private void _OnNodeAdded(Node node) {
+	private void _OnChildEnteredTree(Node node) {
 		if (node is Control control && !Engine.IsEditorHint()) {
 			control.MouseFilter = MouseFilterEnum.Pass;
 		}
