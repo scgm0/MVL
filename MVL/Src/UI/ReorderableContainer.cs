@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Godot;
 
 namespace MVL.UI;
+
 [Tool]
 [GlobalClass]
 public partial class ReorderableContainer : Container {
@@ -66,6 +67,7 @@ public partial class ReorderableContainer : Container {
 	private int _dropZoneIndex = -1;
 	private readonly List<Rect2> _expectChildRect = [];
 
+	private Control _control = new();
 	private Control? _focusChild;
 	private bool _isPress;
 	private bool _isHold;
@@ -78,6 +80,10 @@ public partial class ReorderableContainer : Container {
 	private const int DropZoneExtend = 2000;
 
 	public override void _Ready() {
+		_control.Visible = false;
+		_control.TopLevel = true;
+		_control.MouseFilter = MouseFilterEnum.Pass;
+		AddChild(_control, false, InternalMode.Back);
 		if (ScrollContainer == null && GetParent() is ScrollContainer parentScrollContainer) {
 			ScrollContainer = parentScrollContainer;
 		}
@@ -149,36 +155,26 @@ public partial class ReorderableContainer : Container {
 	}
 
 	private void _OnStartDragging() {
+		_control.Size = Main.SceneTree.Root.Size;
+		_control.Visible = true;
 		_isUsingProcess = true;
 		_focusChild!.ZIndex = 1;
 		if (_isSmoothScroll) {
 			ScrollContainer!.ProcessMode = ProcessModeEnum.Disabled;
 		}
-
-		foreach (var child in _GetVisibleChildren()) {
-			if (child is Control control) {
-				control.PropagateCall(Control.MethodName.SetMouseFilter, [(int)MouseFilterEnum.Ignore]);
-			}
-		}
 	}
 
 	private void _OnStopDragging() {
+		_control.Visible = false;
 		_focusChild!.ZIndex = 0;
 		var focusChildIndex = _focusChild.GetIndex();
 		MoveChild(_focusChild, _dropZoneIndex);
 		EmitSignalReordered(focusChildIndex, _dropZoneIndex);
 		_focusChild = null;
 		_dropZoneIndex = -1;
-		if (_isSmoothScroll) {
-			ScrollContainer!.Set("pos", -new Vector2(ScrollContainer.ScrollHorizontal, ScrollContainer.ScrollVertical));
-			ScrollContainer.ProcessMode = ProcessModeEnum.Inherit;
-		}
-
-		foreach (var child in _GetVisibleChildren()) {
-			if (child is Control control) {
-				control.PropagateCall(Control.MethodName.SetMouseFilter, [(int)MouseFilterEnum.Pass]);
-			}
-		}
+		if (!_isSmoothScroll) return;
+		ScrollContainer!.Set("pos", -new Vector2(ScrollContainer.ScrollHorizontal, ScrollContainer.ScrollVertical));
+		ScrollContainer.ProcessMode = ProcessModeEnum.Inherit;
 	}
 
 	private void _OnChildEnteredTree(Node node) {
@@ -384,11 +380,16 @@ public partial class ReorderableContainer : Container {
 		var visibleControls = new List<Node>();
 		foreach (var node in GetChildren()) {
 			if (node is not Control child) continue;
+
 			if (!child.Visible) {
 				continue;
 			}
 
 			if (node == _focusChild && _isHold) {
+				continue;
+			}
+
+			if (child == _control) {
 				continue;
 			}
 
