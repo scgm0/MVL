@@ -157,6 +157,7 @@ public partial class ReorderableContainer : Container {
 	private void _OnStartDragging() {
 		_control.Size = Main.SceneTree.Root.Size;
 		_control.Visible = true;
+		MouseDefaultCursorShape = CursorShape.Drag;
 		_isUsingProcess = true;
 		_focusChild!.ZIndex = 1;
 		if (_isSmoothScroll) {
@@ -166,6 +167,7 @@ public partial class ReorderableContainer : Container {
 
 	private void _OnStopDragging() {
 		_control.Visible = false;
+		MouseDefaultCursorShape = CursorShape.Arrow;
 		_focusChild!.ZIndex = 0;
 		var focusChildIndex = _focusChild.GetIndex();
 		MoveChild(_focusChild, _dropZoneIndex);
