@@ -5,12 +5,10 @@
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
         <TieredPGO>true</TieredPGO>
-        <LangVersion>default</LangVersion>
+        <DebugType>full</DebugType>
+        <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+        <LangVersion>preview</LangVersion>
         <OutputType>Exe</OutputType>
-    </PropertyGroup>
-
-    <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
-        <DebugType>none</DebugType>
     </PropertyGroup>
 
     <ItemGroup>
@@ -34,6 +32,7 @@
     </ItemGroup>
 
     <ItemGroup>
+      <PackageReference Include="Lib.Harmony" Version="2.3.5" />
       <PackageReference Include="System.Collections.Immutable" Version="8.0.0" />
     </ItemGroup>
 </Project>

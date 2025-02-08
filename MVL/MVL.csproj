@@ -53,6 +53,7 @@
         <ItemGroup>
             <FilesToCopy Include="../VSRun/bin/Release/net7.0/*.dll"/>
             <FilesToCopy Include="../VSRun/bin/Release/net7.0/*.json"/>
+            <FilesToCopy Include="../VSRun/bin/Release/net7.0/*.pdb"/>
         </ItemGroup>
         <Copy SourceFiles="@(FilesToCopy)" DestinationFolder="Misc/VSRun"/>
     </Target>
