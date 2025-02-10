@@ -214,9 +214,10 @@ corner_radius_bottom_left = 20
 corner_detail = 20
 
 [sub_resource type="LabelSettings" id="LabelSettings_30yt8"]
+font = ExtResource("24_365jr")
 font_size = 20
-shadow_size = 3
-shadow_color = Color(0, 0, 0, 0.67451)
+outline_size = 5
+outline_color = Color(0, 0, 0, 1)
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_kq46g"]
 
@@ -365,21 +366,18 @@ corner_radius_bottom_left = 10
 bg_color = Color(0.6, 0.6, 0.6, 0.6)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_pbvk2"]
-content_margin_left = 5.0
-content_margin_top = 5.0
-content_margin_right = 5.0
-content_margin_bottom = 5.0
+content_margin_top = 10.0
+content_margin_bottom = 10.0
 bg_color = Color(0.137255, 0.137255, 0.137255, 0.6)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_f5d0o"]
-content_margin_left = 5.0
-content_margin_top = 5.0
-content_margin_right = 5.0
-content_margin_bottom = 5.0
+content_margin_top = 10.0
+content_margin_bottom = 10.0
 bg_color = Color(0, 0, 0, 0.6)
 border_width_bottom = 1
 
 [sub_resource type="Theme" id="Theme_0fd5h"]
+Button/font_sizes/font_size = 20
 Button/fonts/font = ExtResource("24_365jr")
 Button/styles/focus = SubResource("StyleBoxEmpty_53u4p")
 Button/styles/hover = SubResource("StyleBoxFlat_0fd5h")
@@ -679,11 +677,10 @@ size_flags_vertical = 3
 mouse_filter = 2
 theme_override_styles/panel = SubResource("StyleBoxEmpty_kq46g")
 tab_alignment = 1
-current_tab = 6
+current_tab = 0
 tabs_visible = false
 
 [node name="Home" type="Control" parent="HBoxContainer/ColorRect/VBoxContainer/MarginContainer/PageContainer" node_paths=PackedStringArray("Main")]
-visible = false
 layout_mode = 2
 mouse_filter = 2
 script = ExtResource("15_fuji0")
@@ -847,30 +844,36 @@ script = ExtResource("15_fuji0")
 metadata/_tab_index = 5
 
 [node name="Info" type="Control" parent="HBoxContainer/ColorRect/VBoxContainer/MarginContainer/PageContainer" node_paths=PackedStringArray("_titleBar", "_list", "Main")]
+visible = false
 layout_mode = 2
 mouse_filter = 1
 script = ExtResource("23_o4ctv")
 _itemScene = ExtResource("25_a6wm3")
 _buttonGroup = ExtResource("24_53u4p")
 _titleBar = NodePath("../../../HBoxContainer")
-_list = NodePath("VBoxContainer/PanelContainer/VBoxContainer/PanelContainer/SmoothScrollContainer/VBoxContainer")
-Main = NodePath("VBoxContainer")
+_list = NodePath("MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/PanelContainer/SmoothScrollContainer/VBoxContainer")
+Main = NodePath("MarginContainer")
 metadata/_tab_index = 6
 
-[node name="VBoxContainer" type="VBoxContainer" parent="HBoxContainer/ColorRect/VBoxContainer/MarginContainer/PageContainer/Info"]
+[node name="MarginContainer" type="MarginContainer" parent="HBoxContainer/ColorRect/VBoxContainer/MarginContainer/PageContainer/Info"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_constants/separation = 1
+theme_override_constants/margin_top = 10
 
-[node name="HBoxContainer" type="HBoxContainer" parent="HBoxContainer/ColorRect/VBoxContainer/MarginContainer/PageContainer/Info/VBoxContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="HBoxContainer/ColorRect/VBoxContainer/MarginContainer/PageContainer/Info/MarginContainer"]
+layout_mode = 2
+theme_override_constants/separation = 20
+
+[node name="HBoxContainer" type="HBoxContainer" parent="HBoxContainer/ColorRect/VBoxContainer/MarginContainer/PageContainer/Info/MarginContainer/VBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 4
+theme_override_constants/separation = 10
 
-[node name="TextureRect" type="TextureRect" parent="HBoxContainer/ColorRect/VBoxContainer/MarginContainer/PageContainer/Info/VBoxContainer/HBoxContainer"]
+[node name="TextureRect" type="TextureRect" parent="HBoxContainer/ColorRect/VBoxContainer/MarginContainer/PageContainer/Info/MarginContainer/VBoxContainer/HBoxContainer"]
 custom_minimum_size = Vector2(75, 75)
 layout_mode = 2
 size_flags_horizontal = 4
@@ -878,12 +881,12 @@ texture = ExtResource("2_xnuua")
 expand_mode = 1
 stretch_mode = 5
 
-[node name="VBoxContainer" type="VBoxContainer" parent="HBoxContainer/ColorRect/VBoxContainer/MarginContainer/PageContainer/Info/VBoxContainer/HBoxContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="HBoxContainer/ColorRect/VBoxContainer/MarginContainer/PageContainer/Info/MarginContainer/VBoxContainer/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
 
-[node name="LinkButton" type="LinkButton" parent="HBoxContainer/ColorRect/VBoxContainer/MarginContainer/PageContainer/Info/VBoxContainer/HBoxContainer/VBoxContainer"]
+[node name="LinkButton" type="LinkButton" parent="HBoxContainer/ColorRect/VBoxContainer/MarginContainer/PageContainer/Info/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
@@ -894,33 +897,33 @@ text = "神麤詭末的复古物语启动器"
 underline = 1
 uri = "https://github.com/scgm0/MVL"
 
-[node name="Label" type="Label" parent="HBoxContainer/ColorRect/VBoxContainer/MarginContainer/PageContainer/Info/VBoxContainer/HBoxContainer/VBoxContainer"]
+[node name="Label" type="Label" parent="HBoxContainer/ColorRect/VBoxContainer/MarginContainer/PageContainer/Info/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer"]
 layout_mode = 2
 theme_override_constants/outline_size = 4
 text = "Copyright (c) 2025 神麤詭末"
 
-[node name="PanelContainer" type="PanelContainer" parent="HBoxContainer/ColorRect/VBoxContainer/MarginContainer/PageContainer/Info/VBoxContainer"]
+[node name="PanelContainer" type="PanelContainer" parent="HBoxContainer/ColorRect/VBoxContainer/MarginContainer/PageContainer/Info/MarginContainer/VBoxContainer"]
 clip_children = 1
 layout_mode = 2
 size_flags_vertical = 3
 mouse_filter = 1
 theme_override_styles/panel = SubResource("StyleBoxFlat_7nt4r")
 
-[node name="ColorRect" type="ColorRect" parent="HBoxContainer/ColorRect/VBoxContainer/MarginContainer/PageContainer/Info/VBoxContainer/PanelContainer"]
+[node name="ColorRect" type="ColorRect" parent="HBoxContainer/ColorRect/VBoxContainer/MarginContainer/PageContainer/Info/MarginContainer/VBoxContainer/PanelContainer"]
 layout_mode = 2
 mouse_filter = 1
 color = Color(0.137255, 0.137255, 0.137255, 0.6)
 
-[node name="VBoxContainer" type="VBoxContainer" parent="HBoxContainer/ColorRect/VBoxContainer/MarginContainer/PageContainer/Info/VBoxContainer/PanelContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="HBoxContainer/ColorRect/VBoxContainer/MarginContainer/PageContainer/Info/MarginContainer/VBoxContainer/PanelContainer"]
 layout_mode = 2
 theme_override_constants/separation = 1
 
-[node name="HBoxContainer" type="HBoxContainer" parent="HBoxContainer/ColorRect/VBoxContainer/MarginContainer/PageContainer/Info/VBoxContainer/PanelContainer/VBoxContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="HBoxContainer/ColorRect/VBoxContainer/MarginContainer/PageContainer/Info/MarginContainer/VBoxContainer/PanelContainer/VBoxContainer"]
 layout_mode = 2
 theme = SubResource("Theme_0fd5h")
 theme_override_constants/separation = 1
 
-[node name="Button" type="Button" parent="HBoxContainer/ColorRect/VBoxContainer/MarginContainer/PageContainer/Info/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer"]
+[node name="Button" type="Button" parent="HBoxContainer/ColorRect/VBoxContainer/MarginContainer/PageContainer/Info/MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 toggle_mode = true
@@ -928,27 +931,27 @@ button_pressed = true
 button_group = ExtResource("24_53u4p")
 text = "贡献者"
 
-[node name="Button2" type="Button" parent="HBoxContainer/ColorRect/VBoxContainer/MarginContainer/PageContainer/Info/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer"]
+[node name="Button2" type="Button" parent="HBoxContainer/ColorRect/VBoxContainer/MarginContainer/PageContainer/Info/MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 toggle_mode = true
 button_group = ExtResource("24_53u4p")
 text = "赞助者"
 
-[node name="Button3" type="Button" parent="HBoxContainer/ColorRect/VBoxContainer/MarginContainer/PageContainer/Info/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer"]
+[node name="Button3" type="Button" parent="HBoxContainer/ColorRect/VBoxContainer/MarginContainer/PageContainer/Info/MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 toggle_mode = true
 button_group = ExtResource("24_53u4p")
 text = "许可证"
 
-[node name="PanelContainer" type="PanelContainer" parent="HBoxContainer/ColorRect/VBoxContainer/MarginContainer/PageContainer/Info/VBoxContainer/PanelContainer/VBoxContainer"]
+[node name="PanelContainer" type="PanelContainer" parent="HBoxContainer/ColorRect/VBoxContainer/MarginContainer/PageContainer/Info/MarginContainer/VBoxContainer/PanelContainer/VBoxContainer"]
 layout_mode = 2
 size_flags_vertical = 3
 mouse_filter = 1
 theme_override_styles/panel = SubResource("StyleBoxFlat_b7o7j")
 
-[node name="SmoothScrollContainer" type="ScrollContainer" parent="HBoxContainer/ColorRect/VBoxContainer/MarginContainer/PageContainer/Info/VBoxContainer/PanelContainer/VBoxContainer/PanelContainer"]
+[node name="SmoothScrollContainer" type="ScrollContainer" parent="HBoxContainer/ColorRect/VBoxContainer/MarginContainer/PageContainer/Info/MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/PanelContainer"]
 layout_mode = 2
 size_flags_vertical = 3
 script = ExtResource("27_7nt4r")
@@ -959,7 +962,7 @@ drag_with_touch = false
 handle_input = false
 metadata/_custom_type_script = ExtResource("27_7nt4r")
 
-[node name="VBoxContainer" type="VBoxContainer" parent="HBoxContainer/ColorRect/VBoxContainer/MarginContainer/PageContainer/Info/VBoxContainer/PanelContainer/VBoxContainer/PanelContainer/SmoothScrollContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="HBoxContainer/ColorRect/VBoxContainer/MarginContainer/PageContainer/Info/MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/PanelContainer/SmoothScrollContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3

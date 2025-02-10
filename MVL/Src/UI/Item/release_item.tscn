@@ -100,6 +100,7 @@ structured_text_bidi_override = 4
 
 [node name="Name" type="Label" parent="VBoxContainer"]
 layout_mode = 2
+theme_override_constants/outline_size = 5
 theme_override_fonts/font = ExtResource("2_wntvq")
 theme_override_font_sizes/font_size = 18
 text = "复古物语"
