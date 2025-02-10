@@ -1,4 +1,4 @@
-[gd_scene load_steps=30 format=3 uid="uid://ccfq2fesgeykj"]
+[gd_scene load_steps=26 format=3 uid="uid://ccfq2fesgeykj"]
 
 [ext_resource type="Script" uid="uid://dstnk40xqjp6x" path="res://Src/UI/Window/AddModpackWindow.cs" id="1_vgayu"]
 [ext_resource type="Script" uid="uid://dbies7u5fo4sh" path="res://Src/UI/NativeWindowUtility.cs" id="1_x4e8l"]
@@ -64,42 +64,6 @@ IconName = "chevron-down"
 FontSize = 24
 metadata/_custom_type_script = ExtResource("3_i7wln")
 
-[sub_resource type="Texture2D" id="Texture2D_jf4ur"]
-resource_local_to_scene = false
-resource_name = ""
-script = ExtResource("3_i7wln")
-IconName = "radiobox-marked"
-FontSize = 16
-metadata/_custom_type_script = ExtResource("3_i7wln")
-
-[sub_resource type="Texture2D" id="Texture2D_dsng2"]
-resource_local_to_scene = false
-resource_name = ""
-script = ExtResource("3_i7wln")
-IconName = "radiobox-blank"
-FontSize = 16
-metadata/_custom_type_script = ExtResource("3_i7wln")
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_jf4ur"]
-content_margin_left = 4.0
-content_margin_top = 4.0
-content_margin_right = 4.0
-content_margin_bottom = 4.0
-bg_color = Color(0.4, 0.4, 0.4, 1)
-corner_radius_top_left = 5
-corner_radius_top_right = 5
-corner_radius_bottom_right = 5
-corner_radius_bottom_left = 5
-corner_detail = 5
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_vgayu"]
-bg_color = Color(0.20871, 0.20871, 0.20871, 1)
-corner_radius_top_left = 5
-corner_radius_top_right = 5
-corner_radius_bottom_right = 5
-corner_radius_bottom_left = 5
-shadow_size = 3
-
 [sub_resource type="Theme" id="Theme_vgayu"]
 Button/styles/focus = SubResource("StyleBoxEmpty_vgayu")
 CheckButton/icons/checked = SubResource("Texture2D_bdark")
@@ -109,10 +73,6 @@ LineEdit/icons/clear = SubResource("Texture2D_i7wln")
 LineEdit/styles/focus = SubResource("StyleBoxEmpty_b82ki")
 LineEdit/styles/normal = SubResource("StyleBoxFlat_i7wln")
 OptionButton/icons/arrow = SubResource("Texture2D_b82ki")
-PopupMenu/icons/radio_checked = SubResource("Texture2D_jf4ur")
-PopupMenu/icons/radio_unchecked = SubResource("Texture2D_dsng2")
-PopupMenu/styles/hover = SubResource("StyleBoxFlat_jf4ur")
-PopupMenu/styles/panel = SubResource("StyleBoxFlat_vgayu")
 
 [sub_resource type="Texture2D" id="Texture2D_5jy5j"]
 resource_local_to_scene = false

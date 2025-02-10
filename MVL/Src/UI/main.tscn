@@ -1,4 +1,4 @@
-[gd_scene load_steps=64 format=3 uid="uid://514oox50h8yl"]
+[gd_scene load_steps=81 format=3 uid="uid://514oox50h8yl"]
 
 [ext_resource type="Script" uid="uid://cvyeyg8ttnwmu" path="res://Src/UI/Main.cs" id="1_1opgh"]
 [ext_resource type="Texture2D" uid="uid://bhh1jvyj73qxh" path="res://Assets/Gui/Background.png" id="2_1opgh"]
@@ -20,8 +20,40 @@
 [ext_resource type="Script" uid="uid://dt2erdjo6w7pf" path="res://Src/UI/ReorderableContainer.cs" id="20_bmwv3"]
 [ext_resource type="PackedScene" uid="uid://ccfq2fesgeykj" path="res://Src/UI/Window/add_modpack_window.tscn" id="20_gblyu"]
 [ext_resource type="LabelSettings" uid="uid://bdfwqcqufhm6k" path="res://Assets/Setting/page_title.tres" id="23_53u4p"]
+[ext_resource type="Script" uid="uid://74nlqylbyexa" path="res://Src/UI/Page/InfoPage.cs" id="23_o4ctv"]
+[ext_resource type="ButtonGroup" uid="uid://28dadh3ohukd" path="res://Assets/Gui/info_tab_button_group.tres" id="24_53u4p"]
+[ext_resource type="FontFile" uid="uid://bmgx1vyg6bavd" path="res://Assets/Font/HarmonyOS_Sans_SC_Bold.ttf" id="24_365jr"]
+[ext_resource type="PackedScene" uid="uid://bxgudtdder0na" path="res://Src/UI/Item/info_item.tscn" id="25_a6wm3"]
 [ext_resource type="Script" uid="uid://cre6m68jy0aad" path="res://addons/SmoothScroll/SmoothScrollContainer.gd" id="27_7nt4r"]
 [ext_resource type="Script" uid="uid://41yydm3vncfj" path="res://addons/SmoothScroll/scroll_damper/expo_scroll_damper.gd" id="28_7eosv"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_7eosv"]
+content_margin_left = 4.0
+content_margin_top = 4.0
+content_margin_right = 4.0
+content_margin_bottom = 4.0
+bg_color = Color(0.4, 0.4, 0.4, 1)
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
+corner_detail = 5
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_8ilox"]
+content_margin_left = 5.0
+content_margin_top = 5.0
+content_margin_right = 5.0
+content_margin_bottom = 5.0
+bg_color = Color(0.20871, 0.20871, 0.20871, 1)
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
+shadow_size = 3
+
+[sub_resource type="Theme" id="Theme_53u4p"]
+PopupMenu/styles/hover = SubResource("StyleBoxFlat_7eosv")
+PopupMenu/styles/panel = SubResource("StyleBoxFlat_8ilox")
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_hq21a"]
 shader = ExtResource("4_v5ddw")
@@ -88,6 +120,14 @@ resource_local_to_scene = false
 resource_name = ""
 script = ExtResource("13_7nt4r")
 IconName = "cog"
+FontSize = 24
+metadata/_custom_type_script = ExtResource("13_7nt4r")
+
+[sub_resource type="Texture2D" id="Texture2D_5lwjt"]
+resource_local_to_scene = false
+resource_name = ""
+script = ExtResource("13_7nt4r")
+IconName = "information"
 FontSize = 24
 metadata/_custom_type_script = ExtResource("13_7nt4r")
 
@@ -177,42 +217,6 @@ corner_detail = 20
 font_size = 20
 shadow_size = 3
 shadow_color = Color(0, 0, 0, 0.67451)
-
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_a6wm3"]
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_53u4p"]
-bg_color = Color(1, 1, 1, 0.282353)
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_365jr"]
-bg_color = Color(1, 1, 1, 0.352941)
-
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_08ol6"]
-
-[sub_resource type="Texture2D" id="Texture2D_7nt4r"]
-resource_local_to_scene = false
-resource_name = ""
-script = ExtResource("13_7nt4r")
-IconName = "window-minimize"
-FontSize = 14
-metadata/_custom_type_script = ExtResource("13_7nt4r")
-
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_bmwv3"]
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_o4ctv"]
-bg_color = Color(0.764706, 0, 0, 1)
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_a6wm3"]
-bg_color = Color(0.666667, 0, 0, 1)
-
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_365jr"]
-
-[sub_resource type="Texture2D" id="Texture2D_7eosv"]
-resource_local_to_scene = false
-resource_name = ""
-script = ExtResource("13_7nt4r")
-IconName = "window-close"
-FontSize = 14
-metadata/_custom_type_script = ExtResource("13_7nt4r")
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_kq46g"]
 
@@ -349,6 +353,94 @@ IconName = "plus"
 FontSize = 72
 metadata/_custom_type_script = ExtResource("13_7nt4r")
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_7nt4r"]
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_53u4p"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_0fd5h"]
+bg_color = Color(0.6, 0.6, 0.6, 0.6)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_pbvk2"]
+content_margin_left = 5.0
+content_margin_top = 5.0
+content_margin_right = 5.0
+content_margin_bottom = 5.0
+bg_color = Color(0.137255, 0.137255, 0.137255, 0.6)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_f5d0o"]
+content_margin_left = 5.0
+content_margin_top = 5.0
+content_margin_right = 5.0
+content_margin_bottom = 5.0
+bg_color = Color(0, 0, 0, 0.6)
+border_width_bottom = 1
+
+[sub_resource type="Theme" id="Theme_0fd5h"]
+Button/fonts/font = ExtResource("24_365jr")
+Button/styles/focus = SubResource("StyleBoxEmpty_53u4p")
+Button/styles/hover = SubResource("StyleBoxFlat_0fd5h")
+Button/styles/normal = SubResource("StyleBoxFlat_pbvk2")
+Button/styles/pressed = SubResource("StyleBoxFlat_f5d0o")
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_b7o7j"]
+content_margin_left = 5.0
+content_margin_top = 5.0
+content_margin_right = 5.0
+content_margin_bottom = 5.0
+bg_color = Color(0.137255, 0.137255, 0.137255, 0.6)
+
+[sub_resource type="Resource" id="Resource_365jr"]
+script = ExtResource("28_7eosv")
+friction = 4.0
+minimum_velocity = 0.4
+rebound_strength = 7.0
+
+[sub_resource type="Resource" id="Resource_a6wm3"]
+script = ExtResource("28_7eosv")
+friction = 4.0
+minimum_velocity = 0.4
+rebound_strength = 7.0
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_a6wm3"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_53u4p"]
+bg_color = Color(1, 1, 1, 0.282353)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_365jr"]
+bg_color = Color(1, 1, 1, 0.352941)
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_08ol6"]
+
+[sub_resource type="Texture2D" id="Texture2D_7nt4r"]
+resource_local_to_scene = false
+resource_name = ""
+script = ExtResource("13_7nt4r")
+IconName = "window-minimize"
+FontSize = 14
+metadata/_custom_type_script = ExtResource("13_7nt4r")
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_bmwv3"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_o4ctv"]
+bg_color = Color(0.764706, 0, 0, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_a6wm3"]
+bg_color = Color(0.666667, 0, 0, 1)
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_365jr"]
+
+[sub_resource type="Texture2D" id="Texture2D_7eosv"]
+resource_local_to_scene = false
+resource_name = ""
+script = ExtResource("13_7nt4r")
+IconName = "window-close"
+FontSize = 14
+metadata/_custom_type_script = ExtResource("13_7nt4r")
+
 [node name="Main" type="Control" node_paths=PackedStringArray("MinButton", "CloseButton")]
 layout_mode = 3
 anchors_preset = 15
@@ -356,11 +448,12 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+theme = SubResource("Theme_53u4p")
 script = ExtResource("1_1opgh")
 _iconTexture = ExtResource("2_xnuua")
 _installedGamesImportScene = ExtResource("3_a5da0")
-MinButton = NodePath("HBoxContainer/ColorRect/VBoxContainer/HBoxContainer/MinButton")
-CloseButton = NodePath("HBoxContainer/ColorRect/VBoxContainer/HBoxContainer/CloseButton")
+MinButton = NodePath("HBoxContainer2/MinButton")
+CloseButton = NodePath("HBoxContainer2/CloseButton")
 _roundMaterial = ExtResource("4_o4ctv")
 IsDraggable = true
 
@@ -495,6 +588,18 @@ script = ExtResource("7_bl4fu")
 Page = NodePath("../../../ColorRect/VBoxContainer/MarginContainer/PageContainer/Setting")
 metadata/_custom_type_script = ExtResource("7_bl4fu")
 
+[node name="InfoButton" type="Button" parent="HBoxContainer/MenuPanel/VBoxContainer" node_paths=PackedStringArray("Page")]
+layout_mode = 2
+size_flags_vertical = 8
+toggle_mode = true
+button_group = ExtResource("4_megpf")
+text = "关于"
+icon = SubResource("Texture2D_5lwjt")
+clip_text = true
+script = ExtResource("7_bl4fu")
+Page = NodePath("../../../ColorRect/VBoxContainer/MarginContainer/PageContainer/Info")
+metadata/_custom_type_script = ExtResource("7_bl4fu")
+
 [node name="AnimationPlayer" type="AnimationPlayer" parent="HBoxContainer/MenuPanel"]
 libraries = {
 &"": SubResource("AnimationLibrary_nxjuw")
@@ -525,7 +630,7 @@ theme_override_constants/separation = 0
 
 [node name="HBoxContainer" type="HBoxContainer" parent="HBoxContainer/ColorRect/VBoxContainer"]
 layout_mode = 2
-theme_override_constants/separation = 0
+theme_override_constants/separation = 5
 
 [node name="MarginContainer" type="MarginContainer" parent="HBoxContainer/ColorRect/VBoxContainer/HBoxContainer"]
 layout_mode = 2
@@ -552,53 +657,12 @@ texture = ExtResource("2_xnuua")
 expand_mode = 1
 stretch_mode = 6
 
-[node name="Control2" type="Control" parent="HBoxContainer/ColorRect/VBoxContainer/HBoxContainer"]
-custom_minimum_size = Vector2(5, 0)
-layout_mode = 2
-
 [node name="Label" type="Label" parent="HBoxContainer/ColorRect/VBoxContainer/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 4
 text = "神麤詭末的复古物语启动器"
 label_settings = SubResource("LabelSettings_30yt8")
 horizontal_alignment = 1
-
-[node name="Control" type="Control" parent="HBoxContainer/ColorRect/VBoxContainer/HBoxContainer"]
-layout_mode = 2
-size_flags_horizontal = 3
-mouse_filter = 2
-
-[node name="MinButton" type="Button" parent="HBoxContainer/ColorRect/VBoxContainer/HBoxContainer"]
-texture_filter = 1
-custom_minimum_size = Vector2(35, 30)
-layout_mode = 2
-size_flags_horizontal = 8
-size_flags_vertical = 0
-focus_mode = 0
-theme_override_colors/icon_normal_color = Color(0.678944, 0.678944, 0.678944, 1)
-theme_override_constants/icon_max_width = 14
-theme_override_styles/focus = SubResource("StyleBoxEmpty_a6wm3")
-theme_override_styles/hover = SubResource("StyleBoxFlat_53u4p")
-theme_override_styles/pressed = SubResource("StyleBoxFlat_365jr")
-theme_override_styles/normal = SubResource("StyleBoxEmpty_08ol6")
-icon = SubResource("Texture2D_7nt4r")
-icon_alignment = 1
-
-[node name="CloseButton" type="Button" parent="HBoxContainer/ColorRect/VBoxContainer/HBoxContainer"]
-custom_minimum_size = Vector2(35, 30)
-layout_mode = 2
-size_flags_horizontal = 8
-size_flags_vertical = 0
-focus_mode = 0
-theme_override_colors/icon_normal_color = Color(0.678431, 0.678431, 0.678431, 1)
-theme_override_constants/icon_max_width = 14
-theme_override_styles/focus = SubResource("StyleBoxEmpty_bmwv3")
-theme_override_styles/hover = SubResource("StyleBoxFlat_o4ctv")
-theme_override_styles/pressed = SubResource("StyleBoxFlat_a6wm3")
-theme_override_styles/normal = SubResource("StyleBoxEmpty_365jr")
-icon = SubResource("Texture2D_7eosv")
-icon_alignment = 1
-expand_icon = true
 
 [node name="MarginContainer" type="MarginContainer" parent="HBoxContainer/ColorRect/VBoxContainer"]
 layout_mode = 2
@@ -615,10 +679,11 @@ size_flags_vertical = 3
 mouse_filter = 2
 theme_override_styles/panel = SubResource("StyleBoxEmpty_kq46g")
 tab_alignment = 1
-current_tab = 0
+current_tab = 6
 tabs_visible = false
 
 [node name="Home" type="Control" parent="HBoxContainer/ColorRect/VBoxContainer/MarginContainer/PageContainer" node_paths=PackedStringArray("Main")]
+visible = false
 layout_mode = 2
 mouse_filter = 2
 script = ExtResource("15_fuji0")
@@ -780,3 +845,161 @@ layout_mode = 2
 mouse_filter = 2
 script = ExtResource("15_fuji0")
 metadata/_tab_index = 5
+
+[node name="Info" type="Control" parent="HBoxContainer/ColorRect/VBoxContainer/MarginContainer/PageContainer" node_paths=PackedStringArray("_titleBar", "_list", "Main")]
+layout_mode = 2
+mouse_filter = 1
+script = ExtResource("23_o4ctv")
+_itemScene = ExtResource("25_a6wm3")
+_buttonGroup = ExtResource("24_53u4p")
+_titleBar = NodePath("../../../HBoxContainer")
+_list = NodePath("VBoxContainer/PanelContainer/VBoxContainer/PanelContainer/SmoothScrollContainer/VBoxContainer")
+Main = NodePath("VBoxContainer")
+metadata/_tab_index = 6
+
+[node name="VBoxContainer" type="VBoxContainer" parent="HBoxContainer/ColorRect/VBoxContainer/MarginContainer/PageContainer/Info"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 1
+
+[node name="HBoxContainer" type="HBoxContainer" parent="HBoxContainer/ColorRect/VBoxContainer/MarginContainer/PageContainer/Info/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+
+[node name="TextureRect" type="TextureRect" parent="HBoxContainer/ColorRect/VBoxContainer/MarginContainer/PageContainer/Info/VBoxContainer/HBoxContainer"]
+custom_minimum_size = Vector2(75, 75)
+layout_mode = 2
+size_flags_horizontal = 4
+texture = ExtResource("2_xnuua")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="VBoxContainer" type="VBoxContainer" parent="HBoxContainer/ColorRect/VBoxContainer/MarginContainer/PageContainer/Info/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+
+[node name="LinkButton" type="LinkButton" parent="HBoxContainer/ColorRect/VBoxContainer/MarginContainer/PageContainer/Info/VBoxContainer/HBoxContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_override_constants/outline_size = 5
+theme_override_fonts/font = ExtResource("24_365jr")
+theme_override_font_sizes/font_size = 25
+text = "神麤詭末的复古物语启动器"
+underline = 1
+uri = "https://github.com/scgm0/MVL"
+
+[node name="Label" type="Label" parent="HBoxContainer/ColorRect/VBoxContainer/MarginContainer/PageContainer/Info/VBoxContainer/HBoxContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/outline_size = 4
+text = "Copyright (c) 2025 神麤詭末"
+
+[node name="PanelContainer" type="PanelContainer" parent="HBoxContainer/ColorRect/VBoxContainer/MarginContainer/PageContainer/Info/VBoxContainer"]
+clip_children = 1
+layout_mode = 2
+size_flags_vertical = 3
+mouse_filter = 1
+theme_override_styles/panel = SubResource("StyleBoxFlat_7nt4r")
+
+[node name="ColorRect" type="ColorRect" parent="HBoxContainer/ColorRect/VBoxContainer/MarginContainer/PageContainer/Info/VBoxContainer/PanelContainer"]
+layout_mode = 2
+mouse_filter = 1
+color = Color(0.137255, 0.137255, 0.137255, 0.6)
+
+[node name="VBoxContainer" type="VBoxContainer" parent="HBoxContainer/ColorRect/VBoxContainer/MarginContainer/PageContainer/Info/VBoxContainer/PanelContainer"]
+layout_mode = 2
+theme_override_constants/separation = 1
+
+[node name="HBoxContainer" type="HBoxContainer" parent="HBoxContainer/ColorRect/VBoxContainer/MarginContainer/PageContainer/Info/VBoxContainer/PanelContainer/VBoxContainer"]
+layout_mode = 2
+theme = SubResource("Theme_0fd5h")
+theme_override_constants/separation = 1
+
+[node name="Button" type="Button" parent="HBoxContainer/ColorRect/VBoxContainer/MarginContainer/PageContainer/Info/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+toggle_mode = true
+button_pressed = true
+button_group = ExtResource("24_53u4p")
+text = "贡献者"
+
+[node name="Button2" type="Button" parent="HBoxContainer/ColorRect/VBoxContainer/MarginContainer/PageContainer/Info/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+toggle_mode = true
+button_group = ExtResource("24_53u4p")
+text = "赞助者"
+
+[node name="Button3" type="Button" parent="HBoxContainer/ColorRect/VBoxContainer/MarginContainer/PageContainer/Info/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+toggle_mode = true
+button_group = ExtResource("24_53u4p")
+text = "许可证"
+
+[node name="PanelContainer" type="PanelContainer" parent="HBoxContainer/ColorRect/VBoxContainer/MarginContainer/PageContainer/Info/VBoxContainer/PanelContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+mouse_filter = 1
+theme_override_styles/panel = SubResource("StyleBoxFlat_b7o7j")
+
+[node name="SmoothScrollContainer" type="ScrollContainer" parent="HBoxContainer/ColorRect/VBoxContainer/MarginContainer/PageContainer/Info/VBoxContainer/PanelContainer/VBoxContainer/PanelContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+script = ExtResource("27_7nt4r")
+wheel_scroll_damper = SubResource("Resource_365jr")
+dragging_scroll_damper = SubResource("Resource_a6wm3")
+drag_with_mouse = false
+drag_with_touch = false
+handle_input = false
+metadata/_custom_type_script = ExtResource("27_7nt4r")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="HBoxContainer/ColorRect/VBoxContainer/MarginContainer/PageContainer/Info/VBoxContainer/PanelContainer/VBoxContainer/PanelContainer/SmoothScrollContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+grow_horizontal = 2
+theme_override_constants/separation = 0
+alignment = 2
+
+[node name="MinButton" type="Button" parent="HBoxContainer2"]
+texture_filter = 1
+custom_minimum_size = Vector2(35, 30)
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 0
+focus_mode = 0
+theme_override_colors/icon_normal_color = Color(0.678944, 0.678944, 0.678944, 1)
+theme_override_constants/icon_max_width = 14
+theme_override_styles/focus = SubResource("StyleBoxEmpty_a6wm3")
+theme_override_styles/hover = SubResource("StyleBoxFlat_53u4p")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_365jr")
+theme_override_styles/normal = SubResource("StyleBoxEmpty_08ol6")
+icon = SubResource("Texture2D_7nt4r")
+icon_alignment = 1
+
+[node name="CloseButton" type="Button" parent="HBoxContainer2"]
+custom_minimum_size = Vector2(35, 30)
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 0
+focus_mode = 0
+theme_override_colors/icon_normal_color = Color(0.678431, 0.678431, 0.678431, 1)
+theme_override_constants/icon_max_width = 14
+theme_override_styles/focus = SubResource("StyleBoxEmpty_bmwv3")
+theme_override_styles/hover = SubResource("StyleBoxFlat_o4ctv")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_a6wm3")
+theme_override_styles/normal = SubResource("StyleBoxEmpty_365jr")
+icon = SubResource("Texture2D_7eosv")
+icon_alignment = 1
+expand_icon = true
