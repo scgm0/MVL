@@ -1,5 +1,4 @@
 using Godot;
-using System;
 using MVL.Utils.Help;
 
 namespace MVL.UI.Page;
@@ -13,7 +12,6 @@ public partial class InfoPage : MenuPage {
 
 	[Export]
 	private Control? _titleBar;
-
 
 	[Export]
 	private VBoxContainer? _list;

@@ -38,6 +38,8 @@
 
     <ItemGroup>
         <AdditionalFiles Include="Assets/Icon/MD/icons.json"/>
+        <AdditionalFiles Include="../AUTHORS.md"/>
+        <AdditionalFiles Include="../DONORS.md"/>
     </ItemGroup>
 
     <ItemGroup>
