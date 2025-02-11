@@ -1,13 +1,7 @@
-[gd_scene load_steps=6 format=3 uid="uid://bxgudtdder0na"]
+[gd_scene load_steps=5 format=3 uid="uid://bxgudtdder0na"]
 
 [ext_resource type="FontFile" uid="uid://bmgx1vyg6bavd" path="res://Assets/Font/HarmonyOS_Sans_SC_Bold.ttf" id="1_3v3c8"]
 [ext_resource type="Script" uid="uid://b3uwvqsdvp3gb" path="res://Src/UI/Item/InfoItem.cs" id="1_4vinm"]
-
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_30yt8"]
-content_margin_left = 10.0
-content_margin_top = 10.0
-content_margin_right = 10.0
-content_margin_bottom = 10.0
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_7nt4r"]
 
@@ -22,32 +16,33 @@ corner_radius_top_right = 5
 corner_radius_bottom_right = 5
 corner_radius_bottom_left = 5
 
-[node name="InfoItem" type="PanelContainer"]
+[node name="InfoItem" type="VBoxContainer" node_paths=PackedStringArray("_title", "_content")]
 anchors_preset = 10
 anchor_right = 1.0
-offset_bottom = 88.0
+offset_bottom = 68.0
 grow_horizontal = 2
-mouse_filter = 1
-theme_override_styles/panel = SubResource("StyleBoxEmpty_30yt8")
-script = ExtResource("1_4vinm")
-
-[node name="VBoxContainer" type="VBoxContainer" parent="."]
-layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
 theme_override_constants/separation = 10
+script = ExtResource("1_4vinm")
+_title = NodePath("Label")
+_content = NodePath("RichTextLabel")
 
-[node name="Label" type="Label" parent="VBoxContainer"]
+[node name="Label" type="Label" parent="."]
 layout_mode = 2
 mouse_filter = 1
 theme_override_fonts/font = ExtResource("1_3v3c8")
-text = "项目创始人"
+text = "标题"
 
-[node name="RichTextLabel" type="RichTextLabel" parent="VBoxContainer"]
+[node name="RichTextLabel" type="RichTextLabel" parent="."]
 layout_mode = 2
+size_flags_vertical = 0
 focus_mode = 2
 theme_override_colors/selection_color = Color(0.6, 0.6, 0.6, 0.6)
 theme_override_styles/focus = SubResource("StyleBoxEmpty_7nt4r")
 theme_override_styles/normal = SubResource("StyleBoxFlat_7nt4r")
-text = "神麤詭末 <https://github.com/scgm0>"
+text = "内容"
 fit_content = true
 context_menu_enabled = true
+threaded = true
 selection_enabled = true

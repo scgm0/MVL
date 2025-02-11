@@ -385,10 +385,10 @@ Button/styles/normal = SubResource("StyleBoxFlat_pbvk2")
 Button/styles/pressed = SubResource("StyleBoxFlat_f5d0o")
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_b7o7j"]
-content_margin_left = 5.0
-content_margin_top = 5.0
-content_margin_right = 5.0
-content_margin_bottom = 5.0
+content_margin_left = 20.0
+content_margin_top = 20.0
+content_margin_right = 20.0
+content_margin_bottom = 20.0
 bg_color = Color(0.137255, 0.137255, 0.137255, 0.6)
 
 [sub_resource type="Resource" id="Resource_365jr"]
@@ -843,7 +843,7 @@ mouse_filter = 2
 script = ExtResource("15_fuji0")
 metadata/_tab_index = 5
 
-[node name="Info" type="Control" parent="HBoxContainer/ColorRect/VBoxContainer/MarginContainer/PageContainer" node_paths=PackedStringArray("_titleBar", "_list", "Main")]
+[node name="Info" type="Control" parent="HBoxContainer/ColorRect/VBoxContainer/MarginContainer/PageContainer" node_paths=PackedStringArray("_titleBar", "_authorButton", "_donorButton", "_licenseButton", "_list", "Main")]
 visible = false
 layout_mode = 2
 mouse_filter = 1
@@ -851,6 +851,9 @@ script = ExtResource("23_o4ctv")
 _itemScene = ExtResource("25_a6wm3")
 _buttonGroup = ExtResource("24_53u4p")
 _titleBar = NodePath("../../../HBoxContainer")
+_authorButton = NodePath("MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer/Button")
+_donorButton = NodePath("MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer/Button2")
+_licenseButton = NodePath("MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer/Button3")
 _list = NodePath("MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/PanelContainer/SmoothScrollContainer/VBoxContainer")
 Main = NodePath("MarginContainer")
 metadata/_tab_index = 6
@@ -965,7 +968,8 @@ metadata/_custom_type_script = ExtResource("27_7nt4r")
 [node name="VBoxContainer" type="VBoxContainer" parent="HBoxContainer/ColorRect/VBoxContainer/MarginContainer/PageContainer/Info/MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/PanelContainer/SmoothScrollContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
-size_flags_vertical = 3
+size_flags_vertical = 0
+theme_override_constants/separation = 20
 
 [node name="HBoxContainer2" type="HBoxContainer" parent="."]
 layout_mode = 1
