@@ -116,7 +116,12 @@ public partial class AddModpackWindow : ColorRect {
 		_cancelButton.Pressed += CancelButtonOnPressed;
 		_okButton.Pressed += OkButtonOnPressed;
 
-		OnGameVersionOnItemSelected(0);
+		if (_gameVersion.ItemCount > 0) {
+			OnGameVersionOnItemSelected(0);
+		} else {
+			_gameVersion.Select(-1);
+		}
+
 		SetModpackPath(Path.Combine(Paths.ModpackFolder, _modpackName.Text));
 	}
 
@@ -130,12 +135,18 @@ public partial class AddModpackWindow : ColorRect {
 
 	private void OnGameVersionOnItemSelected(long index) {
 		_releasePath!.Clear();
-		var paths = _dictionary[_gameVersion!.GetItemText((int)index)];
-		foreach (var path in paths) {
-			_releasePath.AddItem(path);
+		var s = _gameVersion!.GetItemText((int)index);
+		if (_dictionary.TryGetValue(s, out var paths)) {
+			foreach (var path in paths) {
+				_releasePath.AddItem(path);
+			}
 		}
 
-		_releasePath.Select(0);
+		if (_releasePath.ItemCount > 0) {
+			_releasePath.Select(0);
+		} else {
+			_releasePath.Select(-1);
+		}
 	}
 
 	private void SetModpackPath(string path) {
