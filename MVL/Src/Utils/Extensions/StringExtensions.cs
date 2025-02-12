@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Text;
 
 namespace MVL.Utils.Extensions;
@@ -151,5 +152,15 @@ public static class StringExtensions {
 		}
 
 		return _builder.ToString();
+	}
+
+	public static string NormalizePath(this string path) {
+		if (string.IsNullOrEmpty(path)) return path;
+
+		var fullPath = Path.GetFullPath(path);
+
+		fullPath = Path.TrimEndingDirectorySeparator(fullPath.Replace(Path.AltDirectorySeparatorChar, Path.DirectorySeparatorChar));
+
+		return fullPath;
 	}
 }

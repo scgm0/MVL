@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Text.Json;
 using System.Threading.Tasks;
@@ -152,7 +153,8 @@ public partial class Main : NativeWindowUtility {
 		BaseConfig.Release = BaseConfig.Release.Distinct().ToList();
 		var snapshotPaths = BaseConfig.Release.ToList();
 
-		foreach (var path in snapshotPaths) {
+		foreach (var lPath in snapshotPaths) {
+			var path = lPath.NormalizePath();
 			var gameVersion = GameVersion.FromGamePath(path);
 			if (gameVersion is null) {
 				RemoveRelease(path);
@@ -185,7 +187,8 @@ public partial class Main : NativeWindowUtility {
 		var versionLookup = ReleaseInfos.Values
 			.ToLookup(info => info.Version);
 
-		foreach (var path in list) {
+		foreach (var lPath in list) {
+			var path = lPath.NormalizePath();
 			if (!DirAccess.DirExistsAbsolute(path)) {
 				RemoveModpack(path);
 				continue;
@@ -223,7 +226,7 @@ public partial class Main : NativeWindowUtility {
 
 	public static string? GetGameConfigName(string gamePath) {
 		try {
-			var assembly = AssemblyDefinition.ReadAssembly(gamePath.PathJoin("VintagestoryLib.dll"));
+			var assembly = AssemblyDefinition.ReadAssembly(Path.Combine(gamePath, "VintagestoryLib.dll"));
 			var type = assembly.MainModule.GetType("Vintagestory.Client.NoObf.ClientSettings");
 			var properties = type.Properties.ToDictionary(definition => definition.Name, definition => definition.GetMethod);
 			return properties["FileName"].Body.Instructions.ToArray()
@@ -240,7 +243,7 @@ public partial class Main : NativeWindowUtility {
 		const string vsRunPath = "res://Misc/VSRun";
 		foreach (var file in DirAccess.GetFilesAt(vsRunPath)) {
 			var fromPath = vsRunPath.PathJoin(file);
-			tmp.Copy(fromPath, tmpRunPath.PathJoin(file));
+			tmp.Copy(fromPath, tmpRunPath.PathJoin(file).NormalizePath());
 		}
 
 		return tmp;
@@ -299,7 +302,7 @@ public partial class Main : NativeWindowUtility {
 					VintageStoryDataPath = dataPath,
 					ExecutableType = ExecutableTypeEnum.InitData
 				},
-				$"dotnet {tmp.GetCurrentDir().PathJoin("VSRun.dll")}");
+				$"dotnet {Path.Combine(tmp.GetCurrentDir(), "VSRun.dll")}");
 			CurrentGameProcess = process;
 			await process.WaitForExitAsync();
 		} catch (Exception e) {
@@ -320,7 +323,7 @@ public partial class Main : NativeWindowUtility {
 					AssemblyPath = assembleName.Replace("%game_path%", gamePath).Replace("%data_path", dataPath),
 					ExecutableType = ExecutableTypeEnum.StartGame
 				},
-				command.Replace("%command%", $"dotnet {tmp.GetCurrentDir().PathJoin("VSRun.dll")}"));
+				command.Replace("%command%", $"dotnet {Path.Combine(tmp.GetCurrentDir(), "VSRun.dll").NormalizePath()}"));
 			CurrentGameProcess = process;
 			process.Exited += (_, _) => {
 				tmp.Dispose();

@@ -1,10 +1,11 @@
 using Godot;
+using MVL.Utils.Extensions;
 
 namespace MVL.Utils;
 
 public static class Paths {
-	public static string BaseConfigPath { get; } = OS.GetUserDataDir().PathJoin("data.json");
-	public static string ModpackFolder { get; } = OS.GetUserDataDir().PathJoin("Modpack");
+	public static string BaseConfigPath { get; } = OS.GetUserDataDir().PathJoin("data.json").NormalizePath();
+	public static string ModpackFolder { get; } = OS.GetUserDataDir().PathJoin("Modpack").NormalizePath();
 
 	static Paths() { EnsureFolderExists(); }
 

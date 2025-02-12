@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Godot;
 using MVL.UI.Item;
 using MVL.Utils;
+using MVL.Utils.Extensions;
 using MVL.Utils.Game;
 
 namespace MVL.UI.Window;
@@ -154,11 +155,11 @@ public partial class InstalledGamesImport : Control {
 			];
 			field = paths.Select(path => {
 #if GODOT_WINDOWS
-				path = path.PathJoin("Vintagestory").SimplifyPath();
+				path = Path.Combine(path, "Vintagestory").NormalizePath();
 #else
-				path = path.PathJoin("vintagestory").SimplifyPath();
+				path = Path.Combine(path, "vintagestory").NormalizePath();
 #endif
-				return File.Exists(path.PathJoin("Vintagestory.dll")) ? path : string.Empty;
+				return File.Exists(Path.Combine(path, "Vintagestory.dll")) ? path : string.Empty;
 			}).Where(path => !string.IsNullOrEmpty(path)).ToArray();
 			return field;
 		}

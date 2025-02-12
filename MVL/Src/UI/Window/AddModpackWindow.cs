@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Godot;
 using MVL.Utils;
+using MVL.Utils.Extensions;
 using MVL.Utils.Game;
 using MVL.Utils.Help;
 
@@ -111,19 +112,20 @@ public partial class AddModpackWindow : ColorRect {
 		_folderButton.Pressed += _fileDialog.Show;
 		_fileDialog.CurrentPath = Paths.ModpackFolder;
 		_fileDialog.CurrentDir = Paths.ModpackFolder;
-		_fileDialog.DirSelected += path => {
-			path = Path.TrimEndingDirectorySeparator(path);
-			if (_createPath!.ButtonPressed) {
-				path = Path.Combine(path, _modpackName!.Text);
-			}
-
-			SetModpackPath(path);
-		};
+		_fileDialog.DirSelected += OnFileDialogOnDirSelected;
 		_cancelButton.Pressed += CancelButtonOnPressed;
 		_okButton.Pressed += OkButtonOnPressed;
 
 		OnGameVersionOnItemSelected(0);
 		SetModpackPath(Path.Combine(Paths.ModpackFolder, _modpackName.Text));
+	}
+
+	private void OnFileDialogOnDirSelected(string path) {
+		if (_createPath!.ButtonPressed) {
+			path = Path.Combine(path, _modpackName!.Text);
+		}
+
+		SetModpackPath(path.NormalizePath());
 	}
 
 	private void OnGameVersionOnItemSelected(long index) {

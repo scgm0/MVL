@@ -67,7 +67,7 @@ public partial class ModpackItem : PanelContainer {
 			Main.CurrentGameProcess!.Exited += CurrentGameProcessOnExited;
 		}
 
-		var modsPath = ModpackConfig.Path!.PathJoin("Mods");
+		var modsPath = Path.Combine(ModpackConfig.Path!, "Mods");
 		if (Directory.Exists(modsPath)) {
 			_modCount.Text = $"模组数量: {Directory.GetFileSystemEntries(modsPath).Length}";
 		}
