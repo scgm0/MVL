@@ -302,7 +302,7 @@ public partial class Main : NativeWindowUtility {
 					VintageStoryDataPath = dataPath,
 					ExecutableType = ExecutableTypeEnum.InitData
 				},
-				$"dotnet {Path.Combine(tmp.GetCurrentDir(), "VSRun.dll")}");
+				$"dotnet \"{Path.Combine(tmp.GetCurrentDir(), "VSRun.dll").NormalizePath()}\"");
 			CurrentGameProcess = process;
 			await process.WaitForExitAsync();
 		} catch (Exception e) {
@@ -323,7 +323,7 @@ public partial class Main : NativeWindowUtility {
 					AssemblyPath = assembleName.Replace("%game_path%", gamePath).Replace("%data_path", dataPath),
 					ExecutableType = ExecutableTypeEnum.StartGame
 				},
-				command.Replace("%command%", $"dotnet {Path.Combine(tmp.GetCurrentDir(), "VSRun.dll").NormalizePath()}"));
+				command.Replace("%command%", $"dotnet \"{Path.Combine(tmp.GetCurrentDir(), "VSRun.dll").NormalizePath()}\""));
 			CurrentGameProcess = process;
 			process.Exited += (_, _) => {
 				tmp.Dispose();
