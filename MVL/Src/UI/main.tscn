@@ -502,7 +502,7 @@ icon = SubResource("Texture2D_o4ctv")
 clip_text = true
 icon_alignment = 2
 script = ExtResource("7_bl4fu")
-metadata/_custom_type_script = ExtResource("7_bl4fu")
+metadata/_custom_type_script = "uid://dvjtigpqee0jw"
 
 [node name="HSeparator1" type="HSeparator" parent="HBoxContainer/MenuPanel/VBoxContainer"]
 layout_mode = 2
@@ -519,7 +519,7 @@ icon = SubResource("Texture2D_bmwv3")
 clip_text = true
 script = ExtResource("7_bl4fu")
 Page = NodePath("../../../ColorRect/VBoxContainer/MarginContainer/PageContainer/Home")
-metadata/_custom_type_script = ExtResource("7_bl4fu")
+metadata/_custom_type_script = "uid://dvjtigpqee0jw"
 
 [node name="AccountButton" type="Button" parent="HBoxContainer/MenuPanel/VBoxContainer" node_paths=PackedStringArray("Page")]
 layout_mode = 2
@@ -530,7 +530,7 @@ icon = SubResource("Texture2D_365jr")
 clip_text = true
 script = ExtResource("7_bl4fu")
 Page = NodePath("../../../ColorRect/VBoxContainer/MarginContainer/PageContainer/Account")
-metadata/_custom_type_script = ExtResource("7_bl4fu")
+metadata/_custom_type_script = "uid://dvjtigpqee0jw"
 
 [node name="ModpackButton" type="Button" parent="HBoxContainer/MenuPanel/VBoxContainer" node_paths=PackedStringArray("Page")]
 layout_mode = 2
@@ -541,7 +541,7 @@ icon = SubResource("Texture2D_a6wm3")
 clip_text = true
 script = ExtResource("7_bl4fu")
 Page = NodePath("../../../ColorRect/VBoxContainer/MarginContainer/PageContainer/Modpack")
-metadata/_custom_type_script = ExtResource("7_bl4fu")
+metadata/_custom_type_script = "uid://dvjtigpqee0jw"
 
 [node name="ReleaseButton" type="Button" parent="HBoxContainer/MenuPanel/VBoxContainer" node_paths=PackedStringArray("Page")]
 layout_mode = 2
@@ -552,7 +552,7 @@ icon = SubResource("Texture2D_53u4p")
 clip_text = true
 script = ExtResource("7_bl4fu")
 Page = NodePath("../../../ColorRect/VBoxContainer/MarginContainer/PageContainer/Release")
-metadata/_custom_type_script = ExtResource("7_bl4fu")
+metadata/_custom_type_script = "uid://dvjtigpqee0jw"
 
 [node name="ModuleButton" type="Button" parent="HBoxContainer/MenuPanel/VBoxContainer" node_paths=PackedStringArray("Page")]
 layout_mode = 2
@@ -563,7 +563,7 @@ icon = SubResource("Texture2D_08ol6")
 clip_text = true
 script = ExtResource("7_bl4fu")
 Page = NodePath("../../../ColorRect/VBoxContainer/MarginContainer/PageContainer/Module")
-metadata/_custom_type_script = ExtResource("7_bl4fu")
+metadata/_custom_type_script = "uid://dvjtigpqee0jw"
 
 [node name="Control" type="Control" parent="HBoxContainer/MenuPanel/VBoxContainer"]
 layout_mode = 2
@@ -584,7 +584,7 @@ icon = SubResource("Texture2D_30yt8")
 clip_text = true
 script = ExtResource("7_bl4fu")
 Page = NodePath("../../../ColorRect/VBoxContainer/MarginContainer/PageContainer/Setting")
-metadata/_custom_type_script = ExtResource("7_bl4fu")
+metadata/_custom_type_script = "uid://dvjtigpqee0jw"
 
 [node name="InfoButton" type="Button" parent="HBoxContainer/MenuPanel/VBoxContainer" node_paths=PackedStringArray("Page")]
 layout_mode = 2
@@ -596,7 +596,7 @@ icon = SubResource("Texture2D_5lwjt")
 clip_text = true
 script = ExtResource("7_bl4fu")
 Page = NodePath("../../../ColorRect/VBoxContainer/MarginContainer/PageContainer/Info")
-metadata/_custom_type_script = ExtResource("7_bl4fu")
+metadata/_custom_type_script = "uid://dvjtigpqee0jw"
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="HBoxContainer/MenuPanel"]
 libraries = {
@@ -761,7 +761,7 @@ dragging_scroll_damper = SubResource("Resource_o4ctv")
 drag_with_mouse = false
 drag_with_touch = false
 handle_input = false
-metadata/_custom_type_script = ExtResource("27_7nt4r")
+metadata/_custom_type_script = "uid://cre6m68jy0aad"
 
 [node name="Container" type="Container" parent="HBoxContainer/ColorRect/VBoxContainer/MarginContainer/PageContainer/Modpack/MarginContainer/VBoxContainer/SmoothScrollContainer" node_paths=PackedStringArray("ScrollContainer")]
 process_mode = 1
@@ -804,7 +804,7 @@ dragging_scroll_damper = SubResource("Resource_7nt4r")
 drag_with_mouse = false
 drag_with_touch = false
 handle_input = false
-metadata/_custom_type_script = ExtResource("27_7nt4r")
+metadata/_custom_type_script = "uid://cre6m68jy0aad"
 
 [node name="HFlowContainer" type="HFlowContainer" parent="HBoxContainer/ColorRect/VBoxContainer/MarginContainer/PageContainer/Release/MarginContainer/SmoothScrollContainer"]
 layout_mode = 2
@@ -963,7 +963,7 @@ dragging_scroll_damper = SubResource("Resource_a6wm3")
 drag_with_mouse = false
 drag_with_touch = false
 handle_input = false
-metadata/_custom_type_script = ExtResource("27_7nt4r")
+metadata/_custom_type_script = "uid://cre6m68jy0aad"
 
 [node name="VBoxContainer" type="VBoxContainer" parent="HBoxContainer/ColorRect/VBoxContainer/MarginContainer/PageContainer/Info/MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/PanelContainer/SmoothScrollContainer"]
 layout_mode = 2
@@ -973,9 +973,12 @@ theme_override_constants/separation = 20
 
 [node name="HBoxContainer2" type="HBoxContainer" parent="."]
 layout_mode = 1
-anchors_preset = 10
+anchors_preset = 1
+anchor_left = 1.0
 anchor_right = 1.0
-grow_horizontal = 2
+offset_left = -70.0
+offset_bottom = 30.0
+grow_horizontal = 0
 theme_override_constants/separation = 0
 alignment = 2
 

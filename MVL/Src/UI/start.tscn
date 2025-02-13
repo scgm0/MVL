@@ -237,7 +237,7 @@ grow_vertical = 2
 script = ExtResource("3_874xg")
 IsResizable = true
 WindowEdge = 3
-metadata/_custom_type_script = ExtResource("3_874xg")
+metadata/_custom_type_script = "uid://dbies7u5fo4sh"
 
 [node name="Top" type="Control" parent="WindowDecoration"]
 custom_minimum_size = Vector2(0, 7)
@@ -249,7 +249,7 @@ grow_horizontal = 2
 script = ExtResource("3_874xg")
 IsResizable = true
 WindowEdge = 1
-metadata/_custom_type_script = ExtResource("3_874xg")
+metadata/_custom_type_script = "uid://dbies7u5fo4sh"
 
 [node name="Right" type="Control" parent="WindowDecoration"]
 custom_minimum_size = Vector2(7, 0)
@@ -264,7 +264,7 @@ grow_vertical = 2
 script = ExtResource("3_874xg")
 IsResizable = true
 WindowEdge = 4
-metadata/_custom_type_script = ExtResource("3_874xg")
+metadata/_custom_type_script = "uid://dbies7u5fo4sh"
 
 [node name="Bottom" type="Control" parent="WindowDecoration"]
 custom_minimum_size = Vector2(0, 7)
@@ -279,7 +279,7 @@ grow_vertical = 0
 script = ExtResource("3_874xg")
 IsResizable = true
 WindowEdge = 6
-metadata/_custom_type_script = ExtResource("3_874xg")
+metadata/_custom_type_script = "uid://dbies7u5fo4sh"
 
 [node name="TopLeft" type="Control" parent="WindowDecoration"]
 custom_minimum_size = Vector2(14, 14)
@@ -289,7 +289,7 @@ offset_right = 14.0
 offset_bottom = 14.0
 script = ExtResource("3_874xg")
 IsResizable = true
-metadata/_custom_type_script = ExtResource("3_874xg")
+metadata/_custom_type_script = "uid://dbies7u5fo4sh"
 
 [node name="TopRight" type="Control" parent="WindowDecoration"]
 custom_minimum_size = Vector2(14, 14)
@@ -303,7 +303,7 @@ grow_horizontal = 0
 script = ExtResource("3_874xg")
 IsResizable = true
 WindowEdge = 2
-metadata/_custom_type_script = ExtResource("3_874xg")
+metadata/_custom_type_script = "uid://dbies7u5fo4sh"
 
 [node name="BottomRight" type="Control" parent="WindowDecoration"]
 custom_minimum_size = Vector2(14, 14)
@@ -320,7 +320,7 @@ grow_vertical = 0
 script = ExtResource("3_874xg")
 IsResizable = true
 WindowEdge = 7
-metadata/_custom_type_script = ExtResource("3_874xg")
+metadata/_custom_type_script = "uid://dbies7u5fo4sh"
 
 [node name="BottomLeft" type="Control" parent="WindowDecoration"]
 custom_minimum_size = Vector2(14, 14)
@@ -334,7 +334,7 @@ grow_vertical = 0
 script = ExtResource("3_874xg")
 IsResizable = true
 WindowEdge = 5
-metadata/_custom_type_script = ExtResource("3_874xg")
+metadata/_custom_type_script = "uid://dbies7u5fo4sh"
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {
