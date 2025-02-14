@@ -79,7 +79,6 @@ locale/fallback="zh_CN"
 [rendering]
 
 textures/canvas_textures/default_texture_filter=2
-gl_compatibility/driver.linuxbsd="opengl3_es"
 renderer/rendering_method="gl_compatibility"
 renderer/rendering_method.mobile="gl_compatibility"
 viewport/transparent_background=true
