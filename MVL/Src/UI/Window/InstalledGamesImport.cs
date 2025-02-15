@@ -12,12 +12,10 @@ using MVL.Utils.Game;
 
 namespace MVL.UI.Window;
 
-public partial class InstalledGamesImport : Control {
-	[Export]
-	private PackedScene? _installedGameItemScene;
+public partial class InstalledGamesImport : BaseWindow {
 
 	[Export]
-	private PanelContainer? _installedGameItemContainer;
+	private PackedScene? _installedGameItemScene;
 
 	[Export]
 	private Control? _installedGameList;
@@ -28,9 +26,6 @@ public partial class InstalledGamesImport : Control {
 	[Export]
 	private Button? _importButton;
 
-	[Export]
-	private AnimationPlayer? _animationPlayer;
-
 	[Signal]
 	public delegate void CancelEventHandler();
 
@@ -40,15 +35,13 @@ public partial class InstalledGamesImport : Control {
 	public bool SingleSelect { get; set; }
 
 	public override void _Ready() {
+		base._Ready();
 		Utils.Help.NullExceptionHelper.NotNull(_installedGameItemScene,
-			_installedGameItemContainer,
 			_installedGameList,
 			_cancelButton,
-			_importButton,
-			_animationPlayer);
+			_importButton);
 		_cancelButton.Pressed += CancelButtonOnPressed;
 		_importButton.Pressed += ImportButtonOnPressed;
-		base.Hide();
 	}
 
 	private async void ImportButtonOnPressed() {
@@ -73,22 +66,11 @@ public partial class InstalledGamesImport : Control {
 		}
 	}
 
-	public new async Task Show() {
-		Modulate = Colors.Transparent;
-		_installedGameItemContainer!.Scale = Vector2.Zero;
-		base.Show();
-		_animationPlayer!.Play(StringNames.Show);
-		await ToSignal(_animationPlayer, AnimationMixer.SignalName.AnimationFinished);
-	}
-
 	public new async Task Hide() {
-		_animationPlayer!.PlayBackwards(StringNames.Show);
-		await ToSignal(_animationPlayer, AnimationMixer.SignalName.AnimationFinished);
+		await base.Hide();
 		foreach (var child in _installedGameList!.GetChildren()) {
 			child.QueueFree();
 		}
-
-		base.Hide();
 	}
 
 	public async Task ShowInstalledGames() { await ShowInstalledGames(InstalledGamePaths); }

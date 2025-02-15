@@ -1,21 +1,9 @@
-[gd_scene load_steps=26 format=3 uid="uid://ccfq2fesgeykj"]
+[gd_scene load_steps=22 format=3 uid="uid://ccfq2fesgeykj"]
 
+[ext_resource type="PackedScene" uid="uid://bu4hwijkbc8sm" path="res://Src/UI/Window/BaseWindow.tscn" id="1_fvt7b"]
 [ext_resource type="Script" uid="uid://dstnk40xqjp6x" path="res://Src/UI/Window/AddModpackWindow.cs" id="1_vgayu"]
-[ext_resource type="Script" uid="uid://dbies7u5fo4sh" path="res://Src/UI/NativeWindowUtility.cs" id="1_x4e8l"]
 [ext_resource type="FontFile" uid="uid://bmgx1vyg6bavd" path="res://Assets/Font/HarmonyOS_Sans_SC_Bold.ttf" id="2_q2lyo"]
 [ext_resource type="Script" uid="uid://bk3tot6c35bwu" path="res://Src/Utils/IconTexture2D.cs" id="3_i7wln"]
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_1opgh"]
-content_margin_left = 20.0
-content_margin_top = 20.0
-content_margin_right = 20.0
-content_margin_bottom = 20.0
-bg_color = Color(0.137255, 0.137255, 0.137255, 1)
-corner_radius_top_left = 10
-corner_radius_top_right = 10
-corner_radius_bottom_right = 10
-corner_radius_bottom_left = 10
-shadow_size = 8
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_vgayu"]
 
@@ -151,94 +139,8 @@ Button/styles/hover = SubResource("StyleBoxFlat_v5ddw")
 Button/styles/normal = SubResource("StyleBoxFlat_bhu72")
 Button/styles/pressed = SubResource("StyleBoxFlat_syw1k")
 
-[sub_resource type="Animation" id="Animation_x7vct"]
-length = 0.001
-tracks/0/type = "bezier"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("PanelContainer:scale:x")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"handle_modes": PackedInt32Array(0),
-"points": PackedFloat32Array(1, -0.25, 0, 0.25, 0),
-"times": PackedFloat32Array(0)
-}
-tracks/1/type = "bezier"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath("PanelContainer:scale:y")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"handle_modes": PackedInt32Array(0),
-"points": PackedFloat32Array(1, -0.25, 0, 0.25, 0),
-"times": PackedFloat32Array(0)
-}
-tracks/2/type = "bezier"
-tracks/2/imported = false
-tracks/2/enabled = true
-tracks/2/path = NodePath(".:modulate:a")
-tracks/2/interp = 1
-tracks/2/loop_wrap = true
-tracks/2/keys = {
-"handle_modes": PackedInt32Array(0),
-"points": PackedFloat32Array(1, -0.0005, 0, 0.0005, 0),
-"times": PackedFloat32Array(0)
-}
-
-[sub_resource type="Animation" id="Animation_mqeym"]
-resource_name = "show"
-length = 0.5
-tracks/0/type = "bezier"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("PanelContainer:scale:x")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"handle_modes": PackedInt32Array(0, 0),
-"points": PackedFloat32Array(0, -0.25, 0, 0.25, 0, 1, -0.25, 0, 0.25, 0),
-"times": PackedFloat32Array(0, 0.5)
-}
-tracks/1/type = "bezier"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath("PanelContainer:scale:y")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"handle_modes": PackedInt32Array(0, 0),
-"points": PackedFloat32Array(0, -0.25, 0, 0.25, 0, 1, -0.25, 0, 0.25, 0),
-"times": PackedFloat32Array(0, 0.5)
-}
-tracks/2/type = "bezier"
-tracks/2/imported = false
-tracks/2/enabled = true
-tracks/2/path = NodePath(".:modulate:a")
-tracks/2/interp = 1
-tracks/2/loop_wrap = true
-tracks/2/keys = {
-"handle_modes": PackedInt32Array(0, 0),
-"points": PackedFloat32Array(0, -0.25, 0, 0.25, 0, 1, -0.25, 0, 0.25, 0),
-"times": PackedFloat32Array(0, 0.5)
-}
-
-[sub_resource type="AnimationLibrary" id="AnimationLibrary_0mth8"]
-_data = {
-&"RESET": SubResource("Animation_x7vct"),
-&"show": SubResource("Animation_mqeym")
-}
-
-[node name="AddModpackWindow" type="ColorRect" node_paths=PackedStringArray("_container", "_modpackName", "_modpackPath", "_createPath", "_folderButton", "_fileDialog", "_gameVersion", "_releasePath", "_tooltip", "_cancelButton", "_okButton", "_animationPlayer")]
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-color = Color(0, 0, 0, 0.6)
+[node name="AddModpackWindow" node_paths=PackedStringArray("_modpackName", "_modpackPath", "_createPath", "_folderButton", "_fileDialog", "_gameVersion", "_releasePath", "_tooltip", "_cancelButton", "_okButton") instance=ExtResource("1_fvt7b")]
 script = ExtResource("1_vgayu")
-_container = NodePath("PanelContainer")
 _modpackName = NodePath("PanelContainer/VBoxContainer/VBoxContainer/LineEdit")
 _modpackPath = NodePath("PanelContainer/VBoxContainer/VBoxContainer2/HBoxContainer/LineEdit")
 _createPath = NodePath("PanelContainer/VBoxContainer/VBoxContainer2/HBoxContainer2/CheckButton")
@@ -249,60 +151,34 @@ _releasePath = NodePath("PanelContainer/VBoxContainer/VBoxContainer3/HBoxContain
 _tooltip = NodePath("PanelContainer/VBoxContainer/VBoxContainer2/Label")
 _cancelButton = NodePath("PanelContainer/VBoxContainer/HBoxContainer3/Button")
 _okButton = NodePath("PanelContainer/VBoxContainer/HBoxContainer3/Button2")
-_animationPlayer = NodePath("AnimationPlayer")
 
-[node name="NativeWindowUtility" type="Control" parent="."]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-script = ExtResource("1_x4e8l")
-IsDraggable = true
-metadata/_custom_type_script = ExtResource("1_x4e8l")
-
-[node name="PanelContainer" type="PanelContainer" parent="."]
+[node name="PanelContainer" parent="." index="1"]
 custom_minimum_size = Vector2(475, 250)
-layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -20.0
-offset_top = -20.0
-offset_right = 20.0
-offset_bottom = 20.0
-grow_horizontal = 2
-grow_vertical = 2
-pivot_offset = Vector2(237, 125)
-theme_override_styles/panel = SubResource("StyleBoxFlat_1opgh")
 
-[node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer" index="0"]
 layout_mode = 2
 theme = SubResource("Theme_vgayu")
 theme_override_constants/separation = 10
 
-[node name="Label" type="Label" parent="PanelContainer/VBoxContainer"]
+[node name="Label" type="Label" parent="PanelContainer/VBoxContainer" index="0"]
 layout_mode = 2
 theme_override_fonts/font = ExtResource("2_q2lyo")
 theme_override_font_sizes/font_size = 20
 text = "添加整合包"
 horizontal_alignment = 1
 
-[node name="HSeparator" type="HSeparator" parent="PanelContainer/VBoxContainer"]
+[node name="HSeparator" type="HSeparator" parent="PanelContainer/VBoxContainer" index="1"]
 layout_mode = 2
 theme_override_constants/separation = 15
 
-[node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer/VBoxContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer/VBoxContainer" index="2"]
 layout_mode = 2
 
-[node name="Name" type="Label" parent="PanelContainer/VBoxContainer/VBoxContainer"]
+[node name="Name" type="Label" parent="PanelContainer/VBoxContainer/VBoxContainer" index="0"]
 layout_mode = 2
 text = "整合包名称:"
 
-[node name="LineEdit" type="LineEdit" parent="PanelContainer/VBoxContainer/VBoxContainer"]
+[node name="LineEdit" type="LineEdit" parent="PanelContainer/VBoxContainer/VBoxContainer" index="1"]
 layout_mode = 2
 text = "VintagestoryData"
 placeholder_text = "名称不能为空"
@@ -310,18 +186,18 @@ clear_button_enabled = true
 right_icon = SubResource("Texture2D_5jy5j")
 caret_blink = true
 
-[node name="VBoxContainer2" type="VBoxContainer" parent="PanelContainer/VBoxContainer"]
+[node name="VBoxContainer2" type="VBoxContainer" parent="PanelContainer/VBoxContainer" index="3"]
 layout_mode = 2
 
-[node name="HBoxContainer2" type="HBoxContainer" parent="PanelContainer/VBoxContainer/VBoxContainer2"]
+[node name="HBoxContainer2" type="HBoxContainer" parent="PanelContainer/VBoxContainer/VBoxContainer2" index="0"]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="PanelContainer/VBoxContainer/VBoxContainer2/HBoxContainer2"]
+[node name="Label" type="Label" parent="PanelContainer/VBoxContainer/VBoxContainer2/HBoxContainer2" index="0"]
 layout_mode = 2
 size_flags_vertical = 8
 text = "整合包路径:"
 
-[node name="CheckButton" type="CheckButton" parent="PanelContainer/VBoxContainer/VBoxContainer2/HBoxContainer2"]
+[node name="CheckButton" type="CheckButton" parent="PanelContainer/VBoxContainer/VBoxContainer2/HBoxContainer2" index="1"]
 layout_mode = 2
 size_flags_horizontal = 10
 size_flags_vertical = 4
@@ -329,10 +205,10 @@ button_pressed = true
 text = "创建文件夹"
 icon = SubResource("Texture2D_2ju0j")
 
-[node name="HBoxContainer" type="HBoxContainer" parent="PanelContainer/VBoxContainer/VBoxContainer2"]
+[node name="HBoxContainer" type="HBoxContainer" parent="PanelContainer/VBoxContainer/VBoxContainer2" index="1"]
 layout_mode = 2
 
-[node name="LineEdit" type="LineEdit" parent="PanelContainer/VBoxContainer/VBoxContainer2/HBoxContainer"]
+[node name="LineEdit" type="LineEdit" parent="PanelContainer/VBoxContainer/VBoxContainer2/HBoxContainer" index="0"]
 layout_mode = 2
 size_flags_horizontal = 3
 placeholder_text = "路径不能为空"
@@ -340,70 +216,65 @@ clear_button_enabled = true
 right_icon = SubResource("Texture2D_5jy5j")
 caret_blink = true
 
-[node name="Button" type="Button" parent="PanelContainer/VBoxContainer/VBoxContainer2/HBoxContainer"]
+[node name="Button" type="Button" parent="PanelContainer/VBoxContainer/VBoxContainer2/HBoxContainer" index="1"]
 layout_mode = 2
 icon = SubResource("Texture2D_vgayu")
 
-[node name="Label" type="Label" parent="PanelContainer/VBoxContainer/VBoxContainer2"]
+[node name="Label" type="Label" parent="PanelContainer/VBoxContainer/VBoxContainer2" index="2"]
 layout_mode = 2
 size_flags_horizontal = 4
 theme_override_font_sizes/font_size = 14
 text = "将自动创建文件夹"
 
-[node name="VBoxContainer3" type="VBoxContainer" parent="PanelContainer/VBoxContainer"]
+[node name="VBoxContainer3" type="VBoxContainer" parent="PanelContainer/VBoxContainer" index="4"]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="PanelContainer/VBoxContainer/VBoxContainer3"]
+[node name="Label" type="Label" parent="PanelContainer/VBoxContainer/VBoxContainer3" index="0"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 1
 text = "游戏版本:"
 vertical_alignment = 1
 
-[node name="HBoxContainer2" type="HBoxContainer" parent="PanelContainer/VBoxContainer/VBoxContainer3"]
+[node name="HBoxContainer2" type="HBoxContainer" parent="PanelContainer/VBoxContainer/VBoxContainer3" index="1"]
 layout_mode = 2
 
-[node name="OptionButton" type="OptionButton" parent="PanelContainer/VBoxContainer/VBoxContainer3/HBoxContainer2"]
-layout_mode = 2
-size_flags_horizontal = 3
-alignment = 1
-text_overrun_behavior = 3
-clip_text = true
-
-[node name="OptionButton2" type="OptionButton" parent="PanelContainer/VBoxContainer/VBoxContainer3/HBoxContainer2"]
+[node name="OptionButton" type="OptionButton" parent="PanelContainer/VBoxContainer/VBoxContainer3/HBoxContainer2" index="0"]
 layout_mode = 2
 size_flags_horizontal = 3
 alignment = 1
 text_overrun_behavior = 3
 clip_text = true
 
-[node name="HSeparator2" type="HSeparator" parent="PanelContainer/VBoxContainer"]
+[node name="OptionButton2" type="OptionButton" parent="PanelContainer/VBoxContainer/VBoxContainer3/HBoxContainer2" index="1"]
+layout_mode = 2
+size_flags_horizontal = 3
+alignment = 1
+text_overrun_behavior = 3
+clip_text = true
+
+[node name="HSeparator2" type="HSeparator" parent="PanelContainer/VBoxContainer" index="5"]
 layout_mode = 2
 theme_override_constants/separation = 15
 
-[node name="HBoxContainer3" type="HBoxContainer" parent="PanelContainer/VBoxContainer"]
+[node name="HBoxContainer3" type="HBoxContainer" parent="PanelContainer/VBoxContainer" index="6"]
 layout_mode = 2
 size_flags_horizontal = 4
 theme = SubResource("Theme_v5ddw")
 theme_override_constants/separation = 125
 
-[node name="Button" type="Button" parent="PanelContainer/VBoxContainer/HBoxContainer3"]
+[node name="Button" type="Button" parent="PanelContainer/VBoxContainer/HBoxContainer3" index="0"]
 layout_mode = 2
 text = "取消"
 
-[node name="Button2" type="Button" parent="PanelContainer/VBoxContainer/HBoxContainer3"]
+[node name="Button2" type="Button" parent="PanelContainer/VBoxContainer/HBoxContainer3" index="1"]
 layout_mode = 2
 text = "确定"
 
-[node name="FileDialog" type="FileDialog" parent="."]
+[node name="FileDialog" type="FileDialog" parent="." index="3"]
 title = "Open a Directory"
 ok_button_text = "Select Current Folder"
 file_mode = 2
 access = 2
 show_hidden_files = true
 use_native_dialog = true
-
-[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
-libraries = {
-&"": SubResource("AnimationLibrary_0mth8")
-}

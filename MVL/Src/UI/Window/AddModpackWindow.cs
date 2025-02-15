@@ -11,9 +11,7 @@ using MVL.Utils.Help;
 
 namespace MVL.UI.Window;
 
-public partial class AddModpackWindow : ColorRect {
-	[Export]
-	private PanelContainer? _container;
+public partial class AddModpackWindow : BaseWindow {
 
 	[Export]
 	private LineEdit? _modpackName;
@@ -45,9 +43,6 @@ public partial class AddModpackWindow : ColorRect {
 	[Export]
 	private Button? _okButton;
 
-	[Export]
-	private AnimationPlayer? _animationPlayer;
-
 	[Signal]
 	public delegate void CancelEventHandler();
 
@@ -57,6 +52,7 @@ public partial class AddModpackWindow : ColorRect {
 	private Dictionary<string, List<string>> _dictionary = [];
 
 	public override void _Ready() {
+		base._Ready();
 		NullExceptionHelper.NotNull(
 			_modpackName,
 			_modpackPath,
@@ -67,8 +63,7 @@ public partial class AddModpackWindow : ColorRect {
 			_releasePath,
 			_tooltip,
 			_cancelButton,
-			_okButton,
-			_animationPlayer);
+			_okButton);
 		Main.CheckReleaseInfo();
 
 		_gameVersion.ItemSelected += OnGameVersionOnItemSelected;
@@ -220,19 +215,5 @@ public partial class AddModpackWindow : ColorRect {
 		} catch (Exception e) {
 			GD.PrintErr(e.ToString());
 		}
-	}
-
-	public new async Task Show() {
-		Modulate = Colors.Transparent;
-		_container!.Scale = Vector2.Zero;
-		base.Show();
-		_animationPlayer!.Play(StringNames.Show);
-		await ToSignal(_animationPlayer, AnimationMixer.SignalName.AnimationFinished);
-	}
-
-	public new async Task Hide() {
-		_animationPlayer!.PlayBackwards(StringNames.Show);
-		await ToSignal(_animationPlayer, AnimationMixer.SignalName.AnimationFinished);
-		base.Hide();
 	}
 }
