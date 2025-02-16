@@ -13,7 +13,7 @@ namespace MVL.Utils.Game;
 public readonly record struct GameVersion {
 	public GameVersion(string ShortGameVersion) {
 		this.ShortGameVersion = ShortGameVersion;
-		OverallVersion = ShortGameVersion[..3];
+		OverallVersion = SplitVersionString(ShortGameVersion)[..2].Join(".");
 		ReleaseType = GetReleaseType(this.ShortGameVersion);
 		Branch = ReleaseType == EnumGameReleaseType.Stable ? EnumGameBranch.Stable : EnumGameBranch.Unstable;
 	}
@@ -91,7 +91,7 @@ public readonly record struct GameVersion {
 			return null;
 		}
 	}
-	
+
 	public class GameVersionJsonConverter : JsonConverter<GameVersion> {
 
 		public override GameVersion Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options) {
@@ -99,8 +99,22 @@ public readonly record struct GameVersion {
 			if (str != null) return new(str);
 			return default;
 		}
+
 		public override void Write(Utf8JsonWriter writer, GameVersion value, JsonSerializerOptions options) {
 			writer.WriteStringValue(value.ShortGameVersion);
+		}
+
+		public override void WriteAsPropertyName(Utf8JsonWriter writer, GameVersion value, JsonSerializerOptions options) {
+			writer.WritePropertyName(value.ToString());
+		}
+
+		public override GameVersion ReadAsPropertyName(
+			ref Utf8JsonReader reader,
+			Type typeToConvert,
+			JsonSerializerOptions options) {
+			var versionString = reader.GetString();
+			if (versionString != null) return new(versionString);
+			return default;
 		}
 	}
 }
