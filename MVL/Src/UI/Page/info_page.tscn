@@ -1,0 +1,189 @@
+[gd_scene load_steps=17 format=3 uid="uid://d0bdto738ug2l"]
+
+[ext_resource type="Script" uid="uid://74nlqylbyexa" path="res://Src/UI/Page/InfoPage.cs" id="1_fwjxq"]
+[ext_resource type="PackedScene" uid="uid://bxgudtdder0na" path="res://Src/UI/Item/info_item.tscn" id="2_gvx1g"]
+[ext_resource type="ButtonGroup" uid="uid://28dadh3ohukd" path="res://Assets/Gui/info_tab_button_group.tres" id="3_cnlqv"]
+[ext_resource type="Texture2D" uid="uid://bqv5hbr6w0cu" path="res://Assets/Icon/icon.png" id="4_2do0o"]
+[ext_resource type="FontFile" uid="uid://bmgx1vyg6bavd" path="res://Assets/Font/HarmonyOS_Sans_SC_Bold.ttf" id="5_pb4g6"]
+[ext_resource type="Script" uid="uid://cre6m68jy0aad" path="res://addons/SmoothScroll/SmoothScrollContainer.gd" id="6_oec7v"]
+[ext_resource type="Script" uid="uid://41yydm3vncfj" path="res://addons/SmoothScroll/scroll_damper/expo_scroll_damper.gd" id="7_twkd0"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_7nt4r"]
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_53u4p"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_0fd5h"]
+bg_color = Color(0.6, 0.6, 0.6, 0.6)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_pbvk2"]
+content_margin_top = 10.0
+content_margin_bottom = 10.0
+bg_color = Color(0.137255, 0.137255, 0.137255, 0.6)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_f5d0o"]
+content_margin_top = 10.0
+content_margin_bottom = 10.0
+bg_color = Color(0, 0, 0, 0.6)
+border_width_bottom = 1
+
+[sub_resource type="Theme" id="Theme_0fd5h"]
+Button/font_sizes/font_size = 20
+Button/fonts/font = ExtResource("5_pb4g6")
+Button/styles/focus = SubResource("StyleBoxEmpty_53u4p")
+Button/styles/hover = SubResource("StyleBoxFlat_0fd5h")
+Button/styles/normal = SubResource("StyleBoxFlat_pbvk2")
+Button/styles/pressed = SubResource("StyleBoxFlat_f5d0o")
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_b7o7j"]
+content_margin_left = 20.0
+content_margin_top = 20.0
+content_margin_right = 20.0
+content_margin_bottom = 20.0
+bg_color = Color(0.137255, 0.137255, 0.137255, 0.6)
+
+[sub_resource type="Resource" id="Resource_365jr"]
+script = ExtResource("7_twkd0")
+friction = 4.0
+minimum_velocity = 0.4
+rebound_strength = 7.0
+
+[sub_resource type="Resource" id="Resource_a6wm3"]
+script = ExtResource("7_twkd0")
+friction = 4.0
+minimum_velocity = 0.4
+rebound_strength = 7.0
+
+[node name="InfoPage" type="Control" node_paths=PackedStringArray("_authorButton", "_donorButton", "_licenseButton", "_list", "Main")]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 1
+script = ExtResource("1_fwjxq")
+_itemScene = ExtResource("2_gvx1g")
+_buttonGroup = ExtResource("3_cnlqv")
+_authorButton = NodePath("MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer/Button")
+_donorButton = NodePath("MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer/Button2")
+_licenseButton = NodePath("MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer/Button3")
+_list = NodePath("MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/PanelContainer/SmoothScrollContainer/VBoxContainer")
+Main = NodePath("MarginContainer")
+metadata/_tab_index = 6
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_top = 10
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+layout_mode = 2
+theme_override_constants/separation = 20
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_constants/separation = 10
+
+[node name="TextureRect" type="TextureRect" parent="MarginContainer/VBoxContainer/HBoxContainer"]
+custom_minimum_size = Vector2(75, 75)
+layout_mode = 2
+size_flags_horizontal = 4
+texture = ExtResource("4_2do0o")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+
+[node name="LinkButton" type="LinkButton" parent="MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_override_constants/outline_size = 5
+theme_override_fonts/font = ExtResource("5_pb4g6")
+theme_override_font_sizes/font_size = 25
+text = "神麤詭末的复古物语启动器"
+underline = 1
+uri = "https://github.com/scgm0/MVL"
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/outline_size = 4
+text = "Copyright (c) 2025 神麤詭末"
+
+[node name="PanelContainer" type="PanelContainer" parent="MarginContainer/VBoxContainer"]
+clip_children = 1
+layout_mode = 2
+size_flags_vertical = 3
+mouse_filter = 1
+theme_override_styles/panel = SubResource("StyleBoxFlat_7nt4r")
+
+[node name="ColorRect" type="ColorRect" parent="MarginContainer/VBoxContainer/PanelContainer"]
+layout_mode = 2
+mouse_filter = 1
+color = Color(0.137255, 0.137255, 0.137255, 0.6)
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/PanelContainer"]
+layout_mode = 2
+theme_override_constants/separation = 1
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/PanelContainer/VBoxContainer"]
+layout_mode = 2
+theme = SubResource("Theme_0fd5h")
+theme_override_constants/separation = 1
+
+[node name="Button" type="Button" parent="MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+toggle_mode = true
+button_pressed = true
+button_group = ExtResource("3_cnlqv")
+text = "贡献者"
+
+[node name="Button2" type="Button" parent="MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+toggle_mode = true
+button_group = ExtResource("3_cnlqv")
+text = "赞助者"
+
+[node name="Button3" type="Button" parent="MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+toggle_mode = true
+button_group = ExtResource("3_cnlqv")
+text = "许可证"
+
+[node name="PanelContainer" type="PanelContainer" parent="MarginContainer/VBoxContainer/PanelContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+mouse_filter = 1
+theme_override_styles/panel = SubResource("StyleBoxFlat_b7o7j")
+
+[node name="SmoothScrollContainer" type="ScrollContainer" parent="MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/PanelContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+script = ExtResource("6_oec7v")
+wheel_scroll_damper = SubResource("Resource_365jr")
+dragging_scroll_damper = SubResource("Resource_a6wm3")
+drag_with_mouse = false
+drag_with_touch = false
+handle_input = false
+metadata/_custom_type_script = "uid://cre6m68jy0aad"
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/PanelContainer/SmoothScrollContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 0
+theme_override_constants/separation = 20

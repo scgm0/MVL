@@ -1,4 +1,4 @@
-[gd_scene load_steps=81 format=3 uid="uid://514oox50h8yl"]
+[gd_scene load_steps=53 format=3 uid="uid://514oox50h8yl"]
 
 [ext_resource type="Script" uid="uid://cvyeyg8ttnwmu" path="res://Src/UI/Main.cs" id="1_1opgh"]
 [ext_resource type="Texture2D" uid="uid://bhh1jvyj73qxh" path="res://Assets/Gui/Background.png" id="2_1opgh"]
@@ -12,20 +12,14 @@
 [ext_resource type="Script" uid="uid://dvjtigpqee0jw" path="res://Src/UI/Item/MenuItem.cs" id="7_bl4fu"]
 [ext_resource type="Material" uid="uid://j3isaxpvqgbb" path="res://Assets/Material/blur.tres" id="9_bmwv3"]
 [ext_resource type="Script" uid="uid://bk3tot6c35bwu" path="res://Src/Utils/IconTexture2D.cs" id="13_7nt4r"]
-[ext_resource type="Script" uid="uid://diqldycl8cgn2" path="res://Src/UI/Page/MenuPage.cs" id="15_fuji0"]
-[ext_resource type="Script" uid="uid://crsx3xkxjftam" path="res://Src/UI/Page/ModpackPage.cs" id="16_gblyu"]
-[ext_resource type="PackedScene" uid="uid://d3yuqxh7olknc" path="res://Src/UI/Item/modpack_item.tscn" id="17_bmwv3"]
-[ext_resource type="Script" uid="uid://bx8dqa4avru7x" path="res://Src/UI/Page/ReleasePage.cs" id="18_g8snm"]
-[ext_resource type="PackedScene" uid="uid://bjgov53faujry" path="res://Src/UI/Item/release_item.tscn" id="19_g8snm"]
-[ext_resource type="Script" uid="uid://dt2erdjo6w7pf" path="res://Src/UI/ReorderableContainer.cs" id="20_bmwv3"]
-[ext_resource type="PackedScene" uid="uid://ccfq2fesgeykj" path="res://Src/UI/Window/add_modpack_window.tscn" id="20_gblyu"]
-[ext_resource type="LabelSettings" uid="uid://bdfwqcqufhm6k" path="res://Assets/Setting/page_title.tres" id="23_53u4p"]
-[ext_resource type="Script" uid="uid://74nlqylbyexa" path="res://Src/UI/Page/InfoPage.cs" id="23_o4ctv"]
-[ext_resource type="ButtonGroup" uid="uid://28dadh3ohukd" path="res://Assets/Gui/info_tab_button_group.tres" id="24_53u4p"]
+[ext_resource type="PackedScene" uid="uid://wtrk0xtd36kj" path="res://Src/UI/Page/home_page.tscn" id="14_oarc7"]
+[ext_resource type="PackedScene" uid="uid://ct87mdadyxtdt" path="res://Src/UI/Page/account_page.tscn" id="15_gblyu"]
+[ext_resource type="PackedScene" uid="uid://colclcegjal1y" path="res://Src/UI/Page/modpack_page.tscn" id="16_bmwv3"]
+[ext_resource type="PackedScene" uid="uid://0qq618t18t61" path="res://Src/UI/Page/release_page.tscn" id="17_o4ctv"]
+[ext_resource type="PackedScene" uid="uid://dri1d4mt1w68c" path="res://Src/UI/Page/module_page.tscn" id="18_365jr"]
+[ext_resource type="PackedScene" uid="uid://bp02so1m0q7m0" path="res://Src/UI/Page/setting_page.tscn" id="19_a6wm3"]
+[ext_resource type="PackedScene" uid="uid://d0bdto738ug2l" path="res://Src/UI/Page/info_page.tscn" id="20_53u4p"]
 [ext_resource type="FontFile" uid="uid://bmgx1vyg6bavd" path="res://Assets/Font/HarmonyOS_Sans_SC_Bold.ttf" id="24_365jr"]
-[ext_resource type="PackedScene" uid="uid://bxgudtdder0na" path="res://Src/UI/Item/info_item.tscn" id="25_a6wm3"]
-[ext_resource type="Script" uid="uid://cre6m68jy0aad" path="res://addons/SmoothScroll/SmoothScrollContainer.gd" id="27_7nt4r"]
-[ext_resource type="Script" uid="uid://41yydm3vncfj" path="res://addons/SmoothScroll/scroll_damper/expo_scroll_damper.gd" id="28_7eosv"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_7eosv"]
 content_margin_left = 4.0
@@ -221,187 +215,7 @@ outline_color = Color(0, 0, 0, 1)
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_kq46g"]
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_5lwjt"]
-bg_color = Color(0.20871, 0.20871, 0.20871, 0.6)
-border_width_left = 2
-border_width_top = 2
-border_width_right = 2
-border_width_bottom = 2
-border_color = Color(0.8, 0.8, 0.8, 0.207843)
-border_blend = true
-corner_radius_top_left = 8
-corner_radius_top_right = 8
-corner_radius_bottom_right = 8
-corner_radius_bottom_left = 8
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_6are0"]
-bg_color = Color(0, 0, 0, 0.686275)
-border_width_left = 2
-border_width_top = 2
-border_width_right = 2
-border_width_bottom = 2
-border_color = Color(0.8, 0.8, 0.8, 0.207843)
-border_blend = true
-corner_radius_top_left = 8
-corner_radius_top_right = 8
-corner_radius_bottom_right = 8
-corner_radius_bottom_left = 8
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_364to"]
-bg_color = Color(0, 0, 0, 0.6)
-border_width_left = 2
-border_width_top = 2
-border_width_right = 2
-border_width_bottom = 2
-border_color = Color(0.8, 0.8, 0.8, 0.207843)
-border_blend = true
-corner_radius_top_left = 8
-corner_radius_top_right = 8
-corner_radius_bottom_right = 8
-corner_radius_bottom_left = 8
-
-[sub_resource type="Texture2D" id="Texture2D_6are0"]
-resource_local_to_scene = false
-resource_name = ""
-script = ExtResource("13_7nt4r")
-IconName = "plus"
-FontSize = 48
-metadata/_custom_type_script = ExtResource("13_7nt4r")
-
-[sub_resource type="Resource" id="Resource_bmwv3"]
-script = ExtResource("28_7eosv")
-friction = 4.0
-minimum_velocity = 0.4
-rebound_strength = 7.0
-
-[sub_resource type="Resource" id="Resource_o4ctv"]
-script = ExtResource("28_7eosv")
-friction = 4.0
-minimum_velocity = 0.4
-rebound_strength = 7.0
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ty1b0"]
-content_margin_left = 4.0
-content_margin_top = 0.0
-content_margin_right = 4.0
-content_margin_bottom = 0.0
-bg_color = Color(0.1, 0.1, 0.1, 0.6)
-draw_center = false
-corner_radius_top_left = 10
-corner_radius_top_right = 10
-corner_radius_bottom_right = 10
-corner_radius_bottom_left = 10
-
-[sub_resource type="Theme" id="Theme_g8snm"]
-VScrollBar/styles/scroll = SubResource("StyleBoxFlat_ty1b0")
-
-[sub_resource type="Resource" id="Resource_364to"]
-script = ExtResource("28_7eosv")
-friction = 4.0
-minimum_velocity = 0.4
-rebound_strength = 7.0
-
-[sub_resource type="Resource" id="Resource_7nt4r"]
-script = ExtResource("28_7eosv")
-friction = 4.0
-minimum_velocity = 0.4
-rebound_strength = 7.0
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_oarc7"]
-bg_color = Color(0.20871, 0.20871, 0.20871, 0.6)
-border_width_left = 2
-border_width_top = 2
-border_width_right = 2
-border_width_bottom = 2
-border_color = Color(0.8, 0.8, 0.8, 0.207843)
-border_blend = true
-corner_radius_top_left = 10
-corner_radius_top_right = 10
-corner_radius_bottom_right = 10
-corner_radius_bottom_left = 10
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_gblyu"]
-bg_color = Color(0, 0, 0, 0.686275)
-border_width_left = 2
-border_width_top = 2
-border_width_right = 2
-border_width_bottom = 2
-border_color = Color(0.8, 0.8, 0.8, 0.207843)
-border_blend = true
-corner_radius_top_left = 10
-corner_radius_top_right = 10
-corner_radius_bottom_right = 10
-corner_radius_bottom_left = 10
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_bmwv3"]
-bg_color = Color(0, 0, 0, 0.6)
-border_width_left = 2
-border_width_top = 2
-border_width_right = 2
-border_width_bottom = 2
-border_color = Color(0.8, 0.8, 0.8, 0.207843)
-border_blend = true
-corner_radius_top_left = 10
-corner_radius_top_right = 10
-corner_radius_bottom_right = 10
-corner_radius_bottom_left = 10
-
-[sub_resource type="Texture2D" id="Texture2D_364to"]
-resource_local_to_scene = false
-resource_name = ""
-script = ExtResource("13_7nt4r")
-IconName = "plus"
-FontSize = 72
-metadata/_custom_type_script = ExtResource("13_7nt4r")
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_7nt4r"]
-corner_radius_top_left = 10
-corner_radius_top_right = 10
-corner_radius_bottom_right = 10
-corner_radius_bottom_left = 10
-
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_53u4p"]
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_0fd5h"]
-bg_color = Color(0.6, 0.6, 0.6, 0.6)
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_pbvk2"]
-content_margin_top = 10.0
-content_margin_bottom = 10.0
-bg_color = Color(0.137255, 0.137255, 0.137255, 0.6)
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_f5d0o"]
-content_margin_top = 10.0
-content_margin_bottom = 10.0
-bg_color = Color(0, 0, 0, 0.6)
-border_width_bottom = 1
-
-[sub_resource type="Theme" id="Theme_0fd5h"]
-Button/font_sizes/font_size = 20
-Button/fonts/font = ExtResource("24_365jr")
-Button/styles/focus = SubResource("StyleBoxEmpty_53u4p")
-Button/styles/hover = SubResource("StyleBoxFlat_0fd5h")
-Button/styles/normal = SubResource("StyleBoxFlat_pbvk2")
-Button/styles/pressed = SubResource("StyleBoxFlat_f5d0o")
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_b7o7j"]
-content_margin_left = 20.0
-content_margin_top = 20.0
-content_margin_right = 20.0
-content_margin_bottom = 20.0
-bg_color = Color(0.137255, 0.137255, 0.137255, 0.6)
-
-[sub_resource type="Resource" id="Resource_365jr"]
-script = ExtResource("28_7eosv")
-friction = 4.0
-minimum_velocity = 0.4
-rebound_strength = 7.0
-
-[sub_resource type="Resource" id="Resource_a6wm3"]
-script = ExtResource("28_7eosv")
-friction = 4.0
-minimum_velocity = 0.4
-rebound_strength = 7.0
+[sub_resource type="ButtonGroup" id="ButtonGroup_08ol6"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_a6wm3"]
 
@@ -518,7 +332,7 @@ text = "主页"
 icon = SubResource("Texture2D_bmwv3")
 clip_text = true
 script = ExtResource("7_bl4fu")
-Page = NodePath("../../../ColorRect/VBoxContainer/MarginContainer/PageContainer/Home")
+Page = NodePath("../../../ColorRect/VBoxContainer/MarginContainer/PageContainer/HomePage")
 metadata/_custom_type_script = "uid://dvjtigpqee0jw"
 
 [node name="AccountButton" type="Button" parent="HBoxContainer/MenuPanel/VBoxContainer" node_paths=PackedStringArray("Page")]
@@ -529,7 +343,7 @@ text = "账号"
 icon = SubResource("Texture2D_365jr")
 clip_text = true
 script = ExtResource("7_bl4fu")
-Page = NodePath("../../../ColorRect/VBoxContainer/MarginContainer/PageContainer/Account")
+Page = NodePath("../../../ColorRect/VBoxContainer/MarginContainer/PageContainer/AccountPage")
 metadata/_custom_type_script = "uid://dvjtigpqee0jw"
 
 [node name="ModpackButton" type="Button" parent="HBoxContainer/MenuPanel/VBoxContainer" node_paths=PackedStringArray("Page")]
@@ -540,7 +354,7 @@ text = "整合"
 icon = SubResource("Texture2D_a6wm3")
 clip_text = true
 script = ExtResource("7_bl4fu")
-Page = NodePath("../../../ColorRect/VBoxContainer/MarginContainer/PageContainer/Modpack")
+Page = NodePath("../../../ColorRect/VBoxContainer/MarginContainer/PageContainer/ModpackPage")
 metadata/_custom_type_script = "uid://dvjtigpqee0jw"
 
 [node name="ReleaseButton" type="Button" parent="HBoxContainer/MenuPanel/VBoxContainer" node_paths=PackedStringArray("Page")]
@@ -551,7 +365,7 @@ text = "版本"
 icon = SubResource("Texture2D_53u4p")
 clip_text = true
 script = ExtResource("7_bl4fu")
-Page = NodePath("../../../ColorRect/VBoxContainer/MarginContainer/PageContainer/Release")
+Page = NodePath("../../../ColorRect/VBoxContainer/MarginContainer/PageContainer/ReleasePage")
 metadata/_custom_type_script = "uid://dvjtigpqee0jw"
 
 [node name="ModuleButton" type="Button" parent="HBoxContainer/MenuPanel/VBoxContainer" node_paths=PackedStringArray("Page")]
@@ -562,7 +376,7 @@ text = "模组"
 icon = SubResource("Texture2D_08ol6")
 clip_text = true
 script = ExtResource("7_bl4fu")
-Page = NodePath("../../../ColorRect/VBoxContainer/MarginContainer/PageContainer/Module")
+Page = NodePath("../../../ColorRect/VBoxContainer/MarginContainer/PageContainer/ModulePage")
 metadata/_custom_type_script = "uid://dvjtigpqee0jw"
 
 [node name="Control" type="Control" parent="HBoxContainer/MenuPanel/VBoxContainer"]
@@ -583,7 +397,7 @@ text = "设置"
 icon = SubResource("Texture2D_30yt8")
 clip_text = true
 script = ExtResource("7_bl4fu")
-Page = NodePath("../../../ColorRect/VBoxContainer/MarginContainer/PageContainer/Setting")
+Page = NodePath("../../../ColorRect/VBoxContainer/MarginContainer/PageContainer/SettingPage")
 metadata/_custom_type_script = "uid://dvjtigpqee0jw"
 
 [node name="InfoButton" type="Button" parent="HBoxContainer/MenuPanel/VBoxContainer" node_paths=PackedStringArray("Page")]
@@ -595,7 +409,7 @@ text = "关于"
 icon = SubResource("Texture2D_5lwjt")
 clip_text = true
 script = ExtResource("7_bl4fu")
-Page = NodePath("../../../ColorRect/VBoxContainer/MarginContainer/PageContainer/Info")
+Page = NodePath("../../../ColorRect/VBoxContainer/MarginContainer/PageContainer/InfoPage")
 metadata/_custom_type_script = "uid://dvjtigpqee0jw"
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="HBoxContainer/MenuPanel"]
@@ -680,296 +494,34 @@ tab_alignment = 1
 current_tab = 0
 tabs_visible = false
 
-[node name="Home" type="Control" parent="HBoxContainer/ColorRect/VBoxContainer/MarginContainer/PageContainer" node_paths=PackedStringArray("Main")]
+[node name="HomePage" parent="HBoxContainer/ColorRect/VBoxContainer/MarginContainer/PageContainer" instance=ExtResource("14_oarc7")]
 layout_mode = 2
-mouse_filter = 2
-script = ExtResource("15_fuji0")
-Main = NodePath("Control")
-metadata/_tab_index = 0
 
-[node name="Control" type="Control" parent="HBoxContainer/ColorRect/VBoxContainer/MarginContainer/PageContainer/Home"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-mouse_filter = 2
-
-[node name="Label" type="Label" parent="HBoxContainer/ColorRect/VBoxContainer/MarginContainer/PageContainer/Home/Control"]
-layout_mode = 1
-offset_right = 48.0
-offset_bottom = 29.0
-text = "主页"
-label_settings = ExtResource("23_53u4p")
-
-[node name="Account" type="Control" parent="HBoxContainer/ColorRect/VBoxContainer/MarginContainer/PageContainer"]
+[node name="AccountPage" parent="HBoxContainer/ColorRect/VBoxContainer/MarginContainer/PageContainer" instance=ExtResource("15_gblyu")]
 visible = false
 layout_mode = 2
-mouse_filter = 2
-script = ExtResource("15_fuji0")
-metadata/_tab_index = 1
 
-[node name="Modpack" type="Control" parent="HBoxContainer/ColorRect/VBoxContainer/MarginContainer/PageContainer" node_paths=PackedStringArray("_addModpackButton", "_list", "Main")]
+[node name="ModpackPage" parent="HBoxContainer/ColorRect/VBoxContainer/MarginContainer/PageContainer" instance=ExtResource("16_bmwv3")]
 visible = false
 layout_mode = 2
-mouse_filter = 2
-script = ExtResource("16_gblyu")
-_addModpackButton = NodePath("MarginContainer/VBoxContainer/AddButton")
-_modpackItemScene = ExtResource("17_bmwv3")
-_modpackAddScene = ExtResource("20_gblyu")
-_list = NodePath("MarginContainer/VBoxContainer/SmoothScrollContainer/Container")
-Main = NodePath("MarginContainer")
-metadata/_tab_index = 2
 
-[node name="MarginContainer" type="MarginContainer" parent="HBoxContainer/ColorRect/VBoxContainer/MarginContainer/PageContainer/Modpack"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-mouse_filter = 2
-theme_override_constants/margin_left = 12
-theme_override_constants/margin_top = 12
-theme_override_constants/margin_right = 12
-theme_override_constants/margin_bottom = 12
-
-[node name="VBoxContainer" type="VBoxContainer" parent="HBoxContainer/ColorRect/VBoxContainer/MarginContainer/PageContainer/Modpack/MarginContainer"]
-layout_mode = 2
-
-[node name="AddButton" type="Button" parent="HBoxContainer/ColorRect/VBoxContainer/MarginContainer/PageContainer/Modpack/MarginContainer/VBoxContainer"]
-custom_minimum_size = Vector2(0, 60)
-layout_mode = 2
-focus_mode = 0
-theme_override_colors/icon_hover_color = Color(1, 1, 1, 0.784314)
-theme_override_colors/icon_pressed_color = Color(1, 1, 1, 0.6)
-theme_override_colors/icon_normal_color = Color(1, 1, 1, 0.6)
-theme_override_styles/hover = SubResource("StyleBoxFlat_5lwjt")
-theme_override_styles/pressed = SubResource("StyleBoxFlat_6are0")
-theme_override_styles/normal = SubResource("StyleBoxFlat_364to")
-icon = SubResource("Texture2D_6are0")
-icon_alignment = 1
-
-[node name="SmoothScrollContainer" type="ScrollContainer" parent="HBoxContainer/ColorRect/VBoxContainer/MarginContainer/PageContainer/Modpack/MarginContainer/VBoxContainer"]
-clip_contents = false
-layout_mode = 2
-size_flags_vertical = 3
-script = ExtResource("27_7nt4r")
-wheel_scroll_damper = SubResource("Resource_bmwv3")
-dragging_scroll_damper = SubResource("Resource_o4ctv")
-drag_with_mouse = false
-drag_with_touch = false
-handle_input = false
-metadata/_custom_type_script = "uid://cre6m68jy0aad"
-
-[node name="Container" type="Container" parent="HBoxContainer/ColorRect/VBoxContainer/MarginContainer/PageContainer/Modpack/MarginContainer/VBoxContainer/SmoothScrollContainer" node_paths=PackedStringArray("ScrollContainer")]
-process_mode = 1
-layout_mode = 2
-size_flags_horizontal = 3
-size_flags_vertical = 0
-script = ExtResource("20_bmwv3")
-IsVertical = true
-ScrollContainer = NodePath("..")
-
-[node name="Release" type="Control" parent="HBoxContainer/ColorRect/VBoxContainer/MarginContainer/PageContainer" node_paths=PackedStringArray("_addReleaseButton", "_grid", "Main")]
+[node name="ReleasePage" parent="HBoxContainer/ColorRect/VBoxContainer/MarginContainer/PageContainer" instance=ExtResource("17_o4ctv")]
 visible = false
 layout_mode = 2
-mouse_filter = 2
-script = ExtResource("18_g8snm")
-_addReleaseButton = NodePath("MarginContainer/SmoothScrollContainer/HFlowContainer/AddRelease")
-_releaseItemScene = ExtResource("19_g8snm")
-_grid = NodePath("MarginContainer/SmoothScrollContainer/HFlowContainer")
-Main = NodePath("MarginContainer")
-metadata/_tab_index = 3
 
-[node name="MarginContainer" type="MarginContainer" parent="HBoxContainer/ColorRect/VBoxContainer/MarginContainer/PageContainer/Release"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-theme_override_constants/margin_left = 12
-theme_override_constants/margin_top = 12
-theme_override_constants/margin_right = 12
-theme_override_constants/margin_bottom = 12
-
-[node name="SmoothScrollContainer" type="ScrollContainer" parent="HBoxContainer/ColorRect/VBoxContainer/MarginContainer/PageContainer/Release/MarginContainer"]
-layout_mode = 2
-theme = SubResource("Theme_g8snm")
-script = ExtResource("27_7nt4r")
-wheel_scroll_damper = SubResource("Resource_364to")
-dragging_scroll_damper = SubResource("Resource_7nt4r")
-drag_with_mouse = false
-drag_with_touch = false
-handle_input = false
-metadata/_custom_type_script = "uid://cre6m68jy0aad"
-
-[node name="HFlowContainer" type="HFlowContainer" parent="HBoxContainer/ColorRect/VBoxContainer/MarginContainer/PageContainer/Release/MarginContainer/SmoothScrollContainer"]
-layout_mode = 2
-size_flags_horizontal = 3
-size_flags_vertical = 3
-theme_override_constants/h_separation = 12
-theme_override_constants/v_separation = 12
-
-[node name="AddRelease" type="Button" parent="HBoxContainer/ColorRect/VBoxContainer/MarginContainer/PageContainer/Release/MarginContainer/SmoothScrollContainer/HFlowContainer"]
-texture_filter = 1
-custom_minimum_size = Vector2(145, 192)
-layout_mode = 2
-focus_mode = 0
-mouse_filter = 1
-theme_override_colors/icon_hover_color = Color(1, 1, 1, 0.784314)
-theme_override_colors/icon_pressed_color = Color(1, 1, 1, 0.6)
-theme_override_colors/icon_normal_color = Color(1, 1, 1, 0.6)
-theme_override_constants/icon_max_width = 80
-theme_override_styles/hover = SubResource("StyleBoxFlat_oarc7")
-theme_override_styles/pressed = SubResource("StyleBoxFlat_gblyu")
-theme_override_styles/normal = SubResource("StyleBoxFlat_bmwv3")
-icon = SubResource("Texture2D_364to")
-icon_alignment = 1
-
-[node name="Module" type="Control" parent="HBoxContainer/ColorRect/VBoxContainer/MarginContainer/PageContainer"]
+[node name="ModulePage" parent="HBoxContainer/ColorRect/VBoxContainer/MarginContainer/PageContainer" instance=ExtResource("18_365jr")]
 visible = false
 layout_mode = 2
-mouse_filter = 2
-script = ExtResource("15_fuji0")
-metadata/_tab_index = 4
 
-[node name="Setting" type="Control" parent="HBoxContainer/ColorRect/VBoxContainer/MarginContainer/PageContainer"]
+[node name="SettingPage" parent="HBoxContainer/ColorRect/VBoxContainer/MarginContainer/PageContainer" instance=ExtResource("19_a6wm3")]
 visible = false
 layout_mode = 2
-mouse_filter = 2
-script = ExtResource("15_fuji0")
-metadata/_tab_index = 5
 
-[node name="Info" type="Control" parent="HBoxContainer/ColorRect/VBoxContainer/MarginContainer/PageContainer" node_paths=PackedStringArray("_titleBar", "_authorButton", "_donorButton", "_licenseButton", "_list", "Main")]
+[node name="InfoPage" parent="HBoxContainer/ColorRect/VBoxContainer/MarginContainer/PageContainer" node_paths=PackedStringArray("_titleBar") instance=ExtResource("20_53u4p")]
 visible = false
 layout_mode = 2
-mouse_filter = 1
-script = ExtResource("23_o4ctv")
-_itemScene = ExtResource("25_a6wm3")
-_buttonGroup = ExtResource("24_53u4p")
+_buttonGroup = SubResource("ButtonGroup_08ol6")
 _titleBar = NodePath("../../../HBoxContainer")
-_authorButton = NodePath("MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer/Button")
-_donorButton = NodePath("MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer/Button2")
-_licenseButton = NodePath("MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer/Button3")
-_list = NodePath("MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/PanelContainer/SmoothScrollContainer/VBoxContainer")
-Main = NodePath("MarginContainer")
-metadata/_tab_index = 6
-
-[node name="MarginContainer" type="MarginContainer" parent="HBoxContainer/ColorRect/VBoxContainer/MarginContainer/PageContainer/Info"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-theme_override_constants/margin_top = 10
-
-[node name="VBoxContainer" type="VBoxContainer" parent="HBoxContainer/ColorRect/VBoxContainer/MarginContainer/PageContainer/Info/MarginContainer"]
-layout_mode = 2
-theme_override_constants/separation = 20
-
-[node name="HBoxContainer" type="HBoxContainer" parent="HBoxContainer/ColorRect/VBoxContainer/MarginContainer/PageContainer/Info/MarginContainer/VBoxContainer"]
-layout_mode = 2
-size_flags_horizontal = 4
-theme_override_constants/separation = 10
-
-[node name="TextureRect" type="TextureRect" parent="HBoxContainer/ColorRect/VBoxContainer/MarginContainer/PageContainer/Info/MarginContainer/VBoxContainer/HBoxContainer"]
-custom_minimum_size = Vector2(75, 75)
-layout_mode = 2
-size_flags_horizontal = 4
-texture = ExtResource("2_xnuua")
-expand_mode = 1
-stretch_mode = 5
-
-[node name="VBoxContainer" type="VBoxContainer" parent="HBoxContainer/ColorRect/VBoxContainer/MarginContainer/PageContainer/Info/MarginContainer/VBoxContainer/HBoxContainer"]
-layout_mode = 2
-size_flags_horizontal = 4
-size_flags_vertical = 4
-
-[node name="LinkButton" type="LinkButton" parent="HBoxContainer/ColorRect/VBoxContainer/MarginContainer/PageContainer/Info/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer"]
-layout_mode = 2
-size_flags_horizontal = 4
-size_flags_vertical = 4
-theme_override_constants/outline_size = 5
-theme_override_fonts/font = ExtResource("24_365jr")
-theme_override_font_sizes/font_size = 25
-text = "神麤詭末的复古物语启动器"
-underline = 1
-uri = "https://github.com/scgm0/MVL"
-
-[node name="Label" type="Label" parent="HBoxContainer/ColorRect/VBoxContainer/MarginContainer/PageContainer/Info/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer"]
-layout_mode = 2
-theme_override_constants/outline_size = 4
-text = "Copyright (c) 2025 神麤詭末"
-
-[node name="PanelContainer" type="PanelContainer" parent="HBoxContainer/ColorRect/VBoxContainer/MarginContainer/PageContainer/Info/MarginContainer/VBoxContainer"]
-clip_children = 1
-layout_mode = 2
-size_flags_vertical = 3
-mouse_filter = 1
-theme_override_styles/panel = SubResource("StyleBoxFlat_7nt4r")
-
-[node name="ColorRect" type="ColorRect" parent="HBoxContainer/ColorRect/VBoxContainer/MarginContainer/PageContainer/Info/MarginContainer/VBoxContainer/PanelContainer"]
-layout_mode = 2
-mouse_filter = 1
-color = Color(0.137255, 0.137255, 0.137255, 0.6)
-
-[node name="VBoxContainer" type="VBoxContainer" parent="HBoxContainer/ColorRect/VBoxContainer/MarginContainer/PageContainer/Info/MarginContainer/VBoxContainer/PanelContainer"]
-layout_mode = 2
-theme_override_constants/separation = 1
-
-[node name="HBoxContainer" type="HBoxContainer" parent="HBoxContainer/ColorRect/VBoxContainer/MarginContainer/PageContainer/Info/MarginContainer/VBoxContainer/PanelContainer/VBoxContainer"]
-layout_mode = 2
-theme = SubResource("Theme_0fd5h")
-theme_override_constants/separation = 1
-
-[node name="Button" type="Button" parent="HBoxContainer/ColorRect/VBoxContainer/MarginContainer/PageContainer/Info/MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer"]
-layout_mode = 2
-size_flags_horizontal = 3
-toggle_mode = true
-button_pressed = true
-button_group = ExtResource("24_53u4p")
-text = "贡献者"
-
-[node name="Button2" type="Button" parent="HBoxContainer/ColorRect/VBoxContainer/MarginContainer/PageContainer/Info/MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer"]
-layout_mode = 2
-size_flags_horizontal = 3
-toggle_mode = true
-button_group = ExtResource("24_53u4p")
-text = "赞助者"
-
-[node name="Button3" type="Button" parent="HBoxContainer/ColorRect/VBoxContainer/MarginContainer/PageContainer/Info/MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer"]
-layout_mode = 2
-size_flags_horizontal = 3
-toggle_mode = true
-button_group = ExtResource("24_53u4p")
-text = "许可证"
-
-[node name="PanelContainer" type="PanelContainer" parent="HBoxContainer/ColorRect/VBoxContainer/MarginContainer/PageContainer/Info/MarginContainer/VBoxContainer/PanelContainer/VBoxContainer"]
-layout_mode = 2
-size_flags_vertical = 3
-mouse_filter = 1
-theme_override_styles/panel = SubResource("StyleBoxFlat_b7o7j")
-
-[node name="SmoothScrollContainer" type="ScrollContainer" parent="HBoxContainer/ColorRect/VBoxContainer/MarginContainer/PageContainer/Info/MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/PanelContainer"]
-layout_mode = 2
-size_flags_vertical = 3
-script = ExtResource("27_7nt4r")
-wheel_scroll_damper = SubResource("Resource_365jr")
-dragging_scroll_damper = SubResource("Resource_a6wm3")
-drag_with_mouse = false
-drag_with_touch = false
-handle_input = false
-metadata/_custom_type_script = "uid://cre6m68jy0aad"
-
-[node name="VBoxContainer" type="VBoxContainer" parent="HBoxContainer/ColorRect/VBoxContainer/MarginContainer/PageContainer/Info/MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/PanelContainer/SmoothScrollContainer"]
-layout_mode = 2
-size_flags_horizontal = 3
-size_flags_vertical = 0
-theme_override_constants/separation = 20
 
 [node name="HBoxContainer2" type="HBoxContainer" parent="."]
 layout_mode = 1

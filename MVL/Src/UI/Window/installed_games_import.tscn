@@ -87,13 +87,12 @@ Button/styles/hover = SubResource("StyleBoxFlat_v5ddw")
 Button/styles/normal = SubResource("StyleBoxFlat_bhu72")
 Button/styles/pressed = SubResource("StyleBoxFlat_syw1k")
 
-[node name="InstalledGamesImport" node_paths=PackedStringArray("_installedGameList", "_cancelButton", "_importButton", "_animationPlayer") instance=ExtResource("1_fvt7b")]
+[node name="InstalledGamesImport" node_paths=PackedStringArray("_installedGameList", "_cancelButton", "_importButton") instance=ExtResource("1_fvt7b")]
 script = ExtResource("1_xxpfc")
 _installedGameItemScene = ExtResource("2_l32jt")
 _installedGameList = NodePath("PanelContainer/VBoxContainer/SmoothScrollContainer/MarginContainer/InstalledGameList")
 _cancelButton = NodePath("PanelContainer/VBoxContainer/HBoxContainer/CancelButton")
 _importButton = NodePath("PanelContainer/VBoxContainer/HBoxContainer/ImportButton")
-_animationPlayer = NodePath("AnimationPlayer")
 
 [node name="PanelContainer" parent="." index="1"]
 custom_minimum_size = Vector2(475, 323)

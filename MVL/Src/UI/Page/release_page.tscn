@@ -1,0 +1,142 @@
+[gd_scene load_steps=14 format=3 uid="uid://0qq618t18t61"]
+
+[ext_resource type="Script" uid="uid://bx8dqa4avru7x" path="res://Src/UI/Page/ReleasePage.cs" id="1_wixp3"]
+[ext_resource type="PackedScene" uid="uid://bjgov53faujry" path="res://Src/UI/Item/release_item.tscn" id="2_fui6w"]
+[ext_resource type="Script" uid="uid://cre6m68jy0aad" path="res://addons/SmoothScroll/SmoothScrollContainer.gd" id="3_gqxwp"]
+[ext_resource type="Script" uid="uid://41yydm3vncfj" path="res://addons/SmoothScroll/scroll_damper/expo_scroll_damper.gd" id="4_h8roc"]
+[ext_resource type="Script" uid="uid://bk3tot6c35bwu" path="res://Src/Utils/IconTexture2D.cs" id="5_qiv2n"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ty1b0"]
+content_margin_left = 4.0
+content_margin_top = 0.0
+content_margin_right = 4.0
+content_margin_bottom = 0.0
+bg_color = Color(0.1, 0.1, 0.1, 0.6)
+draw_center = false
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+
+[sub_resource type="Theme" id="Theme_g8snm"]
+VScrollBar/styles/scroll = SubResource("StyleBoxFlat_ty1b0")
+
+[sub_resource type="Resource" id="Resource_364to"]
+script = ExtResource("4_h8roc")
+friction = 4.0
+minimum_velocity = 0.4
+rebound_strength = 7.0
+
+[sub_resource type="Resource" id="Resource_7nt4r"]
+script = ExtResource("4_h8roc")
+friction = 4.0
+minimum_velocity = 0.4
+rebound_strength = 7.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_oarc7"]
+bg_color = Color(0.20871, 0.20871, 0.20871, 0.6)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.8, 0.8, 0.8, 0.207843)
+border_blend = true
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_gblyu"]
+bg_color = Color(0, 0, 0, 0.686275)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.8, 0.8, 0.8, 0.207843)
+border_blend = true
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_bmwv3"]
+bg_color = Color(0, 0, 0, 0.6)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.8, 0.8, 0.8, 0.207843)
+border_blend = true
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+
+[sub_resource type="Texture2D" id="Texture2D_364to"]
+resource_local_to_scene = false
+resource_name = ""
+script = ExtResource("5_qiv2n")
+IconName = "plus"
+FontSize = 72
+metadata/_custom_type_script = ExtResource("5_qiv2n")
+
+[node name="ReleasePage" type="Control" node_paths=PackedStringArray("_addReleaseButton", "_grid", "Main")]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("1_wixp3")
+_addReleaseButton = NodePath("MarginContainer/SmoothScrollContainer/HFlowContainer/AddRelease")
+_releaseItemScene = ExtResource("2_fui6w")
+_grid = NodePath("MarginContainer/SmoothScrollContainer/HFlowContainer")
+Main = NodePath("MarginContainer")
+metadata/_tab_index = 3
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 12
+theme_override_constants/margin_top = 12
+theme_override_constants/margin_right = 12
+theme_override_constants/margin_bottom = 12
+
+[node name="SmoothScrollContainer" type="ScrollContainer" parent="MarginContainer"]
+layout_mode = 2
+theme = SubResource("Theme_g8snm")
+script = ExtResource("3_gqxwp")
+wheel_scroll_damper = SubResource("Resource_364to")
+dragging_scroll_damper = SubResource("Resource_7nt4r")
+drag_with_mouse = false
+drag_with_touch = false
+handle_input = false
+metadata/_custom_type_script = "uid://cre6m68jy0aad"
+
+[node name="HFlowContainer" type="HFlowContainer" parent="MarginContainer/SmoothScrollContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/h_separation = 12
+theme_override_constants/v_separation = 12
+
+[node name="AddRelease" type="Button" parent="MarginContainer/SmoothScrollContainer/HFlowContainer"]
+texture_filter = 1
+custom_minimum_size = Vector2(145, 192)
+layout_mode = 2
+focus_mode = 0
+mouse_filter = 1
+theme_override_colors/icon_hover_color = Color(1, 1, 1, 0.784314)
+theme_override_colors/icon_pressed_color = Color(1, 1, 1, 0.6)
+theme_override_colors/icon_normal_color = Color(1, 1, 1, 0.6)
+theme_override_constants/icon_max_width = 80
+theme_override_styles/hover = SubResource("StyleBoxFlat_oarc7")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_gblyu")
+theme_override_styles/normal = SubResource("StyleBoxFlat_bmwv3")
+icon = SubResource("Texture2D_364to")
+icon_alignment = 1
