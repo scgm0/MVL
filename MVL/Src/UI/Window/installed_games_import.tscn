@@ -1,9 +1,8 @@
-[gd_scene load_steps=17 format=3 uid="uid://d21bm32gkwqcr"]
+[gd_scene load_steps=10 format=3 uid="uid://d21bm32gkwqcr"]
 
-[ext_resource type="PackedScene" uid="uid://bu4hwijkbc8sm" path="res://Src/UI/Window/BaseWindow.tscn" id="1_fvt7b"]
+[ext_resource type="PackedScene" uid="uid://bu4hwijkbc8sm" path="res://Src/UI/Window/base_window.tscn" id="1_fvt7b"]
 [ext_resource type="Script" uid="uid://kioshjbmjlip" path="res://Src/UI/Window/InstalledGamesImport.cs" id="1_xxpfc"]
 [ext_resource type="PackedScene" uid="uid://cpbcd3vre7ii8" path="res://Src/UI/Item/installed_game_item.tscn" id="2_l32jt"]
-[ext_resource type="FontFile" uid="uid://bmgx1vyg6bavd" path="res://Assets/Font/HarmonyOS_Sans_SC_Bold.ttf" id="4_vion5"]
 [ext_resource type="Script" uid="uid://cre6m68jy0aad" path="res://addons/SmoothScroll/SmoothScrollContainer.gd" id="5_yal0d"]
 [ext_resource type="Script" uid="uid://41yydm3vncfj" path="res://addons/SmoothScroll/scroll_damper/expo_scroll_damper.gd" id="6_2rgyo"]
 
@@ -34,84 +33,16 @@ friction = 4.0
 minimum_velocity = 0.4
 rebound_strength = 7.0
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_b82ki"]
-content_margin_left = 10.0
-content_margin_top = 10.0
-content_margin_right = 10.0
-content_margin_bottom = 10.0
-bg_color = Color(0.529067, 0.529067, 0.529067, 0.207843)
-corner_radius_top_left = 6
-corner_radius_top_right = 6
-corner_radius_bottom_right = 6
-corner_radius_bottom_left = 6
-
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_a5da0"]
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_v5ddw"]
-content_margin_left = 4.0
-content_margin_top = 4.0
-content_margin_right = 4.0
-content_margin_bottom = 4.0
-bg_color = Color(0.225, 0.225, 0.225, 0.6)
-corner_radius_top_left = 6
-corner_radius_top_right = 6
-corner_radius_bottom_right = 6
-corner_radius_bottom_left = 6
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_bhu72"]
-content_margin_left = 10.0
-content_margin_top = 10.0
-content_margin_right = 10.0
-content_margin_bottom = 10.0
-bg_color = Color(0, 0, 0, 0.6)
-corner_radius_top_left = 6
-corner_radius_top_right = 6
-corner_radius_bottom_right = 6
-corner_radius_bottom_left = 6
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_syw1k"]
-content_margin_left = 4.0
-content_margin_top = 4.0
-content_margin_right = 4.0
-content_margin_bottom = 4.0
-bg_color = Color(0.0475577, 0.0475576, 0.0475576, 0.6)
-corner_radius_top_left = 6
-corner_radius_top_right = 6
-corner_radius_bottom_right = 6
-corner_radius_bottom_left = 6
-
-[sub_resource type="Theme" id="Theme_v5ddw"]
-Button/styles/disabled = SubResource("StyleBoxFlat_b82ki")
-Button/styles/focus = SubResource("StyleBoxEmpty_a5da0")
-Button/styles/hover = SubResource("StyleBoxFlat_v5ddw")
-Button/styles/normal = SubResource("StyleBoxFlat_bhu72")
-Button/styles/pressed = SubResource("StyleBoxFlat_syw1k")
-
-[node name="InstalledGamesImport" node_paths=PackedStringArray("_installedGameList", "_cancelButton", "_importButton") instance=ExtResource("1_fvt7b")]
+[node name="InstalledGamesImport" node_paths=PackedStringArray("_installedGameList") instance=ExtResource("1_fvt7b")]
 script = ExtResource("1_xxpfc")
 _installedGameItemScene = ExtResource("2_l32jt")
 _installedGameList = NodePath("PanelContainer/VBoxContainer/SmoothScrollContainer/MarginContainer/InstalledGameList")
-_cancelButton = NodePath("PanelContainer/VBoxContainer/HBoxContainer/CancelButton")
-_importButton = NodePath("PanelContainer/VBoxContainer/HBoxContainer/ImportButton")
 
 [node name="PanelContainer" parent="." index="1"]
 custom_minimum_size = Vector2(475, 323)
 
-[node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer" index="0"]
-layout_mode = 2
-mouse_filter = 2
-theme_override_constants/separation = 10
-
-[node name="Label" type="Label" parent="PanelContainer/VBoxContainer" index="0"]
-layout_mode = 2
-theme_override_fonts/font = ExtResource("4_vion5")
-theme_override_font_sizes/font_size = 20
+[node name="Label" parent="PanelContainer/VBoxContainer" index="0"]
 text = " 选择已安装版本"
-horizontal_alignment = 1
-
-[node name="HSeparator2" type="HSeparator" parent="PanelContainer/VBoxContainer" index="1"]
-layout_mode = 2
-theme_override_constants/separation = 15
 
 [node name="SmoothScrollContainer" type="ScrollContainer" parent="PanelContainer/VBoxContainer" index="2"]
 custom_minimum_size = Vector2(0, 150)
@@ -123,6 +54,7 @@ vertical_scroll_mode = 2
 script = ExtResource("5_yal0d")
 wheel_scroll_damper = SubResource("Resource_6o7np")
 dragging_scroll_damper = SubResource("Resource_3nw38")
+allow_horizontal_scroll = false
 metadata/_custom_type_script = "uid://cre6m68jy0aad"
 
 [node name="MarginContainer" type="MarginContainer" parent="PanelContainer/VBoxContainer/SmoothScrollContainer" index="0"]
@@ -136,25 +68,3 @@ layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 theme_override_constants/separation = 15
-
-[node name="HSeparator" type="HSeparator" parent="PanelContainer/VBoxContainer" index="3"]
-layout_mode = 2
-theme_override_constants/separation = 15
-
-[node name="HBoxContainer" type="HBoxContainer" parent="PanelContainer/VBoxContainer" index="4"]
-layout_mode = 2
-size_flags_horizontal = 4
-theme = SubResource("Theme_v5ddw")
-theme_override_constants/separation = 125
-alignment = 1
-
-[node name="CancelButton" type="Button" parent="PanelContainer/VBoxContainer/HBoxContainer" index="0"]
-layout_mode = 2
-size_flags_horizontal = 2
-text = "取消"
-
-[node name="ImportButton" type="Button" parent="PanelContainer/VBoxContainer/HBoxContainer" index="1"]
-custom_minimum_size = Vector2(0, 35)
-layout_mode = 2
-size_flags_horizontal = 10
-text = "确定"

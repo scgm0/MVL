@@ -1,0 +1,23 @@
+[gd_resource type="ShaderMaterial" load_steps=2 format=3 uid="uid://b675ao2n7w53x"]
+
+[ext_resource type="Shader" uid="uid://q7no44w0ywy2" path="res://Assets/Shader/loading.gdshader" id="1_o0m4u"]
+
+[resource]
+shader = ExtResource("1_o0m4u")
+shader_parameter/dot_scale = 1.0
+shader_parameter/ring_radius = 0.5
+shader_parameter/num_points = 10
+shader_parameter/gap_ratio = 0.2
+shader_parameter/all_dots_same_size = false
+shader_parameter/dot_color_start = Color(1, 1, 1, 1)
+shader_parameter/dot_color_end = Color(1, 1, 1, 0)
+shader_parameter/enable_shadow = false
+shader_parameter/shadow_color = Color(0, 0, 0, 0.5)
+shader_parameter/shadow_offset = Vector2(0.05, -0.05)
+shader_parameter/rotation_speed = 5.0
+shader_parameter/reverse_rotation = false
+shader_parameter/icon_size = 0.3
+shader_parameter/enable_icon_rotation = false
+shader_parameter/reverse_icon_rotation = false
+shader_parameter/icon_rotation_speed = 1.0
+shader_parameter/show_icon = false

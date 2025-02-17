@@ -66,11 +66,11 @@ public partial class InstalledGameItem : HBoxContainer {
 				break;
 			default: throw new ArgumentOutOfRangeException();
 		}
+
 		_gamePath.Text = GamePath;
 		_gamePath.TooltipText = GamePath;
 		_checkBox.ButtonPressed = Check;
-		_checkBox.TooltipText = Check ? "未导入" : "已导入";
-		if(!SingleSelect) {
+		if (!SingleSelect) {
 			_checkBox.ButtonGroup = null;
 		}
 	}

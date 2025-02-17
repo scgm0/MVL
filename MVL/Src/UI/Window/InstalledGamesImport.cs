@@ -6,7 +6,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using Godot;
 using MVL.UI.Item;
-using MVL.Utils;
 using MVL.Utils.Extensions;
 using MVL.Utils.Game;
 
@@ -20,15 +19,6 @@ public partial class InstalledGamesImport : BaseWindow {
 	[Export]
 	private Control? _installedGameList;
 
-	[Export]
-	private Button? _cancelButton;
-
-	[Export]
-	private Button? _importButton;
-
-	[Signal]
-	public delegate void CancelEventHandler();
-
 	[Signal]
 	public delegate void ImportEventHandler(string[] gamePaths);
 
@@ -38,10 +28,10 @@ public partial class InstalledGamesImport : BaseWindow {
 		base._Ready();
 		Utils.Help.NullExceptionHelper.NotNull(_installedGameItemScene,
 			_installedGameList,
-			_cancelButton,
-			_importButton);
-		_cancelButton.Pressed += CancelButtonOnPressed;
-		_importButton.Pressed += ImportButtonOnPressed;
+			CancelButton,
+			OkButton);
+		CancelButton.Pressed += CancelButtonOnPressed;
+		OkButton.Pressed += ImportButtonOnPressed;
 	}
 
 	private async void ImportButtonOnPressed() {
@@ -52,15 +42,6 @@ public partial class InstalledGamesImport : BaseWindow {
 							   where installedGameItem.Check
 							   select installedGameItem.GamePath);
 			EmitSignalImport(gamePaths.ToArray());
-		} catch (Exception e) {
-			GD.PrintErr(e.ToString());
-		}
-	}
-
-	private async void CancelButtonOnPressed() {
-		try {
-			await Hide();
-			EmitSignalCancel();
 		} catch (Exception e) {
 			GD.PrintErr(e.ToString());
 		}
@@ -108,7 +89,7 @@ public partial class InstalledGamesImport : BaseWindow {
 			installedGameItem.SingleSelect = SingleSelect;
 			installedGameItem.Modulate = Colors.Transparent;
 			_installedGameList!.AddChild(installedGameItem);
-			using var tween = installedGameItem.CreateTween();
+			var tween = installedGameItem.CreateTween();
 			tween.TweenProperty(installedGameItem, "modulate:a", 1f, 0.2f).SetDelay(i * 0.1);
 			tween.Parallel().TweenProperty(installedGameItem, "scale:x", 1f, 0.2f).From(0f).SetDelay(i * 0.1);
 			i++;

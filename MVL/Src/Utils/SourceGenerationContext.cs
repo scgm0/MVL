@@ -3,14 +3,19 @@ using System.Text.Encodings.Web;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using MVL.Utils.Config;
+using MVL.Utils.Game;
 using SharedLibrary;
 
 namespace MVL.Utils;
 
+[JsonSerializable(typeof(Dictionary<GameVersion, GameRelease>))]
 [JsonSerializable(typeof(Dictionary<string, string>))]
 [JsonSerializable(typeof(RunConfig))]
 [JsonSerializable(typeof(BaseConfig))]
 [JsonSerializable(typeof(ModpackConfig))]
+[JsonSerializable(typeof(GameRelease))]
+[JsonSerializable(typeof(GameDownloadInfo))]
+[JsonSerializable(typeof(GameDownloadUrl))]
 [JsonSourceGenerationOptions(JsonSerializerDefaults.Web,
 	AllowTrailingCommas = true,
 	UseStringEnumConverter = true,

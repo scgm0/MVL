@@ -1,3 +1,4 @@
+using System;
 using System.Threading.Tasks;
 using Godot;
 using MVL.Utils;
@@ -12,9 +13,22 @@ public partial class BaseWindow : Control {
 	[Export]
 	private AnimationPlayer? _animationPlayer;
 
+
+	[Export] protected Label? TitleLabel;
+
+	[Export] protected Button? CancelButton;
+
+	[Export] protected Button? OkButton;
+
+	[Signal]
+	public delegate void CancelEventHandler();
+
 	public override void _Ready() {
 		_container.NotNull();
 		_animationPlayer.NotNull();
+		TitleLabel.NotNull();
+		CancelButton.NotNull();
+		OkButton.NotNull();
 		_container.PivotOffset = _container.Size / 2.0f;
 	}
 
@@ -30,5 +44,15 @@ public partial class BaseWindow : Control {
 		_animationPlayer!.PlayBackwards(StringNames.Show);
 		await ToSignal(_animationPlayer, AnimationMixer.SignalName.AnimationFinished);
 		base.Hide();
+	}
+
+
+	protected virtual async void CancelButtonOnPressed() {
+		try {
+			await Hide();
+			EmitSignalCancel();
+		} catch (Exception e) {
+			GD.PrintErr(e.ToString());
+		}
 	}
 }

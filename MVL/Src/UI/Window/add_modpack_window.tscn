@@ -1,8 +1,7 @@
-[gd_scene load_steps=22 format=3 uid="uid://ccfq2fesgeykj"]
+[gd_scene load_steps=15 format=3 uid="uid://ccfq2fesgeykj"]
 
-[ext_resource type="PackedScene" uid="uid://bu4hwijkbc8sm" path="res://Src/UI/Window/BaseWindow.tscn" id="1_fvt7b"]
+[ext_resource type="PackedScene" uid="uid://bu4hwijkbc8sm" path="res://Src/UI/Window/base_window.tscn" id="1_fvt7b"]
 [ext_resource type="Script" uid="uid://dstnk40xqjp6x" path="res://Src/UI/Window/AddModpackWindow.cs" id="1_vgayu"]
-[ext_resource type="FontFile" uid="uid://bmgx1vyg6bavd" path="res://Assets/Font/HarmonyOS_Sans_SC_Bold.ttf" id="2_q2lyo"]
 [ext_resource type="Script" uid="uid://bk3tot6c35bwu" path="res://Src/Utils/IconTexture2D.cs" id="3_i7wln"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_vgayu"]
@@ -86,60 +85,7 @@ IconName = "file-settings-outline"
 FontSize = 24
 metadata/_custom_type_script = ExtResource("3_i7wln")
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_b82ki"]
-content_margin_left = 10.0
-content_margin_top = 10.0
-content_margin_right = 10.0
-content_margin_bottom = 10.0
-bg_color = Color(0.529067, 0.529067, 0.529067, 0.207843)
-corner_radius_top_left = 6
-corner_radius_top_right = 6
-corner_radius_bottom_right = 6
-corner_radius_bottom_left = 6
-
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_a5da0"]
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_v5ddw"]
-content_margin_left = 4.0
-content_margin_top = 4.0
-content_margin_right = 4.0
-content_margin_bottom = 4.0
-bg_color = Color(0.225, 0.225, 0.225, 0.6)
-corner_radius_top_left = 6
-corner_radius_top_right = 6
-corner_radius_bottom_right = 6
-corner_radius_bottom_left = 6
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_bhu72"]
-content_margin_left = 10.0
-content_margin_top = 10.0
-content_margin_right = 10.0
-content_margin_bottom = 10.0
-bg_color = Color(0, 0, 0, 0.6)
-corner_radius_top_left = 6
-corner_radius_top_right = 6
-corner_radius_bottom_right = 6
-corner_radius_bottom_left = 6
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_syw1k"]
-content_margin_left = 4.0
-content_margin_top = 4.0
-content_margin_right = 4.0
-content_margin_bottom = 4.0
-bg_color = Color(0.0475577, 0.0475576, 0.0475576, 0.6)
-corner_radius_top_left = 6
-corner_radius_top_right = 6
-corner_radius_bottom_right = 6
-corner_radius_bottom_left = 6
-
-[sub_resource type="Theme" id="Theme_v5ddw"]
-Button/styles/disabled = SubResource("StyleBoxFlat_b82ki")
-Button/styles/focus = SubResource("StyleBoxEmpty_a5da0")
-Button/styles/hover = SubResource("StyleBoxFlat_v5ddw")
-Button/styles/normal = SubResource("StyleBoxFlat_bhu72")
-Button/styles/pressed = SubResource("StyleBoxFlat_syw1k")
-
-[node name="AddModpackWindow" node_paths=PackedStringArray("_modpackName", "_modpackPath", "_createPath", "_folderButton", "_fileDialog", "_gameVersion", "_releasePath", "_tooltip", "_cancelButton", "_okButton") instance=ExtResource("1_fvt7b")]
+[node name="AddModpackWindow" node_paths=PackedStringArray("_modpackName", "_modpackPath", "_createPath", "_folderButton", "_fileDialog", "_gameVersion", "_releasePath", "_tooltip") instance=ExtResource("1_fvt7b")]
 script = ExtResource("1_vgayu")
 _modpackName = NodePath("PanelContainer/VBoxContainer/VBoxContainer/LineEdit")
 _modpackPath = NodePath("PanelContainer/VBoxContainer/VBoxContainer2/HBoxContainer/LineEdit")
@@ -149,27 +95,15 @@ _fileDialog = NodePath("FileDialog")
 _gameVersion = NodePath("PanelContainer/VBoxContainer/VBoxContainer3/HBoxContainer2/OptionButton")
 _releasePath = NodePath("PanelContainer/VBoxContainer/VBoxContainer3/HBoxContainer2/OptionButton2")
 _tooltip = NodePath("PanelContainer/VBoxContainer/VBoxContainer2/Label")
-_cancelButton = NodePath("PanelContainer/VBoxContainer/HBoxContainer3/Button")
-_okButton = NodePath("PanelContainer/VBoxContainer/HBoxContainer3/Button2")
 
 [node name="PanelContainer" parent="." index="1"]
 custom_minimum_size = Vector2(475, 250)
 
-[node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer" index="0"]
-layout_mode = 2
+[node name="VBoxContainer" parent="PanelContainer" index="0"]
 theme = SubResource("Theme_vgayu")
-theme_override_constants/separation = 10
 
-[node name="Label" type="Label" parent="PanelContainer/VBoxContainer" index="0"]
-layout_mode = 2
-theme_override_fonts/font = ExtResource("2_q2lyo")
-theme_override_font_sizes/font_size = 20
+[node name="Label" parent="PanelContainer/VBoxContainer" index="0"]
 text = "添加整合包"
-horizontal_alignment = 1
-
-[node name="HSeparator" type="HSeparator" parent="PanelContainer/VBoxContainer" index="1"]
-layout_mode = 2
-theme_override_constants/separation = 15
 
 [node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer/VBoxContainer" index="2"]
 layout_mode = 2
@@ -252,24 +186,6 @@ size_flags_horizontal = 3
 alignment = 1
 text_overrun_behavior = 3
 clip_text = true
-
-[node name="HSeparator2" type="HSeparator" parent="PanelContainer/VBoxContainer" index="5"]
-layout_mode = 2
-theme_override_constants/separation = 15
-
-[node name="HBoxContainer3" type="HBoxContainer" parent="PanelContainer/VBoxContainer" index="6"]
-layout_mode = 2
-size_flags_horizontal = 4
-theme = SubResource("Theme_v5ddw")
-theme_override_constants/separation = 125
-
-[node name="Button" type="Button" parent="PanelContainer/VBoxContainer/HBoxContainer3" index="0"]
-layout_mode = 2
-text = "取消"
-
-[node name="Button2" type="Button" parent="PanelContainer/VBoxContainer/HBoxContainer3" index="1"]
-layout_mode = 2
-text = "确定"
 
 [node name="FileDialog" type="FileDialog" parent="." index="3"]
 title = "Open a Directory"

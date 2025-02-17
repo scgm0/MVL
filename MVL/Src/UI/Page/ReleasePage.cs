@@ -2,12 +2,15 @@ using System.Collections.Generic;
 using System.Linq;
 using Godot;
 using MVL.UI.Item;
+using MVL.UI.Window;
 using MVL.Utils.Game;
 using MVL.Utils.Help;
 
 namespace MVL.UI.Page;
 
 public partial class ReleasePage : MenuPage {
+	[Export]
+	private PackedScene? _gameDownloadScene;
 
 	[Export]
 	private Button? _addReleaseButton;
@@ -18,9 +21,10 @@ public partial class ReleasePage : MenuPage {
 	[Export]
 	private Container? _grid;
 
-	private Window.InstalledGamesImport? _installedGamesImport;
+	private InstalledGamesImport? _installedGamesImport;
 
 	public override void _Ready() {
+		_gameDownloadScene.NotNull();
 		_addReleaseButton.NotNull();
 		_releaseItemScene.NotNull();
 		_grid.NotNull();
@@ -29,8 +33,9 @@ public partial class ReleasePage : MenuPage {
 		UI.Main.SceneTree.Root.FilesDropped += ImportGame;
 	}
 
+	private void ImportGame(string gamePath) { ImportGame([gamePath]); }
 	private async void ImportGame(string[] files) {
-		if(!Visible) {
+		if (!Visible) {
 			return;
 		}
 
@@ -47,7 +52,7 @@ public partial class ReleasePage : MenuPage {
 		} else {
 			await _installedGamesImport.ShowInstalledGames(list);
 		}
-		
+
 		_installedGamesImport.Import -= UpdateList;
 		_installedGamesImport.Import += UpdateList;
 	}
@@ -58,7 +63,13 @@ public partial class ReleasePage : MenuPage {
 		UpdateList();
 	}
 
-	private void AddReleaseButtonOnPressed() { UpdateList(); }
+	private async void AddReleaseButtonOnPressed() {
+		var downloadWindow = _gameDownloadScene!.Instantiate<GameDownloadWindow>();
+		UI.Main.Instance?.AddChild(downloadWindow);
+		await downloadWindow.Show();
+		downloadWindow.UpdateDownloadList("https://api.vintagestory.at/stable-unstable.json");
+		downloadWindow.Import += ImportGame;
+	}
 
 	private void OnVisibilityChanged() {
 		if (!Visible) return;

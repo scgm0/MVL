@@ -1,8 +1,6 @@
-using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Threading.Tasks;
 using Godot;
 using MVL.Utils;
 using MVL.Utils.Extensions;
@@ -37,15 +35,6 @@ public partial class AddModpackWindow : BaseWindow {
 	[Export]
 	private Label? _tooltip;
 
-	[Export]
-	private Button? _cancelButton;
-
-	[Export]
-	private Button? _okButton;
-
-	[Signal]
-	public delegate void CancelEventHandler();
-
 	[Signal]
 	public delegate void AddModpackEventHandler(string modpackName, string modpackPath, string gameVersion, string releasePath);
 
@@ -62,8 +51,8 @@ public partial class AddModpackWindow : BaseWindow {
 			_gameVersion,
 			_releasePath,
 			_tooltip,
-			_cancelButton,
-			_okButton);
+			CancelButton,
+			OkButton);
 		Main.CheckReleaseInfo();
 
 		_gameVersion.ItemSelected += OnGameVersionOnItemSelected;
@@ -88,7 +77,7 @@ public partial class AddModpackWindow : BaseWindow {
 		var name = _modpackName.Text;
 		_modpackName.TextChanged += text => {
 			if (string.IsNullOrEmpty(text)) {
-				_okButton!.Disabled = true;
+				OkButton!.Disabled = true;
 				_tooltip!.Text = "请输入名称";
 				return;
 			}
@@ -108,8 +97,8 @@ public partial class AddModpackWindow : BaseWindow {
 		_fileDialog.CurrentPath = Paths.ModpackFolder;
 		_fileDialog.CurrentDir = Paths.ModpackFolder;
 		_fileDialog.DirSelected += OnFileDialogOnDirSelected;
-		_cancelButton.Pressed += CancelButtonOnPressed;
-		_okButton.Pressed += OkButtonOnPressed;
+		CancelButton.Pressed += CancelButtonOnPressed;
+		OkButton.Pressed += OkButtonOnPressed;
 
 		if (_gameVersion.ItemCount > 0) {
 			OnGameVersionOnItemSelected(0);
@@ -167,7 +156,7 @@ public partial class AddModpackWindow : BaseWindow {
 
 	private void OnModpackPathOnTextChanged(string text) {
 		if (string.IsNullOrEmpty(text) || string.IsNullOrEmpty(_modpackName!.Text)) {
-			_okButton!.Disabled = true;
+			OkButton!.Disabled = true;
 			return;
 		}
 
@@ -178,16 +167,16 @@ public partial class AddModpackWindow : BaseWindow {
 
 		switch (_createPath!.ButtonPressed) {
 			case true: {
-				_okButton!.Disabled = !DirAccess.DirExistsAbsolute(text.GetBaseDir());
-				if (_okButton!.Disabled) {
+				OkButton!.Disabled = !DirAccess.DirExistsAbsolute(text.GetBaseDir());
+				if (OkButton!.Disabled) {
 					_tooltip!.Text = "父文件夹不存在";
 				}
 
 				break;
 			}
 			case false: {
-				_okButton!.Disabled = !DirAccess.DirExistsAbsolute(text);
-				if (_okButton!.Disabled) {
+				OkButton!.Disabled = !DirAccess.DirExistsAbsolute(text);
+				if (OkButton!.Disabled) {
 					_tooltip!.Text = "文件夹不存在";
 				}
 
@@ -206,14 +195,5 @@ public partial class AddModpackWindow : BaseWindow {
 			Path.TrimEndingDirectorySeparator(_modpackPath!.Text),
 			_gameVersion!.GetItemText(_gameVersion.Selected),
 			_releasePath!.GetItemText(_releasePath.Selected));
-	}
-
-	private async void CancelButtonOnPressed() {
-		try {
-			await Hide();
-			EmitSignalCancel();
-		} catch (Exception e) {
-			GD.PrintErr(e.ToString());
-		}
 	}
 }

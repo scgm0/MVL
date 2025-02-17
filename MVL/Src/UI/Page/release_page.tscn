@@ -1,7 +1,8 @@
-[gd_scene load_steps=14 format=3 uid="uid://0qq618t18t61"]
+[gd_scene load_steps=15 format=3 uid="uid://0qq618t18t61"]
 
 [ext_resource type="Script" uid="uid://bx8dqa4avru7x" path="res://Src/UI/Page/ReleasePage.cs" id="1_wixp3"]
 [ext_resource type="PackedScene" uid="uid://bjgov53faujry" path="res://Src/UI/Item/release_item.tscn" id="2_fui6w"]
+[ext_resource type="PackedScene" uid="uid://dfsyvb8tdyef2" path="res://Src/UI/Window/game_download_window.tscn" id="2_gqxwp"]
 [ext_resource type="Script" uid="uid://cre6m68jy0aad" path="res://addons/SmoothScroll/SmoothScrollContainer.gd" id="3_gqxwp"]
 [ext_resource type="Script" uid="uid://41yydm3vncfj" path="res://addons/SmoothScroll/scroll_damper/expo_scroll_damper.gd" id="4_h8roc"]
 [ext_resource type="Script" uid="uid://bk3tot6c35bwu" path="res://Src/Utils/IconTexture2D.cs" id="5_qiv2n"]
@@ -89,6 +90,7 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 script = ExtResource("1_wixp3")
+_gameDownloadScene = ExtResource("2_gqxwp")
 _addReleaseButton = NodePath("MarginContainer/SmoothScrollContainer/HFlowContainer/AddRelease")
 _releaseItemScene = ExtResource("2_fui6w")
 _grid = NodePath("MarginContainer/SmoothScrollContainer/HFlowContainer")

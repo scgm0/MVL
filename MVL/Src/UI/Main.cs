@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Text.Json;
 using System.Threading.Tasks;
+using Flurl.Http;
 using Godot;
 using Mono.Cecil;
 using Mono.Cecil.Cil;
@@ -104,6 +106,9 @@ public partial class Main : NativeWindowUtility {
 
 		MinButton.Pressed += SceneTree.Root.Minimize;
 		CloseButton.Pressed += () => SceneTree.Quit();
+		FlurlHttp.Clients.WithDefaults(builder => {
+			builder.ConfigureInnerHandler(handler => { handler.Proxy = new WebProxy(BaseConfig.ProxyUrl); });
+		});
 	}
 
 	public void Start() {

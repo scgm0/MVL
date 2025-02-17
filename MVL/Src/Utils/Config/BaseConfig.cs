@@ -7,6 +7,7 @@ namespace MVL.Utils.Config;
 public class BaseConfig {
 	private string _configPath = string.Empty;
 
+	public string? ProxyUrl { get; set; }
 	public List<string> Release { get; set; } = [];
 	public List<string> Modpack { get; set; } = [];
 
