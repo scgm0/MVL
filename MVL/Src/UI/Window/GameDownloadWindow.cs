@@ -106,7 +106,7 @@ public partial class GameDownloadWindow : BaseWindow {
 				CallDeferred(nameof(ExtractGame),
 				[
 					downloadDir.PathJoin(downloadInfo.FileName),
-					OS.GetSystemDir(OS.SystemDir.Downloads),
+					Paths.ReleaseFolder,
 					"复古物语"
 				]);
 			}
