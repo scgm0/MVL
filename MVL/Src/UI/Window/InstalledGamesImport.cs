@@ -47,7 +47,7 @@ public partial class InstalledGamesImport : BaseWindow {
 		}
 	}
 
-	public new async Task Hide() {
+	public override async Task Hide() {
 		await base.Hide();
 		foreach (var child in _installedGameList!.GetChildren()) {
 			child.QueueFree();

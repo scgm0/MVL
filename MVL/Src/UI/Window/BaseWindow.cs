@@ -13,7 +13,6 @@ public partial class BaseWindow : Control {
 	[Export]
 	private AnimationPlayer? _animationPlayer;
 
-
 	[Export] protected Label? TitleLabel;
 
 	[Export] protected Button? CancelButton;
@@ -32,7 +31,7 @@ public partial class BaseWindow : Control {
 		_container.PivotOffset = _container.Size / 2.0f;
 	}
 
-	public new async Task Show() {
+	public new virtual async Task Show() {
 		Modulate = Colors.Transparent;
 		_container!.Scale = Vector2.Zero;
 		base.Show();
@@ -40,12 +39,11 @@ public partial class BaseWindow : Control {
 		await ToSignal(_animationPlayer, AnimationMixer.SignalName.AnimationFinished);
 	}
 
-	public new async Task Hide() {
+	public new virtual async Task Hide() {
 		_animationPlayer!.PlayBackwards(StringNames.Show);
 		await ToSignal(_animationPlayer, AnimationMixer.SignalName.AnimationFinished);
 		base.Hide();
 	}
-
 
 	protected virtual async void CancelButtonOnPressed() {
 		try {
