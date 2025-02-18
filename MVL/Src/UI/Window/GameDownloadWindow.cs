@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Formats.Tar;
@@ -26,7 +27,28 @@ public partial class GameDownloadWindow : BaseWindow {
 	private PackedScene? _foldableContainerScene;
 
 	[Export]
+	private LineEdit? _releaseName;
+
+	[Export]
+	private LineEdit? _releasePath;
+
+	[Export]
+	private CheckButton? _createPath;
+
+	[Export]
+	private Button? _folderButton;
+
+	[Export]
+	private Label? _tooltip;
+
+	[Export]
+	private FileDialog? _fileDialog;
+
+	[Export]
 	private PackedScene? _downloadItemScene;
+
+	[Export]
+	private Control? _contentContainer;
 
 	[Export]
 	private Control? _downloadListContainer;
@@ -38,7 +60,7 @@ public partial class GameDownloadWindow : BaseWindow {
 	private ProgressBar? _progressBar;
 
 	[Signal]
-	public delegate void ImportEventHandler(string gamePath);
+	public delegate void InstallGameEventHandler(string gamePath);
 
 	private Dictionary<GameVersion, GameRelease>? _releases;
 
@@ -47,15 +69,127 @@ public partial class GameDownloadWindow : BaseWindow {
 
 	public override void _Ready() {
 		base._Ready();
-		_buttonGroup.NotNull();
-		_foldableContainerScene.NotNull();
-		_downloadItemScene.NotNull();
-		_downloadListContainer.NotNull();
-		_loadingControl.NotNull();
-		_progressBar.NotNull();
+		NullExceptionHelper.NotNull(_buttonGroup,
+			_foldableContainerScene,
+			_releaseName,
+			_releasePath,
+			_createPath,
+			_folderButton,
+			_tooltip,
+			_fileDialog,
+			_downloadItemScene,
+			_contentContainer,
+			_downloadListContainer,
+			_loadingControl,
+			_progressBar);
+
+		_loadingControl.Show();
+		_contentContainer.Hide();
+		_progressBar.Hide();
+
+		var name = _releaseName.Text;
+		_releaseName.TextChanged += text => {
+			if (string.IsNullOrEmpty(text)) {
+				OkButton!.Disabled = true;
+				_tooltip!.Text = "请输入名称";
+			}
+
+			var path = _releasePath!.Text;
+			if (string.IsNullOrEmpty(path)) {
+				OkButton!.Disabled = true;
+				_tooltip!.Text = "请输入路径";
+				return;
+			}
+
+			if (_createPath!.ButtonPressed) {
+				path = string.IsNullOrEmpty(name) || string.Equals(path.GetFile(), name, StringComparison.OrdinalIgnoreCase)
+					? Path.Combine(string.IsNullOrEmpty(name) ? path : path.GetBaseDir(), text)
+					: path;
+				SetReleasePath(path.NormalizePath());
+			}
+
+			name = text;
+		};
+
+		_createPath.Toggled += CreatePathOnToggled;
+		_folderButton.Pressed += _fileDialog.Show;
+		_fileDialog.CurrentPath = Paths.ReleaseFolder;
+		_fileDialog.CurrentDir = Paths.ReleaseFolder;
+		_fileDialog.DirSelected += FileDialogOnDirSelected;
+
+		_releasePath.TextChanged += ReleasePathOnTextChanged;
 		_buttonGroup.Pressed += ButtonGroupOnPressed;
 		CancelButton!.Pressed += CancelButtonOnPressed;
 		OkButton!.Pressed += OkButtonOnPressed;
+
+		SetReleasePath(Path.Combine(Paths.ReleaseFolder, _releaseName.Text).NormalizePath());
+	}
+
+	private void FileDialogOnDirSelected(string path) {
+		if (_createPath!.ButtonPressed) {
+			path = Path.Combine(path, _releaseName!.Text);
+		}
+
+		SetReleasePath(path.NormalizePath());
+	}
+
+	private void CreatePathOnToggled(bool toggledOn) {
+		var name = _releaseName!.Text;
+		var path = _releasePath!.Text;
+		if (string.IsNullOrEmpty(name) || string.IsNullOrEmpty(path)) {
+			return;
+		}
+
+		path = toggledOn switch {
+			true when path.GetFile() != name => Path.Combine(path, name),
+			false when path.GetFile() == name => path.GetBaseDir(),
+			_ => path
+		};
+
+		SetReleasePath(path);
+	}
+
+	private void ReleasePathOnTextChanged(string text) {
+		if (string.IsNullOrEmpty(_releaseName!.Text)) {
+			OkButton!.Disabled = true;
+			_tooltip!.Text = "请输入名称";
+			return;
+		}
+
+		if (string.IsNullOrEmpty(text)) {
+			OkButton!.Disabled = true;
+			_tooltip!.Text = "请输入路径";
+			return;
+		}
+
+		_tooltip!.Text = "将自动创建文件夹";
+		if (Directory.Exists(text)) {
+			_tooltip!.Text = Directory.GetFileSystemEntries(text).Length > 0 ? "文件夹不为空，确定选择它吗？" : "文件夹存在且为空";
+		}
+
+		switch (_createPath!.ButtonPressed) {
+			case true: {
+				OkButton!.Disabled = !DirAccess.DirExistsAbsolute(text.GetBaseDir());
+				if (OkButton!.Disabled) {
+					_tooltip!.Text = "父文件夹不存在";
+				}
+
+				break;
+			}
+			case false: {
+				OkButton!.Disabled = !DirAccess.DirExistsAbsolute(text);
+				if (OkButton!.Disabled) {
+					_tooltip!.Text = "文件夹不存在";
+				}
+
+				break;
+			}
+		}
+	}
+
+	private void SetReleasePath(string path) {
+		_releasePath!.Text = path;
+		ReleasePathOnTextChanged(path);
 	}
 
 	override protected async void CancelButtonOnPressed() {
@@ -74,7 +208,7 @@ public partial class GameDownloadWindow : BaseWindow {
 		TitleLabel!.Text = "下载中...";
 		OkButton!.Disabled = true;
 		_loadingControl!.Show();
-		_downloadListContainer!.Hide();
+		_contentContainer!.Hide();
 		_progressBar!.Show();
 		_progressBar.Value = 0;
 		var item = _buttonGroup!.GetPressedButton().GetParent<InstalledGameItem>();
@@ -106,8 +240,8 @@ public partial class GameDownloadWindow : BaseWindow {
 				CallDeferred(nameof(ExtractGame),
 				[
 					downloadDir.PathJoin(downloadInfo.FileName),
-					Paths.ReleaseFolder,
-					"复古物语"
+					_createPath!.ButtonPressed ? _releasePath!.Text.GetBaseDir() : _releasePath!.Text,
+					_releaseName!.Text
 				]);
 			}
 
@@ -118,7 +252,7 @@ public partial class GameDownloadWindow : BaseWindow {
 	}
 
 	private async void ExtractGame(string filePath, string outputDir, string name) {
-		TitleLabel!.Text = "解压中...";
+		TitleLabel!.Text = "提取中...";
 		_progressBar!.Hide();
 #if GODOT_WINDOWS
 		await ExtractInnoSetupAsync(filePath, outputDir, name);
@@ -126,7 +260,7 @@ public partial class GameDownloadWindow : BaseWindow {
 		await ExtractTarGzAsync(filePath, outputDir, name);
 #endif
 		await Hide();
-		EmitSignalImport(Path.Combine(outputDir, name));
+		EmitSignalInstallGame(Path.Combine(outputDir, name));
 	}
 
 	private void UpdateProgress(int percentage, double speed) {
@@ -135,7 +269,10 @@ public partial class GameDownloadWindow : BaseWindow {
 		_progressBar.GetNode<Label>("Label").Text = $"{fmtSpeed:0.00} {unit}/s";
 	}
 
-	private void ButtonGroupOnPressed(BaseButton button) { OkButton!.Disabled = false; }
+	private void ButtonGroupOnPressed(BaseButton button) {
+		OkButton!.Disabled = !(button.ButtonPressed && !string.IsNullOrWhiteSpace(_releaseName!.Text) &&
+			!string.IsNullOrWhiteSpace(_releasePath!.Text));
+	}
 
 	public async void UpdateDownloadList(string releaseUrl) {
 		OkButton!.Disabled = true;
@@ -144,41 +281,42 @@ public partial class GameDownloadWindow : BaseWindow {
 		}
 
 		_loadingControl!.Show();
-		_downloadListContainer!.Hide();
-		var text = await releaseUrl.GetStringAsync();
-		_releases = JsonSerializer.Deserialize(text, SourceGenerationContext.Default.DictionaryGameVersionGameRelease);
+		_contentContainer!.Hide();
+		await Task.Run(async () => {
+			var text = await releaseUrl.GetStringAsync();
+			_releases = JsonSerializer.Deserialize(text, SourceGenerationContext.Default.DictionaryGameVersionGameRelease);
 
-		if (_releases is not null) {
-			var i = 1;
-			foreach (var group in _releases.GroupBy(r => r.Key.OverallVersion)) {
-				var container = _foldableContainerScene!.Instantiate<FoldableContainer>();
-				container.Title = group.Key;
-				container.Modulate = Colors.Transparent;
+			if (_releases is not null) {
+				var i = 1;
+				foreach (var group in _releases.GroupBy(r => r.Key.OverallVersion)) {
+					var container = _foldableContainerScene!.Instantiate<FoldableContainer>();
+					container.Title = group.Key;
+					container.Modulate = Colors.Transparent;
 
-				foreach (var (gameVersion, gameRelease) in group) {
-					GD.PrintS(gameVersion, gameRelease);
+					foreach (var (gameVersion, gameRelease) in group) {
+						GD.PrintS(gameVersion, gameRelease);
 
-					var item = _downloadItemScene!.Instantiate<InstalledGameItem>();
-					item.GameVersion = gameVersion;
+						var item = _downloadItemScene!.Instantiate<InstalledGameItem>();
+						item.GameVersion = gameVersion;
 #if GODOT_WINDOWS
-					item.GamePath = gameRelease.Windows.FileName;
+						item.GamePath = gameRelease.Windows.FileName;
 #elif GODOT_LINUXBSD
-					item.GamePath = gameRelease.Linux.FileName;
+						item.GamePath = gameRelease.Linux.FileName;
 #endif
-					item.SingleSelect = true;
-					container.AddChild(item);
+						item.SingleSelect = true;
+						container.AddChild(item);
+					}
+
+					var tween = container.CreateTween();
+					tween.TweenProperty(container, "modulate:a", 1f, 0.2f).SetDelay(i * 0.1);
+					tween.Parallel().TweenProperty(container, "scale:x", 1f, 0.2f).From(0f).SetDelay(i * 0.1);
+					i++;
+					_downloadListContainer!.CallDeferred(Node.MethodName.AddChild, container);
 				}
-
-				_downloadListContainer!.AddChild(container);
-				var tween = container.CreateTween();
-				tween.TweenProperty(container, "modulate:a", 1f, 0.2f).SetDelay(i * 0.1);
-				tween.Parallel().TweenProperty(container, "scale:x", 1f, 0.2f).From(0f).SetDelay(i * 0.1);
-				i++;
 			}
-		}
-
+		});
 		_loadingControl.Hide();
-		_downloadListContainer.Show();
+		_contentContainer.Show();
 	}
 
 	static private (double speed, string unit) FormatSpeed(double bytesPerSecond) {
@@ -237,7 +375,34 @@ public partial class GameDownloadWindow : BaseWindow {
 			process.BeginOutputReadLine();
 			process.BeginErrorReadLine();
 			await process.WaitForExitAsync();
-			Directory.Move(filePath.GetBaseDir().PathJoin("app").NormalizePath(), outputDir.PathJoin(name).NormalizePath());
+			DirMove(filePath.GetBaseDir().PathJoin("app").NormalizePath(), outputDir.PathJoin(name).NormalizePath());
 		});
+	}
+
+	public static void DirMove(string sourceDirName, string destDirName, bool overwrite = true) {
+		if (!Directory.Exists(destDirName)) {
+			Directory.CreateDirectory(destDirName);
+		}
+
+		foreach (var file in Directory.EnumerateFiles(sourceDirName, "*", SearchOption.AllDirectories)) {
+			var destFile = Path.Combine(destDirName, Path.GetRelativePath(sourceDirName, file));
+			var destDir = Path.GetDirectoryName(destFile);
+			var sameVolume = string.Equals(Path.GetPathRoot(file),
+				Path.GetPathRoot(destFile),
+				StringComparison.OrdinalIgnoreCase);
+
+			if (!string.IsNullOrEmpty(destDir) && !Directory.Exists(destDir)) {
+				Directory.CreateDirectory(destDir);
+			}
+
+			if (sameVolume) {
+				File.Move(file, destFile, overwrite);
+			} else {
+				File.Copy(file, destFile, overwrite);
+				File.Delete(file);
+			}
+		}
+
+		Directory.Delete(sourceDirName, true);
 	}
 }

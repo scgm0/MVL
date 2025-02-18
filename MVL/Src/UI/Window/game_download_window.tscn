@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=3 uid="uid://dfsyvb8tdyef2"]
+[gd_scene load_steps=24 format=3 uid="uid://dfsyvb8tdyef2"]
 
 [ext_resource type="PackedScene" uid="uid://bu4hwijkbc8sm" path="res://Src/UI/Window/base_window.tscn" id="1_42u7i"]
 [ext_resource type="Script" uid="uid://baxitom4bklvu" path="res://Src/UI/Window/GameDownloadWindow.cs" id="2_x3qgb"]
@@ -8,6 +8,89 @@
 [ext_resource type="PackedScene" uid="uid://cpbcd3vre7ii8" path="res://Src/UI/Item/installed_game_item.tscn" id="4_puokc"]
 [ext_resource type="Script" uid="uid://41yydm3vncfj" path="res://addons/SmoothScroll/scroll_damper/expo_scroll_damper.gd" id="5_x3qgb"]
 [ext_resource type="PackedScene" uid="uid://tgy824ep0upd" path="res://Src/UI/foldable_container.tscn" id="6_1so8d"]
+[ext_resource type="Script" uid="uid://bk3tot6c35bwu" path="res://Src/Utils/IconTexture2D.cs" id="6_endwm"]
+[ext_resource type="FontFile" uid="uid://bmgx1vyg6bavd" path="res://Assets/Font/HarmonyOS_Sans_SC_Bold.ttf" id="10_lb40e"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_vgayu"]
+
+[sub_resource type="Texture2D" id="Texture2D_bdark"]
+resource_local_to_scene = false
+resource_name = ""
+script = ExtResource("6_endwm")
+IconName = "toggle-switch"
+FontSize = 24
+metadata/_custom_type_script = ExtResource("6_endwm")
+
+[sub_resource type="Texture2D" id="Texture2D_u0mv6"]
+resource_local_to_scene = false
+resource_name = ""
+script = ExtResource("6_endwm")
+IconName = "toggle-switch-off-outline"
+FontSize = 24
+metadata/_custom_type_script = ExtResource("6_endwm")
+
+[sub_resource type="Texture2D" id="Texture2D_i7wln"]
+resource_local_to_scene = false
+resource_name = ""
+script = ExtResource("6_endwm")
+IconName = "close"
+FontSize = 18
+metadata/_custom_type_script = ExtResource("6_endwm")
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_b82ki"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_i7wln"]
+content_margin_left = 5.0
+content_margin_top = 5.0
+content_margin_right = 5.0
+content_margin_bottom = 5.0
+bg_color = Color(0.101961, 0.101961, 0.101961, 1)
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+
+[sub_resource type="Texture2D" id="Texture2D_b82ki"]
+resource_local_to_scene = false
+resource_name = ""
+script = ExtResource("6_endwm")
+IconName = "chevron-down"
+FontSize = 24
+metadata/_custom_type_script = ExtResource("6_endwm")
+
+[sub_resource type="Theme" id="Theme_asvws"]
+Button/styles/focus = SubResource("StyleBoxEmpty_vgayu")
+CheckButton/icons/checked = SubResource("Texture2D_bdark")
+CheckButton/icons/unchecked = SubResource("Texture2D_u0mv6")
+LineEdit/font_sizes/font_size = 14
+LineEdit/icons/clear = SubResource("Texture2D_i7wln")
+LineEdit/styles/focus = SubResource("StyleBoxEmpty_b82ki")
+LineEdit/styles/normal = SubResource("StyleBoxFlat_i7wln")
+OptionButton/icons/arrow = SubResource("Texture2D_b82ki")
+
+[sub_resource type="Texture2D" id="Texture2D_0pqmy"]
+resource_local_to_scene = false
+resource_name = ""
+script = ExtResource("6_endwm")
+IconName = "alert-circle-outline"
+FontSize = 18
+metadata/_custom_type_script = ExtResource("6_endwm")
+
+[sub_resource type="Texture2D" id="Texture2D_b2cjx"]
+resource_local_to_scene = false
+resource_name = ""
+script = ExtResource("6_endwm")
+IconName = "file-plus-outline"
+FontSize = 24
+metadata/_custom_type_script = ExtResource("6_endwm")
+
+[sub_resource type="Texture2D" id="Texture2D_w2kmj"]
+resource_local_to_scene = false
+resource_name = ""
+script = ExtResource("6_endwm")
+IconName = "file-settings-outline"
+FontSize = 24
+metadata/_custom_type_script = ExtResource("6_endwm")
 
 [sub_resource type="Resource" id="Resource_lb40e"]
 script = ExtResource("5_x3qgb")
@@ -21,12 +104,19 @@ friction = 4.0
 minimum_velocity = 0.4
 rebound_strength = 7.0
 
-[node name="GameDownloadWindow" node_paths=PackedStringArray("_downloadListContainer", "_loadingControl", "_progressBar") instance=ExtResource("1_42u7i")]
+[node name="GameDownloadWindow" node_paths=PackedStringArray("_releaseName", "_releasePath", "_createPath", "_folderButton", "_tooltip", "_fileDialog", "_contentContainer", "_downloadListContainer", "_loadingControl", "_progressBar") instance=ExtResource("1_42u7i")]
 script = ExtResource("2_x3qgb")
 _buttonGroup = ExtResource("3_x3qgb")
 _foldableContainerScene = ExtResource("6_1so8d")
+_releaseName = NodePath("PanelContainer/VBoxContainer/MarginContainer/VBoxContainer/VBoxContainer/LineEdit")
+_releasePath = NodePath("PanelContainer/VBoxContainer/MarginContainer/VBoxContainer/VBoxContainer2/HBoxContainer/LineEdit")
+_createPath = NodePath("PanelContainer/VBoxContainer/MarginContainer/VBoxContainer/VBoxContainer2/HBoxContainer2/CheckButton")
+_folderButton = NodePath("PanelContainer/VBoxContainer/MarginContainer/VBoxContainer/VBoxContainer2/HBoxContainer/Button")
+_tooltip = NodePath("PanelContainer/VBoxContainer/MarginContainer/VBoxContainer/VBoxContainer2/Label")
+_fileDialog = NodePath("FileDialog")
 _downloadItemScene = ExtResource("4_puokc")
-_downloadListContainer = NodePath("PanelContainer/VBoxContainer/MarginContainer/SmoothScrollContainer/VBoxContainer")
+_contentContainer = NodePath("PanelContainer/VBoxContainer/MarginContainer/VBoxContainer")
+_downloadListContainer = NodePath("PanelContainer/VBoxContainer/MarginContainer/VBoxContainer/SmoothScrollContainer/VBoxContainer")
 _loadingControl = NodePath("PanelContainer/VBoxContainer/MarginContainer/ColorRect")
 _progressBar = NodePath("PanelContainer/VBoxContainer/MarginContainer/ProgressBar")
 
@@ -37,6 +127,9 @@ offset_top = -86.5
 offset_right = 241.0
 offset_bottom = 86.5
 
+[node name="VBoxContainer" parent="PanelContainer" index="0"]
+theme = SubResource("Theme_asvws")
+
 [node name="Label" parent="PanelContainer/VBoxContainer" index="0"]
 text = "选择游戏版本"
 
@@ -46,13 +139,74 @@ layout_mode = 2
 size_flags_vertical = 3
 
 [node name="ColorRect" type="ColorRect" parent="PanelContainer/VBoxContainer/MarginContainer" index="0"]
+visible = false
 material = ExtResource("3_k3web")
 custom_minimum_size = Vector2(75, 75)
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
 
-[node name="SmoothScrollContainer" type="ScrollContainer" parent="PanelContainer/VBoxContainer/MarginContainer" index="1"]
+[node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer/VBoxContainer/MarginContainer" index="1"]
+layout_mode = 2
+theme_override_constants/separation = 5
+
+[node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer/VBoxContainer/MarginContainer/VBoxContainer" index="0"]
+layout_mode = 2
+
+[node name="Name" type="Label" parent="PanelContainer/VBoxContainer/MarginContainer/VBoxContainer/VBoxContainer" index="0"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("10_lb40e")
+text = "版本名称:"
+
+[node name="LineEdit" type="LineEdit" parent="PanelContainer/VBoxContainer/MarginContainer/VBoxContainer/VBoxContainer" index="1"]
+layout_mode = 2
+placeholder_text = "名称不能为空"
+clear_button_enabled = true
+right_icon = SubResource("Texture2D_0pqmy")
+caret_blink = true
+
+[node name="VBoxContainer2" type="VBoxContainer" parent="PanelContainer/VBoxContainer/MarginContainer/VBoxContainer" index="1"]
+layout_mode = 2
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="PanelContainer/VBoxContainer/MarginContainer/VBoxContainer/VBoxContainer2" index="0"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="PanelContainer/VBoxContainer/MarginContainer/VBoxContainer/VBoxContainer2/HBoxContainer2" index="0"]
+layout_mode = 2
+size_flags_vertical = 8
+theme_override_fonts/font = ExtResource("10_lb40e")
+text = "安装路径:"
+
+[node name="CheckButton" type="CheckButton" parent="PanelContainer/VBoxContainer/MarginContainer/VBoxContainer/VBoxContainer2/HBoxContainer2" index="1"]
+layout_mode = 2
+size_flags_horizontal = 10
+size_flags_vertical = 4
+button_pressed = true
+text = "创建文件夹"
+icon = SubResource("Texture2D_b2cjx")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="PanelContainer/VBoxContainer/MarginContainer/VBoxContainer/VBoxContainer2" index="1"]
+layout_mode = 2
+
+[node name="LineEdit" type="LineEdit" parent="PanelContainer/VBoxContainer/MarginContainer/VBoxContainer/VBoxContainer2/HBoxContainer" index="0"]
+layout_mode = 2
+size_flags_horizontal = 3
+placeholder_text = "路径不能为空"
+clear_button_enabled = true
+right_icon = SubResource("Texture2D_0pqmy")
+caret_blink = true
+
+[node name="Button" type="Button" parent="PanelContainer/VBoxContainer/MarginContainer/VBoxContainer/VBoxContainer2/HBoxContainer" index="1"]
+layout_mode = 2
+icon = SubResource("Texture2D_w2kmj")
+
+[node name="Label" type="Label" parent="PanelContainer/VBoxContainer/MarginContainer/VBoxContainer/VBoxContainer2" index="2"]
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_font_sizes/font_size = 14
+text = "请输入名称"
+
+[node name="SmoothScrollContainer" type="ScrollContainer" parent="PanelContainer/VBoxContainer/MarginContainer/VBoxContainer" index="2"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
@@ -63,7 +217,7 @@ dragging_scroll_damper = SubResource("Resource_asvws")
 allow_horizontal_scroll = false
 metadata/_custom_type_script = "uid://cre6m68jy0aad"
 
-[node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer/VBoxContainer/MarginContainer/SmoothScrollContainer" index="0"]
+[node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer/VBoxContainer/MarginContainer/VBoxContainer/SmoothScrollContainer" index="0"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
@@ -92,3 +246,12 @@ vertical_alignment = 1
 
 [node name="Button2" parent="PanelContainer/VBoxContainer/HBoxContainer3" index="1"]
 disabled = true
+
+[node name="FileDialog" type="FileDialog" parent="." index="3"]
+auto_translate_mode = 1
+title = "Open a Directory"
+ok_button_text = "Select Current Folder"
+file_mode = 2
+access = 2
+show_hidden_files = true
+use_native_dialog = true

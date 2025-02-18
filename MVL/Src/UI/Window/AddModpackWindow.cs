@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -79,13 +80,20 @@ public partial class AddModpackWindow : BaseWindow {
 			if (string.IsNullOrEmpty(text)) {
 				OkButton!.Disabled = true;
 				_tooltip!.Text = "请输入名称";
+			}
+
+			var path = _modpackPath!.Text;
+			if (string.IsNullOrEmpty(path)) {
+				OkButton!.Disabled = true;
+				_tooltip!.Text = "请输入路径";
 				return;
 			}
 
 			if (_createPath!.ButtonPressed) {
-				var path = _modpackPath!.Text;
-				path = path.GetFile() == name ? Path.Combine(path.GetBaseDir(), text) : path;
-				SetModpackPath(path);
+				path = string.IsNullOrEmpty(name) || string.Equals(path.GetFile(), name, StringComparison.OrdinalIgnoreCase)
+					? Path.Combine(string.IsNullOrEmpty(name) ? path : path.GetBaseDir(), text)
+					: path;
+				SetModpackPath(path.NormalizePath());
 			}
 
 			name = text;
@@ -106,7 +114,7 @@ public partial class AddModpackWindow : BaseWindow {
 			_gameVersion.Select(-1);
 		}
 
-		SetModpackPath(Path.Combine(Paths.ModpackFolder, _modpackName.Text));
+		SetModpackPath(Path.Combine(Paths.ModpackFolder, _modpackName.Text).NormalizePath());
 	}
 
 	private void OnFileDialogOnDirSelected(string path) {
@@ -155,8 +163,15 @@ public partial class AddModpackWindow : BaseWindow {
 	}
 
 	private void OnModpackPathOnTextChanged(string text) {
-		if (string.IsNullOrEmpty(text) || string.IsNullOrEmpty(_modpackName!.Text)) {
+		if (string.IsNullOrEmpty(_modpackName!.Text)) {
 			OkButton!.Disabled = true;
+			_tooltip!.Text = "请输入名称";
+			return;
+		}
+
+		if (string.IsNullOrEmpty(text)) {
+			OkButton!.Disabled = true;
+			_tooltip!.Text = "请输入路径";
 			return;
 		}
 

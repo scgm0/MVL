@@ -68,7 +68,7 @@ public partial class ReleasePage : MenuPage {
 		UI.Main.Instance?.AddChild(downloadWindow);
 		await downloadWindow.Show();
 		downloadWindow.UpdateDownloadList("https://api.vintagestory.at/stable-unstable.json");
-		downloadWindow.Import += ImportGame;
+		downloadWindow.InstallGame += ImportGame;
 	}
 
 	private void OnVisibilityChanged() {
