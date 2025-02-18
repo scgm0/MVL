@@ -1,4 +1,4 @@
-[gd_scene load_steps=24 format=3 uid="uid://dfsyvb8tdyef2"]
+[gd_scene load_steps=23 format=3 uid="uid://dfsyvb8tdyef2"]
 
 [ext_resource type="PackedScene" uid="uid://bu4hwijkbc8sm" path="res://Src/UI/Window/base_window.tscn" id="1_42u7i"]
 [ext_resource type="Script" uid="uid://baxitom4bklvu" path="res://Src/UI/Window/GameDownloadWindow.cs" id="2_x3qgb"]
@@ -76,14 +76,6 @@ IconName = "alert-circle-outline"
 FontSize = 18
 metadata/_custom_type_script = ExtResource("6_endwm")
 
-[sub_resource type="Texture2D" id="Texture2D_b2cjx"]
-resource_local_to_scene = false
-resource_name = ""
-script = ExtResource("6_endwm")
-IconName = "file-plus-outline"
-FontSize = 24
-metadata/_custom_type_script = ExtResource("6_endwm")
-
 [sub_resource type="Texture2D" id="Texture2D_w2kmj"]
 resource_local_to_scene = false
 resource_name = ""
@@ -104,15 +96,14 @@ friction = 4.0
 minimum_velocity = 0.4
 rebound_strength = 7.0
 
-[node name="GameDownloadWindow" node_paths=PackedStringArray("_releaseName", "_releasePath", "_createPath", "_folderButton", "_tooltip", "_fileDialog", "_contentContainer", "_downloadListContainer", "_loadingControl", "_progressBar") instance=ExtResource("1_42u7i")]
+[node name="GameDownloadWindow" node_paths=PackedStringArray("_releaseName", "_releasePath", "_folderButton", "_tooltip", "_fileDialog", "_contentContainer", "_downloadListContainer", "_loadingControl", "_progressBar") instance=ExtResource("1_42u7i")]
 script = ExtResource("2_x3qgb")
 _buttonGroup = ExtResource("3_x3qgb")
 _foldableContainerScene = ExtResource("6_1so8d")
 _releaseName = NodePath("PanelContainer/VBoxContainer/MarginContainer/VBoxContainer/VBoxContainer/LineEdit")
 _releasePath = NodePath("PanelContainer/VBoxContainer/MarginContainer/VBoxContainer/VBoxContainer2/HBoxContainer/LineEdit")
-_createPath = NodePath("PanelContainer/VBoxContainer/MarginContainer/VBoxContainer/VBoxContainer2/HBoxContainer2/CheckButton")
 _folderButton = NodePath("PanelContainer/VBoxContainer/MarginContainer/VBoxContainer/VBoxContainer2/HBoxContainer/Button")
-_tooltip = NodePath("PanelContainer/VBoxContainer/MarginContainer/VBoxContainer/VBoxContainer2/Label")
+_tooltip = NodePath("PanelContainer/VBoxContainer/MarginContainer/VBoxContainer/Label")
 _fileDialog = NodePath("FileDialog")
 _downloadItemScene = ExtResource("4_puokc")
 _contentContainer = NodePath("PanelContainer/VBoxContainer/MarginContainer/VBoxContainer")
@@ -148,7 +139,7 @@ size_flags_vertical = 4
 
 [node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer/VBoxContainer/MarginContainer" index="1"]
 layout_mode = 2
-theme_override_constants/separation = 5
+theme_override_constants/separation = 8
 
 [node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer/VBoxContainer/MarginContainer/VBoxContainer" index="0"]
 layout_mode = 2
@@ -168,22 +159,11 @@ caret_blink = true
 [node name="VBoxContainer2" type="VBoxContainer" parent="PanelContainer/VBoxContainer/MarginContainer/VBoxContainer" index="1"]
 layout_mode = 2
 
-[node name="HBoxContainer2" type="HBoxContainer" parent="PanelContainer/VBoxContainer/MarginContainer/VBoxContainer/VBoxContainer2" index="0"]
-layout_mode = 2
-
-[node name="Label" type="Label" parent="PanelContainer/VBoxContainer/MarginContainer/VBoxContainer/VBoxContainer2/HBoxContainer2" index="0"]
+[node name="Label2" type="Label" parent="PanelContainer/VBoxContainer/MarginContainer/VBoxContainer/VBoxContainer2" index="0"]
 layout_mode = 2
 size_flags_vertical = 8
 theme_override_fonts/font = ExtResource("10_lb40e")
 text = "安装路径:"
-
-[node name="CheckButton" type="CheckButton" parent="PanelContainer/VBoxContainer/MarginContainer/VBoxContainer/VBoxContainer2/HBoxContainer2" index="1"]
-layout_mode = 2
-size_flags_horizontal = 10
-size_flags_vertical = 4
-button_pressed = true
-text = "创建文件夹"
-icon = SubResource("Texture2D_b2cjx")
 
 [node name="HBoxContainer" type="HBoxContainer" parent="PanelContainer/VBoxContainer/MarginContainer/VBoxContainer/VBoxContainer2" index="1"]
 layout_mode = 2
@@ -200,13 +180,13 @@ caret_blink = true
 layout_mode = 2
 icon = SubResource("Texture2D_w2kmj")
 
-[node name="Label" type="Label" parent="PanelContainer/VBoxContainer/MarginContainer/VBoxContainer/VBoxContainer2" index="2"]
+[node name="Label" type="Label" parent="PanelContainer/VBoxContainer/MarginContainer/VBoxContainer" index="2"]
 layout_mode = 2
 size_flags_horizontal = 4
 theme_override_font_sizes/font_size = 14
 text = "请输入名称"
 
-[node name="SmoothScrollContainer" type="ScrollContainer" parent="PanelContainer/VBoxContainer/MarginContainer/VBoxContainer" index="2"]
+[node name="SmoothScrollContainer" type="ScrollContainer" parent="PanelContainer/VBoxContainer/MarginContainer/VBoxContainer" index="3"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3

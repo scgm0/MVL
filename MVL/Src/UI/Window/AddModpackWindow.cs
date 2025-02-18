@@ -90,7 +90,7 @@ public partial class AddModpackWindow : BaseWindow {
 			}
 
 			if (_createPath!.ButtonPressed) {
-				path = string.IsNullOrEmpty(name) || string.Equals(path.GetFile(), name, StringComparison.OrdinalIgnoreCase)
+				path = string.IsNullOrEmpty(name) || string.Equals(path.GetFile(), name)
 					? Path.Combine(string.IsNullOrEmpty(name) ? path : path.GetBaseDir(), text)
 					: path;
 				SetModpackPath(path.NormalizePath());

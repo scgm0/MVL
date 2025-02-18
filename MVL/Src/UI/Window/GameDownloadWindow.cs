@@ -33,9 +33,6 @@ public partial class GameDownloadWindow : BaseWindow {
 	private LineEdit? _releasePath;
 
 	[Export]
-	private CheckButton? _createPath;
-
-	[Export]
 	private Button? _folderButton;
 
 	[Export]
@@ -73,7 +70,6 @@ public partial class GameDownloadWindow : BaseWindow {
 			_foldableContainerScene,
 			_releaseName,
 			_releasePath,
-			_createPath,
 			_folderButton,
 			_tooltip,
 			_fileDialog,
@@ -87,109 +83,63 @@ public partial class GameDownloadWindow : BaseWindow {
 		_contentContainer.Hide();
 		_progressBar.Hide();
 
-		var name = _releaseName.Text;
-		_releaseName.TextChanged += text => {
-			if (string.IsNullOrEmpty(text)) {
-				OkButton!.Disabled = true;
-				_tooltip!.Text = "请输入名称";
-			}
-
-			var path = _releasePath!.Text;
-			if (string.IsNullOrEmpty(path)) {
-				OkButton!.Disabled = true;
-				_tooltip!.Text = "请输入路径";
-				return;
-			}
-
-			if (_createPath!.ButtonPressed) {
-				path = string.IsNullOrEmpty(name) || string.Equals(path.GetFile(), name, StringComparison.OrdinalIgnoreCase)
-					? Path.Combine(string.IsNullOrEmpty(name) ? path : path.GetBaseDir(), text)
-					: path;
-				SetReleasePath(path.NormalizePath());
-			}
-
-			name = text;
-		};
-
-		_createPath.Toggled += CreatePathOnToggled;
-		_folderButton.Pressed += _fileDialog.Show;
+		_releasePath.Text = Path.Combine(Paths.ReleaseFolder, _releaseName.Text).NormalizePath();
 		_fileDialog.CurrentPath = Paths.ReleaseFolder;
 		_fileDialog.CurrentDir = Paths.ReleaseFolder;
-		_fileDialog.DirSelected += FileDialogOnDirSelected;
 
+		_releaseName.TextChanged += ReleaseNameOnTextChanged;
+		_folderButton.Pressed += _fileDialog.Show;
+		_fileDialog.DirSelected += FileDialogOnDirSelected;
 		_releasePath.TextChanged += ReleasePathOnTextChanged;
 		_buttonGroup.Pressed += ButtonGroupOnPressed;
 		CancelButton!.Pressed += CancelButtonOnPressed;
 		OkButton!.Pressed += OkButtonOnPressed;
 
-		SetReleasePath(Path.Combine(Paths.ReleaseFolder, _releaseName.Text).NormalizePath());
+		ValidateInputs();
 	}
+
+	private void ReleaseNameOnTextChanged(string text) { ValidateInputs(); }
 
 	private void FileDialogOnDirSelected(string path) {
-		if (_createPath!.ButtonPressed) {
-			path = Path.Combine(path, _releaseName!.Text);
-		}
-
-		SetReleasePath(path.NormalizePath());
+		_releasePath!.Text = path;
+		ValidateInputs();
 	}
 
-	private void CreatePathOnToggled(bool toggledOn) {
+	private void ReleasePathOnTextChanged(string text) { ValidateInputs(); }
+
+	private void ValidateInputs() {
 		var name = _releaseName!.Text;
 		var path = _releasePath!.Text;
-		if (string.IsNullOrEmpty(name) || string.IsNullOrEmpty(path)) {
-			return;
-		}
-
-		path = toggledOn switch {
-			true when path.GetFile() != name => Path.Combine(path, name),
-			false when path.GetFile() == name => path.GetBaseDir(),
-			_ => path
-		};
-
-		SetReleasePath(path);
-	}
-
-	private void ReleasePathOnTextChanged(string text) {
-		if (string.IsNullOrEmpty(_releaseName!.Text)) {
+		if (string.IsNullOrEmpty(name)) {
 			OkButton!.Disabled = true;
 			_tooltip!.Text = "请输入名称";
 			return;
 		}
 
-		if (string.IsNullOrEmpty(text)) {
+		if (string.IsNullOrEmpty(path)) {
 			OkButton!.Disabled = true;
 			_tooltip!.Text = "请输入路径";
 			return;
 		}
 
+		if (!Directory.Exists(path)) {
+			OkButton!.Disabled = true;
+			_tooltip!.Text = "路径不存在";
+			return;
+		}
+
+		if (_buttonGroup!.GetPressedButton() is null) {
+			OkButton!.Disabled = true;
+			_tooltip!.Text = "请选择版本";
+			return;
+		}
+
+		if (Directory.Exists(Path.Combine(path, name))) {
+			_tooltip!.Text = $"{name}已存在，确定覆盖它吗？";
+		}
+
+		OkButton!.Disabled = false;
 		_tooltip!.Text = "将自动创建文件夹";
-		if (Directory.Exists(text)) {
-			_tooltip!.Text = Directory.GetFileSystemEntries(text).Length > 0 ? "文件夹不为空，确定选择它吗？" : "文件夹存在且为空";
-		}
-
-		switch (_createPath!.ButtonPressed) {
-			case true: {
-				OkButton!.Disabled = !DirAccess.DirExistsAbsolute(text.GetBaseDir());
-				if (OkButton!.Disabled) {
-					_tooltip!.Text = "父文件夹不存在";
-				}
-
-				break;
-			}
-			case false: {
-				OkButton!.Disabled = !DirAccess.DirExistsAbsolute(text);
-				if (OkButton!.Disabled) {
-					_tooltip!.Text = "文件夹不存在";
-				}
-
-				break;
-			}
-		}
-	}
-
-	private void SetReleasePath(string path) {
-		_releasePath!.Text = path;
-		ReleasePathOnTextChanged(path);
 	}
 
 	override protected async void CancelButtonOnPressed() {
@@ -205,12 +155,14 @@ public partial class GameDownloadWindow : BaseWindow {
 	}
 
 	private async void OkButtonOnPressed() {
-		TitleLabel!.Text = "下载中...";
-		OkButton!.Disabled = true;
 		_loadingControl!.Show();
 		_contentContainer!.Hide();
 		_progressBar!.Show();
+
+		TitleLabel!.Text = "下载中...";
+		OkButton!.Disabled = true;
 		_progressBar.Value = 0;
+
 		var item = _buttonGroup!.GetPressedButton().GetParent<InstalledGameItem>();
 #if GODOT_WINDOWS
 		var downloadInfo = _releases![item.GameVersion].Windows;
@@ -219,6 +171,7 @@ public partial class GameDownloadWindow : BaseWindow {
 #endif
 		var url = downloadInfo.Urls.Cdn ?? downloadInfo.Urls.Local;
 		var downloadDir = _downloadTmp.GetCurrentDir();
+
 		_download = DownloadBuilder.New()
 			.WithUrl(url)
 			.WithDirectory(downloadDir)
@@ -232,16 +185,21 @@ public partial class GameDownloadWindow : BaseWindow {
 				}
 			})
 			.Build();
+
 		_download.DownloadProgressChanged += (_, args) => {
 			CallDeferred(nameof(UpdateProgress), args.ProgressPercentage, args.BytesPerSecondSpeed);
 		};
+
 		_download.DownloadFileCompleted += (_, args) => {
 			if (!args.Cancelled && args.Error is null) {
+				var path = _releasePath!.Text;
+				var name = _releaseName!.Text;
+
 				CallDeferred(nameof(ExtractGame),
 				[
 					downloadDir.PathJoin(downloadInfo.FileName),
-					_createPath!.ButtonPressed ? _releasePath!.Text.GetBaseDir() : _releasePath!.Text,
-					_releaseName!.Text
+					path,
+					name
 				]);
 			}
 
@@ -269,10 +227,7 @@ public partial class GameDownloadWindow : BaseWindow {
 		_progressBar.GetNode<Label>("Label").Text = $"{fmtSpeed:0.00} {unit}/s";
 	}
 
-	private void ButtonGroupOnPressed(BaseButton button) {
-		OkButton!.Disabled = !(button.ButtonPressed && !string.IsNullOrWhiteSpace(_releaseName!.Text) &&
-			!string.IsNullOrWhiteSpace(_releasePath!.Text));
-	}
+	private void ButtonGroupOnPressed(BaseButton button) { ValidateInputs(); }
 
 	public async void UpdateDownloadList(string releaseUrl) {
 		OkButton!.Disabled = true;
@@ -282,6 +237,7 @@ public partial class GameDownloadWindow : BaseWindow {
 
 		_loadingControl!.Show();
 		_contentContainer!.Hide();
+
 		await Task.Run(async () => {
 			var text = await releaseUrl.GetStringAsync();
 			_releases = JsonSerializer.Deserialize(text, SourceGenerationContext.Default.DictionaryGameVersionGameRelease);
@@ -315,6 +271,7 @@ public partial class GameDownloadWindow : BaseWindow {
 				}
 			}
 		});
+
 		_loadingControl.Hide();
 		_contentContainer.Show();
 	}
