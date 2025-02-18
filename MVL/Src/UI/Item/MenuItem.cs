@@ -9,6 +9,7 @@ public partial class MenuItem : Button {
 	public MenuPage? Page { get; set; }
 
 	public override void _Ready() {
+		TooltipText = Text;
 		Toggled += OnToggled;
 		if (Page != null) {
 			Page.Visible = ButtonPressed;
