@@ -109,7 +109,7 @@ public partial class GameDownloadWindow : BaseWindow {
 
 	private void ValidateInputs() {
 		var name = _releaseName!.Text;
-		var path = _releasePath!.Text;
+		var path = _releasePath!.Text.NormalizePath();
 		if (string.IsNullOrEmpty(name)) {
 			OkButton!.Disabled = true;
 			_tooltip!.Text = "请输入名称";
@@ -134,12 +134,8 @@ public partial class GameDownloadWindow : BaseWindow {
 			return;
 		}
 
-		if (Directory.Exists(Path.Combine(path, name))) {
-			_tooltip!.Text = $"{name}已存在，确定覆盖它吗？";
-		}
-
+		_tooltip!.Text = Directory.Exists(Path.Combine(path, name)) ? $"{name}已存在，确定覆盖它吗？" : "将自动创建文件夹";
 		OkButton!.Disabled = false;
-		_tooltip!.Text = "将自动创建文件夹";
 	}
 
 	override protected async void CancelButtonOnPressed() {
