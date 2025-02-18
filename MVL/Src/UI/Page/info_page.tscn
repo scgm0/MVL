@@ -57,7 +57,7 @@ friction = 4.0
 minimum_velocity = 0.4
 rebound_strength = 7.0
 
-[node name="InfoPage" type="Control" node_paths=PackedStringArray("_authorButton", "_donorButton", "_licenseButton", "_list", "Main")]
+[node name="InfoPage" type="Control" node_paths=PackedStringArray("_versionLabel", "_authorButton", "_donorButton", "_licenseButton", "_list", "Main")]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -68,6 +68,7 @@ mouse_filter = 1
 script = ExtResource("1_fwjxq")
 _itemScene = ExtResource("2_gvx1g")
 _buttonGroup = ExtResource("3_cnlqv")
+_versionLabel = NodePath("MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/HBoxContainer/Label")
 _authorButton = NodePath("MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer/Button")
 _donorButton = NodePath("MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer/Button2")
 _licenseButton = NodePath("MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer/Button3")
@@ -106,7 +107,10 @@ layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
 
-[node name="LinkButton" type="LinkButton" parent="MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="LinkButton" type="LinkButton" parent="MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
@@ -116,6 +120,14 @@ theme_override_font_sizes/font_size = 25
 text = "神麤詭末的复古物语启动器"
 underline = 1
 uri = "https://github.com/scgm0/MVL"
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 8
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 12
+text = "v0.0.0"
+vertical_alignment = 1
 
 [node name="Label" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer"]
 layout_mode = 2

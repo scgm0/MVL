@@ -13,6 +13,9 @@ public partial class InfoPage : MenuPage {
 	private ButtonGroup? _buttonGroup;
 
 	[Export]
+	private Label? _versionLabel;
+
+	[Export]
 	private Control? _titleBar;
 
 	[Export]
@@ -31,8 +34,13 @@ public partial class InfoPage : MenuPage {
 		base._Ready();
 		_itemScene.NotNull();
 		_buttonGroup.NotNull();
+		_versionLabel.NotNull();
 		_titleBar.NotNull();
+		_authorButton.NotNull();
+		_donorButton.NotNull();
+		_licenseButton.NotNull();
 		_list.NotNull();
+		_versionLabel.Text = $"v{ProjectSettings.GetSetting("application/config/version")}";
 		VisibilityChanged += OnVisibilityChanged;
 		_buttonGroup.Pressed += ButtonGroupOnPressed;
 		UpdateList(Info.AUTHORS);
