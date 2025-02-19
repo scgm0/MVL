@@ -59,14 +59,10 @@ public partial class InstalledGamesImport : BaseWindow {
 	public async Task ShowInstalledGames(IEnumerable<string> gamePaths) {
 		var list = new List<ReleaseInfo>();
 		foreach (var installedGamePath in gamePaths) {
-			var gameVersion = GameVersion.FromGamePath(installedGamePath);
-			if (gameVersion is null) {
-				continue;
-			}
-
+			if (!GameVersion.TryFromGamePath(installedGamePath, out var gameVersion)) continue;
 			list.Add(new() {
 				Path = installedGamePath,
-				Version = gameVersion.Value,
+				Version = gameVersion,
 				Name = installedGamePath.GetFile()
 			});
 		}

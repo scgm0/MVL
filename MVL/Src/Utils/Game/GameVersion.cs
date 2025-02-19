@@ -92,6 +92,17 @@ public readonly record struct GameVersion {
 		}
 	}
 
+	public static bool TryFromGamePath(string path, out GameVersion version) {
+		var versionFromPath = FromGamePath(path);
+		if (versionFromPath != null) {
+			version = versionFromPath.Value;
+			return true;
+		}
+
+		version = default;
+		return false;
+	}
+
 	public class GameVersionJsonConverter : JsonConverter<GameVersion> {
 
 		public override GameVersion Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options) {

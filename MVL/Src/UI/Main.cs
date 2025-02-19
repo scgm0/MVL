@@ -158,10 +158,8 @@ public partial class Main : NativeWindowUtility {
 		BaseConfig.Release = BaseConfig.Release.Distinct().ToList();
 		var snapshotPaths = BaseConfig.Release.ToList();
 
-		foreach (var lPath in snapshotPaths) {
-			var path = lPath.NormalizePath();
-			var gameVersion = GameVersion.FromGamePath(path);
-			if (gameVersion is null) {
+		foreach (var path in snapshotPaths.Select(lPath => lPath.NormalizePath())) {
+			if (!GameVersion.TryFromGamePath(path, out var gameVersion)) {
 				RemoveRelease(path);
 				continue;
 			}
@@ -169,16 +167,18 @@ public partial class Main : NativeWindowUtility {
 			if (!ReleaseInfos.TryGetValue(path, out var releaseInfo)) {
 				releaseInfo = new() {
 					Path = path,
-					Name = path.GetFile()
+					Name = path.GetFile(),
+					Version = gameVersion
 				};
 				ReleaseInfos[path] = releaseInfo;
+			} else {
+				releaseInfo.Version = gameVersion;
 			}
-
-			releaseInfo.Version = gameVersion.Value;
 		}
 
 		BaseConfig.Save(BaseConfig);
 	}
+
 
 	static private void RemoveRelease(string path) {
 		ReleaseInfos.Remove(path);
@@ -192,8 +192,7 @@ public partial class Main : NativeWindowUtility {
 		var versionLookup = ReleaseInfos.Values
 			.ToLookup(info => info.Version);
 
-		foreach (var lPath in list) {
-			var path = lPath.NormalizePath();
+		foreach (var path in list.Select(lPath => lPath.NormalizePath())) {
 			if (!DirAccess.DirExistsAbsolute(path)) {
 				RemoveModpack(path);
 				continue;
