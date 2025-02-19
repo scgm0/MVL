@@ -113,28 +113,33 @@ public partial class GameDownloadWindow : BaseWindow {
 		if (string.IsNullOrEmpty(name)) {
 			OkButton!.Disabled = true;
 			_tooltip!.Text = "请输入名称";
+			_tooltip.Modulate = Colors.Red;
 			return;
 		}
 
 		if (string.IsNullOrEmpty(path)) {
 			OkButton!.Disabled = true;
 			_tooltip!.Text = "请输入路径";
+			_tooltip.Modulate = Colors.Red;
 			return;
 		}
 
 		if (!Directory.Exists(path)) {
 			OkButton!.Disabled = true;
 			_tooltip!.Text = "路径不存在";
+			_tooltip.Modulate = Colors.Red;
 			return;
 		}
 
 		if (_buttonGroup!.GetPressedButton() is null) {
 			OkButton!.Disabled = true;
 			_tooltip!.Text = "请选择版本";
+			_tooltip.Modulate = Colors.Red;
 			return;
 		}
 
 		_tooltip!.Text = Directory.Exists(Path.Combine(path, name)) ? $"{name}已存在，确定覆盖它吗？" : "将自动创建文件夹";
+		_tooltip.Modulate = Directory.Exists(Path.Combine(path, name)) ? Colors.Yellow : Colors.White;
 		OkButton!.Disabled = false;
 	}
 
