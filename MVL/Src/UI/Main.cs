@@ -107,7 +107,7 @@ public partial class Main : NativeWindowUtility {
 		MinButton.Pressed += SceneTree.Root.Minimize;
 		CloseButton.Pressed += () => SceneTree.Quit();
 		FlurlHttp.Clients.WithDefaults(builder => {
-			builder.ConfigureInnerHandler(handler => { handler.Proxy = new WebProxy(BaseConfig.ProxyUrl); });
+			builder.ConfigureInnerHandler(handler => { handler.Proxy = string.IsNullOrEmpty(BaseConfig.ProxyUrl) ? null : new WebProxy(BaseConfig.ProxyUrl); });
 		});
 	}
 

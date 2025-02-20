@@ -182,7 +182,7 @@ public partial class GameDownloadWindow : BaseWindow {
 				ChunkCount = 8,
 				ParallelCount = 8,
 				RequestConfiguration = new() {
-					Proxy = new WebProxy(Main.BaseConfig.ProxyUrl)
+					Proxy = string.IsNullOrEmpty(Main.BaseConfig.ProxyUrl) ? null : new WebProxy(Main.BaseConfig.ProxyUrl)
 				}
 			})
 			.Build();
