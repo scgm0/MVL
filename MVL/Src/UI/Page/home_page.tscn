@@ -1,7 +1,70 @@
-[gd_scene load_steps=3 format=3 uid="uid://wtrk0xtd36kj"]
+[gd_scene load_steps=18 format=3 uid="uid://wtrk0xtd36kj"]
 
 [ext_resource type="Script" uid="uid://diqldycl8cgn2" path="res://Src/UI/Page/MenuPage.cs" id="1_koywy"]
 [ext_resource type="LabelSettings" uid="uid://bdfwqcqufhm6k" path="res://Assets/Setting/page_title.tres" id="2_1jowr"]
+[ext_resource type="Script" uid="uid://bk3tot6c35bwu" path="res://Src/Utils/IconTexture2D.cs" id="3_1jowr"]
+[ext_resource type="Shader" uid="uid://bw4cstfk8udci" path="res://Assets/Shader/blur.gdshader" id="3_j4kqc"]
+[ext_resource type="FontFile" uid="uid://bmgx1vyg6bavd" path="res://Assets/Font/HarmonyOS_Sans_SC_Bold.ttf" id="4_k556s"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_glb6t"]
+bg_color = Color(0.6, 0.6, 0.6, 0)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+shadow_size = 2
+shadow_offset = Vector2(1, 1)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_xq365"]
+shader = ExtResource("3_j4kqc")
+shader_parameter/lod = 3.0
+shader_parameter/blend = 0.95
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_rwne7"]
+bg_color = Color(1, 1, 1, 1)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_1jowr"]
+bg_color = Color(0.117647, 0.117647, 0.117647, 0.784314)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+
+[sub_resource type="Texture2D" id="Texture2D_k556s"]
+resource_local_to_scene = false
+resource_name = ""
+script = ExtResource("3_1jowr")
+IconName = "chevron-up"
+FontSize = 18
+metadata/_custom_type_script = "uid://bk3tot6c35bwu"
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_j4kqc"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_k556s"]
+bg_color = Color(0.882353, 0.882353, 0.882353, 0.117647)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_xq365"]
+bg_color = Color(0.862745, 0.862745, 0.862745, 0.0588235)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_xq365"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_k556s"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_gi4mh"]
+bg_color = Color(0.25098, 0.25098, 0.25098, 0.784314)
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_j4kqc"]
+bg_color = Color(0.25098, 0.435294, 0, 0.784314)
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
 
 [node name="HomePage" type="Control" node_paths=PackedStringArray("Main")]
 layout_mode = 3
@@ -30,3 +93,117 @@ offset_right = 48.0
 offset_bottom = 29.0
 text = "主页"
 label_settings = ExtResource("2_1jowr")
+
+[node name="MarginContainer" type="MarginContainer" parent="Control"]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -100.0
+offset_top = -32.0
+grow_horizontal = 0
+grow_vertical = 0
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="PanelContainer2" type="PanelContainer" parent="Control/MarginContainer"]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_glb6t")
+
+[node name="PanelContainer" type="PanelContainer" parent="Control/MarginContainer"]
+material = SubResource("ShaderMaterial_xq365")
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_rwne7")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Control/MarginContainer/PanelContainer"]
+layout_mode = 2
+theme_override_constants/separation = 0
+
+[node name="PanelContainer" type="PanelContainer" parent="Control/MarginContainer/PanelContainer/VBoxContainer"]
+custom_minimum_size = Vector2(280, 40)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_1jowr")
+
+[node name="MarginContainer" type="MarginContainer" parent="Control/MarginContainer/PanelContainer/VBoxContainer/PanelContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 10
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Control/MarginContainer/PanelContainer/VBoxContainer/PanelContainer/MarginContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Control/MarginContainer/PanelContainer/VBoxContainer/PanelContainer/MarginContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 1
+size_flags_stretch_ratio = 2.0
+theme_override_fonts/font = ExtResource("4_k556s")
+theme_override_font_sizes/font_size = 14
+text = "整合包"
+horizontal_alignment = 1
+vertical_alignment = 1
+clip_text = true
+text_overrun_behavior = 3
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Control/MarginContainer/PanelContainer/VBoxContainer/PanelContainer/MarginContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+theme_override_constants/separation = 0
+
+[node name="Label" type="Label" parent="Control/MarginContainer/PanelContainer/VBoxContainer/PanelContainer/MarginContainer/HBoxContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 6
+theme_override_colors/font_color = Color(0.607843, 0.607843, 0.607843, 1)
+theme_override_font_sizes/font_size = 12
+text = "版本名"
+horizontal_alignment = 1
+vertical_alignment = 1
+clip_text = true
+text_overrun_behavior = 3
+
+[node name="Label2" type="Label" parent="Control/MarginContainer/PanelContainer/VBoxContainer/PanelContainer/MarginContainer/HBoxContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 6
+theme_override_colors/font_color = Color(0.60933, 0.60933, 0.60933, 1)
+theme_override_font_sizes/font_size = 12
+text = "版本号"
+horizontal_alignment = 1
+vertical_alignment = 1
+clip_text = true
+text_overrun_behavior = 3
+
+[node name="TextureRect" type="TextureRect" parent="Control/MarginContainer/PanelContainer/VBoxContainer/PanelContainer/MarginContainer/HBoxContainer"]
+modulate = Color(0.60933, 0.60933, 0.60933, 1)
+custom_minimum_size = Vector2(24, 0)
+layout_mode = 2
+texture = SubResource("Texture2D_k556s")
+stretch_mode = 3
+
+[node name="Button" type="Button" parent="Control/MarginContainer/PanelContainer/VBoxContainer/PanelContainer"]
+layout_mode = 2
+theme_override_styles/focus = SubResource("StyleBoxEmpty_j4kqc")
+theme_override_styles/hover = SubResource("StyleBoxFlat_k556s")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_xq365")
+theme_override_styles/normal = SubResource("StyleBoxEmpty_xq365")
+
+[node name="Button" type="Button" parent="Control/MarginContainer/PanelContainer/VBoxContainer"]
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 2
+mouse_default_cursor_shape = 2
+theme_override_colors/font_hover_color = Color(0.882353, 0.882353, 0.882353, 1)
+theme_override_colors/font_color = Color(0.882353, 0.882353, 0.882353, 0.882353)
+theme_override_colors/font_focus_color = Color(0.882353, 0.882353, 0.882353, 0.882353)
+theme_override_colors/font_pressed_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/font_size = 24
+theme_override_styles/focus = SubResource("StyleBoxEmpty_k556s")
+theme_override_styles/disabled = SubResource("StyleBoxFlat_gi4mh")
+theme_override_styles/hover = SubResource("StyleBoxFlat_j4kqc")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_j4kqc")
+theme_override_styles/normal = SubResource("StyleBoxFlat_j4kqc")
+disabled = true
+text = "开始游戏"
+icon_alignment = 2

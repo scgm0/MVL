@@ -1,8 +1,14 @@
-[gd_scene load_steps=14 format=3 uid="uid://bu4hwijkbc8sm"]
+[gd_scene load_steps=16 format=3 uid="uid://bu4hwijkbc8sm"]
 
 [ext_resource type="Script" uid="uid://cbiguj28po1y0" path="res://Src/UI/Window/BaseWindow.cs" id="1_r1ufi"]
 [ext_resource type="Script" uid="uid://dbies7u5fo4sh" path="res://Src/UI/NativeWindowUtility.cs" id="2_1nfmj"]
+[ext_resource type="Shader" uid="uid://bw4cstfk8udci" path="res://Assets/Shader/blur.gdshader" id="2_wrq3t"]
 [ext_resource type="FontFile" uid="uid://bmgx1vyg6bavd" path="res://Assets/Font/HarmonyOS_Sans_SC_Bold.ttf" id="3_1nfmj"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_v4xgt"]
+shader = ExtResource("2_wrq3t")
+shader_parameter/lod = 1.0
+shader_parameter/blend = 0.5
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_rnayx"]
 content_margin_left = 20.0
@@ -10,11 +16,16 @@ content_margin_top = 20.0
 content_margin_right = 20.0
 content_margin_bottom = 20.0
 bg_color = Color(0.137255, 0.137255, 0.137255, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.588235, 0.588235, 0.588235, 0.490196)
 corner_radius_top_left = 10
 corner_radius_top_right = 10
 corner_radius_bottom_right = 10
 corner_radius_bottom_left = 10
-shadow_size = 8
+shadow_size = 2
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_b82ki"]
 content_margin_left = 10.0
@@ -154,13 +165,26 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-color = Color(0, 0, 0, 0.6)
+color = Color(1, 1, 1, 0)
 script = ExtResource("1_r1ufi")
 _container = NodePath("PanelContainer")
 _animationPlayer = NodePath("AnimationPlayer")
 TitleLabel = NodePath("PanelContainer/VBoxContainer/Label")
 CancelButton = NodePath("PanelContainer/VBoxContainer/HBoxContainer3/Button")
 OkButton = NodePath("PanelContainer/VBoxContainer/HBoxContainer3/Button2")
+
+[node name="BackBufferCopy" type="BackBufferCopy" parent="."]
+copy_mode = 2
+
+[node name="ColorRect" type="ColorRect" parent="."]
+material = SubResource("ShaderMaterial_v4xgt")
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 1)
 
 [node name="NativeWindowUtility" type="Control" parent="."]
 layout_mode = 1

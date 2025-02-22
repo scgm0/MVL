@@ -1,42 +1,77 @@
-[gd_scene load_steps=18 format=3 uid="uid://d0bdto738ug2l"]
+[gd_scene load_steps=28 format=3 uid="uid://d0bdto738ug2l"]
 
 [ext_resource type="Script" uid="uid://74nlqylbyexa" path="res://Src/UI/Page/InfoPage.cs" id="1_fwjxq"]
 [ext_resource type="PackedScene" uid="uid://bxgudtdder0na" path="res://Src/UI/Item/info_item.tscn" id="2_gvx1g"]
 [ext_resource type="ButtonGroup" uid="uid://28dadh3ohukd" path="res://Assets/Gui/info_tab_button_group.tres" id="3_cnlqv"]
 [ext_resource type="Texture2D" uid="uid://bqv5hbr6w0cu" path="res://Assets/Icon/icon.png" id="4_2do0o"]
 [ext_resource type="FontFile" uid="uid://bmgx1vyg6bavd" path="res://Assets/Font/HarmonyOS_Sans_SC_Bold.ttf" id="5_pb4g6"]
+[ext_resource type="Shader" uid="uid://bw4cstfk8udci" path="res://Assets/Shader/blur.gdshader" id="6_cnlqv"]
 [ext_resource type="Script" uid="uid://cre6m68jy0aad" path="res://addons/SmoothScroll/SmoothScrollContainer.gd" id="6_oec7v"]
 [ext_resource type="Script" uid="uid://41yydm3vncfj" path="res://addons/SmoothScroll/scroll_damper/expo_scroll_damper.gd" id="7_twkd0"]
+[ext_resource type="Material" uid="uid://c0sb2bjy16ljf" path="res://Assets/Material/button_blur.tres" id="8_gvx1g"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_2do0o"]
+shader = ExtResource("6_cnlqv")
+shader_parameter/lod = 5.0
+shader_parameter/blend = 0.85
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_7nt4r"]
+content_margin_left = 1.0
+content_margin_top = 1.0
+content_margin_right = 1.0
+content_margin_bottom = 1.0
+bg_color = Color(0, 0, 0, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(1, 1, 1, 0.784314)
 corner_radius_top_left = 10
 corner_radius_top_right = 10
 corner_radius_bottom_right = 10
 corner_radius_bottom_left = 10
 
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_53u4p"]
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_cnlqv"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_pb4g6"]
+bg_color = Color(0.6, 0.6, 0.6, 0.6)
+corner_radius_top_left = 10
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_cnlqv"]
+bg_color = Color(0.137255, 0.137255, 0.137255, 0.6)
+border_width_bottom = 1
+corner_radius_top_left = 10
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_2do0o"]
+bg_color = Color(0, 0, 0, 0.6)
+corner_radius_top_left = 10
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_2do0o"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_0fd5h"]
 bg_color = Color(0.6, 0.6, 0.6, 0.6)
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_pbvk2"]
-content_margin_top = 10.0
-content_margin_bottom = 10.0
-bg_color = Color(0.137255, 0.137255, 0.137255, 0.6)
-
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_f5d0o"]
-content_margin_top = 10.0
-content_margin_bottom = 10.0
-bg_color = Color(0, 0, 0, 0.6)
+bg_color = Color(0.137255, 0.137255, 0.137255, 0.6)
 border_width_bottom = 1
 
-[sub_resource type="Theme" id="Theme_0fd5h"]
-Button/font_sizes/font_size = 20
-Button/fonts/font = ExtResource("5_pb4g6")
-Button/styles/focus = SubResource("StyleBoxEmpty_53u4p")
-Button/styles/hover = SubResource("StyleBoxFlat_0fd5h")
-Button/styles/normal = SubResource("StyleBoxFlat_pbvk2")
-Button/styles/pressed = SubResource("StyleBoxFlat_f5d0o")
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_pbvk2"]
+bg_color = Color(0, 0, 0, 0.6)
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_pb4g6"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_oec7v"]
+bg_color = Color(0.6, 0.6, 0.6, 0.6)
+corner_radius_top_right = 10
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_twkd0"]
+bg_color = Color(0.137255, 0.137255, 0.137255, 0.6)
+border_width_bottom = 1
+corner_radius_top_right = 10
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_8py1v"]
+bg_color = Color(0, 0, 0, 0.6)
+corner_radius_top_right = 10
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_b7o7j"]
 content_margin_left = 20.0
@@ -44,6 +79,8 @@ content_margin_top = 20.0
 content_margin_right = 20.0
 content_margin_bottom = 20.0
 bg_color = Color(0.137255, 0.137255, 0.137255, 0.6)
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
 
 [sub_resource type="Resource" id="Resource_365jr"]
 script = ExtResource("7_twkd0")
@@ -62,7 +99,12 @@ content_margin_left = 10.0
 content_margin_top = 10.0
 content_margin_right = 10.0
 content_margin_bottom = 10.0
-bg_color = Color(0.136826, 0.136826, 0.136826, 0.784314)
+bg_color = Color(0.137255, 0.137255, 0.137255, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.588235, 0.588235, 0.588235, 0.588235)
 corner_radius_top_left = 10
 corner_radius_top_right = 10
 corner_radius_bottom_right = 10
@@ -146,29 +188,28 @@ theme_override_constants/outline_size = 4
 text = "Copyright (c) 2025 神麤詭末"
 
 [node name="PanelContainer" type="PanelContainer" parent="MarginContainer/VBoxContainer"]
-clip_children = 1
+material = SubResource("ShaderMaterial_2do0o")
 layout_mode = 2
 size_flags_vertical = 3
 mouse_filter = 1
 theme_override_styles/panel = SubResource("StyleBoxFlat_7nt4r")
-
-[node name="ColorRect" type="ColorRect" parent="MarginContainer/VBoxContainer/PanelContainer"]
-layout_mode = 2
-mouse_filter = 1
-color = Color(0.137255, 0.137255, 0.137255, 0.6)
 
 [node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/PanelContainer"]
 layout_mode = 2
 theme_override_constants/separation = 1
 
 [node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/PanelContainer/VBoxContainer"]
+custom_minimum_size = Vector2(0, 44)
 layout_mode = 2
-theme = SubResource("Theme_0fd5h")
 theme_override_constants/separation = 1
 
 [node name="Button" type="Button" parent="MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
+theme_override_styles/focus = SubResource("StyleBoxEmpty_cnlqv")
+theme_override_styles/hover = SubResource("StyleBoxFlat_pb4g6")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_cnlqv")
+theme_override_styles/normal = SubResource("StyleBoxFlat_2do0o")
 toggle_mode = true
 button_pressed = true
 button_group = ExtResource("3_cnlqv")
@@ -177,6 +218,10 @@ text = "贡献者"
 [node name="Button2" type="Button" parent="MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
+theme_override_styles/focus = SubResource("StyleBoxEmpty_2do0o")
+theme_override_styles/hover = SubResource("StyleBoxFlat_0fd5h")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_f5d0o")
+theme_override_styles/normal = SubResource("StyleBoxFlat_pbvk2")
 toggle_mode = true
 button_group = ExtResource("3_cnlqv")
 text = "赞助者"
@@ -184,6 +229,10 @@ text = "赞助者"
 [node name="Button3" type="Button" parent="MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
+theme_override_styles/focus = SubResource("StyleBoxEmpty_pb4g6")
+theme_override_styles/hover = SubResource("StyleBoxFlat_oec7v")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_twkd0")
+theme_override_styles/normal = SubResource("StyleBoxFlat_8py1v")
 toggle_mode = true
 button_group = ExtResource("3_cnlqv")
 text = "许可证"
@@ -212,6 +261,7 @@ size_flags_vertical = 0
 theme_override_constants/separation = 20
 
 [node name="PanelContainer2" type="PanelContainer" parent="MarginContainer/VBoxContainer"]
+material = ExtResource("8_gvx1g")
 layout_mode = 2
 mouse_filter = 1
 theme_override_styles/panel = SubResource("StyleBoxFlat_fwjxq")
@@ -232,7 +282,7 @@ text = "如果启动器对您有所帮助且您财力有余，可以赞助一下
 [node name="LinkButton" type="LinkButton" parent="MarginContainer/VBoxContainer/PanelContainer2/VBoxContainer/HBoxContainer"]
 layout_mode = 2
 size_flags_vertical = 4
-theme_override_colors/font_color = Color(0.754947, 0.837007, 1, 1)
+theme_override_colors/font_color = Color(0.233995, 0.49696, 0.884013, 1)
 text = "https://afdian.com/a/MystiVaid"
 uri = "https://afdian.com/a/MystiVaid"
 
@@ -248,7 +298,7 @@ text = "不喜欢MVL？那么您还可以试试另一款复古物语启动器频
 [node name="LinkButton" type="LinkButton" parent="MarginContainer/VBoxContainer/PanelContainer2/VBoxContainer/HBoxContainer2"]
 layout_mode = 2
 size_flags_vertical = 4
-theme_override_colors/font_color = Color(0.754947, 0.837007, 1, 1)
+theme_override_colors/font_color = Color(0.233995, 0.49696, 0.884013, 1)
 theme_override_fonts/font = ExtResource("5_pb4g6")
 text = "VS Launcher"
 uri = "https://vsldocs.xurxomf.xyz/"

@@ -111,7 +111,16 @@ _downloadListContainer = NodePath("PanelContainer/VBoxContainer/MarginContainer/
 _loadingControl = NodePath("PanelContainer/VBoxContainer/MarginContainer/ColorRect")
 _progressBar = NodePath("PanelContainer/VBoxContainer/MarginContainer/ProgressBar")
 
-[node name="PanelContainer" parent="." index="1"]
+[node name="FileDialog" type="FileDialog" parent="." index="3"]
+auto_translate_mode = 1
+title = "Open a Directory"
+ok_button_text = "Select Current Folder"
+file_mode = 2
+access = 2
+show_hidden_files = true
+use_native_dialog = true
+
+[node name="PanelContainer" parent="." index="4"]
 custom_minimum_size = Vector2(482, 500)
 offset_left = -241.0
 offset_top = -86.5
@@ -226,12 +235,3 @@ vertical_alignment = 1
 
 [node name="Button2" parent="PanelContainer/VBoxContainer/HBoxContainer3" index="1"]
 disabled = true
-
-[node name="FileDialog" type="FileDialog" parent="." index="3"]
-auto_translate_mode = 1
-title = "Open a Directory"
-ok_button_text = "Select Current Folder"
-file_mode = 2
-access = 2
-show_hidden_files = true
-use_native_dialog = true

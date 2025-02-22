@@ -1,4 +1,4 @@
-<Project Sdk="Godot.NET.Sdk/4.4.0-beta">
+<Project Sdk="Godot.NET.Sdk/4.4.0-rc">
     <PropertyGroup>
         <TargetFramework>net9.0</TargetFramework>
         <Nullable>enable</Nullable>
@@ -8,68 +8,63 @@
         <LangVersion>preview</LangVersion>
     </PropertyGroup>
 
-    <Import Project="PublishAotCross.targets"/>
+    <Import Project="PublishAotCross.targets" />
 
     <ItemGroup>
-        <TrimmerRootAssembly Include="GodotSharp"/>
-        <TrimmerRootAssembly Include="$(TargetName)"/>
+        <TrimmerRootAssembly Include="GodotSharp" />
+        <TrimmerRootAssembly Include="$(TargetName)" />
     </ItemGroup>
 
     <ItemGroup>
         <PackageReference Include="Downloader" Version="3.3.3" />
         <PackageReference Include="Flurl.Http" Version="4.0.2" />
-        <PackageReference Include="Mono.Cecil" Version="0.11.6"/>
-        <PackageReference Include="PublishAotCompressed" Version="1.0.3"/>
+        <PackageReference Include="Mono.Cecil" Version="0.11.6" />
+        <PackageReference Include="PublishAotCompressed" Version="1.0.3" />
     </ItemGroup>
 
     <ItemGroup>
         <Compile Include="../SharedLibrary/*.cs">
             <Link>Src/SharedLibrary/*.cs</Link>
         </Compile>
-        <Compile Remove="Generated\IconTexture2D.Icons.g.cs"/>
+        <Compile Remove="Generated\IconTexture2D.Icons.g.cs" />
     </ItemGroup>
 
     <ItemGroup>
-        <Content Include="**\*.gd"/>
-        <Content Include="**\*.uid" DependentUpon="%(Filename)"/>
-        <Content Include="**\*.json" DependentUpon="%(Filename).cs"/>
-        <Content Include="**\*.txt" DependentUpon="%(Filename).cs"/>
-        <Compile Update="**\*.*.cs" DependentUpon="$([System.IO.Path]::GetFileNameWithoutExtension('%(Filename)')).cs"/>
-        <Content Remove=".godot\**"/>
+        <Content Include="**\*.gd" />
+        <Content Include="**\*.uid" DependentUpon="%(Filename)" />
+        <Content Include="**\*.json" DependentUpon="%(Filename).cs" />
+        <Content Include="**\*.txt" DependentUpon="%(Filename).cs" />
+        <Compile Update="**\*.*.cs" DependentUpon="$([System.IO.Path]::GetFileNameWithoutExtension('%(Filename)')).cs" />
+        <Content Remove=".godot\**" />
     </ItemGroup>
 
     <ItemGroup>
-        <AdditionalFiles Include="Assets/Icon/MD/icons.json"/>
-        <AdditionalFiles Include="../AUTHORS.md"/>
-        <AdditionalFiles Include="../DONORS.md"/>
-        <AdditionalFiles Include="../LICENSE"/>
-        <AdditionalFiles Include="License/**/LICENSE.txt"/>
+        <AdditionalFiles Include="Assets/Icon/MD/icons.json" />
+        <AdditionalFiles Include="../AUTHORS.md" />
+        <AdditionalFiles Include="../DONORS.md" />
+        <AdditionalFiles Include="../LICENSE" />
+        <AdditionalFiles Include="License/**/LICENSE.txt" />
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\MVLGenerator\MVLGenerator.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false"/>
+        <ProjectReference Include="..\MVLGenerator\MVLGenerator.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
     </ItemGroup>
 
     <Target Name="PreBuild" BeforeTargets="Build">
         <ItemGroup>
-            <FilesToDelete Include="Misc/VSRun/*"/>
+            <FilesToDelete Include="Misc/VSRun/*" />
         </ItemGroup>
-        <Delete Files="@(FilesToDelete)"/>
-        <Exec Command="dotnet build &quot;../VSRun/VSRun.csproj&quot; /p:Configuration=Release"/>
+        <Delete Files="@(FilesToDelete)" />
+        <Exec Command="dotnet build &quot;../VSRun/VSRun.csproj&quot; /p:Configuration=Release" />
         <ItemGroup>
-            <FilesToCopy Include="../VSRun/bin/Release/net7.0/*.dll"/>
-            <FilesToCopy Include="../VSRun/bin/Release/net7.0/*.json"/>
-            <FilesToCopy Include="../VSRun/bin/Release/net7.0/*.pdb"/>
+            <FilesToCopy Include="../VSRun/bin/Release/net7.0/*.dll" />
+            <FilesToCopy Include="../VSRun/bin/Release/net7.0/*.json" />
+            <FilesToCopy Include="../VSRun/bin/Release/net7.0/*.pdb" />
         </ItemGroup>
-        <Copy SourceFiles="@(FilesToCopy)" DestinationFolder="Misc/VSRun"/>
+        <Copy SourceFiles="@(FilesToCopy)" DestinationFolder="Misc/VSRun" />
     </Target>
 
-    <Target Name="Chmod"
-            AfterTargets="LinkNative"
-            BeforeTargets="UpxCompress"
-            Condition="$(RuntimeIdentifier.Contains('linux')) and $([MSBuild]::IsOSPlatform('Linux'))"
-            Inputs="$(NativeBinary)"
-            Outputs="$(NativeBinary).chmod">
-        <Exec Command="chmod +x &quot;$(NativeBinary)&quot;" IgnoreExitCode="false"/>
+    <Target Name="Chmod" AfterTargets="LinkNative" BeforeTargets="UpxCompress" Condition="$(RuntimeIdentifier.Contains('linux')) and $([MSBuild]::IsOSPlatform('Linux'))" Inputs="$(NativeBinary)" Outputs="$(NativeBinary).chmod">
+        <Exec Command="chmod +x &quot;$(NativeBinary)&quot;" IgnoreExitCode="false" />
     </Target>
 </Project>

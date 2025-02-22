@@ -97,7 +97,15 @@ _gameVersion = NodePath("PanelContainer/VBoxContainer/VBoxContainer3/HBoxContain
 _releasePath = NodePath("PanelContainer/VBoxContainer/VBoxContainer3/HBoxContainer2/OptionButton2")
 _tooltip = NodePath("PanelContainer/VBoxContainer/VBoxContainer2/Label")
 
-[node name="PanelContainer" parent="." index="1"]
+[node name="FileDialog" type="FileDialog" parent="." index="3"]
+title = "Open a Directory"
+ok_button_text = "Select Current Folder"
+file_mode = 2
+access = 2
+show_hidden_files = true
+use_native_dialog = true
+
+[node name="PanelContainer" parent="." index="4"]
 custom_minimum_size = Vector2(475, 250)
 
 [node name="VBoxContainer" parent="PanelContainer" index="0"]
@@ -190,11 +198,3 @@ size_flags_horizontal = 3
 alignment = 1
 text_overrun_behavior = 3
 clip_text = true
-
-[node name="FileDialog" type="FileDialog" parent="." index="3"]
-title = "Open a Directory"
-ok_button_text = "Select Current Folder"
-file_mode = 2
-access = 2
-show_hidden_files = true
-use_native_dialog = true

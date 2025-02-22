@@ -5,3 +5,4 @@
 [resource]
 shader = ExtResource("1_3qomd")
 shader_parameter/lod = 0.0
+shader_parameter/blend = 1.0

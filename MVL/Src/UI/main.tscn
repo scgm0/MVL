@@ -1,4 +1,4 @@
-[gd_scene load_steps=53 format=3 uid="uid://514oox50h8yl"]
+[gd_scene load_steps=52 format=3 uid="uid://514oox50h8yl"]
 
 [ext_resource type="Script" uid="uid://cvyeyg8ttnwmu" path="res://Src/UI/Main.cs" id="1_1opgh"]
 [ext_resource type="Texture2D" uid="uid://bhh1jvyj73qxh" path="res://Assets/Gui/Background.png" id="2_1opgh"]
@@ -6,7 +6,7 @@
 [ext_resource type="PackedScene" uid="uid://d21bm32gkwqcr" path="res://Src/UI/Window/installed_games_import.tscn" id="3_a5da0"]
 [ext_resource type="ButtonGroup" uid="uid://c644g3bgevb7h" path="res://Assets/Gui/menu_button_group.tres" id="4_megpf"]
 [ext_resource type="Material" uid="uid://d2rejrdmwjskm" path="res://Assets/Material/round.tres" id="4_o4ctv"]
-[ext_resource type="Shader" uid="uid://bw4cstfk8udci" path="res://Assets/Shader/blur.gdshader" id="4_v5ddw"]
+[ext_resource type="Material" uid="uid://c0sb2bjy16ljf" path="res://Assets/Material/button_blur.tres" id="6_oarc7"]
 [ext_resource type="Theme" uid="uid://bwauanadesdm6" path="res://Assets/Theme/menu_panel.tres" id="7_7nt4r"]
 [ext_resource type="Script" uid="uid://cfa6u8q8grk6o" path="res://Src/UI/MenuPanel.cs" id="7_365jr"]
 [ext_resource type="Script" uid="uid://dvjtigpqee0jw" path="res://Src/UI/Item/MenuItem.cs" id="7_bl4fu"]
@@ -53,16 +53,12 @@ corner_radius_bottom_left = 5
 PopupMenu/styles/hover = SubResource("StyleBoxFlat_7eosv")
 PopupMenu/styles/panel = SubResource("StyleBoxFlat_8ilox")
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_hq21a"]
-shader = ExtResource("4_v5ddw")
-shader_parameter/lod = 5.0
-
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_p7a31"]
 content_margin_left = 10.0
 content_margin_top = 10.0
 content_margin_right = 10.0
 content_margin_bottom = 10.0
-bg_color = Color(0, 0, 0, 0.6)
+bg_color = Color(0, 0, 0, 1)
 anti_aliasing = false
 
 [sub_resource type="Texture2D" id="Texture2D_o4ctv"]
@@ -294,7 +290,7 @@ grow_vertical = 2
 theme_override_constants/separation = 0
 
 [node name="MenuPanel" type="PanelContainer" parent="HBoxContainer" node_paths=PackedStringArray("_menuButton", "_pageContainer", "_animationPlayer")]
-material = SubResource("ShaderMaterial_hq21a")
+material = ExtResource("6_oarc7")
 layout_mode = 2
 theme = ExtResource("7_7nt4r")
 theme_override_styles/panel = SubResource("StyleBoxFlat_p7a31")

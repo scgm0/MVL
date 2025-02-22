@@ -1,5 +1,6 @@
-[gd_scene load_steps=9 format=3 uid="uid://bjgov53faujry"]
+[gd_scene load_steps=10 format=3 uid="uid://bjgov53faujry"]
 
+[ext_resource type="Material" uid="uid://c0sb2bjy16ljf" path="res://Assets/Material/button_blur.tres" id="1_iu184"]
 [ext_resource type="Texture2D" uid="uid://d3mq4tlr6rr01" path="res://Assets/Icon/VS/gameicon.png" id="1_pwx7m"]
 [ext_resource type="Script" uid="uid://d3pr8a1ki4qjs" path="res://Src/UI/Item/ReleaseItem.cs" id="1_wntvq"]
 [ext_resource type="FontFile" uid="uid://bmgx1vyg6bavd" path="res://Assets/Font/HarmonyOS_Sans_SC_Bold.ttf" id="2_wntvq"]
@@ -9,7 +10,7 @@ content_margin_left = 10.0
 content_margin_top = 10.0
 content_margin_right = 10.0
 content_margin_bottom = 10.0
-bg_color = Color(0, 0, 0, 0.6)
+bg_color = Color(0, 0, 0, 1)
 border_width_left = 2
 border_width_top = 2
 border_width_right = 2
@@ -58,6 +59,7 @@ expand_margin_bottom = 8.0
 
 [node name="ReleaseItem" type="PanelContainer" node_paths=PackedStringArray("_icon", "_name", "_version", "_label", "_button")]
 auto_translate_mode = 2
+material = ExtResource("1_iu184")
 tooltip_text = "路径"
 theme_override_styles/panel = SubResource("StyleBoxFlat_g8snm")
 script = ExtResource("1_wntvq")

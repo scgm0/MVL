@@ -1,15 +1,16 @@
-[gd_scene load_steps=14 format=3 uid="uid://colclcegjal1y"]
+[gd_scene load_steps=15 format=3 uid="uid://colclcegjal1y"]
 
 [ext_resource type="Script" uid="uid://crsx3xkxjftam" path="res://Src/UI/Page/ModpackPage.cs" id="1_pvk1a"]
 [ext_resource type="PackedScene" uid="uid://d3yuqxh7olknc" path="res://Src/UI/Item/modpack_item.tscn" id="2_4t3ch"]
 [ext_resource type="PackedScene" uid="uid://ccfq2fesgeykj" path="res://Src/UI/Window/add_modpack_window.tscn" id="3_j43t8"]
 [ext_resource type="Script" uid="uid://bk3tot6c35bwu" path="res://Src/Utils/IconTexture2D.cs" id="4_2dlc0"]
+[ext_resource type="Material" uid="uid://c0sb2bjy16ljf" path="res://Assets/Material/button_blur.tres" id="4_4t3ch"]
 [ext_resource type="Script" uid="uid://cre6m68jy0aad" path="res://addons/SmoothScroll/SmoothScrollContainer.gd" id="5_5cs1n"]
 [ext_resource type="Script" uid="uid://41yydm3vncfj" path="res://addons/SmoothScroll/scroll_damper/expo_scroll_damper.gd" id="6_maqbw"]
 [ext_resource type="Script" uid="uid://dt2erdjo6w7pf" path="res://Src/UI/ReorderableContainer.cs" id="7_8fact"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_5lwjt"]
-bg_color = Color(0.20871, 0.20871, 0.20871, 0.6)
+bg_color = Color(0.207843, 0.207843, 0.207843, 1)
 border_width_left = 2
 border_width_top = 2
 border_width_right = 2
@@ -22,7 +23,7 @@ corner_radius_bottom_right = 8
 corner_radius_bottom_left = 8
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_6are0"]
-bg_color = Color(0, 0, 0, 0.686275)
+bg_color = Color(0.140447, 0.140447, 0.140447, 1)
 border_width_left = 2
 border_width_top = 2
 border_width_right = 2
@@ -35,7 +36,7 @@ corner_radius_bottom_right = 8
 corner_radius_bottom_left = 8
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_364to"]
-bg_color = Color(0, 0, 0, 0.6)
+bg_color = Color(0, 0, 0, 1)
 border_width_left = 2
 border_width_top = 2
 border_width_right = 2
@@ -100,6 +101,7 @@ theme_override_constants/margin_bottom = 12
 layout_mode = 2
 
 [node name="AddButton" type="Button" parent="MarginContainer/VBoxContainer"]
+material = ExtResource("4_4t3ch")
 custom_minimum_size = Vector2(0, 60)
 layout_mode = 2
 focus_mode = 0

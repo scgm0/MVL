@@ -1,0 +1,8 @@
+[gd_resource type="ShaderMaterial" load_steps=2 format=3 uid="uid://c0sb2bjy16ljf"]
+
+[ext_resource type="Shader" uid="uid://bw4cstfk8udci" path="res://Assets/Shader/blur.gdshader" id="1_w8xqn"]
+
+[resource]
+shader = ExtResource("1_w8xqn")
+shader_parameter/lod = 5.0
+shader_parameter/blend = 0.608
