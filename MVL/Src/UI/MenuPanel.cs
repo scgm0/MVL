@@ -29,7 +29,7 @@ public partial class MenuPanel : NativeWindowUtility {
 
 	private void PageContainerOnTabChanged(long tab) {
 		if (tab != 0) {
-			_blurShaderMaterial!.SetShaderParameter(StringNames.Lod, 2.4);
+			_blurShaderMaterial!.SetShaderParameter(StringNames.Lod, 1.8);
 		} else {
 			_blurShaderMaterial!.SetShaderParameter(StringNames.Lod, 0);
 		}

@@ -38,7 +38,7 @@ script = ExtResource("1_xxpfc")
 _installedGameItemScene = ExtResource("2_l32jt")
 _installedGameList = NodePath("PanelContainer/VBoxContainer/SmoothScrollContainer/MarginContainer/InstalledGameList")
 
-[node name="PanelContainer" parent="." index="1"]
+[node name="PanelContainer" parent="." index="3"]
 custom_minimum_size = Vector2(475, 323)
 
 [node name="Label" parent="PanelContainer/VBoxContainer" index="0"]

@@ -7,6 +7,7 @@ namespace MVL.Utils.Config;
 public class BaseConfig {
 	private string _configPath = string.Empty;
 
+	public string CurrentModpack { get; set; } = "";
 	public string ProxyUrl { get; set; } = "";
 	public List<string> Release { get; set; } = [];
 	public List<string> Modpack { get; set; } = [];
@@ -15,7 +16,8 @@ public class BaseConfig {
 		BaseConfig baseConfig;
 		try {
 			if (FileAccess.FileExists(configPath)) {
-				baseConfig = JsonSerializer.Deserialize(FileAccess.GetFileAsString(configPath), SourceGenerationContext.Default.BaseConfig) ?? new BaseConfig();
+				baseConfig = JsonSerializer.Deserialize(FileAccess.GetFileAsString(configPath),
+					SourceGenerationContext.Default.BaseConfig) ?? new BaseConfig();
 			} else {
 				baseConfig = new();
 			}

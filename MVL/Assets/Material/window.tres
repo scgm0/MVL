@@ -4,13 +4,13 @@
 
 [resource]
 shader = ExtResource("1_letc1")
-shader_parameter/window_size = Vector2(1162, 658)
-shader_parameter/edge_softness = 1.5
-shader_parameter/corner_radius = Vector4(12, 12, 12, 12)
-shader_parameter/border_thickness = 1.5
-shader_parameter/border_softness = 2.0
-shader_parameter/shadow_size = 5.0
-shader_parameter/shadow_offset = Vector2(0, 0)
-shader_parameter/color_bg = Color(0, 0, 0, 0)
-shader_parameter/color_border = Color(1, 1, 1, 0.3)
-shader_parameter/color_shadow = Color(0, 0, 0, 1)
+shader_parameter/radius = 10.0
+shader_parameter/windowSize = Vector2(1152, 648)
+shader_parameter/windowExpandedSize = Vector2(1162, 658)
+shader_parameter/hasRoundCorners = true
+shader_parameter/windowTopLeft = Vector2(5, 5)
+shader_parameter/outlineColor = Color(0.8, 0.8, 0.8, 0.45)
+shader_parameter/outlineThickness = 0.0
+shader_parameter/secondOutlineColor = Color(0.8, 0.8, 0.8, 0.45)
+shader_parameter/secondOutlineThickness = 1.0
+shader_parameter/shadowColor = Color(0, 0, 0, 1)

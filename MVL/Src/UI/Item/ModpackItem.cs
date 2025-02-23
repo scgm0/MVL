@@ -85,6 +85,7 @@ public partial class ModpackItem : PanelContainer {
 	private void VersionButtonOnPressed() {
 		var list = Main.ReleaseInfos.Values.OrderByDescending(info => info.Version, GameVersion.Comparer);
 		var versionSelect = _listGameScene!.Instantiate<InstalledGamesImport>();
+		versionSelect.Visible = false;
 		versionSelect.SingleSelect = true;
 		versionSelect.Import += paths => {
 			if (paths.Length == 0) {

@@ -52,7 +52,7 @@ public partial class Main : NativeWindowUtility {
 			_marginContainer?.AddThemeConstantOverride(StringNames.MarginRight, value);
 			_marginContainer?.AddThemeConstantOverride(StringNames.MarginTop, value);
 			_marginContainer?.AddThemeConstantOverride(StringNames.MarginBottom, value);
-			_roundMaterial?.SetShaderParameter(StringNames.ShadowSize, value);
+			_roundMaterial?.SetShaderParameter(StringNames.WindowTopLeft, new Vector2(value, value));
 		}
 	} = 5;
 
@@ -81,7 +81,7 @@ public partial class Main : NativeWindowUtility {
 		var shadowColor = Colors.Black;
 		var shadowCallable = Callable.From((Color color) => {
 			shadowColor = color;
-			_roundMaterial!.SetShaderParameter(StringNames.ColorShadow, color);
+			_roundMaterial!.SetShaderParameter(StringNames.ShadowColor, color);
 		});
 		SceneTree.Root.FocusEntered += () => {
 			shadowTween?.Stop();
@@ -121,13 +121,13 @@ public partial class Main : NativeWindowUtility {
 	}
 
 	private void RootOnSizeChanged() {
-		_roundMaterial!.SetShaderParameter(StringNames.WindowSize, SceneTree.Root.Size);
+		_roundMaterial!.SetShaderParameter(StringNames.WindowExpandedSize, SceneTree.Root.Size);
 		if (ShadowSize != 5 || SceneTree.Root.Mode != Godot.Window.ModeEnum.Maximized) {
 			ShadowSize = 5;
-			_roundMaterial!.SetShaderParameter(StringNames.CornerRadius, new Vector4(12, 12, 12, 12));
+			_roundMaterial!.SetShaderParameter(StringNames.HasRoundCorners, true);
 		} else {
 			ShadowSize = 0;
-			_roundMaterial!.SetShaderParameter(StringNames.CornerRadius, Vector4.Zero);
+			_roundMaterial!.SetShaderParameter(StringNames.HasRoundCorners, false);
 		}
 	}
 

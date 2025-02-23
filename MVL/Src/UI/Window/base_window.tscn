@@ -20,12 +20,12 @@ border_width_left = 1
 border_width_top = 1
 border_width_right = 1
 border_width_bottom = 1
-border_color = Color(0.588235, 0.588235, 0.588235, 0.490196)
+border_color = Color(0.392157, 0.392157, 0.392157, 0.529412)
 corner_radius_top_left = 10
 corner_radius_top_right = 10
 corner_radius_bottom_right = 10
 corner_radius_bottom_left = 10
-shadow_size = 2
+shadow_size = 3
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_b82ki"]
 content_margin_left = 10.0
