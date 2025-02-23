@@ -5,10 +5,9 @@
 [resource]
 shader = ExtResource("1_letc1")
 shader_parameter/radius = 10.0
-shader_parameter/windowSize = Vector2(1152, 648)
+shader_parameter/windowTopLeft = Vector2(5, 5)
 shader_parameter/windowExpandedSize = Vector2(1162, 658)
 shader_parameter/hasRoundCorners = true
-shader_parameter/windowTopLeft = Vector2(5, 5)
 shader_parameter/outlineColor = Color(0.8, 0.8, 0.8, 0.45)
 shader_parameter/outlineThickness = 0.0
 shader_parameter/secondOutlineColor = Color(0.8, 0.8, 0.8, 0.45)

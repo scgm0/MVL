@@ -7,6 +7,7 @@ using System.IO.Compression;
 using System.Linq;
 using System.Net;
 using System.Text.Json;
+using System.Threading;
 using System.Threading.Tasks;
 using Downloader;
 using Flurl.Http;
@@ -63,6 +64,7 @@ public partial class GameDownloadWindow : BaseWindow {
 
 	private IDownload? _download;
 	private DirAccess _downloadTmp = DirAccess.CreateTemp("MVL_Download");
+	private CancellationTokenSource? _cancellation;
 
 	public override void _Ready() {
 		base._Ready();
@@ -147,6 +149,12 @@ public partial class GameDownloadWindow : BaseWindow {
 		_download?.Pause();
 		await Hide();
 		EmitSignalCancel();
+		if (_cancellation != null) {
+			await _cancellation.CancelAsync();
+			_cancellation.Dispose();
+			_cancellation = null;
+		}
+
 		_download?.Stop();
 	}
 
@@ -238,12 +246,25 @@ public partial class GameDownloadWindow : BaseWindow {
 
 		_loadingControl!.Show();
 		_contentContainer!.Hide();
+		_cancellation = new();
 
-		await Task.Run(async () => {
-			var text = await releaseUrl.GetStringAsync();
-			_releases = JsonSerializer.Deserialize(text, SourceGenerationContext.Default.DictionaryGameVersionGameRelease);
+		await Task.Run(async () => { await GetReleases(releaseUrl); }, _cancellation.Token);
 
-			if (_releases is not null) {
+		if (_cancellation is null || _cancellation.IsCancellationRequested) {
+			return;
+		}
+
+		_loadingControl.Hide();
+		_contentContainer.Show();
+	}
+
+	private async Task GetReleases(string releaseUrl) {
+		try {
+			var text = await releaseUrl.GetStringAsync(cancellationToken: _cancellation!.Token);
+			_releases = JsonSerializer.Deserialize(text,
+				SourceGenerationContext.Default.DictionaryGameVersionGameRelease);
+
+			if (_cancellation is not null && !_cancellation.IsCancellationRequested && _releases is not null) {
 				var i = 1;
 				foreach (var group in _releases.GroupBy(r => r.Key.OverallVersion)) {
 					var container = _foldableContainerScene!.Instantiate<FoldableContainer>();
@@ -271,10 +292,9 @@ public partial class GameDownloadWindow : BaseWindow {
 					_downloadListContainer!.CallDeferred(Node.MethodName.AddChild, container);
 				}
 			}
-		});
-
-		_loadingControl.Hide();
-		_contentContainer.Show();
+		} catch (FlurlHttpException e) {
+			GD.Print(e.Message);
+		}
 	}
 
 	static private (double speed, string unit) FormatSpeed(double bytesPerSecond) {
