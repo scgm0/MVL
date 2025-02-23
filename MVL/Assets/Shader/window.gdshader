@@ -7,7 +7,7 @@ uniform bool hasRoundCorners = true;
 
 uniform vec4 outlineColor: source_color = vec4(0.8, 0.8, 0.8, 0.45);
 uniform float outlineThickness;
-uniform vec4 secondOutlineColor: source_color = vec4(0.8, 0.8, 0.8, 0.45);
+uniform vec4 secondOutlineColor: source_color = vec4(1, 1, 1, 0.5);
 uniform float secondOutlineThickness = 1.0;
 uniform vec4 shadowColor: source_color = vec4(0.0, 0.0, 0.0, 1.0);
 
@@ -36,17 +36,19 @@ float roundedBoxSDF(vec2 p, vec2 b, float r) {
 	return length(max(q, 0.0)) + min(max(q.x, q.y), 0.0) - r;
 }
 
-vec4 getShadow(sampler2D sampler){
-	vec4 tex = texture(sampler, uv2);
+vec4 getShadow() {
 	float distance = roundedBoxSDF(fragCoord - rectCenter, halfSize, hasRoundCorners ? radius : 0.0);
+	float shadowAlpha = 1.0 - smoothstep(-windowTopLeft.x * 0.5, windowTopLeft.x, distance);
+	return mix(vec4(0), shadowColor, shadowAlpha);
+}
 
-	float smoothedAlpha = 1.0 - smoothstep(0.0, 1.0, distance);
-	float shadowAlpha = 1.0 - smoothstep(-windowTopLeft.x, windowTopLeft.x, distance);
-	vec4 res_shadow_color = mix(vec4(0), shadowColor, shadowAlpha);
+vec4 getBase(sampler2D sampler) {
+	vec4 tex = texture(sampler, uv2);
+	float distance = roundedBoxSDF(fragCoord - rectCenter, halfSize, 0.0);
 	return mix(
-		res_shadow_color,
+		vec4(0),
 		tex,
-		min(tex.a, smoothedAlpha)
+		min(tex.a, 1.0 - distance)
 	);
 }
 
@@ -93,11 +95,7 @@ vec4 shapeCorner(vec2 coord0, vec4 tex, vec2 start, float angle, vec4 coord_shad
 	return mix(coord_shadowColor, tex, antialiasing);
 }
 
-vec4 run(vec4 tex, vec2 texcoord0, sampler2D sampler) {
-	if(tex.a == 0.0) {
-		return tex;
-	}
-
+vec4 run(vec4 tex, vec2 texcoord0, vec4 shadow) {
 	float r = hasRoundCorners? radius: outlineThickness;
 
 	vec2 coord0 = tex_to_pixel(texcoord0);
@@ -105,25 +103,25 @@ vec4 run(vec4 tex, vec2 texcoord0, sampler2D sampler) {
 
 	if (coord0.y < r) {
 		if (coord0.x < r) {
-			return shapeCorner(coord0, tex, vec2(0.0, 0.0), radians(45.0), tex);			// Section TL
+			return shapeCorner(coord0, tex, vec2(0.0, 0.0), radians(45.0), shadow);			// Section TL
 		} else if (coord0.x > windowSize.x - r) {
-			return shapeCorner(coord0, tex, vec2(windowSize.x, 0.0), radians(135.0), tex);   // Section TR
+			return shapeCorner(coord0, tex, vec2(windowSize.x, 0.0), radians(135.0), shadow);   // Section TR
 		} else if (coord0.y < outlineThickness) {
-			return shapeCorner(coord0, tex, vec2(coord0.x, 0.0), radians(90.0), tex);		// Section T
+			return shapeCorner(coord0, tex, vec2(coord0.x, 0.0), radians(90.0), shadow);		// Section T
 		}
 	} else if (coord0.y > windowSize.y - r) {
 		if (coord0.x < r) {
-			return shapeCorner(coord0, tex, vec2(0.0, windowSize.y), radians(315.0), tex);	   // Section BL
+			return shapeCorner(coord0, tex, vec2(0.0, windowSize.y), radians(315.0), shadow);	   // Section BL
 		} else if (coord0.x > windowSize.x - r) {
-			return shapeCorner(coord0, tex, vec2(windowSize.x, windowSize.y), radians(225.0), tex);// Section BR
+			return shapeCorner(coord0, tex, vec2(windowSize.x, windowSize.y), radians(225.0), shadow);// Section BR
 		} else if (coord0.y > windowSize.y - outlineThickness) {
-			return shapeCorner(coord0, tex, vec2(coord0.x, windowSize.y), radians(270.0), tex);	// Section B
+			return shapeCorner(coord0, tex, vec2(coord0.x, windowSize.y), radians(270.0), shadow);	// Section B
 		}
 	} else {
 		if (coord0.x < r) {
-			return shapeCorner(coord0, tex, vec2(0.0, coord0.y), radians(0.0), tex);			 // Section L
+			return shapeCorner(coord0, tex, vec2(0.0, coord0.y), radians(0.0), shadow);			 // Section L
 		} else if (coord0.x > windowSize.x - r) {
-			return shapeCorner(coord0, tex, vec2(windowSize.x, coord0.y), radians(180.0), tex);  // Section R
+			return shapeCorner(coord0, tex, vec2(windowSize.x, coord0.y), radians(180.0), shadow);  // Section R
 		}
 	}
 	return tex;
@@ -139,6 +137,7 @@ void vertex() {
 }
 
 void fragment() {
-	vec4 tex = getShadow(TEXTURE);
-	COLOR = run(tex, UV, TEXTURE) * modulate;
+	vec4 tex = getBase(TEXTURE);
+	vec4 shadow = getShadow();
+	COLOR = run(tex, UV, shadow) * modulate;
 }

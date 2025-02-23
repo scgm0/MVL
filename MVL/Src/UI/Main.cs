@@ -99,7 +99,7 @@ public partial class Main : NativeWindowUtility {
 			shadowTween.TweenMethod(
 				shadowCallable,
 				shadowColor,
-				Colors.Transparent,
+				Colors.Black with { A = 0.5f },
 				0.3f
 			);
 		};
