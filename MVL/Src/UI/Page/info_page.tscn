@@ -299,7 +299,7 @@ size_flags_vertical = 3
 
 [node name="Label" type="Label" parent="MarginContainer/VBoxContainer/PanelContainer2/VBoxContainer/HBoxContainer2"]
 layout_mode = 2
-text = "不喜欢MVL？那么您还可以试试另一款复古物语启动器频道:"
+text = "不喜欢MVL？那么您还可以试试另一款复古物语启动器:"
 
 [node name="LinkButton" type="LinkButton" parent="MarginContainer/VBoxContainer/PanelContainer2/VBoxContainer/HBoxContainer2"]
 layout_mode = 2
