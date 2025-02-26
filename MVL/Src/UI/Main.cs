@@ -19,8 +19,6 @@ using SharedLibrary;
 namespace MVL.UI;
 
 public partial class Main : NativeWindowUtility {
-	private Vector2I _rootMinSize = new(960, 540);
-
 	public static BaseConfig BaseConfig { get; } =
 		BaseConfig.Load(Paths.BaseConfigPath);
 
@@ -73,8 +71,7 @@ public partial class Main : NativeWindowUtility {
 		Utils.Help.NullExceptionHelper.NotNull(_iconTexture, _installedGamesImportScene, MinButton, CloseButton);
 		DisplayServer.SetIcon(_iconTexture.GetImage());
 
-		_rootMinSize = SceneTree.Root.Size - new Vector2I(90, 90);
-		SceneTree.Root.MinSize = _rootMinSize;
+		SceneTree.Root.MinSize = SceneTree.Root.Size - new Vector2I(40, 40);
 		SceneTree.Root.SizeChanged += RootOnSizeChanged;
 
 		Tween? shadowTween = null;
