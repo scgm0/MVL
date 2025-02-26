@@ -82,7 +82,7 @@ public readonly record struct GameVersion {
 
 	public static GameVersion? FromGamePath(string gamePath) {
 		try {
-			var assembly = AssemblyDefinition.ReadAssembly(Path.Combine(gamePath, "VintagestoryAPI.dll"));
+			using var assembly = AssemblyDefinition.ReadAssembly(Path.Combine(gamePath, "VintagestoryAPI.dll"));
 			var type = assembly.MainModule.GetType("Vintagestory.API.Config.GameVersion");
 			var fields = type.Fields.ToDictionary(definition => definition.Name, definition => definition.Constant);
 			var gameVersion = new GameVersion((string)fields["ShortGameVersion"]);

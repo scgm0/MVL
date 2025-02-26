@@ -47,7 +47,7 @@ public partial class ReleaseItem : PanelContainer {
 		TooltipText = ReleaseInfo.Path;
 		_name.Text = ReleaseInfo.Name;
 		_version.Text = ReleaseInfo.Version.ShortGameVersion;
-		ReleaseIcon = ReleaseIcon;
+		ReleaseIcon = _icon.Texture;
 		switch (ReleaseInfo.Version.Branch) {
 			case EnumGameBranch.Stable:
 				_label!.Hide();
