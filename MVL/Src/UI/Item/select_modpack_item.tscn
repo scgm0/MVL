@@ -1,0 +1,88 @@
+[gd_scene load_steps=6 format=3 uid="uid://don6xai5trupe"]
+
+[ext_resource type="Material" uid="uid://c0sb2bjy16ljf" path="res://Assets/Material/button_blur.tres" id="1_y147p"]
+[ext_resource type="Script" uid="uid://dbh7uve1ltyh" path="res://Src/UI/Item/SelectModpackItem.cs" id="2_6bxys"]
+[ext_resource type="Texture2D" uid="uid://d3mq4tlr6rr01" path="res://Assets/Icon/VS/gameicon.png" id="2_oaq7y"]
+[ext_resource type="ButtonGroup" uid="uid://bcqmgl5krt5h5" path="res://Assets/Gui/select_modpack_button_group.tres" id="4_hwrtc"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_yinwn"]
+content_margin_left = 5.0
+content_margin_top = 5.0
+content_margin_right = 5.0
+content_margin_bottom = 5.0
+bg_color = Color(0.6, 0.6, 0.6, 0.137255)
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
+
+[node name="SelectModpackItem" type="PanelContainer" node_paths=PackedStringArray("_modpackIconTexture", "_modpackNameLabel", "_releaseNameLabel", "_releaseVersionLabel", "_selectButton")]
+material = ExtResource("1_y147p")
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 44.0
+grow_horizontal = 2
+focus_mode = 2
+mouse_filter = 1
+theme_override_styles/panel = SubResource("StyleBoxFlat_yinwn")
+script = ExtResource("2_6bxys")
+_modpackIconTexture = NodePath("HBoxContainer/TextureRect")
+_modpackNameLabel = NodePath("HBoxContainer/Label")
+_releaseNameLabel = NodePath("HBoxContainer/VBoxContainer/Label")
+_releaseVersionLabel = NodePath("HBoxContainer/VBoxContainer/Label2")
+_selectButton = NodePath("HBoxContainer/CheckBox")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
+layout_mode = 2
+theme_override_constants/separation = 5
+
+[node name="TextureRect" type="TextureRect" parent="HBoxContainer"]
+custom_minimum_size = Vector2(30, 30)
+layout_mode = 2
+texture = ExtResource("2_oaq7y")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Label" type="Label" parent="HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 1.5
+mouse_filter = 1
+theme_override_font_sizes/font_size = 14
+text = "整合包"
+horizontal_alignment = 1
+vertical_alignment = 1
+clip_text = true
+text_overrun_behavior = 3
+
+[node name="VBoxContainer" type="VBoxContainer" parent="HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Label" type="Label" parent="HBoxContainer/VBoxContainer"]
+layout_mode = 2
+mouse_filter = 1
+theme_override_colors/font_color = Color(0.60933, 0.60933, 0.60933, 1)
+theme_override_font_sizes/font_size = 12
+text = "版本名"
+horizontal_alignment = 1
+vertical_alignment = 1
+clip_text = true
+text_overrun_behavior = 3
+
+[node name="Label2" type="Label" parent="HBoxContainer/VBoxContainer"]
+layout_mode = 2
+mouse_filter = 1
+theme_override_colors/font_color = Color(0.60933, 0.60933, 0.60933, 1)
+theme_override_font_sizes/font_size = 12
+text = "版本号"
+horizontal_alignment = 1
+vertical_alignment = 1
+clip_text = true
+text_overrun_behavior = 3
+
+[node name="CheckBox" type="CheckBox" parent="HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 8
+mouse_filter = 1
+button_group = ExtResource("4_hwrtc")

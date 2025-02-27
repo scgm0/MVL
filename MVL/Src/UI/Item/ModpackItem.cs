@@ -63,6 +63,8 @@ public partial class ModpackItem : PanelContainer {
 		}
 
 		if (Main.CurrentModpack == ModpackConfig) {
+			var icon = (IconTexture2D)_playButton!.Icon;
+			icon.IconName = "stop";
 			_playButton.Modulate = Colors.Red;
 			Main.CurrentGameProcess!.Exited += CurrentGameProcessOnExited;
 		}

@@ -1,10 +1,14 @@
-[gd_scene load_steps=18 format=3 uid="uid://wtrk0xtd36kj"]
+[gd_scene load_steps=27 format=3 uid="uid://wtrk0xtd36kj"]
 
-[ext_resource type="Script" uid="uid://diqldycl8cgn2" path="res://Src/UI/Page/MenuPage.cs" id="1_koywy"]
+[ext_resource type="Script" uid="uid://ukwbt00ugn6v" path="res://Src/UI/Page/HomePage.cs" id="1_j4kqc"]
 [ext_resource type="LabelSettings" uid="uid://bdfwqcqufhm6k" path="res://Assets/Setting/page_title.tres" id="2_1jowr"]
+[ext_resource type="PackedScene" uid="uid://don6xai5trupe" path="res://Src/UI/Item/select_modpack_item.tscn" id="2_glb6t"]
 [ext_resource type="Script" uid="uid://bk3tot6c35bwu" path="res://Src/Utils/IconTexture2D.cs" id="3_1jowr"]
 [ext_resource type="Shader" uid="uid://bw4cstfk8udci" path="res://Assets/Shader/blur.gdshader" id="3_j4kqc"]
 [ext_resource type="FontFile" uid="uid://bmgx1vyg6bavd" path="res://Assets/Font/HarmonyOS_Sans_SC_Bold.ttf" id="4_k556s"]
+[ext_resource type="Script" uid="uid://cre6m68jy0aad" path="res://addons/SmoothScroll/SmoothScrollContainer.gd" id="6_rwne7"]
+[ext_resource type="Script" uid="uid://41yydm3vncfj" path="res://addons/SmoothScroll/scroll_damper/expo_scroll_damper.gd" id="7_glb6t"]
+[ext_resource type="ButtonGroup" uid="uid://bcqmgl5krt5h5" path="res://Assets/Gui/select_modpack_button_group.tres" id="10_vb8vt"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_glb6t"]
 bg_color = Color(0.6, 0.6, 0.6, 0)
@@ -40,8 +44,6 @@ IconName = "chevron-up"
 FontSize = 18
 metadata/_custom_type_script = "uid://bk3tot6c35bwu"
 
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_j4kqc"]
-
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_k556s"]
 bg_color = Color(0.882353, 0.882353, 0.882353, 0.117647)
 corner_radius_top_left = 8
@@ -54,8 +56,6 @@ corner_radius_top_right = 8
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_xq365"]
 
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_k556s"]
-
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_gi4mh"]
 bg_color = Color(0.25098, 0.25098, 0.25098, 0.784314)
 corner_radius_bottom_right = 8
@@ -66,7 +66,74 @@ bg_color = Color(0.25098, 0.435294, 0, 0.784314)
 corner_radius_bottom_right = 8
 corner_radius_bottom_left = 8
 
-[node name="HomePage" type="Control" node_paths=PackedStringArray("Main")]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_j4kqc"]
+shader = ExtResource("3_j4kqc")
+shader_parameter/lod = 2.0
+shader_parameter/blend = 0.2
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_vb8vt"]
+content_margin_left = 5.0
+content_margin_top = 5.0
+content_margin_right = 5.0
+content_margin_bottom = 5.0
+bg_color = Color(0.137255, 0.137255, 0.137255, 1)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+shadow_size = 2
+shadow_offset = Vector2(1, 1)
+
+[sub_resource type="Resource" id="Resource_gi4mh"]
+script = ExtResource("7_glb6t")
+friction = 4.0
+minimum_velocity = 0.4
+rebound_strength = 7.0
+
+[sub_resource type="Resource" id="Resource_vb8vt"]
+script = ExtResource("7_glb6t")
+friction = 4.0
+minimum_velocity = 0.4
+rebound_strength = 7.0
+
+[sub_resource type="Animation" id="Animation_gi4mh"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("PanelContainer:offset_top")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [-115.0]
+}
+
+[sub_resource type="Animation" id="Animation_glb6t"]
+resource_name = "show"
+length = 0.25
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("PanelContainer:offset_top")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.25),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [-115.0, -115.0]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_vb8vt"]
+_data = {
+&"RESET": SubResource("Animation_gi4mh"),
+&"show": SubResource("Animation_glb6t")
+}
+
+[node name="HomePage" type="Control" node_paths=PackedStringArray("_playButton", "_modPackNameLabel", "_gameVersionLabel", "_releaseNameLabel", "_selectModpackButton", "_modpackInfoControl", "_modpackInfoPanel", "_modpackInfoScrollContainer", "_modpackInfoVBoxContainer", "_animationPlayer", "Main")]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -74,7 +141,19 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
-script = ExtResource("1_koywy")
+script = ExtResource("1_j4kqc")
+_selectModpackItemScene = ExtResource("2_glb6t")
+_buttonGroup = ExtResource("10_vb8vt")
+_playButton = NodePath("Control/MarginContainer/PanelContainer/VBoxContainer/Button")
+_modPackNameLabel = NodePath("Control/MarginContainer/PanelContainer/VBoxContainer/PanelContainer/MarginContainer/HBoxContainer/Label")
+_gameVersionLabel = NodePath("Control/MarginContainer/PanelContainer/VBoxContainer/PanelContainer/MarginContainer/HBoxContainer/VBoxContainer/Label2")
+_releaseNameLabel = NodePath("Control/MarginContainer/PanelContainer/VBoxContainer/PanelContainer/MarginContainer/HBoxContainer/VBoxContainer/Label")
+_selectModpackButton = NodePath("Control/MarginContainer/PanelContainer/VBoxContainer/PanelContainer/Button")
+_modpackInfoControl = NodePath("Control/Button")
+_modpackInfoPanel = NodePath("Control/Button/PanelContainer")
+_modpackInfoScrollContainer = NodePath("Control/Button/PanelContainer/SmoothScrollContainer")
+_modpackInfoVBoxContainer = NodePath("Control/Button/PanelContainer/SmoothScrollContainer/VBoxContainer")
+_animationPlayer = NodePath("Control/Button/AnimationPlayer")
 Main = NodePath("Control")
 metadata/_tab_index = 0
 
@@ -110,13 +189,14 @@ theme_override_constants/margin_top = 10
 theme_override_constants/margin_right = 10
 theme_override_constants/margin_bottom = 10
 
-[node name="PanelContainer2" type="PanelContainer" parent="Control/MarginContainer"]
+[node name="Panel" type="Panel" parent="Control/MarginContainer"]
 layout_mode = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_glb6t")
 
 [node name="PanelContainer" type="PanelContainer" parent="Control/MarginContainer"]
 material = SubResource("ShaderMaterial_xq365")
 layout_mode = 2
+size_flags_vertical = 8
 theme_override_styles/panel = SubResource("StyleBoxFlat_rwne7")
 
 [node name="VBoxContainer" type="VBoxContainer" parent="Control/MarginContainer/PanelContainer"]
@@ -141,7 +221,6 @@ size_flags_horizontal = 3
 size_flags_vertical = 1
 size_flags_stretch_ratio = 2.0
 theme_override_fonts/font = ExtResource("4_k556s")
-theme_override_font_sizes/font_size = 14
 text = "整合包"
 horizontal_alignment = 1
 vertical_alignment = 1
@@ -185,7 +264,7 @@ stretch_mode = 3
 
 [node name="Button" type="Button" parent="Control/MarginContainer/PanelContainer/VBoxContainer/PanelContainer"]
 layout_mode = 2
-theme_override_styles/focus = SubResource("StyleBoxEmpty_j4kqc")
+theme_override_colors/font_disabled_color = Color(1, 1, 1, 1)
 theme_override_styles/hover = SubResource("StyleBoxFlat_k556s")
 theme_override_styles/pressed = SubResource("StyleBoxFlat_xq365")
 theme_override_styles/normal = SubResource("StyleBoxEmpty_xq365")
@@ -199,11 +278,59 @@ theme_override_colors/font_color = Color(0.882353, 0.882353, 0.882353, 0.882353)
 theme_override_colors/font_focus_color = Color(0.882353, 0.882353, 0.882353, 0.882353)
 theme_override_colors/font_pressed_color = Color(1, 1, 1, 1)
 theme_override_font_sizes/font_size = 24
-theme_override_styles/focus = SubResource("StyleBoxEmpty_k556s")
 theme_override_styles/disabled = SubResource("StyleBoxFlat_gi4mh")
 theme_override_styles/hover = SubResource("StyleBoxFlat_j4kqc")
 theme_override_styles/pressed = SubResource("StyleBoxFlat_j4kqc")
 theme_override_styles/normal = SubResource("StyleBoxFlat_j4kqc")
-disabled = true
-text = "开始游戏"
+text = "启动游戏"
 icon_alignment = 2
+
+[node name="Button" type="Button" parent="Control"]
+visible = false
+top_level = true
+custom_minimum_size = Vector2(50, 50)
+layout_mode = 2
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+flat = true
+
+[node name="PanelContainer" type="PanelContainer" parent="Control/Button"]
+material = SubResource("ShaderMaterial_j4kqc")
+custom_minimum_size = Vector2(280, 0)
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -290.0
+offset_top = -115.0
+offset_right = -10.0
+offset_bottom = -105.0
+grow_horizontal = 0
+grow_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_vb8vt")
+
+[node name="SmoothScrollContainer" type="ScrollContainer" parent="Control/Button/PanelContainer"]
+layout_mode = 2
+follow_focus = true
+horizontal_scroll_mode = 0
+vertical_scroll_mode = 0
+script = ExtResource("6_rwne7")
+wheel_scroll_damper = SubResource("Resource_gi4mh")
+dragging_scroll_damper = SubResource("Resource_vb8vt")
+allow_horizontal_scroll = false
+metadata/_custom_type_script = "uid://cre6m68jy0aad"
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Control/Button/PanelContainer/SmoothScrollContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/separation = 5
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Control/Button"]
+libraries = {
+&"": SubResource("AnimationLibrary_vb8vt")
+}
