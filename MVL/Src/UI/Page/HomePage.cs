@@ -84,16 +84,18 @@ public partial class HomePage : MenuPage {
 	}
 
 	private async void ShowSelectModpackPanel() {
+		_modpackInfoScrollContainer!.Call(StringNames.Scroll, true, 0, 0, 0);
 		_modpackInfoScrollContainer!.VerticalScrollMode = ScrollContainer.ScrollMode.Disabled;
 		_modpackInfoControl!.Modulate = Colors.Transparent;
 		_modpackInfoControl.Show();
 
 		SelectModpackItem? selectedItem = null;
-		foreach (var (_, modpackConfig) in UI.Main.ModpackConfigs) {
+		foreach (var path in UI.Main.BaseConfig.Modpack) {
+			var modpackConfig = UI.Main.ModpackConfigs[path];
 			var item = _selectModpackItemScene!.Instantiate<SelectModpackItem>();
 			item.ModpackConfig = modpackConfig;
 			_modpackInfoVBoxContainer!.AddChild(item);
-			if (modpackConfig.Path == UI.Main.BaseConfig.CurrentModpack) {
+			if (path == UI.Main.BaseConfig.CurrentModpack) {
 				selectedItem = item;
 			}
 		}
@@ -104,6 +106,7 @@ public partial class HomePage : MenuPage {
 		if (_modpackInfoPanel!.Size.Y > 250) {
 			_modpackInfoScrollContainer.VerticalScrollMode = ScrollContainer.ScrollMode.Auto;
 			_modpackInfoPanel!.Size = _modpackInfoPanel!.Size with { Y = 250 };
+			await ToSignal(UI.Main.SceneTree, SceneTree.SignalName.ProcessFrame);
 		}
 
 		_modpackInfoPanel!.GlobalPosition =
@@ -118,9 +121,10 @@ public partial class HomePage : MenuPage {
 		var animation = _animationPlayer!.GetAnimationLibrary("").GetAnimation(StringNames.Show);
 		animation.TrackSetKeyValue(0, 0, _modpackInfoPanel.OffsetTop);
 		animation.TrackSetKeyValue(0, 1, offsetTop);
+		animation.Length = Mathf.Min(_modpackInfoVBoxContainer!.GetChildCount(), 5) * 0.05f;
+		animation.TrackSetKeyTime(0, 1, animation.Length);
 		_animationPlayer.Play(StringNames.Show);
-		await ToSignal(_animationPlayer, AnimationMixer.SignalName.AnimationFinished);
-		selectedItem?.GrabFocus();
+		_modpackInfoScrollContainer!.Call(StringNames.EnsureControlVisible, selectedItem!);
 	}
 
 	private async void HideSelectModpackPanel() {

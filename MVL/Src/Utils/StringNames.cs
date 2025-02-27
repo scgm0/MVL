@@ -14,4 +14,6 @@ public static class StringNames {
 	public static readonly StringName MarginTop = new("margin_top");
 	public static readonly StringName MarginBottom = new("margin_bottom");
 	public static readonly StringName ShadowColor = new("shadowColor");
+	public static readonly StringName Scroll = new("scroll");
+	public static readonly StringName EnsureControlVisible = new("ensure_control_visible");
 }
