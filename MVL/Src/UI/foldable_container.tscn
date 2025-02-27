@@ -27,8 +27,6 @@ IconName = "chevron-down"
 FontSize = 24
 metadata/_custom_type_script = "uid://bk3tot6c35bwu"
 
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_mud0o"]
-
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_f6dwc"]
 content_margin_left = 4.0
 content_margin_top = 4.0
@@ -80,7 +78,6 @@ layout_mode = 2
 size_flags_vertical = 3
 mouse_filter = 1
 theme_override_fonts/font = ExtResource("1_rmbn7")
-theme_override_styles/focus = SubResource("StyleBoxEmpty_mud0o")
 theme_override_styles/hover_pressed = SubResource("StyleBoxFlat_f6dwc")
 theme_override_styles/hover = SubResource("StyleBoxFlat_f6dwc")
 theme_override_styles/pressed = SubResource("StyleBoxFlat_ir2ca")

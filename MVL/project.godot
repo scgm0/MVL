@@ -44,6 +44,7 @@ enabled=PackedStringArray("res://addons/SmoothScroll/plugin.cfg")
 
 [gui]
 
+theme/custom="uid://26j2wsw1c43m"
 theme/custom_font="uid://d0e3mw7yvdf0v"
 
 [importer_defaults]

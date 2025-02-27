@@ -31,8 +31,6 @@ corner_radius_top_right = 10
 corner_radius_bottom_right = 10
 corner_radius_bottom_left = 10
 
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_cnlqv"]
-
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_pb4g6"]
 bg_color = Color(0.6, 0.6, 0.6, 0.6)
 corner_radius_top_left = 10
@@ -46,8 +44,6 @@ corner_radius_top_left = 10
 bg_color = Color(0, 0, 0, 0.6)
 corner_radius_top_left = 10
 
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_2do0o"]
-
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_0fd5h"]
 bg_color = Color(0.6, 0.6, 0.6, 0.6)
 
@@ -57,8 +53,6 @@ border_width_bottom = 1
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_pbvk2"]
 bg_color = Color(0, 0, 0, 0.6)
-
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_pb4g6"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_oec7v"]
 bg_color = Color(0.6, 0.6, 0.6, 0.6)
@@ -208,7 +202,6 @@ layout_mode = 2
 size_flags_horizontal = 3
 theme_override_fonts/font = ExtResource("5_pb4g6")
 theme_override_font_sizes/font_size = 20
-theme_override_styles/focus = SubResource("StyleBoxEmpty_cnlqv")
 theme_override_styles/hover = SubResource("StyleBoxFlat_pb4g6")
 theme_override_styles/pressed = SubResource("StyleBoxFlat_cnlqv")
 theme_override_styles/normal = SubResource("StyleBoxFlat_2do0o")
@@ -222,7 +215,6 @@ layout_mode = 2
 size_flags_horizontal = 3
 theme_override_fonts/font = ExtResource("5_pb4g6")
 theme_override_font_sizes/font_size = 20
-theme_override_styles/focus = SubResource("StyleBoxEmpty_2do0o")
 theme_override_styles/hover = SubResource("StyleBoxFlat_0fd5h")
 theme_override_styles/pressed = SubResource("StyleBoxFlat_f5d0o")
 theme_override_styles/normal = SubResource("StyleBoxFlat_pbvk2")
@@ -235,7 +227,6 @@ layout_mode = 2
 size_flags_horizontal = 3
 theme_override_fonts/font = ExtResource("5_pb4g6")
 theme_override_font_sizes/font_size = 20
-theme_override_styles/focus = SubResource("StyleBoxEmpty_pb4g6")
 theme_override_styles/hover = SubResource("StyleBoxFlat_oec7v")
 theme_override_styles/pressed = SubResource("StyleBoxFlat_twkd0")
 theme_override_styles/normal = SubResource("StyleBoxFlat_8py1v")

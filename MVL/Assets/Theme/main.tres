@@ -1,0 +1,74 @@
+[gd_resource type="Theme" load_steps=9 format=3 uid="uid://26j2wsw1c43m"]
+
+[ext_resource type="Script" uid="uid://bk3tot6c35bwu" path="res://Src/Utils/IconTexture2D.cs" id="1_asgjk"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_oarc7"]
+
+[sub_resource type="Texture2D" id="Texture2D_oarc7"]
+resource_local_to_scene = false
+resource_name = ""
+script = ExtResource("1_asgjk")
+IconName = "checkbox-marked"
+FontSize = 16
+metadata/_custom_type_script = ExtResource("1_asgjk")
+
+[sub_resource type="Texture2D" id="Texture2D_gblyu"]
+resource_local_to_scene = false
+resource_name = ""
+script = ExtResource("1_asgjk")
+IconName = "radiobox-marked"
+FontSize = 16
+metadata/_custom_type_script = ExtResource("1_asgjk")
+
+[sub_resource type="Texture2D" id="Texture2D_364to"]
+resource_local_to_scene = false
+resource_name = ""
+script = ExtResource("1_asgjk")
+IconName = "radiobox-blank"
+FontSize = 16
+metadata/_custom_type_script = ExtResource("1_asgjk")
+
+[sub_resource type="Texture2D" id="Texture2D_6are0"]
+resource_local_to_scene = false
+resource_name = ""
+script = ExtResource("1_asgjk")
+IconName = "checkbox-blank-outline"
+FontSize = 16
+metadata/_custom_type_script = ExtResource("1_asgjk")
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_7eosv"]
+content_margin_left = 4.0
+content_margin_top = 4.0
+content_margin_right = 4.0
+content_margin_bottom = 4.0
+bg_color = Color(0.4, 0.4, 0.4, 1)
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
+corner_detail = 5
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_8ilox"]
+content_margin_left = 5.0
+content_margin_top = 5.0
+content_margin_right = 5.0
+content_margin_bottom = 5.0
+bg_color = Color(0.184314, 0.184314, 0.184314, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.533333, 0.533333, 0.533333, 0.486275)
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
+
+[resource]
+Button/styles/focus = SubResource("StyleBoxEmpty_oarc7")
+CheckBox/icons/checked = SubResource("Texture2D_oarc7")
+CheckBox/icons/radio_checked = SubResource("Texture2D_gblyu")
+CheckBox/icons/radio_unchecked_disabled = SubResource("Texture2D_364to")
+CheckBox/icons/unchecked = SubResource("Texture2D_6are0")
+PopupMenu/styles/hover = SubResource("StyleBoxFlat_7eosv")
+PopupMenu/styles/panel = SubResource("StyleBoxFlat_8ilox")

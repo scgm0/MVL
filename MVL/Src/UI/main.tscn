@@ -1,4 +1,4 @@
-[gd_scene load_steps=52 format=3 uid="uid://514oox50h8yl"]
+[gd_scene load_steps=47 format=3 uid="uid://514oox50h8yl"]
 
 [ext_resource type="Script" uid="uid://cvyeyg8ttnwmu" path="res://Src/UI/Main.cs" id="1_1opgh"]
 [ext_resource type="Texture2D" uid="uid://bhh1jvyj73qxh" path="res://Assets/Gui/Background.png" id="2_1opgh"]
@@ -20,38 +20,6 @@
 [ext_resource type="PackedScene" uid="uid://bp02so1m0q7m0" path="res://Src/UI/Page/setting_page.tscn" id="19_a6wm3"]
 [ext_resource type="PackedScene" uid="uid://d0bdto738ug2l" path="res://Src/UI/Page/info_page.tscn" id="20_53u4p"]
 [ext_resource type="FontFile" uid="uid://bmgx1vyg6bavd" path="res://Assets/Font/HarmonyOS_Sans_SC_Bold.ttf" id="24_365jr"]
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_7eosv"]
-content_margin_left = 4.0
-content_margin_top = 4.0
-content_margin_right = 4.0
-content_margin_bottom = 4.0
-bg_color = Color(0.4, 0.4, 0.4, 1)
-corner_radius_top_left = 5
-corner_radius_top_right = 5
-corner_radius_bottom_right = 5
-corner_radius_bottom_left = 5
-corner_detail = 5
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_8ilox"]
-content_margin_left = 5.0
-content_margin_top = 5.0
-content_margin_right = 5.0
-content_margin_bottom = 5.0
-bg_color = Color(0.184314, 0.184314, 0.184314, 1)
-border_width_left = 1
-border_width_top = 1
-border_width_right = 1
-border_width_bottom = 1
-border_color = Color(0.533333, 0.533333, 0.533333, 0.486275)
-corner_radius_top_left = 5
-corner_radius_top_right = 5
-corner_radius_bottom_right = 5
-corner_radius_bottom_left = 5
-
-[sub_resource type="Theme" id="Theme_53u4p"]
-PopupMenu/styles/hover = SubResource("StyleBoxFlat_7eosv")
-PopupMenu/styles/panel = SubResource("StyleBoxFlat_8ilox")
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_p7a31"]
 content_margin_left = 10.0
@@ -217,8 +185,6 @@ outline_color = Color(0, 0, 0, 1)
 
 [sub_resource type="ButtonGroup" id="ButtonGroup_08ol6"]
 
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_a6wm3"]
-
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_53u4p"]
 bg_color = Color(1, 1, 1, 0.282353)
 
@@ -234,8 +200,6 @@ script = ExtResource("13_7nt4r")
 IconName = "window-minimize"
 FontSize = 14
 metadata/_custom_type_script = ExtResource("13_7nt4r")
-
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_bmwv3"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_o4ctv"]
 bg_color = Color(0.764706, 0, 0, 1)
@@ -260,7 +224,6 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-theme = SubResource("Theme_53u4p")
 script = ExtResource("1_1opgh")
 _iconTexture = ExtResource("2_xnuua")
 _installedGamesImportScene = ExtResource("3_a5da0")
@@ -543,7 +506,6 @@ size_flags_vertical = 0
 focus_mode = 0
 theme_override_colors/icon_normal_color = Color(0.678944, 0.678944, 0.678944, 1)
 theme_override_constants/icon_max_width = 14
-theme_override_styles/focus = SubResource("StyleBoxEmpty_a6wm3")
 theme_override_styles/hover = SubResource("StyleBoxFlat_53u4p")
 theme_override_styles/pressed = SubResource("StyleBoxFlat_365jr")
 theme_override_styles/normal = SubResource("StyleBoxEmpty_08ol6")
@@ -558,7 +520,6 @@ size_flags_vertical = 0
 focus_mode = 0
 theme_override_colors/icon_normal_color = Color(0.678431, 0.678431, 0.678431, 1)
 theme_override_constants/icon_max_width = 14
-theme_override_styles/focus = SubResource("StyleBoxEmpty_bmwv3")
 theme_override_styles/hover = SubResource("StyleBoxFlat_o4ctv")
 theme_override_styles/pressed = SubResource("StyleBoxFlat_a6wm3")
 theme_override_styles/normal = SubResource("StyleBoxEmpty_365jr")
