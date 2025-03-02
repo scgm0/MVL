@@ -6,11 +6,12 @@
         <MSVCWineBinPath Condition="'$(MSVCWineBinPath)' == ''">/opt/msvc/bin</MSVCWineBinPath>
     </PropertyGroup>
 
-    <UsingTask TaskName="PrependPath"
+    <UsingTask TaskName="SetEnvironmentVariable"
                TaskFactory="RoslynCodeTaskFactory"
                AssemblyFile="$(MSBuildToolsPath)\Microsoft.Build.Tasks.Core.dll">
 
         <ParameterGroup>
+            <Name ParameterType="System.String" Required="true"/>
             <Value ParameterType="System.String" Required="true"/>
         </ParameterGroup>
 
@@ -19,7 +20,7 @@
             <Using Namespace="System.IO"/>
             <Code Type="Fragment" Language="cs">
                 <![CDATA[
-                    Environment.SetEnvironmentVariable("PATH", Value + Path.PathSeparator + Environment.GetEnvironmentVariable("PATH"));
+                    Environment.SetEnvironmentVariable(Name, Value);
                 ]]>
             </Code>
         </Task>
@@ -28,24 +29,9 @@
 
     <Target Name="SetPathToClang"
             BeforeTargets="SetupOSSpecificProps">
-        <PrependPath Value="$(MSVCWineBinPath)/$(_targetArchitecture)"/>
-    </Target>
-
-    <Target Name="OverwriteTargetTriple"
-            AfterTargets="SetupOSSpecificProps"
-            BeforeTargets="LinkNative">
-        <ItemGroup>
-            <LinkerArg Include="@(LinkerArg->'%(Identity)')">
-                <UpdatePath Condition="$([System.String]::Copy(%(Identity)).StartsWith('/home/'))">"Z:%(Identity)"</UpdatePath>
-                <UpdatePath Condition="$([System.String]::Copy(%(Identity)).StartsWith('/home/')) == false">%(Identity)</UpdatePath>
-            </LinkerArg>
-
-            <NewLinkerArg Include="@(LinkerArg->'%(UpdatePath)')"/>
-            <LinkerArg Remove="@(LinkerArg)"/>
-            <LinkerArg Include="@(NewLinkerArg)"/>
-        </ItemGroup>
+        <SetEnvironmentVariable Name="MSVCENV" Value="$(MSVCWineBinPath)/$(_targetArchitecture)/msvcenv.sh"/>
         <PropertyGroup>
-            <NativeObject Condition="$(NativeObject.StartsWith('/home/'))">Z:$(NativeObject)</NativeObject>
+            <CppLinker>"bash ./script/link.sh"</CppLinker>
         </PropertyGroup>
     </Target>
 </Project>
