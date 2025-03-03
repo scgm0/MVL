@@ -130,6 +130,7 @@ public partial class HomePage : MenuPage {
 	private async void HideSelectModpackPanel() {
 		_animationPlayer!.PlayBackwards(StringNames.Show);
 		await ToSignal(_animationPlayer, AnimationMixer.SignalName.AnimationFinished);
+		_selectModpackButton!.ButtonPressed = false;
 		_modpackInfoControl!.Hide();
 		foreach (var child in _modpackInfoVBoxContainer!.GetChildren()) {
 			child.QueueFree();

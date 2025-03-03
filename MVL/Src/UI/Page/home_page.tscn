@@ -268,6 +268,7 @@ theme_override_colors/font_disabled_color = Color(1, 1, 1, 1)
 theme_override_styles/hover = SubResource("StyleBoxFlat_k556s")
 theme_override_styles/pressed = SubResource("StyleBoxFlat_xq365")
 theme_override_styles/normal = SubResource("StyleBoxEmpty_xq365")
+toggle_mode = true
 
 [node name="Button" type="Button" parent="Control/MarginContainer/PanelContainer/VBoxContainer"]
 custom_minimum_size = Vector2(0, 50)
