@@ -46,10 +46,10 @@ corner_radius_bottom_left = 6
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_a5da0"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_v5ddw"]
-content_margin_left = 4.0
-content_margin_top = 4.0
-content_margin_right = 4.0
-content_margin_bottom = 4.0
+content_margin_left = 10.0
+content_margin_top = 10.0
+content_margin_right = 10.0
+content_margin_bottom = 10.0
 bg_color = Color(0.225, 0.225, 0.225, 0.6)
 corner_radius_top_left = 6
 corner_radius_top_right = 6
@@ -68,10 +68,10 @@ corner_radius_bottom_right = 6
 corner_radius_bottom_left = 6
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_syw1k"]
-content_margin_left = 4.0
-content_margin_top = 4.0
-content_margin_right = 4.0
-content_margin_bottom = 4.0
+content_margin_left = 10.0
+content_margin_top = 10.0
+content_margin_right = 10.0
+content_margin_bottom = 10.0
 bg_color = Color(0.0475577, 0.0475576, 0.0475576, 0.6)
 corner_radius_top_left = 6
 corner_radius_top_right = 6
@@ -196,6 +196,10 @@ layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
+offset_left = 33.0
+offset_top = -78.0
+offset_right = 33.0
+offset_bottom = -78.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("2_1nfmj")
