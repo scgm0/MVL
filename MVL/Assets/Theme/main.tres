@@ -1,4 +1,4 @@
-[gd_resource type="Theme" load_steps=9 format=3 uid="uid://26j2wsw1c43m"]
+[gd_resource type="Theme" load_steps=14 format=3 uid="uid://26j2wsw1c43m"]
 
 [ext_resource type="Script" uid="uid://bk3tot6c35bwu" path="res://Src/Utils/IconTexture2D.cs" id="1_asgjk"]
 
@@ -36,6 +36,38 @@ IconName = "checkbox-blank-outline"
 FontSize = 16
 metadata/_custom_type_script = ExtResource("1_asgjk")
 
+[sub_resource type="Texture2D" id="Texture2D_i7wln"]
+resource_local_to_scene = false
+resource_name = ""
+script = ExtResource("1_asgjk")
+IconName = "close"
+FontSize = 18
+metadata/_custom_type_script = ExtResource("1_asgjk")
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_asgjk"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_i7wln"]
+content_margin_left = 5.0
+content_margin_top = 5.0
+content_margin_right = 5.0
+content_margin_bottom = 5.0
+bg_color = Color(0.101961, 0.101961, 0.101961, 1)
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_asgjk"]
+content_margin_left = 5.0
+content_margin_top = 5.0
+content_margin_right = 5.0
+content_margin_bottom = 5.0
+bg_color = Color(1, 1, 1, 0.0784314)
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_7eosv"]
 content_margin_left = 4.0
 content_margin_top = 4.0
@@ -64,11 +96,18 @@ corner_radius_top_right = 5
 corner_radius_bottom_right = 5
 corner_radius_bottom_left = 5
 
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_h252r"]
+
 [resource]
 Button/styles/focus = SubResource("StyleBoxEmpty_oarc7")
 CheckBox/icons/checked = SubResource("Texture2D_oarc7")
 CheckBox/icons/radio_checked = SubResource("Texture2D_gblyu")
 CheckBox/icons/radio_unchecked_disabled = SubResource("Texture2D_364to")
 CheckBox/icons/unchecked = SubResource("Texture2D_6are0")
+LineEdit/icons/clear = SubResource("Texture2D_i7wln")
+LineEdit/styles/focus = SubResource("StyleBoxEmpty_asgjk")
+LineEdit/styles/normal = SubResource("StyleBoxFlat_i7wln")
+LineEdit/styles/read_only = SubResource("StyleBoxFlat_asgjk")
 PopupMenu/styles/hover = SubResource("StyleBoxFlat_7eosv")
 PopupMenu/styles/panel = SubResource("StyleBoxFlat_8ilox")
+RichTextLabel/styles/focus = SubResource("StyleBoxEmpty_h252r")
