@@ -1,4 +1,4 @@
-<Project Sdk="Godot.NET.Sdk/4.4.0-rc">
+<Project Sdk="Godot.NET.Sdk/4.5.0-dev">
     <PropertyGroup>
         <TargetFramework>net9.0</TargetFramework>
         <Nullable>enable</Nullable>
@@ -26,15 +26,14 @@
         <Compile Include="../SharedLibrary/*.cs">
             <Link>Src/SharedLibrary/*.cs</Link>
         </Compile>
-        <Compile Remove="Generated\IconTexture2D.Icons.g.cs" />
     </ItemGroup>
 
     <ItemGroup>
-        <Content Include="**\*.gd" />
-        <Content Include="**\*.uid" DependentUpon="%(Filename)" />
-        <Content Include="**\*.json" DependentUpon="%(Filename).cs" />
-        <Content Include="**\*.txt" DependentUpon="%(Filename).cs" />
-        <Compile Update="**\*.*.cs" DependentUpon="$([System.IO.Path]::GetFileNameWithoutExtension('%(Filename)')).cs" />
+        <Content Include="**/*.gd" />
+        <Content Include="**/*.uid" DependentUpon="%(Filename)" />
+        <Content Include="**/*.json" DependentUpon="%(Filename).cs" />
+        <Content Include="**/*.txt" DependentUpon="%(Filename).cs" />
+        <Compile Update="**/*.*.cs" DependentUpon="$([System.IO.Path]::GetFileNameWithoutExtension('%(Filename)')).cs" />
         <Content Remove=".godot\**" />
     </ItemGroup>
 
@@ -47,7 +46,7 @@
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\MVLGenerator\MVLGenerator.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
+        <ProjectReference Include="../MVLGenerator/MVLGenerator.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
     </ItemGroup>
 
     <Target Name="PreBuild" BeforeTargets="Build">
