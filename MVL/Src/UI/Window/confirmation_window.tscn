@@ -1,0 +1,26 @@
+[gd_scene load_steps=3 format=3 uid="uid://cx30yvsu80t6f"]
+
+[ext_resource type="PackedScene" uid="uid://bu4hwijkbc8sm" path="res://Src/UI/Window/base_window.tscn" id="1_1pirl"]
+[ext_resource type="Script" uid="uid://ogdhc35ro4is" path="res://Src/UI/Window/ConfirmationWindow.cs" id="2_bqihl"]
+
+[node name="ConfirmationWindow" node_paths=PackedStringArray("_messageLabel") instance=ExtResource("1_1pirl")]
+script = ExtResource("2_bqihl")
+_messageLabel = NodePath("PanelContainer/VBoxContainer/RichTextLabel")
+
+[node name="Label" parent="PanelContainer/VBoxContainer" index="0"]
+visible = false
+
+[node name="HSeparator" parent="PanelContainer/VBoxContainer" index="1"]
+visible = false
+
+[node name="RichTextLabel" type="RichTextLabel" parent="PanelContainer/VBoxContainer" index="2"]
+layout_mode = 2
+theme_override_font_sizes/normal_font_size = 20
+bbcode_enabled = true
+text = "确定吗？"
+fit_content = true
+scroll_active = false
+autowrap_mode = 0
+shortcut_keys_enabled = false
+horizontal_alignment = 1
+threaded = true
