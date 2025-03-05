@@ -165,6 +165,7 @@ _data = {
 }
 
 [node name="BaseWindow" type="ColorRect" node_paths=PackedStringArray("_container", "_animationPlayer", "TitleLabel", "CancelButton", "OkButton")]
+top_level = true
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -196,10 +197,6 @@ layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = 33.0
-offset_top = -78.0
-offset_right = 33.0
-offset_bottom = -78.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("2_1nfmj")
@@ -249,10 +246,12 @@ theme_override_constants/separation = 125
 
 [node name="Button" type="Button" parent="PanelContainer/VBoxContainer/HBoxContainer3"]
 layout_mode = 2
+size_flags_horizontal = 6
 text = "取消"
 
 [node name="Button2" type="Button" parent="PanelContainer/VBoxContainer/HBoxContainer3"]
 layout_mode = 2
+size_flags_horizontal = 6
 text = "确定"
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
