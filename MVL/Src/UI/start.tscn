@@ -1,5 +1,6 @@
-[gd_scene load_steps=8 format=3 uid="uid://buuu4ls8t7l4u"]
+[gd_scene load_steps=9 format=3 uid="uid://buuu4ls8t7l4u"]
 
+[ext_resource type="Script" uid="uid://brx5vpy7jn37x" path="res://Src/UI/Start.cs" id="1_0eqgt"]
 [ext_resource type="PackedScene" uid="uid://514oox50h8yl" path="res://Src/UI/main.tscn" id="1_7ma3r"]
 [ext_resource type="Material" uid="uid://b881bblb2gtmo" path="res://Assets/Material/window.tres" id="2_874xg"]
 [ext_resource type="Script" uid="uid://dbies7u5fo4sh" path="res://Src/UI/NativeWindowUtility.cs" id="3_874xg"]
@@ -174,6 +175,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 pivot_offset = Vector2(581, 329)
+script = ExtResource("1_0eqgt")
 
 [node name="MarginContainer" type="MarginContainer" parent="."]
 layout_mode = 1
@@ -200,6 +202,7 @@ vrs_mode = 2
 canvas_item_default_texture_filter = 2
 size = Vector2i(1152, 648)
 size_2d_override_stretch = true
+render_target_update_mode = 4
 
 [node name="Main" parent="MarginContainer/SubViewportContainer/SubViewport" node_paths=PackedStringArray("_marginContainer") instance=ExtResource("1_7ma3r")]
 _marginContainer = NodePath("../../..")
