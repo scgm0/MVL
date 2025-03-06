@@ -11,7 +11,10 @@
 
     神麤詭末 <https://github.com/scgm0>
 
+## 图标制作
+    青金蛙
+    无智得言
+
 ## 开发人员
 
-    青金蛙
     神麤詭末 <https://github.com/scgm0>
