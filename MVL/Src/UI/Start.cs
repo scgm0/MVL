@@ -9,8 +9,6 @@ using FileAccess = System.IO.FileAccess;
 
 namespace MVL.UI;
 
-enum AppEventEnum { Focus }
-
 public partial class Start : Control {
 	static private FileStream? _lockFile;
 	static private TcpListener? _listener;
@@ -35,7 +33,7 @@ public partial class Start : Control {
 			client.Connect(IPAddress.Loopback, port);
 			using var stream = client.GetStream();
 			using var writer = new StreamWriter(stream);
-			writer.Write(AppEventEnum.Focus);
+			writer.Write((int)AppEventEnum.RepeatStartup);
 			Main.SceneTree.Quit();
 		}
 	}
@@ -47,9 +45,9 @@ public partial class Start : Control {
 			using var reader = new StreamReader(stream);
 			var str = await reader.ReadLineAsync();
 			if (str != null) {
-				var e = Enum.Parse<AppEventEnum>(str);
+				var e = (AppEventEnum)int.Parse(str);
 				switch (e) {
-					case AppEventEnum.Focus:
+					case AppEventEnum.RepeatStartup:
 						OS.Alert("启动器运行中，无法重复启动", "警告");
 						break;
 					default: throw new ArgumentOutOfRangeException();
