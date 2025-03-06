@@ -48,7 +48,12 @@ public partial class Start : Control {
 			var str = await reader.ReadLineAsync();
 			if (str != null) {
 				var e = Enum.Parse<AppEventEnum>(str);
-				GD.Print(e);
+				switch (e) {
+					case AppEventEnum.Focus:
+						OS.Alert("启动器运行中，无法重复启动", "警告");
+						break;
+					default: throw new ArgumentOutOfRangeException();
+				}
 			}
 
 			Dispatcher.SynchronizationContext.Post(_ => {
