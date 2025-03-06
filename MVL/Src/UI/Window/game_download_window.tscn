@@ -1,4 +1,4 @@
-[gd_scene load_steps=23 format=3 uid="uid://dfsyvb8tdyef2"]
+[gd_scene load_steps=20 format=3 uid="uid://dfsyvb8tdyef2"]
 
 [ext_resource type="PackedScene" uid="uid://bu4hwijkbc8sm" path="res://Src/UI/Window/base_window.tscn" id="1_42u7i"]
 [ext_resource type="Script" uid="uid://baxitom4bklvu" path="res://Src/UI/Window/GameDownloadWindow.cs" id="2_x3qgb"]
@@ -29,27 +29,6 @@ IconName = "toggle-switch-off-outline"
 FontSize = 24
 metadata/_custom_type_script = ExtResource("6_endwm")
 
-[sub_resource type="Texture2D" id="Texture2D_i7wln"]
-resource_local_to_scene = false
-resource_name = ""
-script = ExtResource("6_endwm")
-IconName = "close"
-FontSize = 18
-metadata/_custom_type_script = ExtResource("6_endwm")
-
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_b82ki"]
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_i7wln"]
-content_margin_left = 5.0
-content_margin_top = 5.0
-content_margin_right = 5.0
-content_margin_bottom = 5.0
-bg_color = Color(0.101961, 0.101961, 0.101961, 1)
-corner_radius_top_left = 3
-corner_radius_top_right = 3
-corner_radius_bottom_right = 3
-corner_radius_bottom_left = 3
-
 [sub_resource type="Texture2D" id="Texture2D_b82ki"]
 resource_local_to_scene = false
 resource_name = ""
@@ -63,9 +42,6 @@ Button/styles/focus = SubResource("StyleBoxEmpty_vgayu")
 CheckButton/icons/checked = SubResource("Texture2D_bdark")
 CheckButton/icons/unchecked = SubResource("Texture2D_u0mv6")
 LineEdit/font_sizes/font_size = 14
-LineEdit/icons/clear = SubResource("Texture2D_i7wln")
-LineEdit/styles/focus = SubResource("StyleBoxEmpty_b82ki")
-LineEdit/styles/normal = SubResource("StyleBoxFlat_i7wln")
 OptionButton/icons/arrow = SubResource("Texture2D_b82ki")
 
 [sub_resource type="Texture2D" id="Texture2D_0pqmy"]

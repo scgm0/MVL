@@ -16,6 +16,8 @@ namespace MVL.Utils;
 [JsonSerializable(typeof(GameRelease))]
 [JsonSerializable(typeof(GameDownloadInfo))]
 [JsonSerializable(typeof(GameDownloadUrl))]
+[JsonSerializable(typeof(GameVersion))]
+[JsonSerializable(typeof(LoginResponse))]
 [JsonSourceGenerationOptions(JsonSerializerDefaults.Web,
 	AllowTrailingCommas = true,
 	UseStringEnumConverter = true,

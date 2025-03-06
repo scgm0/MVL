@@ -1,9 +1,9 @@
-[gd_scene load_steps=28 format=3 uid="uid://d0bdto738ug2l"]
+[gd_scene load_steps=25 format=3 uid="uid://d0bdto738ug2l"]
 
 [ext_resource type="Script" uid="uid://74nlqylbyexa" path="res://Src/UI/Page/InfoPage.cs" id="1_fwjxq"]
 [ext_resource type="PackedScene" uid="uid://bxgudtdder0na" path="res://Src/UI/Item/info_item.tscn" id="2_gvx1g"]
 [ext_resource type="ButtonGroup" uid="uid://28dadh3ohukd" path="res://Assets/Gui/info_tab_button_group.tres" id="3_cnlqv"]
-[ext_resource type="Texture2D" uid="uid://bqv5hbr6w0cu" path="res://Assets/Icon/icon.png" id="4_2do0o"]
+[ext_resource type="Texture2D" uid="uid://cg2dshwidpbbv" path="res://Assets/Icon/icon.svg" id="4_cnlqv"]
 [ext_resource type="FontFile" uid="uid://bmgx1vyg6bavd" path="res://Assets/Font/HarmonyOS_Sans_SC_Bold.ttf" id="5_pb4g6"]
 [ext_resource type="Shader" uid="uid://bw4cstfk8udci" path="res://Assets/Shader/blur.gdshader" id="6_cnlqv"]
 [ext_resource type="Script" uid="uid://cre6m68jy0aad" path="res://addons/SmoothScroll/SmoothScrollContainer.gd" id="6_oec7v"]
@@ -145,7 +145,7 @@ theme_override_constants/separation = 10
 custom_minimum_size = Vector2(75, 75)
 layout_mode = 2
 size_flags_horizontal = 4
-texture = ExtResource("4_2do0o")
+texture = ExtResource("4_cnlqv")
 expand_mode = 1
 stretch_mode = 5
 

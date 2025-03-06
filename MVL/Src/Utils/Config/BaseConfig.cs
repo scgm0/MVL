@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Text.Json;
 using Godot;
+using SharedLibrary;
 
 namespace MVL.Utils.Config;
 
@@ -8,9 +9,11 @@ public class BaseConfig {
 	private string _configPath = string.Empty;
 
 	public string CurrentModpack { get; set; } = "";
+	public string CurrentAccount { get; set; } = "";
 	public string ProxyUrl { get; set; } = "";
 	public List<string> Release { get; set; } = [];
 	public List<string> Modpack { get; set; } = [];
+	public List<Account> Account { get; set; } = [];
 
 	public static BaseConfig Load(string configPath) {
 		BaseConfig baseConfig;

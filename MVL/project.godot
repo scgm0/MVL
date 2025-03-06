@@ -19,7 +19,7 @@ config/features=PackedStringArray("4.5", "C#", "Mobile")
 run/low_processor_mode=true
 boot_splash/bg_color=Color(0, 0, 0, 0)
 boot_splash/show_image=false
-config/icon="uid://bqv5hbr6w0cu"
+config/icon="uid://cg2dshwidpbbv"
 config/windows_native_icon="res://Assets/Icon/icon.ico"
 
 [display]

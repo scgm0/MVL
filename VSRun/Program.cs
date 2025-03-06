@@ -39,6 +39,18 @@ public static class Program {
 		AppContext.SetData("APP_CONTEXT_BASE_DIRECTORY", Config.VintageStoryPath);
 		GamePaths.DataPath = Config.VintageStoryDataPath;
 		ClientSettings.ModPaths = ["Mods", GamePaths.DataPathMods];
+
+		if (Config.Account is not null) {
+			var account = Config.Account;
+			ClientSettings.UserEmail = account.Email;
+			ClientSettings.Sessionkey = account.SessionKey;
+			ClientSettings.SessionSignature = account.SessionSignature;
+			ClientSettings.HasGameServer = account.HasGameServer;
+			ClientSettings.PlayerUID = account.Uid;
+			ClientSettings.PlayerName = account.PlayerName;
+			ClientSettings.Entitlements = account.Entitlements;
+		}
+
 		switch (Config.ExecutableType) {
 			case ExecutableTypeEnum.InitData: {
 				InitData();

@@ -1,0 +1,85 @@
+[gd_scene load_steps=8 format=3 uid="uid://cns5w84qytq88"]
+
+[ext_resource type="Script" uid="uid://bnhdvndlmh364" path="res://Src/UI/Item/AccountSelectItem.cs" id="1_dlcfs"]
+[ext_resource type="Script" uid="uid://bk3tot6c35bwu" path="res://Src/Utils/IconTexture2D.cs" id="1_y6v4b"]
+[ext_resource type="ButtonGroup" uid="uid://dsh2cgven1h16" path="res://Assets/Gui/account_select_button_group.tres" id="2_87k83"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_364to"]
+bg_color = Color(0, 0, 0, 0.490196)
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_o4ctv"]
+content_margin_left = 5.0
+content_margin_top = 5.0
+content_margin_right = 5.0
+content_margin_bottom = 5.0
+
+[sub_resource type="Texture2D" id="Texture2D_365jr"]
+resource_local_to_scene = false
+resource_name = ""
+script = ExtResource("1_y6v4b")
+IconName = "trash-can-outline"
+FontSize = 18
+metadata/_custom_type_script = "uid://bk3tot6c35bwu"
+
+[sub_resource type="Texture2D" id="Texture2D_6are0"]
+resource_local_to_scene = false
+resource_name = ""
+script = ExtResource("1_y6v4b")
+IconName = "pencil-outline"
+FontSize = 18
+metadata/_custom_type_script = "uid://bk3tot6c35bwu"
+
+[node name="AccountSelectItem" type="PanelContainer" node_paths=PackedStringArray("_accountNameLabel", "_removeButton", "_editButton", "_checkBox")]
+offset_right = 186.0
+offset_bottom = 29.0
+mouse_filter = 1
+theme_override_styles/panel = SubResource("StyleBoxFlat_364to")
+script = ExtResource("1_dlcfs")
+_accountNameLabel = NodePath("HBoxContainer/Label")
+_removeButton = NodePath("HBoxContainer/Button")
+_editButton = NodePath("HBoxContainer/Button2")
+_checkBox = NodePath("HBoxContainer/CheckBox")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+mouse_filter = 1
+theme_override_styles/normal = SubResource("StyleBoxEmpty_o4ctv")
+text = "玩家名称"
+
+[node name="Control" type="Control" parent="HBoxContainer"]
+custom_minimum_size = Vector2(20, 0)
+layout_mode = 2
+mouse_filter = 1
+
+[node name="Button" type="Button" parent="HBoxContainer"]
+layout_mode = 2
+mouse_filter = 1
+theme_override_colors/icon_hover_color = Color(1, 0, 0, 1)
+theme_override_colors/icon_pressed_color = Color(0.600943, 1.63645e-06, 4.81307e-07, 1)
+theme_override_colors/icon_focus_color = Color(0.6, 0.6, 0.6, 1)
+theme_override_colors/icon_normal_color = Color(0.6, 0.6, 0.6, 1)
+icon = SubResource("Texture2D_365jr")
+flat = true
+
+[node name="Button2" type="Button" parent="HBoxContainer"]
+layout_mode = 2
+mouse_filter = 1
+theme_override_colors/icon_hover_color = Color(0.784314, 0.784314, 0.784314, 1)
+theme_override_colors/icon_pressed_color = Color(1, 1, 1, 1)
+theme_override_colors/icon_focus_color = Color(0.6, 0.6, 0.6, 1)
+theme_override_colors/icon_normal_color = Color(0.6, 0.6, 0.6, 1)
+icon = SubResource("Texture2D_6are0")
+flat = true
+
+[node name="CheckBox" type="CheckBox" parent="HBoxContainer"]
+layout_mode = 2
+mouse_filter = 1
+button_group = ExtResource("2_87k83")

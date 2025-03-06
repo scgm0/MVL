@@ -1,20 +1,26 @@
-[gd_scene load_steps=47 format=3 uid="uid://514oox50h8yl"]
+[gd_scene load_steps=67 format=3 uid="uid://514oox50h8yl"]
 
 [ext_resource type="Script" uid="uid://cvyeyg8ttnwmu" path="res://Src/UI/Main.cs" id="1_1opgh"]
 [ext_resource type="Texture2D" uid="uid://bhh1jvyj73qxh" path="res://Assets/Gui/Background.png" id="2_1opgh"]
+[ext_resource type="PackedScene" uid="uid://dwckxgkp7j0oc" path="res://Src/UI/Window/login_window.tscn" id="2_gblyu"]
 [ext_resource type="Texture2D" uid="uid://bqv5hbr6w0cu" path="res://Assets/Icon/icon.png" id="2_xnuua"]
+[ext_resource type="Texture2D" uid="uid://cg2dshwidpbbv" path="res://Assets/Icon/icon.svg" id="3_53u4p"]
 [ext_resource type="PackedScene" uid="uid://d21bm32gkwqcr" path="res://Src/UI/Window/installed_games_import.tscn" id="3_a5da0"]
 [ext_resource type="ButtonGroup" uid="uid://c644g3bgevb7h" path="res://Assets/Gui/menu_button_group.tres" id="4_megpf"]
 [ext_resource type="Material" uid="uid://d2rejrdmwjskm" path="res://Assets/Material/round.tres" id="4_o4ctv"]
+[ext_resource type="PackedScene" uid="uid://cns5w84qytq88" path="res://Src/UI/Item/account_select_item.tscn" id="5_365jr"]
+[ext_resource type="PackedScene" uid="uid://cx30yvsu80t6f" path="res://Src/UI/Window/confirmation_window.tscn" id="6_a6wm3"]
 [ext_resource type="Material" uid="uid://c0sb2bjy16ljf" path="res://Assets/Material/button_blur.tres" id="6_oarc7"]
 [ext_resource type="Theme" uid="uid://bwauanadesdm6" path="res://Assets/Theme/menu_panel.tres" id="7_7nt4r"]
 [ext_resource type="Script" uid="uid://cfa6u8q8grk6o" path="res://Src/UI/MenuPanel.cs" id="7_365jr"]
 [ext_resource type="Script" uid="uid://dvjtigpqee0jw" path="res://Src/UI/Item/MenuItem.cs" id="7_bl4fu"]
 [ext_resource type="Material" uid="uid://j3isaxpvqgbb" path="res://Assets/Material/blur.tres" id="9_bmwv3"]
 [ext_resource type="Script" uid="uid://bk3tot6c35bwu" path="res://Src/Utils/IconTexture2D.cs" id="13_7nt4r"]
+[ext_resource type="Shader" uid="uid://bw4cstfk8udci" path="res://Assets/Shader/blur.gdshader" id="14_gblyu"]
 [ext_resource type="PackedScene" uid="uid://wtrk0xtd36kj" path="res://Src/UI/Page/home_page.tscn" id="14_oarc7"]
-[ext_resource type="PackedScene" uid="uid://ct87mdadyxtdt" path="res://Src/UI/Page/account_page.tscn" id="15_gblyu"]
 [ext_resource type="PackedScene" uid="uid://colclcegjal1y" path="res://Src/UI/Page/modpack_page.tscn" id="16_bmwv3"]
+[ext_resource type="Script" uid="uid://cre6m68jy0aad" path="res://addons/SmoothScroll/SmoothScrollContainer.gd" id="16_o4ctv"]
+[ext_resource type="Script" uid="uid://41yydm3vncfj" path="res://addons/SmoothScroll/scroll_damper/expo_scroll_damper.gd" id="17_365jr"]
 [ext_resource type="PackedScene" uid="uid://0qq618t18t61" path="res://Src/UI/Page/release_page.tscn" id="17_o4ctv"]
 [ext_resource type="PackedScene" uid="uid://dri1d4mt1w68c" path="res://Src/UI/Page/module_page.tscn" id="18_365jr"]
 [ext_resource type="PackedScene" uid="uid://bp02so1m0q7m0" path="res://Src/UI/Page/setting_page.tscn" id="19_a6wm3"]
@@ -43,14 +49,6 @@ resource_name = ""
 script = ExtResource("13_7nt4r")
 IconName = "home"
 FontSize = 23
-metadata/_custom_type_script = ExtResource("13_7nt4r")
-
-[sub_resource type="Texture2D" id="Texture2D_365jr"]
-resource_local_to_scene = false
-resource_name = ""
-script = ExtResource("13_7nt4r")
-IconName = "account"
-FontSize = 24
 metadata/_custom_type_script = ExtResource("13_7nt4r")
 
 [sub_resource type="Texture2D" id="Texture2D_a6wm3"]
@@ -175,11 +173,149 @@ corner_radius_bottom_right = 20
 corner_radius_bottom_left = 20
 corner_detail = 20
 
-[sub_resource type="LabelSettings" id="LabelSettings_30yt8"]
-font = ExtResource("24_365jr")
-font_size = 20
-outline_size = 5
-outline_color = Color(0, 0, 0, 1)
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_oarc7"]
+content_margin_left = 10.0
+content_margin_top = 10.0
+content_margin_right = 10.0
+content_margin_bottom = 10.0
+bg_color = Color(0.206914, 0.206914, 0.206914, 0.137255)
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
+shadow_color = Color(0, 0, 0, 0.172549)
+shadow_size = 1
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_gblyu"]
+content_margin_left = 10.0
+content_margin_top = 10.0
+content_margin_right = 10.0
+content_margin_bottom = 10.0
+bg_color = Color(0.6, 0.6, 0.6, 0.215686)
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
+shadow_color = Color(0, 0, 0, 0.392157)
+shadow_size = 2
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_oarc7"]
+content_margin_left = 10.0
+content_margin_top = 10.0
+content_margin_right = 10.0
+content_margin_bottom = 10.0
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_gblyu"]
+shader = ExtResource("14_gblyu")
+shader_parameter/lod = 2.0
+shader_parameter/blend = 1.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_bmwv3"]
+content_margin_left = 10.0
+content_margin_top = 10.0
+content_margin_right = 10.0
+content_margin_bottom = 10.0
+bg_color = Color(0.207843, 0.207843, 0.207843, 1)
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_7nt4r"]
+content_margin_left = 10.0
+content_margin_top = 10.0
+content_margin_right = 10.0
+content_margin_bottom = 10.0
+bg_color = Color(0.377638, 0.377638, 0.377638, 1)
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_gblyu"]
+
+[sub_resource type="GDScript" id="GDScript_o4ctv"]
+script/source = "extends Button
+
+
+func _on_button_toggled(toggled_on: bool) -> void:
+	button_pressed = toggled_on;
+	pass # Replace with function body.
+"
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_o4ctv"]
+shader = ExtResource("14_gblyu")
+shader_parameter/lod = 2.0
+shader_parameter/blend = 0.5
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_7eosv"]
+content_margin_left = 5.0
+content_margin_top = 5.0
+content_margin_right = 5.0
+content_margin_bottom = 5.0
+bg_color = Color(0.207843, 0.207843, 0.207843, 1)
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
+shadow_size = 2
+
+[sub_resource type="Resource" id="Resource_a6wm3"]
+script = ExtResource("17_365jr")
+friction = 4.0
+minimum_velocity = 0.4
+rebound_strength = 7.0
+
+[sub_resource type="Resource" id="Resource_53u4p"]
+script = ExtResource("17_365jr")
+friction = 4.0
+minimum_velocity = 0.4
+rebound_strength = 7.0
+
+[sub_resource type="Texture2D" id="Texture2D_364to"]
+resource_local_to_scene = false
+resource_name = ""
+script = ExtResource("13_7nt4r")
+IconName = "plus"
+FontSize = 24
+metadata/_custom_type_script = "uid://bk3tot6c35bwu"
+
+[sub_resource type="Animation" id="Animation_bmwv3"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:size")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(162, 80)]
+}
+
+[sub_resource type="Animation" id="Animation_gblyu"]
+resource_name = "show"
+length = 0.25
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:size")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.25),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(154, 0), Vector2(154, 80)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_o4ctv"]
+_data = {
+&"RESET": SubResource("Animation_bmwv3"),
+&"show": SubResource("Animation_gblyu")
+}
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_kq46g"]
 
@@ -217,7 +353,7 @@ IconName = "window-close"
 FontSize = 14
 metadata/_custom_type_script = ExtResource("13_7nt4r")
 
-[node name="Main" type="Control" node_paths=PackedStringArray("MinButton", "CloseButton")]
+[node name="Main" type="Control" node_paths=PackedStringArray("_minButton", "_closeButton", "_accountButton", "_accountSelectButton", "_accountSelectContainer", "_accountSelectScrollContainer", "_accountSelectAddButton", "_accountSelectListContainer", "_accountSelectAnimationPlayer")]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -225,11 +361,21 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_1opgh")
-_iconTexture = ExtResource("2_xnuua")
+_loginWindowScene = ExtResource("2_gblyu")
+_iconTexture = ExtResource("3_53u4p")
 _installedGamesImportScene = ExtResource("3_a5da0")
-MinButton = NodePath("HBoxContainer2/MinButton")
-CloseButton = NodePath("HBoxContainer2/CloseButton")
+_accountSelectItemScene = ExtResource("5_365jr")
+_confirmationWindowScene = ExtResource("6_a6wm3")
+_minButton = NodePath("HBoxContainer2/MinButton")
+_closeButton = NodePath("HBoxContainer2/CloseButton")
 _roundMaterial = ExtResource("4_o4ctv")
+_accountButton = NodePath("HBoxContainer/ColorRect/VBoxContainer/MarginContainer2/HBoxContainer/Button")
+_accountSelectButton = NodePath("HBoxContainer/ColorRect/VBoxContainer/MarginContainer2/HBoxContainer/Button/Button2")
+_accountSelectContainer = NodePath("HBoxContainer/ColorRect/VBoxContainer/MarginContainer2/HBoxContainer/Button/Button2/PanelContainer")
+_accountSelectScrollContainer = NodePath("HBoxContainer/ColorRect/VBoxContainer/MarginContainer2/HBoxContainer/Button/Button2/PanelContainer/SmoothScrollContainer")
+_accountSelectAddButton = NodePath("HBoxContainer/ColorRect/VBoxContainer/MarginContainer2/HBoxContainer/Button/Button2/PanelContainer/SmoothScrollContainer/VBoxContainer/Button")
+_accountSelectListContainer = NodePath("HBoxContainer/ColorRect/VBoxContainer/MarginContainer2/HBoxContainer/Button/Button2/PanelContainer/SmoothScrollContainer/VBoxContainer/VBoxContainer")
+_accountSelectAnimationPlayer = NodePath("HBoxContainer/ColorRect/VBoxContainer/MarginContainer2/HBoxContainer/Button/Button2/PanelContainer/AnimationPlayer")
 IsDraggable = true
 
 [node name="Background" type="TextureRect" parent="."]
@@ -296,17 +442,6 @@ icon = SubResource("Texture2D_bmwv3")
 clip_text = true
 script = ExtResource("7_bl4fu")
 Page = NodePath("../../../ColorRect/VBoxContainer/MarginContainer/PageContainer/HomePage")
-metadata/_custom_type_script = "uid://dvjtigpqee0jw"
-
-[node name="AccountButton" type="Button" parent="HBoxContainer/MenuPanel/VBoxContainer" node_paths=PackedStringArray("Page")]
-layout_mode = 2
-toggle_mode = true
-button_group = ExtResource("4_megpf")
-text = "账号"
-icon = SubResource("Texture2D_365jr")
-clip_text = true
-script = ExtResource("7_bl4fu")
-Page = NodePath("../../../ColorRect/VBoxContainer/MarginContainer/PageContainer/AccountPage")
 metadata/_custom_type_script = "uid://dvjtigpqee0jw"
 
 [node name="ModpackButton" type="Button" parent="HBoxContainer/MenuPanel/VBoxContainer" node_paths=PackedStringArray("Page")]
@@ -403,28 +538,35 @@ grow_vertical = 2
 size_flags_horizontal = 3
 theme_override_constants/separation = 0
 
-[node name="HBoxContainer" type="HBoxContainer" parent="HBoxContainer/ColorRect/VBoxContainer"]
+[node name="MarginContainer2" type="MarginContainer" parent="HBoxContainer/ColorRect/VBoxContainer"]
 layout_mode = 2
-theme_override_constants/separation = 5
+size_flags_horizontal = 0
+theme_override_constants/margin_left = 5
+theme_override_constants/margin_top = 5
 
-[node name="MarginContainer" type="MarginContainer" parent="HBoxContainer/ColorRect/VBoxContainer/HBoxContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="HBoxContainer/ColorRect/VBoxContainer/MarginContainer2"]
+layout_mode = 2
+size_flags_horizontal = 0
+theme_override_constants/separation = 0
+
+[node name="MarginContainer" type="MarginContainer" parent="HBoxContainer/ColorRect/VBoxContainer/MarginContainer2/HBoxContainer"]
 layout_mode = 2
 theme_override_constants/margin_left = 5
 theme_override_constants/margin_top = 5
 theme_override_constants/margin_right = 5
 theme_override_constants/margin_bottom = 5
 
-[node name="PanelContainer2" type="PanelContainer" parent="HBoxContainer/ColorRect/VBoxContainer/HBoxContainer/MarginContainer"]
+[node name="PanelContainer2" type="PanelContainer" parent="HBoxContainer/ColorRect/VBoxContainer/MarginContainer2/HBoxContainer/MarginContainer"]
 layout_mode = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_30yt8")
 
-[node name="PanelContainer" type="PanelContainer" parent="HBoxContainer/ColorRect/VBoxContainer/HBoxContainer/MarginContainer/PanelContainer2"]
+[node name="PanelContainer" type="PanelContainer" parent="HBoxContainer/ColorRect/VBoxContainer/MarginContainer2/HBoxContainer/MarginContainer/PanelContainer2"]
 clip_children = 2
 layout_mode = 2
 mouse_filter = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_08ol6")
 
-[node name="TextureRect" type="TextureRect" parent="HBoxContainer/ColorRect/VBoxContainer/HBoxContainer/MarginContainer/PanelContainer2/PanelContainer"]
+[node name="TextureRect" type="TextureRect" parent="HBoxContainer/ColorRect/VBoxContainer/MarginContainer2/HBoxContainer/MarginContainer/PanelContainer2/PanelContainer"]
 use_parent_material = true
 custom_minimum_size = Vector2(40, 40)
 layout_mode = 2
@@ -432,12 +574,89 @@ texture = ExtResource("2_xnuua")
 expand_mode = 1
 stretch_mode = 6
 
-[node name="Label" type="Label" parent="HBoxContainer/ColorRect/VBoxContainer/HBoxContainer"]
+[node name="Button" type="Button" parent="HBoxContainer/ColorRect/VBoxContainer/MarginContainer2/HBoxContainer"]
 layout_mode = 2
-size_flags_horizontal = 4
-text = "神麤詭末的复古物语启动器"
-label_settings = SubResource("LabelSettings_30yt8")
-horizontal_alignment = 1
+size_flags_vertical = 4
+focus_mode = 0
+mouse_default_cursor_shape = 2
+theme_override_constants/outline_size = 5
+theme_override_fonts/font = ExtResource("24_365jr")
+theme_override_font_sizes/font_size = 18
+theme_override_styles/hover = SubResource("StyleBoxFlat_oarc7")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_gblyu")
+theme_override_styles/normal = SubResource("StyleBoxEmpty_oarc7")
+toggle_mode = true
+text = "点击登录账号"
+
+[node name="Button" type="Button" parent="HBoxContainer/ColorRect/VBoxContainer/MarginContainer2/HBoxContainer/Button"]
+show_behind_parent = true
+material = SubResource("ShaderMaterial_gblyu")
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_vertical = 4
+mouse_filter = 1
+theme_override_styles/hover = SubResource("StyleBoxFlat_bmwv3")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_7nt4r")
+theme_override_styles/normal = SubResource("StyleBoxEmpty_gblyu")
+toggle_mode = true
+script = SubResource("GDScript_o4ctv")
+
+[node name="Button2" type="Button" parent="HBoxContainer/ColorRect/VBoxContainer/MarginContainer2/HBoxContainer/Button"]
+visible = false
+top_level = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+flat = true
+
+[node name="BackBufferCopy" type="BackBufferCopy" parent="HBoxContainer/ColorRect/VBoxContainer/MarginContainer2/HBoxContainer/Button/Button2"]
+position = Vector2(151, 103)
+scale = Vector2(1.5, 1.02)
+copy_mode = 2
+
+[node name="PanelContainer" type="PanelContainer" parent="HBoxContainer/ColorRect/VBoxContainer/MarginContainer2/HBoxContainer/Button/Button2"]
+material = SubResource("ShaderMaterial_o4ctv")
+layout_mode = 1
+offset_right = 162.0
+offset_bottom = 80.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_7eosv")
+
+[node name="SmoothScrollContainer" type="ScrollContainer" parent="HBoxContainer/ColorRect/VBoxContainer/MarginContainer2/HBoxContainer/Button/Button2/PanelContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+horizontal_scroll_mode = 0
+vertical_scroll_mode = 0
+script = ExtResource("16_o4ctv")
+wheel_scroll_damper = SubResource("Resource_a6wm3")
+dragging_scroll_damper = SubResource("Resource_53u4p")
+allow_horizontal_scroll = false
+metadata/_custom_type_script = "uid://cre6m68jy0aad"
+
+[node name="VBoxContainer" type="VBoxContainer" parent="HBoxContainer/ColorRect/VBoxContainer/MarginContainer2/HBoxContainer/Button/Button2/PanelContainer/SmoothScrollContainer"]
+layout_mode = 2
+
+[node name="Button" type="Button" parent="HBoxContainer/ColorRect/VBoxContainer/MarginContainer2/HBoxContainer/Button/Button2/PanelContainer/SmoothScrollContainer/VBoxContainer"]
+layout_mode = 2
+mouse_filter = 1
+icon = SubResource("Texture2D_364to")
+icon_alignment = 1
+
+[node name="VBoxContainer" type="VBoxContainer" parent="HBoxContainer/ColorRect/VBoxContainer/MarginContainer2/HBoxContainer/Button/Button2/PanelContainer/SmoothScrollContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="HBoxContainer/ColorRect/VBoxContainer/MarginContainer2/HBoxContainer/Button/Button2/PanelContainer"]
+libraries = {
+&"": SubResource("AnimationLibrary_o4ctv")
+}
 
 [node name="MarginContainer" type="MarginContainer" parent="HBoxContainer/ColorRect/VBoxContainer"]
 layout_mode = 2
@@ -460,31 +679,32 @@ tabs_visible = false
 [node name="HomePage" parent="HBoxContainer/ColorRect/VBoxContainer/MarginContainer/PageContainer" instance=ExtResource("14_oarc7")]
 layout_mode = 2
 
-[node name="AccountPage" parent="HBoxContainer/ColorRect/VBoxContainer/MarginContainer/PageContainer" instance=ExtResource("15_gblyu")]
-visible = false
-layout_mode = 2
-
 [node name="ModpackPage" parent="HBoxContainer/ColorRect/VBoxContainer/MarginContainer/PageContainer" instance=ExtResource("16_bmwv3")]
 visible = false
 layout_mode = 2
+metadata/_tab_index = 1
 
 [node name="ReleasePage" parent="HBoxContainer/ColorRect/VBoxContainer/MarginContainer/PageContainer" instance=ExtResource("17_o4ctv")]
 visible = false
 layout_mode = 2
+metadata/_tab_index = 2
 
 [node name="ModulePage" parent="HBoxContainer/ColorRect/VBoxContainer/MarginContainer/PageContainer" instance=ExtResource("18_365jr")]
 visible = false
 layout_mode = 2
+metadata/_tab_index = 3
 
 [node name="SettingPage" parent="HBoxContainer/ColorRect/VBoxContainer/MarginContainer/PageContainer" instance=ExtResource("19_a6wm3")]
 visible = false
 layout_mode = 2
+metadata/_tab_index = 4
 
 [node name="InfoPage" parent="HBoxContainer/ColorRect/VBoxContainer/MarginContainer/PageContainer" node_paths=PackedStringArray("_titleBar") instance=ExtResource("20_53u4p")]
 visible = false
 layout_mode = 2
 _buttonGroup = SubResource("ButtonGroup_08ol6")
-_titleBar = NodePath("../../../HBoxContainer")
+_titleBar = NodePath("../../../MarginContainer2/HBoxContainer")
+metadata/_tab_index = 5
 
 [node name="HBoxContainer2" type="HBoxContainer" parent="."]
 layout_mode = 1
@@ -526,3 +746,5 @@ theme_override_styles/normal = SubResource("StyleBoxEmpty_365jr")
 icon = SubResource("Texture2D_7eosv")
 icon_alignment = 1
 expand_icon = true
+
+[connection signal="toggled" from="HBoxContainer/ColorRect/VBoxContainer/MarginContainer2/HBoxContainer/Button" to="HBoxContainer/ColorRect/VBoxContainer/MarginContainer2/HBoxContainer/Button/Button" method="_on_button_toggled"]

@@ -10,4 +10,6 @@ public record struct RunConfig() {
 	public ExecutableTypeEnum ExecutableType { get; set; }
 
 	public bool UseAnsiLogger { get; set; } = true;
+
+	public Account? Account { get; set; }
 }

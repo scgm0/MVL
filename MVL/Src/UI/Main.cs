@@ -10,10 +10,13 @@ using Flurl.Http;
 using Godot;
 using Mono.Cecil;
 using Mono.Cecil.Cil;
+using MVL.UI.Item;
+using MVL.UI.Window;
 using MVL.Utils;
 using MVL.Utils.Config;
 using MVL.Utils.Extensions;
 using MVL.Utils.Game;
+using MVL.Utils.Help;
 using SharedLibrary;
 
 namespace MVL.UI;
@@ -22,7 +25,10 @@ public partial class Main : NativeWindowUtility {
 	public static BaseConfig BaseConfig { get; } =
 		BaseConfig.Load(Paths.BaseConfigPath);
 
-	private Window.InstalledGamesImport? _installedGamesImport;
+	private InstalledGamesImport? _installedGamesImport;
+
+	[Export]
+	private PackedScene? _loginWindowScene;
 
 	[Export]
 	private Texture2D? _iconTexture;
@@ -31,16 +37,43 @@ public partial class Main : NativeWindowUtility {
 	private PackedScene? _installedGamesImportScene;
 
 	[Export]
+	private PackedScene? _accountSelectItemScene;
+
+	[Export]
+	private PackedScene? _confirmationWindowScene;
+
+	[Export]
 	private MarginContainer? _marginContainer;
 
 	[Export]
-	private Button? MinButton { get; set; }
+	private Button? _minButton;
 
 	[Export]
-	private Button? CloseButton { get; set; }
+	private Button? _closeButton;
 
 	[Export]
 	private ShaderMaterial? _roundMaterial;
+
+	[Export]
+	private Button? _accountButton;
+
+	[Export]
+	private Button? _accountSelectButton;
+
+	[Export]
+	private PanelContainer? _accountSelectContainer;
+
+	[Export]
+	private ScrollContainer? _accountSelectScrollContainer;
+
+	[Export]
+	private Button? _accountSelectAddButton;
+
+	[Export]
+	private VBoxContainer? _accountSelectListContainer;
+
+	[Export]
+	private AnimationPlayer? _accountSelectAnimationPlayer;
 
 	public int ShadowSize {
 		get;
@@ -62,13 +95,30 @@ public partial class Main : NativeWindowUtility {
 	public static Dictionary<string, ReleaseInfo> ReleaseInfos { get; } = new();
 
 	public static Dictionary<string, ModpackConfig> ModpackConfigs { get; } = new();
+
+	public static Dictionary<string, Account> Accounts { get; } = new();
+
 	public static SceneTree SceneTree { get; } = (SceneTree)Engine.GetMainLoop();
 
 	public Main() { Instance = this; }
 
 	public override void _Ready() {
 		base._Ready();
-		Utils.Help.NullExceptionHelper.NotNull(_iconTexture, _installedGamesImportScene, MinButton, CloseButton);
+
+		_loginWindowScene.NotNull();
+		_iconTexture.NotNull();
+		_installedGamesImportScene.NotNull();
+		_accountSelectItemScene.NotNull();
+		_minButton.NotNull();
+		_closeButton.NotNull();
+		_accountButton.NotNull();
+		_accountSelectButton.NotNull();
+		_accountSelectContainer.NotNull();
+		_accountSelectScrollContainer.NotNull();
+		_accountSelectAddButton.NotNull();
+		_accountSelectListContainer.NotNull();
+		_accountSelectAnimationPlayer.NotNull();
+
 		DisplayServer.SetIcon(_iconTexture.GetImage());
 
 		SceneTree.Root.MinSize = SceneTree.Root.Size - new Vector2I(40, 40);
@@ -101,18 +151,166 @@ public partial class Main : NativeWindowUtility {
 			);
 		};
 
-		MinButton.Pressed += SceneTree.Root.Minimize;
-		CloseButton.Pressed += () => SceneTree.Quit();
+		_minButton.Pressed += SceneTree.Root.Minimize;
+		_closeButton.Pressed += () => SceneTree.Quit();
+		_accountButton.Pressed += AccountButtonOnPressed;
+		_accountSelectButton.Pressed += AccountSelectButtonOnPressed;
+		_accountSelectAddButton.Pressed += AccountSelectAddButtonOnPressed;
+
+		CheckAccount();
+
 		FlurlHttp.Clients.WithDefaults(builder => {
-			builder.ConfigureInnerHandler(handler => { handler.Proxy = string.IsNullOrEmpty(BaseConfig.ProxyUrl) ? null : new WebProxy(BaseConfig.ProxyUrl); });
+			builder.ConfigureInnerHandler(handler => {
+				handler.Proxy = string.IsNullOrEmpty(BaseConfig.ProxyUrl) ? null : new WebProxy(BaseConfig.ProxyUrl);
+			});
 		});
+	}
+
+	private async void AccountSelectButtonOnPressed() {
+		_accountSelectAnimationPlayer!.PlayBackwards(StringNames.Show);
+		await ToSignal(_accountSelectAnimationPlayer, AnimationMixer.SignalName.AnimationFinished);
+		_accountButton!.ButtonPressed = false;
+		_accountSelectButton!.Hide();
+		foreach (var child in _accountSelectListContainer!.GetChildren()) {
+			child.QueueFree();
+		}
+
+		CheckAccount();
+	}
+
+	private async void AccountSelectAddButtonOnPressed() {
+		var loginWindow = await OpenAccountSelectWindow();
+		loginWindow.Login += _ => {
+			foreach (var child in _accountSelectListContainer!.GetChildren()) {
+				child.QueueFree();
+			}
+
+			AccountButtonOnPressed();
+		};
+	}
+
+	private async void AccountButtonOnPressed() {
+		if (BaseConfig.Account.Count == 0) {
+			var loginWindow = await OpenAccountSelectWindow();
+			loginWindow.Login += window => {
+				BaseConfig.CurrentAccount = window.Account?.PlayerName ?? string.Empty;
+				CheckAccount();
+			};
+			loginWindow.Hidden += () => { _accountButton!.ButtonPressed = false; };
+		} else {
+			_accountSelectContainer!.Modulate = Colors.Transparent;
+			_accountSelectScrollContainer!.VerticalScrollMode = ScrollContainer.ScrollMode.Disabled;
+			_accountSelectButton!.Show();
+			_accountSelectContainer.GlobalPosition = _accountButton!.GlobalPosition with {
+				Y = _accountButton.GlobalPosition.Y + _accountButton.Size.Y + 3
+			};
+
+			foreach (var account in BaseConfig.Account) {
+				var accountItem = _accountSelectItemScene!.Instantiate<AccountSelectItem>();
+				accountItem.Account = account;
+				accountItem.Select += AccountItemOnSelect;
+				accountItem.Edit += AccountItemOnEdit;
+				accountItem.Remove += AccountItemOnRemove;
+				_accountSelectListContainer!.AddChild(accountItem);
+			}
+
+			await ToSignal(_accountSelectListContainer!, Container.SignalName.SortChildren);
+
+			_accountSelectScrollContainer.VerticalScrollMode = ScrollContainer.ScrollMode.ShowNever;
+			_accountSelectContainer.Modulate = Colors.White;
+
+			var animation = _accountSelectAnimationPlayer!.GetAnimationLibrary("").GetAnimation(StringNames.Show);
+			animation.TrackSetKeyValue(0, 0, new Vector2(_accountSelectContainer.Size.X, 0));
+			animation.TrackSetKeyValue(0, 1, _accountSelectContainer.Size);
+			animation.Length = (_accountSelectListContainer!.GetChildCount() + 1) * 0.05f;
+			animation.TrackSetKeyTime(0, 1, animation.Length);
+			_accountSelectAnimationPlayer.Play(StringNames.Show);
+		}
+	}
+
+	private async Task<LoginWindow> OpenAccountSelectWindow(Account? account = null) {
+		var loginWindow = _loginWindowScene!.Instantiate<LoginWindow>();
+		loginWindow.Account = account;
+		loginWindow.Visible = false;
+		loginWindow.Login += AddAccount;
+		loginWindow.Hidden += loginWindow.QueueFree;
+		AddChild(loginWindow);
+		await loginWindow.Show();
+		return loginWindow;
+	}
+
+	private void AccountItemOnRemove(AccountSelectItem item) {
+		var confirmationWindow = _confirmationWindowScene!.Instantiate<ConfirmationWindow>();
+		confirmationWindow.Visible = false;
+		confirmationWindow.Message = $"确定要删除账号 [color=#0078d7][b]{item.Account!.PlayerName}[/b][/color] 吗？";
+		confirmationWindow.Confirm += async () => {
+			await confirmationWindow.Hide();
+			BaseConfig.Account.Remove(item.Account);
+			if (BaseConfig.Account.Count > 0) {
+				AccountButtonOnPressed();
+			} else {
+				AccountSelectButtonOnPressed();
+			}
+		};
+		confirmationWindow.Hidden += confirmationWindow.QueueFree;
+		AddChild(confirmationWindow);
+		_ = confirmationWindow.Show();
+	}
+
+	private async void AccountItemOnEdit(AccountSelectItem item) {
+		var loginWindow = await OpenAccountSelectWindow(item.Account);
+		loginWindow.Login += _ => {
+			foreach (var child in _accountSelectListContainer!.GetChildren()) {
+				child.QueueFree();
+			}
+
+			AccountButtonOnPressed();
+		};
+	}
+
+	private void AccountItemOnSelect(AccountSelectItem item) {
+		BaseConfig.CurrentAccount = item.Account!.PlayerName!;
+		CheckAccount();
+	}
+
+	private void AddAccount(LoginWindow window) {
+		var account = window.Account!;
+		AddAccount(account);
+	}
+
+	private void AddAccount(Account account) {
+		if (!BaseConfig.Account.Contains(account)) {
+			BaseConfig.Account.Add(account);
+		}
+
+		CheckAccount();
+	}
+
+	public void CheckAccount() {
+		Accounts.Clear();
+		var list = BaseConfig.Account.ToList();
+		foreach (var account in list) {
+			var name = account.PlayerName!;
+			if (Accounts.TryAdd(name, account) || account == Accounts[name]) continue;
+			BaseConfig.Account.Remove(Accounts[name]);
+			Accounts[name] = account;
+		}
+
+		if (BaseConfig.Account.Count == 0 || !Accounts.ContainsKey(BaseConfig.CurrentAccount)) {
+			BaseConfig.CurrentAccount = string.Empty;
+			_accountButton!.Text = "点击登录账号";
+		} else {
+			_accountButton!.Text = BaseConfig.CurrentAccount;
+		}
+
+		BaseConfig.Save(BaseConfig);
 	}
 
 	public void Start() {
 		CheckReleaseInfo();
 		CheckModpackConfig();
 
-		if (BaseConfig.Release.Count == 0 && Window.InstalledGamesImport.InstalledGamePaths.Length > 0) {
+		if (BaseConfig.Release.Count == 0 && InstalledGamesImport.InstalledGamePaths.Length > 0) {
 			_ = ImportInstalledGames();
 		}
 	}
@@ -128,9 +326,9 @@ public partial class Main : NativeWindowUtility {
 		}
 	}
 
-	public async Task<Window.InstalledGamesImport> ImportInstalledGames(IEnumerable<string>? gamePaths = null) {
+	public async Task<InstalledGamesImport> ImportInstalledGames(IEnumerable<string>? gamePaths = null) {
 		if (_installedGamesImport is null) {
-			_installedGamesImport = _installedGamesImportScene!.Instantiate<Window.InstalledGamesImport>();
+			_installedGamesImport = _installedGamesImportScene!.Instantiate<InstalledGamesImport>();
 			AddChild(_installedGamesImport);
 			_installedGamesImport.Import += paths => {
 				if (paths.Length == 0) {
@@ -322,7 +520,8 @@ public partial class Main : NativeWindowUtility {
 					VintageStoryPath = gamePath,
 					VintageStoryDataPath = dataPath,
 					AssemblyPath = assembleName.Replace("%game_path%", gamePath).Replace("%data_path", dataPath),
-					ExecutableType = ExecutableTypeEnum.StartGame
+					ExecutableType = ExecutableTypeEnum.StartGame,
+					Account = string.IsNullOrEmpty(BaseConfig.CurrentAccount) ? null : Accounts[BaseConfig.CurrentAccount]
 				},
 				command.Replace("%command%", $"dotnet \"{Path.Combine(tmp.GetCurrentDir(), "VSRun.dll").NormalizePath()}\""));
 			CurrentGameProcess = process;
