@@ -4,6 +4,7 @@ using System.IO;
 using System.Net;
 using System.Net.Sockets;
 using System.Threading.Tasks;
+using MVL.Utils;
 using FileAccess = System.IO.FileAccess;
 
 namespace MVL.UI;
@@ -16,20 +17,20 @@ public partial class Start : Control {
 
 	public Start() {
 		try {
-			_lockFile = File.Open(OS.GetTempDir().PathJoin("MVL-Lock"),
+			_lockFile = File.Open(Paths.LockFile,
 				FileMode.OpenOrCreate,
 				FileAccess.ReadWrite,
 				FileShare.None);
 			_listener = new(IPAddress.Loopback, 0);
 			_listener.Start();
 			var port = ((IPEndPoint)_listener.LocalEndpoint).Port;
-			File.WriteAllTextAsync(OS.GetTempDir().PathJoin("MVL-Port"), port.ToString());
+			File.WriteAllTextAsync(Paths.PortFile, port.ToString());
 			Task.Run(AppStartEventListen);
 		} catch (Exception) {
 			QueueFree();
 			Main.SceneTree.Root.MinSize = Vector2I.Zero;
 			Main.SceneTree.Root.Size = Vector2I.Zero;
-			var port = int.Parse(File.ReadAllText(OS.GetTempDir().PathJoin("MVL-Port")));
+			var port = int.Parse(File.ReadAllText(Paths.PortFile));
 			using var client = new TcpClient();
 			client.Connect(IPAddress.Loopback, port);
 			using var stream = client.GetStream();
@@ -45,8 +46,11 @@ public partial class Start : Control {
 			await using var stream = client.GetStream();
 			using var reader = new StreamReader(stream);
 			var str = await reader.ReadLineAsync();
-			var e = Enum.Parse<AppEventEnum>(str!);
-			GD.Print(e);
+			if (str != null) {
+				var e = Enum.Parse<AppEventEnum>(str);
+				GD.Print(e);
+			}
+
 			Dispatcher.SynchronizationContext.Post(_ => {
 					var window = Main.SceneTree.Root;
 					window.GrabFocus();
