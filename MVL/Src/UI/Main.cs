@@ -103,6 +103,11 @@ public partial class Main : NativeWindowUtility {
 	public Main() { Instance = this; }
 
 	public override void _Ready() {
+		if (!Start.IsRunning) {
+			QueueFree();
+			return;
+		}
+
 		base._Ready();
 
 		_loginWindowScene.NotNull();
@@ -306,7 +311,7 @@ public partial class Main : NativeWindowUtility {
 		BaseConfig.Save(BaseConfig);
 	}
 
-	public void Start() {
+	public void Init() {
 		CheckReleaseInfo();
 		CheckModpackConfig();
 
