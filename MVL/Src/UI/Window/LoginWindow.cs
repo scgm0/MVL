@@ -52,7 +52,6 @@ public partial class LoginWindow : BaseWindow {
 
 		Account ??= new();
 		_emailInput.Text = Account.Email;
-		_passwordInput.Text = Account.Password;
 
 		_emailInput.TextChanged += _ => UpdateInfo();
 		_passwordInput.TextChanged += _ => UpdateInfo();
@@ -124,12 +123,11 @@ public partial class LoginWindow : BaseWindow {
 			_tooltip!.Text = "登录成功";
 			await Hide();
 			Account!.Email = _emailInput!.Text;
-			Account.Password = _passwordInput!.Text;
-			Account.PlayerName = loginResponse.PlayerName;
-			Account.Uid = loginResponse.Uid;
-			Account.SessionKey = loginResponse.SessionKey;
-			Account.SessionSignature = loginResponse.SessionSignature;
-			Account.Entitlements = loginResponse.Entitlements;
+			Account.PlayerName = loginResponse.PlayerName ?? string.Empty;
+			Account.Uid = loginResponse.Uid ?? string.Empty;
+			Account.SessionKey = loginResponse.SessionKey ?? string.Empty;
+			Account.SessionSignature = loginResponse.SessionSignature ?? string.Empty;
+			Account.Entitlements = loginResponse.Entitlements ?? string.Empty;
 			Account.HasGameServer = loginResponse.HasGameServer;
 			EmitSignalLogin(this);
 		} else if (loginResponse.Reason is "requiretotpcode" or "wrongtotpcode") {
