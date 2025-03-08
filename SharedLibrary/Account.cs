@@ -8,4 +8,5 @@ public class Account {
 	public string? Email { get; set; }
 	public string? Entitlements { get; set; }
 	public bool HasGameServer { get; set; }
+	public bool Offline { get; set; }
 }

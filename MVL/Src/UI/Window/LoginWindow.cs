@@ -1,3 +1,4 @@
+using System;
 using System.Text.Json;
 using System.Threading.Tasks;
 using Flurl.Http;
@@ -31,7 +32,16 @@ public partial class LoginWindow : BaseWindow {
 	private LineEdit? _accessCodeInput;
 
 	[Export]
+	private VBoxContainer? _nameContainer;
+
+	[Export]
+	private LineEdit? _nameInput;
+
+	[Export]
 	private Label? _tooltip;
+
+	[Export]
+	private CheckButton? _offlineCheckbox;
 
 	[Export]
 	private ColorRect? _loadingControl;
@@ -48,17 +58,32 @@ public partial class LoginWindow : BaseWindow {
 		_eyeButton.NotNull();
 		_accessCodeContainer.NotNull();
 		_accessCodeInput.NotNull();
+		_nameContainer.NotNull();
+		_nameInput.NotNull();
 		_tooltip.NotNull();
+		_offlineCheckbox.NotNull();
+		_loadingControl.NotNull();
 
 		Account ??= new();
 		_emailInput.Text = Account.Email;
+		_nameInput.Text = Account.PlayerName;
+		_offlineCheckbox.ButtonPressed = Account.Offline;
 
 		_emailInput.TextChanged += _ => UpdateInfo();
 		_passwordInput.TextChanged += _ => UpdateInfo();
 		_accessCodeInput.TextChanged += _ => UpdateInfo();
 		_eyeButton.Toggled += EyeButtonOnToggled;
+		_nameInput.TextChanged += _ => UpdateInfo();
+		_offlineCheckbox.Toggled += OfflineCheckboxOnToggled;
 		OkButton!.Pressed += OkButtonOnPressed;
 		CancelButton!.Pressed += CancelButtonOnPressed;
+		OfflineCheckboxOnToggled(_offlineCheckbox.ButtonPressed);
+	}
+
+	private void OfflineCheckboxOnToggled(bool toggledOn) {
+		Account!.Offline = toggledOn;
+		_nameContainer!.Visible = toggledOn;
+		_loginContainer!.Modulate = toggledOn ? Colors.Transparent : Colors.White;
 		UpdateInfo();
 	}
 
@@ -69,25 +94,41 @@ public partial class LoginWindow : BaseWindow {
 	}
 
 	public void UpdateInfo(string? text, Color? color) {
-		if (string.IsNullOrEmpty(_emailInput!.Text)) {
-			_tooltip!.Text = "请输入邮箱";
-			_tooltip.Modulate = Colors.Red;
-			OkButton!.Disabled = true;
-			return;
-		}
+		if (_offlineCheckbox!.ButtonPressed) {
+			if (string.IsNullOrEmpty(_nameInput!.Text)) {
+				_tooltip!.Text = "请输入名称";
+				_tooltip.Modulate = Colors.Red;
+				OkButton!.Disabled = true;
+				return;
+			}
 
-		if (string.IsNullOrEmpty(_passwordInput!.Text)) {
-			_tooltip!.Text = "请输入密码";
-			_tooltip.Modulate = Colors.Red;
-			OkButton!.Disabled = true;
-			return;
-		}
+			if (Main.Accounts.TryGetValue(_nameInput!.Text, out var value) && value != Account) {
+				_tooltip!.Text = "该名称已存在";
+				_tooltip.Modulate = Colors.Red;
+				OkButton!.Disabled = true;
+				return;
+			}
+		} else {
+			if (string.IsNullOrEmpty(_emailInput!.Text)) {
+				_tooltip!.Text = "请输入邮箱";
+				_tooltip.Modulate = Colors.Red;
+				OkButton!.Disabled = true;
+				return;
+			}
 
-		if (_accessCodeContainer!.Visible && string.IsNullOrEmpty(_accessCodeInput!.Text)) {
-			_tooltip!.Text = "请输入访问代码";
-			_tooltip.Modulate = Colors.Red;
-			OkButton!.Disabled = true;
-			return;
+			if (string.IsNullOrEmpty(_passwordInput!.Text)) {
+				_tooltip!.Text = "请输入密码";
+				_tooltip.Modulate = Colors.Red;
+				OkButton!.Disabled = true;
+				return;
+			}
+
+			if (_accessCodeContainer!.Visible && string.IsNullOrEmpty(_accessCodeInput!.Text)) {
+				_tooltip!.Text = "请输入访问代码";
+				_tooltip.Modulate = Colors.Red;
+				OkButton!.Disabled = true;
+				return;
+			}
 		}
 
 		_tooltip!.Text = text ?? string.Empty;
@@ -96,12 +137,26 @@ public partial class LoginWindow : BaseWindow {
 	}
 
 	private async void OkButtonOnPressed() {
+		if (_offlineCheckbox!.ButtonPressed) {
+			Account!.PlayerName = _nameInput!.Text;
+			Account.Email = _emailInput!.Text;
+			Account.Uid ??= _nameInput!.Text;
+			Account.SessionKey ??= string.Empty;
+			Account.SessionSignature ??= string.Empty;
+			Account.Entitlements ??= string.Empty;
+			Account!.Offline = true;
+			await Hide();
+			EmitSignalLogin(this);
+			return;
+		}
+
 		_tooltip!.Text = "正在登录...";
 		OkButton!.Disabled = true;
 		CancelButton!.Disabled = true;
 		_loadingControl!.Show();
 		_loginContainer!.Modulate = Colors.Transparent;
 		_accessCodeContainer!.Modulate = Colors.Transparent;
+		_offlineCheckbox!.Hide();
 
 		var loginResponse = await DoLogin(email: _emailInput!.Text,
 			password: _passwordInput!.Text,
@@ -111,6 +166,7 @@ public partial class LoginWindow : BaseWindow {
 		CancelButton.Disabled = false;
 		_loadingControl.Hide();
 		_accessCodeContainer.Hide();
+		_offlineCheckbox!.Show();
 		_loginContainer!.Modulate = Colors.White;
 		_accessCodeContainer.Modulate = Colors.White;
 
@@ -129,10 +185,12 @@ public partial class LoginWindow : BaseWindow {
 			Account.SessionSignature = loginResponse.SessionSignature ?? string.Empty;
 			Account.Entitlements = loginResponse.Entitlements ?? string.Empty;
 			Account.HasGameServer = loginResponse.HasGameServer;
+			Account!.Offline = false;
 			EmitSignalLogin(this);
 		} else if (loginResponse.Reason is "requiretotpcode" or "wrongtotpcode") {
 			_loginContainer.Modulate = Colors.Transparent;
 			_accessCodeContainer!.Show();
+			_offlineCheckbox!.Hide();
 			if (loginResponse.PreLoginToken != null) {
 				_preLoginToken = loginResponse.PreLoginToken;
 			}

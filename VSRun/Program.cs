@@ -5,6 +5,7 @@ using System.Text.Json.Serialization;
 using HarmonyLib;
 using SharedLibrary;
 using Vintagestory.API.Config;
+using Vintagestory.Client.MaxObf;
 using Vintagestory.Client.NoObf;
 
 // ReSharper disable UnusedMember.Global
@@ -29,27 +30,15 @@ public static class Program {
 		Path.Combine(Config.VintageStoryDataPath, "Mods")
 	];
 
-	public static Harmony? Harmony { get; set; }
+	public static Harmony Harmony { get; } = new("VSRun");
 
 	[ModuleInitializer]
 	public static void Initialize() { AppDomain.CurrentDomain.AssemblyResolve += AssemblyResolve; }
 
 	public static void Main(string[] args) {
-		Harmony = new("VSRun");
 		AppContext.SetData("APP_CONTEXT_BASE_DIRECTORY", Config.VintageStoryPath);
 		GamePaths.DataPath = Config.VintageStoryDataPath;
 		ClientSettings.ModPaths = ["Mods", GamePaths.DataPathMods];
-
-		if (Config.Account is not null) {
-			var account = Config.Account;
-			ClientSettings.UserEmail = account.Email;
-			ClientSettings.Sessionkey = account.SessionKey;
-			ClientSettings.SessionSignature = account.SessionSignature;
-			ClientSettings.HasGameServer = account.HasGameServer;
-			ClientSettings.PlayerUID = account.Uid;
-			ClientSettings.PlayerName = account.PlayerName;
-			ClientSettings.Entitlements = account.Entitlements;
-		}
 
 		switch (Config.ExecutableType) {
 			case ExecutableTypeEnum.InitData: {
@@ -58,10 +47,6 @@ public static class Program {
 			}
 
 			case ExecutableTypeEnum.StartGame: {
-				if (Config.UseAnsiLogger) {
-					Harmony.PatchCategory(nameof(Console));
-				}
-
 				StartGame(args);
 				break;
 			}
@@ -77,6 +62,25 @@ public static class Program {
 	}
 
 	public static void StartGame(string[] args) {
+		if (Config.UseAnsiLogger) {
+			Harmony.PatchCategory(nameof(Console));
+		}
+
+		if (Config.Account is not null) {
+			var account = Config.Account;
+			ClientSettings.UserEmail = account.Email;
+			ClientSettings.Sessionkey = account.SessionKey;
+			ClientSettings.SessionSignature = account.SessionSignature;
+			ClientSettings.HasGameServer = account.HasGameServer;
+			ClientSettings.PlayerUID = account.Uid;
+			ClientSettings.PlayerName = account.PlayerName;
+			ClientSettings.Entitlements = account.Entitlements;
+
+			if (account.Offline) {
+				Harmony.PatchCategory(nameof(SessionManager));
+			}
+		}
+
 		var assembly = Assembly.LoadFile(Path.Combine(Config.VintageStoryPath, Config.AssemblyPath));
 		var assemblyName = assembly.GetName().Name;
 

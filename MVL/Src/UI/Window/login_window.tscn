@@ -30,7 +30,7 @@ IconName = "eye-outline"
 FontSize = 24
 metadata/_custom_type_script = "uid://bk3tot6c35bwu"
 
-[node name="LoginWindow" node_paths=PackedStringArray("_emailInput", "_loginContainer", "_passwordInput", "_eyeButton", "_accessCodeContainer", "_accessCodeInput", "_tooltip", "_loadingControl") instance=ExtResource("1_i8gr8")]
+[node name="LoginWindow" node_paths=PackedStringArray("_emailInput", "_loginContainer", "_passwordInput", "_eyeButton", "_accessCodeContainer", "_accessCodeInput", "_nameContainer", "_nameInput", "_tooltip", "_offlineCheckbox", "_loadingControl") instance=ExtResource("1_i8gr8")]
 script = ExtResource("2_l4pum")
 _emailInput = NodePath("PanelContainer/VBoxContainer/MarginContainer/VBoxContainer/VBoxContainer/LineEdit")
 _loginContainer = NodePath("PanelContainer/VBoxContainer/MarginContainer/VBoxContainer")
@@ -38,7 +38,10 @@ _passwordInput = NodePath("PanelContainer/VBoxContainer/MarginContainer/VBoxCont
 _eyeButton = NodePath("PanelContainer/VBoxContainer/MarginContainer/VBoxContainer/VBoxContainer2/HBoxContainer/Button")
 _accessCodeContainer = NodePath("PanelContainer/VBoxContainer/MarginContainer/VBoxContainer2")
 _accessCodeInput = NodePath("PanelContainer/VBoxContainer/MarginContainer/VBoxContainer2/LineEdit")
+_nameContainer = NodePath("PanelContainer/VBoxContainer/MarginContainer/VBoxContainer3")
+_nameInput = NodePath("PanelContainer/VBoxContainer/MarginContainer/VBoxContainer3/LineEdit")
 _tooltip = NodePath("PanelContainer/VBoxContainer/Label2")
+_offlineCheckbox = NodePath("PanelContainer/VBoxContainer/CheckButton")
 _loadingControl = NodePath("PanelContainer/VBoxContainer/MarginContainer/Control/ColorRect")
 
 [node name="PanelContainer" parent="." index="3"]
@@ -132,8 +135,28 @@ placeholder_text = "若账号开启了2FA，则不能为空"
 virtual_keyboard_type = 2
 clear_button_enabled = true
 
+[node name="VBoxContainer3" type="VBoxContainer" parent="PanelContainer/VBoxContainer/MarginContainer" index="3"]
+visible = false
+layout_mode = 2
+
+[node name="Label" type="Label" parent="PanelContainer/VBoxContainer/MarginContainer/VBoxContainer3" index="0"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_ta73y")
+text = "玩家名称"
+
+[node name="LineEdit" type="LineEdit" parent="PanelContainer/VBoxContainer/MarginContainer/VBoxContainer3" index="1"]
+layout_mode = 2
+placeholder_text = "玩家名称不能为空"
+clear_button_enabled = true
+right_icon = SubResource("Texture2D_c76y0")
+
 [node name="Label2" type="Label" parent="PanelContainer/VBoxContainer" index="3"]
 layout_mode = 2
 size_flags_horizontal = 4
 theme_override_font_sizes/font_size = 14
 text = "请输入邮箱"
+
+[node name="CheckButton" type="CheckButton" parent="PanelContainer/VBoxContainer" index="4"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_ta73y")
+text = "离线模式"

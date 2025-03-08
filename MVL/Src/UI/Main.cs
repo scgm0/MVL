@@ -162,8 +162,6 @@ public partial class Main : NativeWindowUtility {
 		_accountSelectButton.Pressed += AccountSelectButtonOnPressed;
 		_accountSelectAddButton.Pressed += AccountSelectAddButtonOnPressed;
 
-		CheckAccount();
-
 		FlurlHttp.Clients.WithDefaults(builder => {
 			builder.ConfigureInnerHandler(handler => {
 				handler.Proxy = string.IsNullOrEmpty(BaseConfig.ProxyUrl) ? null : new WebProxy(BaseConfig.ProxyUrl);
@@ -185,11 +183,12 @@ public partial class Main : NativeWindowUtility {
 
 	private async void AccountSelectAddButtonOnPressed() {
 		var loginWindow = await OpenAccountSelectWindow();
-		loginWindow.Login += _ => {
+		loginWindow.Login += async _ => {
 			foreach (var child in _accountSelectListContainer!.GetChildren()) {
 				child.QueueFree();
+				await ToSignal(_accountSelectListContainer!, Container.SignalName.SortChildren);
 			}
-
+			await ToSignal(SceneTree, SceneTree.SignalName.ProcessFrame);
 			AccountButtonOnPressed();
 		};
 	}
@@ -203,7 +202,8 @@ public partial class Main : NativeWindowUtility {
 			};
 			loginWindow.Hidden += () => { _accountButton!.ButtonPressed = false; };
 		} else {
-			_accountSelectContainer!.Modulate = Colors.Transparent;
+			_accountSelectContainer!.Size = _accountSelectContainer!.Size with { Y = 0 };
+			_accountSelectContainer.Modulate = Colors.Transparent;
 			_accountSelectScrollContainer!.VerticalScrollMode = ScrollContainer.ScrollMode.Disabled;
 			_accountSelectButton!.Show();
 			_accountSelectContainer.GlobalPosition = _accountButton!.GlobalPosition with {
@@ -217,9 +217,9 @@ public partial class Main : NativeWindowUtility {
 				accountItem.Edit += AccountItemOnEdit;
 				accountItem.Remove += AccountItemOnRemove;
 				_accountSelectListContainer!.AddChild(accountItem);
+				await ToSignal(_accountSelectListContainer!, Container.SignalName.SortChildren);
 			}
-
-			await ToSignal(_accountSelectListContainer!, Container.SignalName.SortChildren);
+			await ToSignal(SceneTree, SceneTree.SignalName.ProcessFrame);
 
 			_accountSelectScrollContainer.VerticalScrollMode = ScrollContainer.ScrollMode.ShowNever;
 			_accountSelectContainer.Modulate = Colors.White;
@@ -251,7 +251,13 @@ public partial class Main : NativeWindowUtility {
 		confirmationWindow.Confirm += async () => {
 			await confirmationWindow.Hide();
 			BaseConfig.Account.Remove(item.Account);
+
 			if (BaseConfig.Account.Count > 0) {
+				foreach (var child in _accountSelectListContainer!.GetChildren()) {
+					child.QueueFree();
+					await ToSignal(_accountSelectListContainer!, Container.SignalName.SortChildren);
+				}
+				await ToSignal(SceneTree, SceneTree.SignalName.ProcessFrame);
 				AccountButtonOnPressed();
 			} else {
 				AccountSelectButtonOnPressed();
@@ -264,11 +270,12 @@ public partial class Main : NativeWindowUtility {
 
 	private async void AccountItemOnEdit(AccountSelectItem item) {
 		var loginWindow = await OpenAccountSelectWindow(item.Account);
-		loginWindow.Login += _ => {
+		loginWindow.Login += async _ => {
 			foreach (var child in _accountSelectListContainer!.GetChildren()) {
 				child.QueueFree();
+				await ToSignal(_accountSelectListContainer!, Container.SignalName.SortChildren);
 			}
-
+			await ToSignal(SceneTree, SceneTree.SignalName.ProcessFrame);
 			AccountButtonOnPressed();
 		};
 	}
@@ -314,6 +321,7 @@ public partial class Main : NativeWindowUtility {
 	public void Init() {
 		CheckReleaseInfo();
 		CheckModpackConfig();
+		CheckAccount();
 
 		if (BaseConfig.Release.Count == 0 && InstalledGamesImport.InstalledGamePaths.Length > 0) {
 			_ = ImportInstalledGames();

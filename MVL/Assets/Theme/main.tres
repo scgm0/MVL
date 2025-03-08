@@ -1,4 +1,4 @@
-[gd_resource type="Theme" load_steps=14 format=3 uid="uid://26j2wsw1c43m"]
+[gd_resource type="Theme" load_steps=17 format=3 uid="uid://26j2wsw1c43m"]
 
 [ext_resource type="Script" uid="uid://bk3tot6c35bwu" path="res://Src/Utils/IconTexture2D.cs" id="1_asgjk"]
 
@@ -10,7 +10,7 @@ resource_name = ""
 script = ExtResource("1_asgjk")
 IconName = "checkbox-marked"
 FontSize = 16
-metadata/_custom_type_script = ExtResource("1_asgjk")
+metadata/_custom_type_script = "uid://bk3tot6c35bwu"
 
 [sub_resource type="Texture2D" id="Texture2D_gblyu"]
 resource_local_to_scene = false
@@ -34,6 +34,22 @@ resource_name = ""
 script = ExtResource("1_asgjk")
 IconName = "checkbox-blank-outline"
 FontSize = 16
+metadata/_custom_type_script = ExtResource("1_asgjk")
+
+[sub_resource type="Texture2D" id="Texture2D_bdark"]
+resource_local_to_scene = false
+resource_name = ""
+script = ExtResource("1_asgjk")
+IconName = "toggle-switch"
+FontSize = 24
+metadata/_custom_type_script = ExtResource("1_asgjk")
+
+[sub_resource type="Texture2D" id="Texture2D_u0mv6"]
+resource_local_to_scene = false
+resource_name = ""
+script = ExtResource("1_asgjk")
+IconName = "toggle-switch-off-outline"
+FontSize = 24
 metadata/_custom_type_script = ExtResource("1_asgjk")
 
 [sub_resource type="Texture2D" id="Texture2D_i7wln"]
@@ -67,6 +83,14 @@ corner_radius_top_left = 3
 corner_radius_top_right = 3
 corner_radius_bottom_right = 3
 corner_radius_bottom_left = 3
+
+[sub_resource type="Texture2D" id="Texture2D_b82ki"]
+resource_local_to_scene = false
+resource_name = ""
+script = ExtResource("1_asgjk")
+IconName = "chevron-down"
+FontSize = 24
+metadata/_custom_type_script = "uid://bk3tot6c35bwu"
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_7eosv"]
 content_margin_left = 4.0
@@ -104,10 +128,14 @@ CheckBox/icons/checked = SubResource("Texture2D_oarc7")
 CheckBox/icons/radio_checked = SubResource("Texture2D_gblyu")
 CheckBox/icons/radio_unchecked_disabled = SubResource("Texture2D_364to")
 CheckBox/icons/unchecked = SubResource("Texture2D_6are0")
+CheckButton/icons/checked = SubResource("Texture2D_bdark")
+CheckButton/icons/unchecked = SubResource("Texture2D_u0mv6")
+LineEdit/font_sizes/font_size = 14
 LineEdit/icons/clear = SubResource("Texture2D_i7wln")
 LineEdit/styles/focus = SubResource("StyleBoxEmpty_asgjk")
 LineEdit/styles/normal = SubResource("StyleBoxFlat_i7wln")
 LineEdit/styles/read_only = SubResource("StyleBoxFlat_asgjk")
+OptionButton/icons/arrow = SubResource("Texture2D_b82ki")
 PopupMenu/styles/hover = SubResource("StyleBoxFlat_7eosv")
 PopupMenu/styles/panel = SubResource("StyleBoxFlat_8ilox")
 RichTextLabel/styles/focus = SubResource("StyleBoxEmpty_h252r")

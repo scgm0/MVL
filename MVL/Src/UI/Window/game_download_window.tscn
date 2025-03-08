@@ -1,4 +1,4 @@
-[gd_scene load_steps=20 format=3 uid="uid://dfsyvb8tdyef2"]
+[gd_scene load_steps=15 format=3 uid="uid://dfsyvb8tdyef2"]
 
 [ext_resource type="PackedScene" uid="uid://bu4hwijkbc8sm" path="res://Src/UI/Window/base_window.tscn" id="1_42u7i"]
 [ext_resource type="Script" uid="uid://baxitom4bklvu" path="res://Src/UI/Window/GameDownloadWindow.cs" id="2_x3qgb"]
@@ -10,39 +10,6 @@
 [ext_resource type="PackedScene" uid="uid://tgy824ep0upd" path="res://Src/UI/foldable_container.tscn" id="6_1so8d"]
 [ext_resource type="Script" uid="uid://bk3tot6c35bwu" path="res://Src/Utils/IconTexture2D.cs" id="6_endwm"]
 [ext_resource type="FontFile" uid="uid://bmgx1vyg6bavd" path="res://Assets/Font/HarmonyOS_Sans_SC_Bold.ttf" id="10_lb40e"]
-
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_vgayu"]
-
-[sub_resource type="Texture2D" id="Texture2D_bdark"]
-resource_local_to_scene = false
-resource_name = ""
-script = ExtResource("6_endwm")
-IconName = "toggle-switch"
-FontSize = 24
-metadata/_custom_type_script = ExtResource("6_endwm")
-
-[sub_resource type="Texture2D" id="Texture2D_u0mv6"]
-resource_local_to_scene = false
-resource_name = ""
-script = ExtResource("6_endwm")
-IconName = "toggle-switch-off-outline"
-FontSize = 24
-metadata/_custom_type_script = ExtResource("6_endwm")
-
-[sub_resource type="Texture2D" id="Texture2D_b82ki"]
-resource_local_to_scene = false
-resource_name = ""
-script = ExtResource("6_endwm")
-IconName = "chevron-down"
-FontSize = 24
-metadata/_custom_type_script = ExtResource("6_endwm")
-
-[sub_resource type="Theme" id="Theme_asvws"]
-Button/styles/focus = SubResource("StyleBoxEmpty_vgayu")
-CheckButton/icons/checked = SubResource("Texture2D_bdark")
-CheckButton/icons/unchecked = SubResource("Texture2D_u0mv6")
-LineEdit/font_sizes/font_size = 14
-OptionButton/icons/arrow = SubResource("Texture2D_b82ki")
 
 [sub_resource type="Texture2D" id="Texture2D_0pqmy"]
 resource_local_to_scene = false
@@ -102,9 +69,6 @@ offset_left = -241.0
 offset_top = -86.5
 offset_right = 241.0
 offset_bottom = 86.5
-
-[node name="VBoxContainer" parent="PanelContainer" index="0"]
-theme = SubResource("Theme_asvws")
 
 [node name="Label" parent="PanelContainer/VBoxContainer" index="0"]
 text = "选择游戏版本"
