@@ -112,14 +112,16 @@ icon = SubResource("Texture2D_6are0")
 icon_alignment = 1
 
 [node name="SmoothScrollContainer" type="ScrollContainer" parent="MarginContainer/VBoxContainer"]
-clip_contents = false
 layout_mode = 2
 size_flags_vertical = 3
+horizontal_scroll_mode = 0
+vertical_scroll_mode = 3
 script = ExtResource("5_5cs1n")
 wheel_scroll_damper = SubResource("Resource_bmwv3")
 dragging_scroll_damper = SubResource("Resource_o4ctv")
 drag_with_mouse = false
 drag_with_touch = false
+allow_horizontal_scroll = false
 handle_input = false
 metadata/_custom_type_script = "uid://cre6m68jy0aad"
 
