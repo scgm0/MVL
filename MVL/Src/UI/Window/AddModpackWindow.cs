@@ -144,7 +144,7 @@ public partial class AddModpackWindow : BaseWindow {
 
 	private void SetModpackPath(string path) {
 		_modpackPath!.Text = path;
-		ModpackPathOnTextChanged(path);
+		ValidateInputs();
 	}
 
 	private void CreatePathOnToggled(bool toggledOn) {
@@ -192,7 +192,7 @@ public partial class AddModpackWindow : BaseWindow {
 			return;
 		}
 
-		if (path.IndexOfAny(Path.GetInvalidPathChars()) != 0) {
+		if (path.IndexOfAny(Path.GetInvalidPathChars()) != -1) {
 			OkButton!.Disabled = true;
 			_tooltip!.Text = "路径包含非法字符";
 			_tooltip.Modulate = Colors.Red;

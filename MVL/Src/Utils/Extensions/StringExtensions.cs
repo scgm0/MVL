@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
+using Godot;
 
 namespace MVL.Utils.Extensions;
 
@@ -157,10 +158,10 @@ public static class StringExtensions {
 	public static string NormalizePath(this string path) {
 		if (string.IsNullOrEmpty(path)) return path;
 
-		var fullPath = Path.GetFullPath(path);
+		var fullPath = Path.GetFullPath(path.GetBaseDir());
 
-		fullPath = Path.TrimEndingDirectorySeparator(fullPath.Replace(Path.AltDirectorySeparatorChar, Path.DirectorySeparatorChar));
+		fullPath = Path.Combine(fullPath, Path.GetFileName(path)).Replace(Path.AltDirectorySeparatorChar, Path.DirectorySeparatorChar);
 
-		return fullPath;
+		return Path.TrimEndingDirectorySeparator(fullPath);
 	}
 }

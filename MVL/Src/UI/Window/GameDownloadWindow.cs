@@ -128,7 +128,7 @@ public partial class GameDownloadWindow : BaseWindow {
 			return;
 		}
 
-		if (name.IndexOfAny(Path.GetInvalidFileNameChars()) != 0) {
+		if (name.IndexOfAny(Path.GetInvalidFileNameChars()) != -1) {
 			OkButton!.Disabled = true;
 			_tooltip!.Text = "名称包含非法字符";
 			_tooltip.Modulate = Colors.Red;
@@ -142,7 +142,7 @@ public partial class GameDownloadWindow : BaseWindow {
 			return;
 		}
 
-		if (path.IndexOfAny(Path.GetInvalidPathChars()) != 0) {
+		if (path.IndexOfAny(Path.GetInvalidPathChars()) != -1) {
 			OkButton!.Disabled = true;
 			_tooltip!.Text = "路径包含非法字符";
 			_tooltip.Modulate = Colors.Red;
