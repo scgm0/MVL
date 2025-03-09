@@ -291,7 +291,8 @@ public partial class GameDownloadWindow : BaseWindow {
 
 			if (_cancellation is not null && !_cancellation.IsCancellationRequested && _releases is not null) {
 				var i = 1;
-				foreach (var group in _releases.GroupBy(r => r.Key.OverallVersion)) {
+				var minVersion = new GameVersion("1.18.8");
+				foreach (var group in _releases.Where(kv => GameVersion.ComparerVersion(kv.Key, minVersion) > -1).GroupBy(r => r.Key.OverallVersion)) {
 					var container = _foldableContainerScene!.Instantiate<FoldableContainer>();
 					container.Title = group.Key;
 					container.Modulate = Colors.Transparent;
