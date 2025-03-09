@@ -98,9 +98,9 @@ public partial class HomePage : MenuPage {
 			if (path == UI.Main.BaseConfig.CurrentModpack) {
 				selectedItem = item;
 			}
-		}
 
-		await ToSignal(_modpackInfoVBoxContainer!, Container.SignalName.SortChildren);
+			await ToSignal(_modpackInfoVBoxContainer!, Container.SignalName.SortChildren);
+		}
 
 		_modpackInfoScrollContainer.VerticalScrollMode = ScrollContainer.ScrollMode.ShowNever;
 		if (_modpackInfoPanel!.Size.Y > 250) {
@@ -124,7 +124,9 @@ public partial class HomePage : MenuPage {
 		animation.Length = Mathf.Min(_modpackInfoVBoxContainer!.GetChildCount(), 5) * 0.05f;
 		animation.TrackSetKeyTime(0, 1, animation.Length);
 		_animationPlayer.Play(StringNames.Show);
-		_modpackInfoScrollContainer!.Call(StringNames.EnsureControlVisible, selectedItem!);
+		if (selectedItem != null) {
+			_modpackInfoScrollContainer!.Call(StringNames.EnsureControlVisible, selectedItem);
+		}
 	}
 
 	private async void HideSelectModpackPanel() {
