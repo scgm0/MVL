@@ -65,6 +65,7 @@ public partial class GameDownloadWindow : BaseWindow {
 	private IDownload? _download;
 	private DirAccess _downloadTmp = DirAccess.CreateTemp("MVL_Download");
 	private CancellationTokenSource? _cancellation;
+	private FlurlHttpException? _lastException;
 
 	public override void _Ready() {
 		base._Ready();
@@ -112,6 +113,14 @@ public partial class GameDownloadWindow : BaseWindow {
 	private void ValidateInputs() {
 		var name = _releaseName!.Text;
 		var path = _releasePath!.Text.NormalizePath();
+
+		if (_lastException != null) {
+			OkButton!.Disabled = true;
+			_tooltip!.Text = "网络请求失败，请重试";
+			_tooltip.Modulate = Colors.Red;
+			return;
+		}
+
 		if (string.IsNullOrEmpty(name)) {
 			OkButton!.Disabled = true;
 			_tooltip!.Text = "请输入名称";
@@ -119,9 +128,23 @@ public partial class GameDownloadWindow : BaseWindow {
 			return;
 		}
 
+		if (name.IndexOfAny(Path.GetInvalidFileNameChars()) != 0) {
+			OkButton!.Disabled = true;
+			_tooltip!.Text = "名称包含非法字符";
+			_tooltip.Modulate = Colors.Red;
+			return;
+		}
+
 		if (string.IsNullOrEmpty(path)) {
 			OkButton!.Disabled = true;
 			_tooltip!.Text = "请输入路径";
+			_tooltip.Modulate = Colors.Red;
+			return;
+		}
+
+		if (path.IndexOfAny(Path.GetInvalidPathChars()) != 0) {
+			OkButton!.Disabled = true;
+			_tooltip!.Text = "路径包含非法字符";
 			_tooltip.Modulate = Colors.Red;
 			return;
 		}
@@ -249,6 +272,7 @@ public partial class GameDownloadWindow : BaseWindow {
 		_cancellation = new();
 
 		await Task.Run(async () => { await GetReleases(releaseUrl); }, _cancellation.Token);
+		ValidateInputs();
 
 		if (_cancellation is null || _cancellation.IsCancellationRequested) {
 			return;
@@ -260,6 +284,7 @@ public partial class GameDownloadWindow : BaseWindow {
 
 	private async Task GetReleases(string releaseUrl) {
 		try {
+			_lastException = null;
 			var text = await releaseUrl.GetStringAsync(cancellationToken: _cancellation!.Token);
 			_releases = JsonSerializer.Deserialize(text,
 				SourceGenerationContext.Default.DictionaryGameVersionGameRelease);
@@ -294,6 +319,7 @@ public partial class GameDownloadWindow : BaseWindow {
 			}
 		} catch (FlurlHttpException e) {
 			GD.Print(e.Message);
+			_lastException = e;
 		}
 	}
 

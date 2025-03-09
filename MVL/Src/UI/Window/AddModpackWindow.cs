@@ -76,15 +76,27 @@ public partial class AddModpackWindow : BaseWindow {
 
 		var name = _modpackName.Text;
 		_modpackName.TextChanged += text => {
-			var path = _modpackPath!.Text;
+			var sanitizedText = Path.GetInvalidFileNameChars().Aggregate(text, (current, invalidFileNameChar) => current.Replace(invalidFileNameChar, '_'));
+			var path = _modpackPath!.Text.NormalizePath();
+
 			if (_createPath!.ButtonPressed && !string.IsNullOrEmpty(path)) {
-				path = string.IsNullOrEmpty(name) || string.Equals(path.GetFile(), name)
-					? Path.Combine(string.IsNullOrEmpty(name) ? path : path.GetBaseDir(), text)
-					: path;
-				SetModpackPath(path.NormalizePath());
+				var currentDirectoryName = Path.GetFileName(path);
+				var shouldModifyPath = string.IsNullOrEmpty(name) ||
+					string.Equals(currentDirectoryName, name);
+
+				if (shouldModifyPath) {
+					var baseDirectory = string.IsNullOrEmpty(name)
+						? path
+						: path.GetBaseDir();
+
+					path = Path.Combine(baseDirectory, sanitizedText).NormalizePath();
+				}
+
+				SetModpackPath(path);
 			}
 
-			name = text;
+			name = sanitizedText;
+
 			ValidateInputs();
 		};
 
@@ -176,6 +188,13 @@ public partial class AddModpackWindow : BaseWindow {
 		if (string.IsNullOrEmpty(path)) {
 			OkButton!.Disabled = true;
 			_tooltip!.Text = "请输入路径";
+			_tooltip.Modulate = Colors.Red;
+			return;
+		}
+
+		if (path.IndexOfAny(Path.GetInvalidPathChars()) != 0) {
+			OkButton!.Disabled = true;
+			_tooltip!.Text = "路径包含非法字符";
 			_tooltip.Modulate = Colors.Red;
 			return;
 		}
