@@ -77,7 +77,7 @@ public static class Program {
 			ClientSettings.Entitlements = account.Entitlements;
 
 			if (account.Offline) {
-				Harmony.PatchCategory(nameof(SessionManager));
+				Harmony.PatchCategory("Offline");
 			}
 		}
 

@@ -9,7 +9,7 @@ using Vintagestory.Client.NoObf;
 namespace VSRun;
 
 [HarmonyPatch(typeof(SessionManager))]
-[HarmonyPatchCategory(nameof(SessionManager))]
+[HarmonyPatchCategory("Offline")]
 public static class SessionManagerPatcher {
 	[HarmonyPrefix]
 	[HarmonyPatch(nameof(SessionManager.IsCachedSessionKeyValid))]
