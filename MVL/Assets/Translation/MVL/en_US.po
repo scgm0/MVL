@@ -5,31 +5,37 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: 神麤詭末的复古物语启动器\n"
+"PO-Revision-Date: 2025-03-10 19:43+0000\n"
+"Last-Translator: 神麤詭末 <2682963017@qq.com>\n"
+"Language-Team: English (United States) <https://hosted.weblate.org/projects/"
+"mvl/mvl/en_US/>\n"
 "Language: en_US\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8-bit\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Weblate 5.10.3-dev\n"
 
 msgid "菜单"
-msgstr ""
+msgstr "Menu"
 
 msgid "主页"
-msgstr ""
+msgstr "Home"
 
 msgid "整合"
-msgstr ""
+msgstr "Modpack"
 
 msgid "版本"
-msgstr ""
+msgstr "Release"
 
 msgid "模组"
-msgstr ""
+msgstr "Module"
 
 msgid "设置"
-msgstr ""
+msgstr "Setting"
 
 msgid "关于"
-msgstr ""
+msgstr "Info"
 
 msgid "点击登录账号"
-msgstr ""
+msgstr "Click to log in to your account"
