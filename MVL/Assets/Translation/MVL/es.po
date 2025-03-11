@@ -5,229 +5,241 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: 神麤詭末的复古物语启动器\n"
+"PO-Revision-Date: 2025-03-11 18:34+0000\n"
+"Last-Translator: Xurxo Martínez Ferreira <xurxolaxe@gmail.com>\n"
+"Language-Team: Spanish <https://hosted.weblate.org/projects/mvl/mvl/es/>\n"
 "Language: es\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8-bit\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Weblate 5.10.3-dev\n"
 
 msgid "神麤詭末的复古物语启动器"
-msgstr ""
+msgstr "Vintage Story Launcher de MystiVaid"
 
 msgid "菜单"
-msgstr ""
+msgstr "Menú"
 
 msgid "主页"
-msgstr ""
+msgstr "Inicio"
 
 msgid "整合"
-msgstr ""
+msgstr "Modpack"
 
 msgid "版本"
-msgstr ""
+msgstr "Versión"
 
 msgid "模组"
-msgstr ""
+msgstr "Mod"
 
 msgid "设置"
-msgstr ""
+msgstr "Ajustes"
 
 msgid "关于"
-msgstr ""
+msgstr "Info"
 
 msgid "点击登录账号"
-msgstr ""
+msgstr "Haz click para iniciar sesión con tu cuenta"
 
 msgid "启动游戏"
-msgstr ""
+msgstr "Jugar"
 
 msgid "停止游戏"
-msgstr ""
+msgstr "Parar"
 
 msgid "确定"
-msgstr ""
+msgstr "Ok"
 
 msgid "取消"
-msgstr ""
+msgstr "Cancelar"
 
 msgid "贡献者"
-msgstr ""
+msgstr "Contibuidor"
 
 msgid "赞助者"
-msgstr ""
+msgstr "Patrocinador"
 
 msgid "许可证"
-msgstr ""
+msgstr "Licencia"
 
 msgid "图标制作"
-msgstr ""
+msgstr "Creador del Icono"
 
 msgid "项目创始人"
-msgstr ""
+msgstr "Fundador del Proyecto"
 
 msgid "主要开发者"
-msgstr ""
+msgstr "Desarrollador Principal"
 
 msgid "开发人员"
-msgstr ""
+msgstr "Desarollador"
 
 msgid "私人赞助"
-msgstr ""
+msgstr "Patrocinador Privado"
 
 msgid "添加整合包"
-msgstr ""
+msgstr "Añadir Modpack"
 
 msgid "选择游戏版本"
-msgstr ""
+msgstr "Seleccionar Versión del Juego"
 
 msgid "账号登录"
-msgstr ""
+msgstr "Inicio de Sesión con Cuenta"
 
 msgid "请先选择一个整合包"
-msgstr ""
+msgstr "Por favor, selecciona un modpack primero"
 
 msgid "请先在整合界面添加一个整合包"
-msgstr ""
+msgstr "Por favor, primero añade un modpack en la interfaz de modpacks"
 
 msgid "请先在版本界面中导入游戏"
-msgstr ""
+msgstr "Por favor, primero importa el juego en la interfaz de versiones"
 
 msgid "选择已安装版本"
-msgstr ""
+msgstr "Selecciona la versión instalada"
 
 msgid "请输入名称"
-msgstr ""
+msgstr "Por favor, añade el nombre"
 
 msgid "请输入路径"
-msgstr ""
+msgstr "Por favor, añade la carpeta"
 
 msgid "路径包含非法字符"
-msgstr ""
+msgstr "La ruta contiene caracteres no permitidos"
 
 msgid "父文件夹不存在"
-msgstr ""
+msgstr "La carpeta padre no existe"
 
 msgid "文件夹不存在"
-msgstr ""
+msgstr "La carpeta no existe"
 
 msgid "将自动创建文件夹"
-msgstr ""
+msgstr "Las carpetas se crearán automaticamente"
 
 msgid "文件夹不为空，确定选择它吗？"
-msgstr ""
+msgstr "La carpeta no está vacía, seguro que quieres seleccionarla?"
 
 msgid "文件夹存在且为空"
-msgstr ""
+msgstr "La carpeta existe y está vacía"
 
 msgid "网络请求失败，请重试"
-msgstr ""
+msgstr "La solicitud de red falló, por favor, inténtalo nuevamente"
 
 msgid "名称包含非法字符"
-msgstr ""
+msgstr "El nombre contiene caracteres no permitidos"
 
 msgid "路径不存在"
-msgstr ""
+msgstr "La carpeta no existe"
 
 msgid "请选择版本"
-msgstr ""
+msgstr "Por favor, selecciona una versión"
 
 msgid "'{0}'已存在，确定覆盖它吗？"
-msgstr ""
+msgstr "'{0}' ya existe, seguro que quieres sobreescribirla?"
 
 msgid "下载中..."
-msgstr ""
+msgstr "Descargando..."
 
 msgid "提取中..."
-msgstr ""
+msgstr "Extrayendo..."
 
 msgid "确定要删除账号 [color=#0078d7][b]{0}[/b][/color] 吗？"
 msgstr ""
+"Seguro que quieres eliminar la cuenta [color=#0078d7][b]{0}[/b][/color]?"
 
 msgid "整合包名称:"
-msgstr ""
+msgstr "Nombre del Modpack:"
 
 msgid "名称不能为空"
-msgstr ""
+msgstr "El nombre no puede estar vacío"
 
 msgid "整合包路径:"
-msgstr ""
+msgstr "Carpeta del Modpack:"
 
 msgid "创建文件夹"
-msgstr ""
+msgstr "Creando Carpetas"
 
 msgid "路径不能为空"
-msgstr ""
+msgstr "La carpeta no puede estar vacía"
 
 msgid "游戏版本:"
-msgstr ""
+msgstr "Versión del Juego:"
 
 msgid "版本名称:"
-msgstr ""
+msgstr "Nombre de la Versión:"
 
 msgid "安装路径:"
-msgstr ""
+msgstr "Carpeta de Instalación:"
 
 msgid "邮箱:"
-msgstr ""
+msgstr "Email:"
 
 msgid "邮箱不能为空"
-msgstr ""
+msgstr "El email no puede estar vacío"
 
 msgid "密码:"
-msgstr ""
+msgstr "Contraseña:"
 
 msgid "密码不能为空"
-msgstr ""
+msgstr "La contraseña no puede estar vacía"
 
 msgid "离线模式"
-msgstr ""
+msgstr "Modo sin conexión"
 
 msgid "访问代码:"
-msgstr ""
+msgstr "Código de acceso:"
 
 msgid "若账号开启了2FA，则不能为空"
-msgstr ""
+msgstr "Si la cuenta tiene 2FA activado, no puede estar vacío"
 
 msgid "玩家名称:"
-msgstr ""
+msgstr "Nombre del Jugador:"
 
 msgid "玩家名称不能为空"
-msgstr ""
+msgstr "El nombre del jugador no puede estar vacío"
 
 msgid "选择版本"
-msgstr ""
+msgstr "Selecciona una Versión"
 
 msgid "模组数量: {0}"
-msgstr ""
+msgstr "Cantidad de Mods: {0}"
 
 msgid "该名称已存在"
-msgstr ""
+msgstr "Existencia del nombre"
 
 msgid "请输入邮箱"
-msgstr ""
+msgstr "Por favor, añade tu dirección de email"
 
 msgid "请输入密码"
-msgstr ""
+msgstr "Por favor, añade tu contraseña"
 
 msgid "请输入访问代码"
-msgstr ""
+msgstr "Por favor, añade el código de acceso"
 
 msgid "正在登录..."
-msgstr ""
+msgstr "Iniciando sesión..."
 
 msgid "请求失败"
-msgstr ""
+msgstr "Petición Fallida"
 
 msgid "登录成功"
-msgstr ""
+msgstr "Sesión iniciada correctamente"
 
 msgid "访问代码错误"
-msgstr ""
+msgstr "Error del Código de Acceso"
 
 msgid "登录失败: {0}"
-msgstr ""
+msgstr "Inicio de Sesión Fallido: {0}"
 
 msgid "如果启动器对您有所帮助且您财力有余，可以赞助一下开发者，您的支持将促进启动器的开发与完善: [color=#3c7fe1][url]https://afdian.com/a/MystiVaid[/url][/color]"
 msgstr ""
+"Si el launcher te ha resultado útil y tienes los medios, considera apoyar al "
+"desarrollador. Tu apoyo ayudará a avanzar y perfeccionar el desarrollo del "
+"launcher: [color=#3c7fe1][url]https://afdian.com/a/MystiVaid[/url][/color]"
 
 msgid "不喜欢MVL？那么您还可以试试另一款复古物语启动器: [wave][pulse][rainbow][url=https://vsldocs.xurxomf.xyz]VS Launcher[/url][/rainbow][/pulse][/wave]"
 msgstr ""
+"No te gusta MVS? Entonces puedes probar otro launcher de Vintage Story: "
+"[wave][pulse][rainbow][url=https://vsldocs.xurxomf.xyz]VS Launcher[/url][/"
+"rainbow][/pulse][/wave]"
