@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using Godot;
 using MVL.UI.Item;
 using MVL.Utils.Help;
@@ -30,6 +31,12 @@ public partial class InfoPage : MenuPage {
 	[Export]
 	private VBoxContainer? _list;
 
+	[Export]
+	private RichTextLabel? _richText;
+
+	[Export]
+	private RichTextLabel? _richText2;
+
 	public override void _Ready() {
 		base._Ready();
 		_itemScene.NotNull();
@@ -40,11 +47,18 @@ public partial class InfoPage : MenuPage {
 		_donorButton.NotNull();
 		_licenseButton.NotNull();
 		_list.NotNull();
+		_richText.NotNull();
+		_richText2.NotNull();
+
 		_versionLabel.Text = $"v{ProjectSettings.GetSetting("application/config/version")}";
 		VisibilityChanged += OnVisibilityChanged;
 		_buttonGroup.Pressed += ButtonGroupOnPressed;
+		_richText.MetaClicked += RichTextOnMetaClicked;
+		_richText2.MetaClicked += RichTextOnMetaClicked;
 		UpdateList(Info.AUTHORS);
 	}
+
+	private void RichTextOnMetaClicked(Variant meta) { Task.Run(() => OS.ShellOpen(meta.ToString())); }
 
 	private void ButtonGroupOnPressed(BaseButton button) {
 		if (button == _authorButton) {
