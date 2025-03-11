@@ -5,70 +5,75 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: 神麤詭末的复古物语启动器\n"
+"PO-Revision-Date: 2025-03-12 12:04+0000\n"
+"Last-Translator: LorIlcs <soumanadrx@gmail.com>\n"
+"Language-Team: French <https://hosted.weblate.org/projects/mvl/mvl/fr/>\n"
 "Language: fr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8-bit\n"
+"Plural-Forms: nplurals=2; plural=n > 1;\n"
+"X-Generator: Weblate 5.10.3-dev\n"
 
 msgid "神麤詭末的复古物语启动器"
-msgstr ""
+msgstr "Launcher Vintage Story de MystiVaid"
 
 msgid "菜单"
-msgstr ""
+msgstr "Menu"
 
 msgid "主页"
-msgstr ""
+msgstr "Accueil"
 
 msgid "整合"
-msgstr ""
+msgstr "Modpack"
 
 msgid "版本"
-msgstr ""
+msgstr "Version"
 
 msgid "模组"
-msgstr ""
+msgstr "Mod"
 
 msgid "设置"
-msgstr ""
+msgstr "Paramètres"
 
 msgid "关于"
-msgstr ""
+msgstr "Info"
 
 msgid "点击登录账号"
-msgstr ""
+msgstr "Cliquez pour vous connecter a votre compte"
 
 msgid "启动游戏"
-msgstr ""
+msgstr "Jouer"
 
 msgid "停止游戏"
-msgstr ""
+msgstr "Arrêter"
 
 msgid "确定"
-msgstr ""
+msgstr "Ok"
 
 msgid "取消"
-msgstr ""
+msgstr "Annuler"
 
 msgid "贡献者"
-msgstr ""
+msgstr "Contributeur"
 
 msgid "赞助者"
-msgstr ""
+msgstr "Sponsor"
 
 msgid "许可证"
-msgstr ""
+msgstr "Licence"
 
 msgid "图标制作"
-msgstr ""
+msgstr "Création d'icône"
 
 msgid "项目创始人"
-msgstr ""
+msgstr "Fondateur du projet"
 
 msgid "主要开发者"
-msgstr ""
+msgstr "Développeur principal"
 
 msgid "开发人员"
-msgstr ""
+msgstr "Développeur"
 
 msgid "私人赞助"
 msgstr ""
