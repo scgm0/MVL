@@ -95,6 +95,7 @@ layout_mode = 2
 size_flags_horizontal = 3
 
 [node name="Label" type="Label" parent="HBoxContainer/VBoxContainer"]
+auto_translate_mode = 2
 layout_mode = 2
 size_flags_vertical = 3
 theme_override_constants/outline_size = 5
@@ -105,6 +106,7 @@ layout_mode = 2
 size_flags_vertical = 8
 
 [node name="LinkButton" type="LinkButton" parent="HBoxContainer/VBoxContainer/HBoxContainer"]
+auto_translate_mode = 2
 layout_mode = 2
 size_flags_horizontal = 0
 theme_override_colors/font_color = Color(0.6, 0.6, 0.6, 1)

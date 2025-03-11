@@ -163,7 +163,7 @@ public partial class GameDownloadWindow : BaseWindow {
 			return;
 		}
 
-		_tooltip!.Text = Directory.Exists(Path.Combine(path, name)) ? $"{name}已存在，确定覆盖它吗？" : "将自动创建文件夹";
+		_tooltip!.Text = Directory.Exists(Path.Combine(path, name)) ? string.Format(Tr("'{0}'已存在，确定覆盖它吗？"), name) : "将自动创建文件夹";
 		_tooltip.Modulate = Directory.Exists(Path.Combine(path, name)) ? Colors.Yellow : Colors.White;
 		OkButton!.Disabled = false;
 	}

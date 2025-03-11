@@ -9,6 +9,12 @@
 script = ExtResource("2_bqihl")
 _messageLabel = NodePath("PanelContainer/VBoxContainer/RichTextLabel")
 
+[node name="PanelContainer" parent="." index="3"]
+offset_left = -134.5
+offset_top = -69.0
+offset_right = 134.5
+offset_bottom = 69.0
+
 [node name="Label" parent="PanelContainer/VBoxContainer" index="0"]
 visible = false
 

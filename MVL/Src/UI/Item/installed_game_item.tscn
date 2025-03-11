@@ -29,6 +29,7 @@ corner_radius_top_right = 5
 corner_radius_bottom_right = 5
 
 [node name="InstalledGameItem" type="HBoxContainer" node_paths=PackedStringArray("_gameVersion", "_gamePath", "_checkBox")]
+auto_translate_mode = 2
 custom_minimum_size = Vector2(0, 30)
 anchors_preset = 8
 anchor_left = 0.5

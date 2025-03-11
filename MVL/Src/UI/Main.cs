@@ -247,7 +247,7 @@ public partial class Main : NativeWindowUtility {
 	private void AccountItemOnRemove(AccountSelectItem item) {
 		var confirmationWindow = _confirmationWindowScene!.Instantiate<ConfirmationWindow>();
 		confirmationWindow.Visible = false;
-		confirmationWindow.Message = $"确定要删除账号 [color=#0078d7][b]{item.Account!.PlayerName}[/b][/color] 吗？";
+		confirmationWindow.Message = string.Format(Tr("确定要删除账号 [color=#0078d7][b]{0}[/b][/color] 吗？"), item.Account!.PlayerName);
 		confirmationWindow.Confirm += async () => {
 			await confirmationWindow.Hide();
 			BaseConfig.Account.Remove(item.Account);

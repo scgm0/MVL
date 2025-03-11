@@ -83,7 +83,7 @@ layout_mode = 2
 [node name="Label" type="Label" parent="PanelContainer/VBoxContainer/MarginContainer/VBoxContainer/VBoxContainer" index="0"]
 layout_mode = 2
 theme_override_fonts/font = ExtResource("2_ta73y")
-text = "邮箱"
+text = "邮箱:"
 
 [node name="LineEdit" type="LineEdit" parent="PanelContainer/VBoxContainer/MarginContainer/VBoxContainer/VBoxContainer" index="1"]
 layout_mode = 2
@@ -99,7 +99,7 @@ layout_mode = 2
 [node name="Label" type="Label" parent="PanelContainer/VBoxContainer/MarginContainer/VBoxContainer/VBoxContainer2" index="0"]
 layout_mode = 2
 theme_override_fonts/font = ExtResource("2_ta73y")
-text = "密码"
+text = "密码:"
 
 [node name="HBoxContainer" type="HBoxContainer" parent="PanelContainer/VBoxContainer/MarginContainer/VBoxContainer/VBoxContainer2" index="1"]
 layout_mode = 2
@@ -126,7 +126,7 @@ layout_mode = 2
 [node name="Label" type="Label" parent="PanelContainer/VBoxContainer/MarginContainer/VBoxContainer2" index="0"]
 layout_mode = 2
 theme_override_fonts/font = ExtResource("2_ta73y")
-text = "访问代码"
+text = "访问代码:"
 
 [node name="LineEdit" type="LineEdit" parent="PanelContainer/VBoxContainer/MarginContainer/VBoxContainer2" index="1"]
 layout_mode = 2
@@ -142,7 +142,7 @@ layout_mode = 2
 [node name="Label" type="Label" parent="PanelContainer/VBoxContainer/MarginContainer/VBoxContainer3" index="0"]
 layout_mode = 2
 theme_override_fonts/font = ExtResource("2_ta73y")
-text = "玩家名称"
+text = "玩家名称:"
 
 [node name="LineEdit" type="LineEdit" parent="PanelContainer/VBoxContainer/MarginContainer/VBoxContainer3" index="1"]
 layout_mode = 2
