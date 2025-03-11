@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: 神麤詭末的复古物语启动器\n"
-"PO-Revision-Date: 2025-03-10 19:43+0000\n"
+"PO-Revision-Date: 2025-03-11 04:53+0000\n"
 "Last-Translator: 神麤詭末 <2682963017@qq.com>\n"
 "Language-Team: English (United States) <https://hosted.weblate.org/projects/"
 "mvl/mvl/en_US/>\n"
@@ -39,3 +39,36 @@ msgstr "Info"
 
 msgid "点击登录账号"
 msgstr "Click to log in to your account"
+
+msgid "启动游戏"
+msgstr "Play"
+
+msgid "停止游戏"
+msgstr "Stop"
+
+msgid "确定"
+msgstr "Ok"
+
+msgid "取消"
+msgstr "Cancel"
+
+msgid "贡献者"
+msgstr "Contributor"
+
+msgid "赞助者"
+msgstr "Sponsor"
+
+msgid "许可证"
+msgstr "License"
+
+msgid "图标制作"
+msgstr "Icon Creation"
+
+msgid "项目创始人"
+msgstr "Project Founder"
+
+msgid "主要开发者"
+msgstr "Main Developer"
+
+msgid "开发人员"
+msgstr "Developer"
