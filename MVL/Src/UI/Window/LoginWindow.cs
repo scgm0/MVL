@@ -200,7 +200,7 @@ public partial class LoginWindow : BaseWindow {
 				return;
 			}
 		} else {
-			UpdateInfo($"登录失败: {loginResponse.Reason}", Colors.Yellow);
+			UpdateInfo(string.Format(Tr("登录失败: {0}"), loginResponse.Reason), Colors.Yellow);
 			return;
 		}
 

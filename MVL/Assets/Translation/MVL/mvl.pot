@@ -198,3 +198,30 @@ msgstr ""
 
 msgid "模组数量: {0}"
 msgstr ""
+
+msgid "该名称已存在"
+msgstr ""
+
+msgid "请输入邮箱"
+msgstr ""
+
+msgid "请输入密码"
+msgstr ""
+
+msgid "请输入访问代码"
+msgstr ""
+
+msgid "正在登录..."
+msgstr ""
+
+msgid "请求失败"
+msgstr ""
+
+msgid "登录成功"
+msgstr ""
+
+msgid "访问代码错误"
+msgstr ""
+
+msgid "登录失败: {0}"
+msgstr ""
