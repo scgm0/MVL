@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: 神麤詭末的复古物语启动器\n"
-"PO-Revision-Date: 2025-03-11 08:27+0000\n"
+"PO-Revision-Date: 2025-03-11 08:35+0000\n"
 "Last-Translator: 神麤詭末 <2682963017@qq.com>\n"
 "Language-Team: English (United States) <https://hosted.weblate.org/projects/"
 "mvl/mvl/en_US/>\n"
@@ -200,7 +200,7 @@ msgid "名称包含非法字符"
 msgstr "Name contains illegal characters"
 
 msgid "该名称已存在"
-msgstr ""
+msgstr "Existence of the name"
 
 msgid "安装路径:"
 msgstr "Installation Path:"
@@ -209,25 +209,25 @@ msgid "提取中..."
 msgstr "Extracting..."
 
 msgid "请输入密码"
-msgstr ""
+msgstr "Please enter your password"
 
 msgid "请输入访问代码"
-msgstr ""
+msgstr "Please enter the access code"
 
 msgid "请输入邮箱"
-msgstr ""
+msgstr "Please enter your email address"
 
 msgid "正在登录..."
-msgstr ""
+msgstr "Logging in..."
 
 msgid "请求失败"
-msgstr ""
+msgstr "Request Failed"
 
 msgid "登录成功"
-msgstr ""
+msgstr "Login Successful"
 
 msgid "访问代码错误"
-msgstr ""
+msgstr "Access Code Error"
 
 msgid "登录失败: {0}"
-msgstr ""
+msgstr "Login Failed: {0}"
