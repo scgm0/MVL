@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: 神麤詭末的复古物语启动器\n"
-"PO-Revision-Date: 2025-03-11 08:35+0000\n"
+"PO-Revision-Date: 2025-03-11 08:38+0000\n"
 "Last-Translator: 神麤詭末 <2682963017@qq.com>\n"
 "Language-Team: English (United States) <https://hosted.weblate.org/projects/"
 "mvl/mvl/en_US/>\n"
@@ -155,7 +155,7 @@ msgid "名称不能为空"
 msgstr "Name cannot be empty"
 
 msgid "整合包路径:"
-msgstr "Modpack path:"
+msgstr "Modpack Path:"
 
 msgid "创建文件夹"
 msgstr "Creating Folders"
