@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: 神麤詭末的复古物语启动器\n"
-"PO-Revision-Date: 2025-03-11 04:53+0000\n"
+"PO-Revision-Date: 2025-03-11 08:27+0000\n"
 "Last-Translator: 神麤詭末 <2682963017@qq.com>\n"
 "Language-Team: English (United States) <https://hosted.weblate.org/projects/"
 "mvl/mvl/en_US/>\n"
@@ -72,3 +72,162 @@ msgstr "Main Developer"
 
 msgid "开发人员"
 msgstr "Developer"
+
+msgid "'{0}'已存在，确定覆盖它吗？"
+msgstr "'{0}' already exists, sure about overriding it?"
+
+msgid "下载中..."
+msgstr "Downloading..."
+
+msgid "邮箱:"
+msgstr "Email:"
+
+msgid "私人赞助"
+msgstr "Private Sponsorship"
+
+msgid "选择游戏版本"
+msgstr "Select Game Version"
+
+msgid "账号登录"
+msgstr "Account Login"
+
+msgid "请先在整合界面添加一个整合包"
+msgstr "Please first add an modpack in the modpack interface"
+
+msgid "请先在版本界面中导入游戏"
+msgstr "Please first import the game in the release interface"
+
+msgid "选择已安装版本"
+msgstr "Select the installed version"
+
+msgid "请输入名称"
+msgstr "Please enter the name"
+
+msgid "请输入路径"
+msgstr "Please enter the path"
+
+msgid "路径包含非法字符"
+msgstr "Path contains illegal characters"
+
+msgid "父文件夹不存在"
+msgstr "Parent folder does not exist"
+
+msgid "文件夹不存在"
+msgstr "Folder does not exist"
+
+msgid "将自动创建文件夹"
+msgstr "Folders will be created automatically"
+
+msgid "神麤詭末的复古物语启动器"
+msgstr "MystiVaid's VintageStory Launcher"
+
+msgid "文件夹不为空，确定选择它吗？"
+msgstr "Folder is not empty, sure you want to select it?"
+
+msgid "请先选择一个整合包"
+msgstr "Please select a modpack first"
+
+msgid "游戏版本:"
+msgstr "Game Version:"
+
+msgid "密码:"
+msgstr "Password:"
+
+msgid "网络请求失败，请重试"
+msgstr "Network request failed, please try again"
+
+msgid "文件夹存在且为空"
+msgstr "Folder exists and is empty"
+
+msgid "路径不存在"
+msgstr "Path does not exist"
+
+msgid "请选择版本"
+msgstr "Please select version"
+
+msgid "确定要删除账号 [color=#0078d7][b]{0}[/b][/color] 吗？"
+msgstr "Sure you want to delete the account [color=#0078d7][b]{0}[/b][/color]?"
+
+msgid "整合包名称:"
+msgstr "Modpack Name:"
+
+msgid "名称不能为空"
+msgstr "Name cannot be empty"
+
+msgid "整合包路径:"
+msgstr "Modpack path:"
+
+msgid "创建文件夹"
+msgstr "Creating Folders"
+
+msgid "路径不能为空"
+msgstr "Path cannot be empty"
+
+msgid "邮箱不能为空"
+msgstr "Email cannot be empty"
+
+msgid "密码不能为空"
+msgstr "Password cannot be empty"
+
+msgid "离线模式"
+msgstr "Offline Mode"
+
+msgid "访问代码:"
+msgstr "Access code:"
+
+msgid "若账号开启了2FA，则不能为空"
+msgstr "If the account has 2FA enabled, it cannot be empty"
+
+msgid "玩家名称:"
+msgstr "Player Name:"
+
+msgid "玩家名称不能为空"
+msgstr "Player name cannot be empty"
+
+msgid "选择版本"
+msgstr "Select Version"
+
+msgid "模组数量: {0}"
+msgstr "Number of Modules: {0}"
+
+msgid "版本名称:"
+msgstr "Version Name:"
+
+msgid "添加整合包"
+msgstr "Add Modpack"
+
+msgid "名称包含非法字符"
+msgstr "Name contains illegal characters"
+
+msgid "该名称已存在"
+msgstr ""
+
+msgid "安装路径:"
+msgstr "Installation Path:"
+
+msgid "提取中..."
+msgstr "Extracting..."
+
+msgid "请输入密码"
+msgstr ""
+
+msgid "请输入访问代码"
+msgstr ""
+
+msgid "请输入邮箱"
+msgstr ""
+
+msgid "正在登录..."
+msgstr ""
+
+msgid "请求失败"
+msgstr ""
+
+msgid "登录成功"
+msgstr ""
+
+msgid "访问代码错误"
+msgstr ""
+
+msgid "登录失败: {0}"
+msgstr ""
