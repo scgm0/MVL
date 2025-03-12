@@ -12,9 +12,18 @@
     神麤詭末 <https://github.com/scgm0>
 
 ## 图标制作
+
     青金蛙
     无智得言
 
 ## 开发人员
 
     神麤詭末 <https://github.com/scgm0>
+
+## 英语翻译
+
+    神麤詭末 <https://github.com/scgm0>
+
+## 西班牙语翻译
+
+    XurxoMF <https://xurxomf.xyz>

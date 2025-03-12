@@ -74,7 +74,7 @@ texture={
 
 [internationalization]
 
-locale/translations=PackedStringArray("res://Assets/Translation/Extractable/zh_CN.po", "res://Assets/Translation/MVL/en_US.po")
+locale/translations=PackedStringArray("res://Assets/Translation/Extractable/zh_CN.po", "res://Assets/Translation/MVL/en.po", "res://Assets/Translation/locale_name.po", "res://Assets/Translation/MVL/es.po")
 locale/fallback="zh_CN"
 
 [rendering]
