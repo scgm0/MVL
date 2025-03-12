@@ -27,3 +27,7 @@
 ## 西班牙语翻译
 
     XurxoMF <https://xurxomf.xyz>
+
+## 法语翻译
+
+    LorIlcs <https://github.com/LorIlcs>
