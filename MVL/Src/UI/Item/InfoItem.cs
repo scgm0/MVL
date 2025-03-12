@@ -1,3 +1,4 @@
+using System.Threading.Tasks;
 using Godot;
 using MVL.Utils.Help;
 
@@ -35,5 +36,6 @@ public partial class InfoItem : Control {
 		_content.NotNull();
 		_title.Text = Title;
 		_content.Text = Content;
+		_content.MetaClicked += Main.RichTextOpenUrl;
 	}
 }

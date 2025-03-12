@@ -188,6 +188,7 @@ public partial class Main : NativeWindowUtility {
 				child.QueueFree();
 				await ToSignal(_accountSelectListContainer!, Container.SignalName.SortChildren);
 			}
+
 			await ToSignal(SceneTree, SceneTree.SignalName.ProcessFrame);
 			AccountButtonOnPressed();
 		};
@@ -219,6 +220,7 @@ public partial class Main : NativeWindowUtility {
 				_accountSelectListContainer!.AddChild(accountItem);
 				await ToSignal(_accountSelectListContainer!, Container.SignalName.SortChildren);
 			}
+
 			await ToSignal(SceneTree, SceneTree.SignalName.ProcessFrame);
 
 			_accountSelectScrollContainer.VerticalScrollMode = ScrollContainer.ScrollMode.ShowNever;
@@ -247,7 +249,8 @@ public partial class Main : NativeWindowUtility {
 	private void AccountItemOnRemove(AccountSelectItem item) {
 		var confirmationWindow = _confirmationWindowScene!.Instantiate<ConfirmationWindow>();
 		confirmationWindow.Visible = false;
-		confirmationWindow.Message = string.Format(Tr("确定要删除账号 [color=#0078d7][b]{0}[/b][/color] 吗？"), item.Account!.PlayerName);
+		confirmationWindow.Message =
+			string.Format(Tr("确定要删除账号 [color=#0078d7][b]{0}[/b][/color] 吗？"), item.Account!.PlayerName);
 		confirmationWindow.Confirm += async () => {
 			await confirmationWindow.Hide();
 			BaseConfig.Account.Remove(item.Account);
@@ -257,6 +260,7 @@ public partial class Main : NativeWindowUtility {
 					child.QueueFree();
 					await ToSignal(_accountSelectListContainer!, Container.SignalName.SortChildren);
 				}
+
 				await ToSignal(SceneTree, SceneTree.SignalName.ProcessFrame);
 				AccountButtonOnPressed();
 			} else {
@@ -275,6 +279,7 @@ public partial class Main : NativeWindowUtility {
 				child.QueueFree();
 				await ToSignal(_accountSelectListContainer!, Container.SignalName.SortChildren);
 			}
+
 			await ToSignal(SceneTree, SceneTree.SignalName.ProcessFrame);
 			AccountButtonOnPressed();
 		};
@@ -448,6 +453,8 @@ public partial class Main : NativeWindowUtility {
 			return null;
 		}
 	}
+
+	public static void RichTextOpenUrl(Variant url) { Task.Run(() => OS.ShellOpen(url.AsString())); }
 
 	public static DirAccess CopyVsRun() {
 		var tmp = DirAccess.CreateTemp("VSRun");

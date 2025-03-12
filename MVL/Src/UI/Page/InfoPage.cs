@@ -53,12 +53,10 @@ public partial class InfoPage : MenuPage {
 		_versionLabel.Text = $"v{ProjectSettings.GetSetting("application/config/version")}";
 		VisibilityChanged += OnVisibilityChanged;
 		_buttonGroup.Pressed += ButtonGroupOnPressed;
-		_richText.MetaClicked += RichTextOnMetaClicked;
-		_richText2.MetaClicked += RichTextOnMetaClicked;
+		_richText.MetaClicked += UI.Main.RichTextOpenUrl;
+		_richText2.MetaClicked += UI.Main.RichTextOpenUrl;
 		UpdateList(Info.AUTHORS);
 	}
-
-	private void RichTextOnMetaClicked(Variant meta) { Task.Run(() => OS.ShellOpen(meta.ToString())); }
 
 	private void ButtonGroupOnPressed(BaseButton button) {
 		if (button == _authorButton) {

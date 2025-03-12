@@ -1,4 +1,4 @@
-[gd_scene load_steps=5 format=3 uid="uid://bxgudtdder0na"]
+[gd_scene load_steps=4 format=3 uid="uid://bxgudtdder0na"]
 
 [ext_resource type="FontFile" uid="uid://bmgx1vyg6bavd" path="res://Assets/Font/HarmonyOS_Sans_SC_Bold.ttf" id="1_3v3c8"]
 [ext_resource type="Script" uid="uid://b3uwvqsdvp3gb" path="res://Src/UI/Item/InfoItem.cs" id="1_4vinm"]
@@ -38,6 +38,7 @@ size_flags_vertical = 0
 focus_mode = 2
 theme_override_colors/selection_color = Color(0.6, 0.6, 0.6, 0.6)
 theme_override_styles/normal = SubResource("StyleBoxFlat_7nt4r")
+bbcode_enabled = true
 text = "内容"
 fit_content = true
 context_menu_enabled = true

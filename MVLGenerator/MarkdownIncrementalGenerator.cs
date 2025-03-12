@@ -3,6 +3,7 @@ using System.Collections.Immutable;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Text;
 
@@ -10,6 +11,8 @@ namespace MVLGenerator;
 
 [Generator]
 public class MarkdownIncrementalGenerator : IIncrementalGenerator {
+	static private readonly Regex UrlRegex = new("<(https?://[^>]+)>", RegexOptions.IgnoreCase | RegexOptions.Compiled);
+
 	public void Initialize(IncrementalGeneratorInitializationContext context) {
 		var authorsFiles = context.AdditionalTextsProvider
 			.Where(static file => Path.GetFileName(file.Path)
@@ -47,7 +50,7 @@ public class MarkdownIncrementalGenerator : IIncrementalGenerator {
 
 				currentSection = line.Substring(3).Trim();
 			} else if (currentSection != null && line.StartsWith("    ")) {
-				currentEntries.AppendLine(line.TrimStart());
+				currentEntries.AppendLine(ConvertMarkdownUrls(line.TrimStart()));
 			}
 		}
 
@@ -58,11 +61,22 @@ public class MarkdownIncrementalGenerator : IIncrementalGenerator {
 		return builder.ToImmutable();
 	}
 
+	static private string ConvertMarkdownUrls(string input) {
+		if (string.IsNullOrEmpty(input))
+			return input;
+
+		return UrlRegex.Replace(input,
+			match => {
+				var url = match.Groups[1].Value;
+				return $"[color=#3c7fe1][url]{url}[/url][/color]";
+			});
+	}
+
 	static private string GenerateSourceCode(string name, ImmutableList<(string Section, string Content)> data) {
 		var entries = new StringBuilder();
 		foreach (var item in data) {
 			var escapedValue = item.Content.Replace("\"", "\\\"").Replace("\n", "\\n");
-			entries.AppendLine($$"""        ("{{item.Section}}", "{{escapedValue}}"),""");
+			entries.AppendLine($"""        ("{item.Section}", "{escapedValue}"),""");
 		}
 
 		return $$"""
