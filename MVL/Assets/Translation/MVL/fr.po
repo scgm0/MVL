@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: 神麤詭末的复古物语启动器\n"
-"PO-Revision-Date: 2025-03-12 12:04+0000\n"
+"PO-Revision-Date: 2025-03-12 15:00+0000\n"
 "Last-Translator: LorIlcs <soumanadrx@gmail.com>\n"
 "Language-Team: French <https://hosted.weblate.org/projects/mvl/mvl/fr/>\n"
 "Language: fr\n"
@@ -76,163 +76,172 @@ msgid "开发人员"
 msgstr "Développeur"
 
 msgid "私人赞助"
-msgstr ""
+msgstr "Sponsor privé"
 
 msgid "添加整合包"
-msgstr ""
+msgstr "Ajouter un Modpack"
 
 msgid "选择游戏版本"
-msgstr ""
+msgstr "Sélectionner la version du jeu"
 
 msgid "账号登录"
-msgstr ""
+msgstr "Connexion au compte"
 
 msgid "请先选择一个整合包"
-msgstr ""
+msgstr "Veuillez d'abord sélectionner un modpack"
 
 msgid "请先在整合界面添加一个整合包"
-msgstr ""
+msgstr "Veuillez d'abord ajouter un modpack dans l'interface de modpack"
 
 msgid "请先在版本界面中导入游戏"
-msgstr ""
+msgstr "Veuillez importer le jeu dans l'interface des versions"
 
 msgid "选择已安装版本"
-msgstr ""
+msgstr "Sélectionnez la version installée"
 
 msgid "请输入名称"
-msgstr ""
+msgstr "Veuillez entrer un nom"
 
 msgid "请输入路径"
-msgstr ""
+msgstr "Veuillez entrer le chemin d'accès"
 
 msgid "路径包含非法字符"
-msgstr ""
+msgstr "Le chemin d'accès contient des caractères interdits"
 
 msgid "父文件夹不存在"
-msgstr ""
+msgstr "Le dossier parent n'existe pas"
 
 msgid "文件夹不存在"
-msgstr ""
+msgstr "Le dossier n'existe pas"
 
 msgid "将自动创建文件夹"
-msgstr ""
+msgstr "Les dossiers seront crées automatiquement"
 
 msgid "文件夹不为空，确定选择它吗？"
-msgstr ""
+msgstr "Le dossier n'est pas vide, êtes-vous sûr de vouloir le sélectionner?"
 
 msgid "文件夹存在且为空"
-msgstr ""
+msgstr "Le dossier existe et est vide"
 
 msgid "网络请求失败，请重试"
-msgstr ""
+msgstr "La demande de réseau a échouée, veuillez réessayer"
 
 msgid "名称包含非法字符"
-msgstr ""
+msgstr "Le nom contient des caractères interdits"
 
 msgid "路径不存在"
-msgstr ""
+msgstr "Le chemin d'accès n'existe pas"
 
 msgid "请选择版本"
-msgstr ""
+msgstr "Veuillez sélectionner une version"
 
 msgid "'{0}'已存在，确定覆盖它吗？"
-msgstr ""
+msgstr "'{0}' existe déjà, êtes-vous sûr de vouloir le remplacer?"
 
 msgid "下载中..."
-msgstr ""
+msgstr "Téléchargement..."
 
 msgid "提取中..."
-msgstr ""
+msgstr "Extraction..."
 
 msgid "确定要删除账号 [color=#0078d7][b]{0}[/b][/color] 吗？"
 msgstr ""
+"Êtes-vous sûr de vouloir supprimer le compte [color=#0078d7][b]{0}[/b]"
+"[/color]?"
 
 msgid "整合包名称:"
-msgstr ""
+msgstr "Nom du modpack:"
 
 msgid "名称不能为空"
-msgstr ""
+msgstr "Le nom ne peut pas être vide"
 
 msgid "整合包路径:"
-msgstr ""
+msgstr "Chemin d'accès du modpack:"
 
 msgid "创建文件夹"
-msgstr ""
+msgstr "Création des dossiers"
 
 msgid "路径不能为空"
-msgstr ""
+msgstr "Le chemin d'accès ne peut pas être vide"
 
 msgid "游戏版本:"
-msgstr ""
+msgstr "Version du jeu:"
 
 msgid "版本名称:"
-msgstr ""
+msgstr "Nom de la version:"
 
 msgid "安装路径:"
-msgstr ""
+msgstr "Chemin d'installation:"
 
 msgid "邮箱:"
-msgstr ""
+msgstr "Email:"
 
 msgid "邮箱不能为空"
-msgstr ""
+msgstr "L'email ne peut pas être vide"
 
 msgid "密码:"
-msgstr ""
+msgstr "Mot de passe:"
 
 msgid "密码不能为空"
-msgstr ""
+msgstr "Le mot de passe ne peut pas être vide"
 
 msgid "离线模式"
-msgstr ""
+msgstr "Mode hors ligne"
 
 msgid "访问代码:"
-msgstr ""
+msgstr "Code d'accès:"
 
 msgid "若账号开启了2FA，则不能为空"
-msgstr ""
+msgstr "Si le compte a l'A2F activée, le champ ne peut pas être vide"
 
 msgid "玩家名称:"
-msgstr ""
+msgstr "Nom du joueur:"
 
 msgid "玩家名称不能为空"
-msgstr ""
+msgstr "Le nom du joueur ne peut pas être vide"
 
 msgid "选择版本"
-msgstr ""
+msgstr "Sélectionner une version"
 
 msgid "模组数量: {0}"
-msgstr ""
+msgstr "Nombre de modules:{0}"
 
 msgid "该名称已存在"
-msgstr ""
+msgstr "Existence du nom"
 
 msgid "请输入邮箱"
-msgstr ""
+msgstr "Veuillez entrer votre adresse email"
 
 msgid "请输入密码"
-msgstr ""
+msgstr "Veuillez entrer votre mot de passe"
 
 msgid "请输入访问代码"
-msgstr ""
+msgstr "veuillez entrer le code d'accès"
 
 msgid "正在登录..."
-msgstr ""
+msgstr "Connexion..."
 
 msgid "请求失败"
-msgstr ""
+msgstr "La demande a échouée"
 
 msgid "登录成功"
-msgstr ""
+msgstr "Connexion réussie"
 
 msgid "访问代码错误"
-msgstr ""
+msgstr "Erreur de code d'accès"
 
 msgid "登录失败: {0}"
-msgstr ""
+msgstr "La connexion a échouée: {0}"
 
 msgid "如果启动器对您有所帮助且您财力有余，可以赞助一下开发者，您的支持将促进启动器的开发与完善: [color=#3c7fe1][url]https://afdian.com/a/MystiVaid[/url][/color]"
 msgstr ""
+"Si le launcher vous a été utile et que vous en avez les moyens, envisagez de "
+"soutenir le développeur. Votre soutien aidera à faire avancer et affiner le "
+"développement du launcher: [color=#3c7fe1][url]https://afdian.com/a/"
+"MystiVaid[/url][/color]"
 
 msgid "不喜欢MVL？那么您还可以试试另一款复古物语启动器: [wave][pulse][rainbow][url=https://vsldocs.xurxomf.xyz]VS Launcher[/url][/rainbow][/pulse][/wave]"
 msgstr ""
+"Vous n'aimez pas MVL? Essayez un autre launcher pour Vintage Story: [wave]"
+"[pulse][rainbow][url=https://vsldocs.xurxomf.xyz]VS Launcher[/url][/"
+"rainbow][/pulse][/wave]"
