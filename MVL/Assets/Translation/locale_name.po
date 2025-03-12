@@ -1,0 +1,23 @@
+# LANGUAGE translation for 神麤詭末的复古物语启动器:
+#
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: 神麤詭末的复古物语启动器\n"
+"Language: zh_CN\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8-bit\n"
+
+msgid "Chinese, China"
+msgstr "中文, 中国"
+
+msgid "English"
+msgstr "English"
+
+msgid "Spanish"
+msgstr "Español"
+
+msgid "French"
+msgstr "Francais"
