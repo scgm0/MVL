@@ -247,7 +247,7 @@ msgstr "English Translation"
 msgid "西班牙语翻译"
 msgstr "Spanish Translation"
 
-msgid "法语语翻译"
+msgid "法语翻译"
 msgstr ""
 
 msgid "语言"

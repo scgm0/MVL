@@ -252,7 +252,7 @@ msgstr "Traduction Française"
 msgid "西班牙语翻译"
 msgstr "Traduction française"
 
-msgid "法语语翻译"
+msgid "法语翻译"
 msgstr ""
 
 msgid "语言"
