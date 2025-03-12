@@ -263,6 +263,7 @@ public partial class Main : NativeWindowUtility {
 
 				await ToSignal(SceneTree, SceneTree.SignalName.ProcessFrame);
 				AccountButtonOnPressed();
+				CheckAccount();
 			} else {
 				AccountSelectButtonOnPressed();
 			}
