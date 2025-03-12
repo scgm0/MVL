@@ -572,7 +572,6 @@ theme_override_styles/hover = SubResource("StyleBoxFlat_oarc7")
 theme_override_styles/pressed = SubResource("StyleBoxFlat_gblyu")
 theme_override_styles/normal = SubResource("StyleBoxEmpty_oarc7")
 toggle_mode = true
-text = "点击登录账号"
 
 [node name="Button" type="Button" parent="HBoxContainer/ColorRect/VBoxContainer/MarginContainer2/HBoxContainer/Button"]
 show_behind_parent = true

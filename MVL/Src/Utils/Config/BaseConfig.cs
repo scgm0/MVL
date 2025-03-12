@@ -10,6 +10,7 @@ public class BaseConfig {
 
 	public string CurrentModpack { get; set; } = "";
 	public string CurrentAccount { get; set; } = "";
+	public string Language { get; set; } = OS.GetLocale();
 	public string ProxyUrl { get; set; } = "";
 	public List<string> Release { get; set; } = [];
 	public List<string> Modpack { get; set; } = [];

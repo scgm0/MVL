@@ -246,3 +246,6 @@ msgstr "English Translation"
 
 msgid "西班牙语翻译"
 msgstr "Spanish Translation"
+
+msgid "语言"
+msgstr ""

@@ -124,10 +124,12 @@ corner_radius_bottom_left = 5
 
 [resource]
 Button/styles/focus = SubResource("StyleBoxEmpty_oarc7")
+CheckBox/colors/checkbox_unchecked_color = Color(0.880502, 0.880502, 0.880502, 1)
 CheckBox/icons/checked = SubResource("Texture2D_oarc7")
 CheckBox/icons/radio_checked = SubResource("Texture2D_gblyu")
 CheckBox/icons/radio_unchecked_disabled = SubResource("Texture2D_364to")
 CheckBox/icons/unchecked = SubResource("Texture2D_6are0")
+CheckButton/colors/button_unchecked_color = Color(0.881379, 0.881379, 0.881379, 1)
 CheckButton/icons/checked = SubResource("Texture2D_bdark")
 CheckButton/icons/unchecked = SubResource("Texture2D_u0mv6")
 LineEdit/font_sizes/font_size = 14
