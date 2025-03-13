@@ -1,4 +1,5 @@
 using Godot;
+using MVL.Utils;
 using MVL.Utils.Config;
 using MVL.Utils.Help;
 
@@ -44,6 +45,7 @@ public partial class SettingPage : MenuPage {
 			fontFile.Oversampling = UI.Main.BaseConfig.DisplayScale;
 		}
 
+		UI.Main.Instance?.WindowMaterial?.SetShaderParameter(StringNames.Radius, 10 * UI.Main.BaseConfig.DisplayScale);
 		UI.Main.Instance?.RootOnSizeChanged();
 
 		BaseConfig.Save(UI.Main.BaseConfig);

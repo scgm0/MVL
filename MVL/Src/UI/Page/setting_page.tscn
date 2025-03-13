@@ -34,10 +34,10 @@ corner_radius_bottom_left = 8
 corner_detail = 5
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_yoik7"]
-content_margin_left = 5.0
-content_margin_top = 5.0
-content_margin_right = 5.0
-content_margin_bottom = 5.0
+content_margin_left = 10.0
+content_margin_top = 10.0
+content_margin_right = 10.0
+content_margin_bottom = 10.0
 bg_color = Color(0, 0, 0, 0.6)
 corner_radius_top_left = 8
 corner_radius_top_right = 8
@@ -130,7 +130,6 @@ vertical_alignment = 1
 [node name="OptionButton" type="OptionButton" parent="MarginContainer/SmoothScrollContainer/VBoxContainer/PanelContainer/VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 10
-mouse_filter = 1
 flat = true
 alignment = 2
 
@@ -145,7 +144,6 @@ text = "显示缩放"
 [node name="SpinBox" type="SpinBox" parent="MarginContainer/SmoothScrollContainer/VBoxContainer/PanelContainer/VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer2"]
 layout_mode = 2
 size_flags_horizontal = 10
-mouse_filter = 1
 theme = SubResource("Theme_yaaqs")
 min_value = 50.0
 max_value = 200.0
