@@ -250,5 +250,11 @@ msgstr "Spanish Translation"
 msgid "法语翻译"
 msgstr ""
 
+msgid "界面"
+msgstr ""
+
 msgid "语言"
 msgstr "Languages"
+
+msgid "显示缩放"
+msgstr ""

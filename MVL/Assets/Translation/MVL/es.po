@@ -253,5 +253,11 @@ msgstr ""
 msgid "法语翻译"
 msgstr ""
 
+msgid "界面"
+msgstr ""
+
 msgid "语言"
+msgstr ""
+
+msgid "显示缩放"
 msgstr ""
