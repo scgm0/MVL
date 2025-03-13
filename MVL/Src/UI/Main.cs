@@ -341,8 +341,6 @@ public partial class Main : NativeWindowUtility {
 
 	public void RootOnSizeChanged() {
 		_roundMaterial!.SetShaderParameter(StringNames.WindowExpandedSize, SceneTree.Root.Size);
-		_subViewport!.Size2DOverride = new(Mathf.CeilToInt((SceneTree.Root.Size.X - ShadowSize * 2) / BaseConfig.DisplayScale),
-			Mathf.CeilToInt((SceneTree.Root.Size.Y - ShadowSize * 2) / BaseConfig.DisplayScale));
 		if (ShadowSize != 5 || SceneTree.Root.Mode != Godot.Window.ModeEnum.Maximized) {
 			ShadowSize = 5;
 			_roundMaterial!.SetShaderParameter(StringNames.HasRoundCorners, true);
@@ -350,6 +348,9 @@ public partial class Main : NativeWindowUtility {
 			ShadowSize = 0;
 			_roundMaterial!.SetShaderParameter(StringNames.HasRoundCorners, false);
 		}
+
+		_subViewport!.Size2DOverride = new(Mathf.CeilToInt((SceneTree.Root.Size.X - ShadowSize * 2) / BaseConfig.DisplayScale),
+			Mathf.CeilToInt((SceneTree.Root.Size.Y - ShadowSize * 2) / BaseConfig.DisplayScale));
 	}
 
 	public async Task<InstalledGamesImport> ImportInstalledGames(IEnumerable<string>? gamePaths = null) {
