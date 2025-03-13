@@ -46,6 +46,9 @@ public partial class Main : NativeWindowUtility {
 	private MarginContainer? _marginContainer;
 
 	[Export]
+	private SubViewport? _subViewport;
+
+	[Export]
 	private Button? _minButton;
 
 	[Export]
@@ -114,6 +117,9 @@ public partial class Main : NativeWindowUtility {
 		_iconTexture.NotNull();
 		_installedGamesImportScene.NotNull();
 		_accountSelectItemScene.NotNull();
+		_confirmationWindowScene.NotNull();
+		_marginContainer.NotNull();
+		_subViewport.NotNull();
 		_minButton.NotNull();
 		_closeButton.NotNull();
 		_accountButton.NotNull();
@@ -126,7 +132,6 @@ public partial class Main : NativeWindowUtility {
 
 		DisplayServer.SetIcon(_iconTexture.GetImage());
 
-		SceneTree.Root.MinSize = SceneTree.Root.Size - new Vector2I(40, 40);
 		SceneTree.Root.SizeChanged += RootOnSizeChanged;
 
 		Tween? shadowTween = null;
@@ -334,8 +339,10 @@ public partial class Main : NativeWindowUtility {
 		}
 	}
 
-	private void RootOnSizeChanged() {
+	public void RootOnSizeChanged() {
 		_roundMaterial!.SetShaderParameter(StringNames.WindowExpandedSize, SceneTree.Root.Size);
+		_subViewport!.Size2DOverride = new(Mathf.CeilToInt((SceneTree.Root.Size.X - ShadowSize * 2) / BaseConfig.DisplayScale),
+			Mathf.CeilToInt((SceneTree.Root.Size.Y - ShadowSize * 2) / BaseConfig.DisplayScale));
 		if (ShadowSize != 5 || SceneTree.Root.Mode != Godot.Window.ModeEnum.Maximized) {
 			ShadowSize = 5;
 			_roundMaterial!.SetShaderParameter(StringNames.HasRoundCorners, true);

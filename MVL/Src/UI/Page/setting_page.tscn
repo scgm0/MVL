@@ -1,9 +1,12 @@
-[gd_scene load_steps=8 format=3 uid="uid://bp02so1m0q7m0"]
+[gd_scene load_steps=15 format=3 uid="uid://bp02so1m0q7m0"]
 
 [ext_resource type="Script" uid="uid://er6sd5rjfnp5" path="res://Src/UI/Page/SettingPage.cs" id="1_f2m4w"]
 [ext_resource type="Script" uid="uid://cre6m68jy0aad" path="res://addons/SmoothScroll/SmoothScrollContainer.gd" id="2_ei28a"]
+[ext_resource type="FontFile" uid="uid://bmgx1vyg6bavd" path="res://Assets/Font/HarmonyOS_Sans_SC_Bold.ttf" id="2_yoik7"]
+[ext_resource type="FontFile" uid="uid://d0e3mw7yvdf0v" path="res://Assets/Font/HarmonyOS_Sans_SC_Regular.ttf" id="3_axk81"]
 [ext_resource type="Script" uid="uid://41yydm3vncfj" path="res://addons/SmoothScroll/scroll_damper/expo_scroll_damper.gd" id="3_tr7nv"]
 [ext_resource type="Material" uid="uid://c0sb2bjy16ljf" path="res://Assets/Material/button_blur.tres" id="4_tr7nv"]
+[ext_resource type="FontFile" uid="uid://dp7r8itfqvqca" path="res://Assets/Font/materialdesignicons-webfont.woff2" id="4_yaaqs"]
 
 [sub_resource type="Resource" id="Resource_mhakp"]
 script = ExtResource("3_tr7nv")
@@ -18,23 +21,37 @@ minimum_velocity = 0.4
 rebound_strength = 7.0
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ei28a"]
-content_margin_left = 10.0
-content_margin_top = 5.0
-content_margin_right = 5.0
-content_margin_bottom = 5.0
 bg_color = Color(0, 0, 0, 1)
 border_width_left = 1
 border_width_top = 1
 border_width_right = 1
 border_width_bottom = 1
 border_color = Color(0.588235, 0.588235, 0.588235, 0.588235)
-corner_radius_top_left = 5
-corner_radius_top_right = 5
-corner_radius_bottom_right = 5
-corner_radius_bottom_left = 5
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
 corner_detail = 5
 
-[node name="SettingPage" type="Control" node_paths=PackedStringArray("_languageOptionButton", "Main")]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_yoik7"]
+content_margin_left = 5.0
+content_margin_top = 5.0
+content_margin_right = 5.0
+content_margin_bottom = 5.0
+bg_color = Color(0, 0, 0, 0.6)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_yoik7"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_axk81"]
+
+[sub_resource type="Theme" id="Theme_yaaqs"]
+LineEdit/font_sizes/font_size = 16
+LineEdit/styles/focus = SubResource("StyleBoxEmpty_yoik7")
+LineEdit/styles/normal = SubResource("StyleBoxEmpty_axk81")
+
+[node name="SettingPage" type="Control" node_paths=PackedStringArray("_languageOptionButton", "_displayScaleSpinbox", "Main")]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -43,7 +60,9 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 script = ExtResource("1_f2m4w")
-_languageOptionButton = NodePath("MarginContainer/SmoothScrollContainer/VBoxContainer/PanelContainer/HBoxContainer/OptionButton")
+_fonts = Array[FontFile]([ExtResource("2_yoik7"), ExtResource("3_axk81"), ExtResource("4_yaaqs")])
+_languageOptionButton = NodePath("MarginContainer/SmoothScrollContainer/VBoxContainer/PanelContainer/VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer/OptionButton")
+_displayScaleSpinbox = NodePath("MarginContainer/SmoothScrollContainer/VBoxContainer/PanelContainer/VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer2/SpinBox")
 Main = NodePath("MarginContainer")
 metadata/_tab_index = 5
 
@@ -78,18 +97,59 @@ layout_mode = 2
 mouse_filter = 1
 theme_override_styles/panel = SubResource("StyleBoxFlat_ei28a")
 
-[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/SmoothScrollContainer/VBoxContainer/PanelContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/SmoothScrollContainer/VBoxContainer/PanelContainer"]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="MarginContainer/SmoothScrollContainer/VBoxContainer/PanelContainer/HBoxContainer"]
+[node name="Label" type="Label" parent="MarginContainer/SmoothScrollContainer/VBoxContainer/PanelContainer/VBoxContainer"]
+layout_mode = 2
+mouse_filter = 1
+theme_override_fonts/font = ExtResource("2_yoik7")
+theme_override_font_sizes/font_size = 20
+theme_override_styles/normal = SubResource("StyleBoxFlat_yoik7")
+text = "界面"
+
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/SmoothScrollContainer/VBoxContainer/PanelContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/SmoothScrollContainer/VBoxContainer/PanelContainer/VBoxContainer/MarginContainer"]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/SmoothScrollContainer/VBoxContainer/PanelContainer/VBoxContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/SmoothScrollContainer/VBoxContainer/PanelContainer/VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 0
 mouse_filter = 1
 text = "语言"
 vertical_alignment = 1
 
-[node name="OptionButton" type="OptionButton" parent="MarginContainer/SmoothScrollContainer/VBoxContainer/PanelContainer/HBoxContainer"]
+[node name="OptionButton" type="OptionButton" parent="MarginContainer/SmoothScrollContainer/VBoxContainer/PanelContainer/VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 10
+mouse_filter = 1
 flat = true
 alignment = 2
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer/SmoothScrollContainer/VBoxContainer/PanelContainer/VBoxContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/SmoothScrollContainer/VBoxContainer/PanelContainer/VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer2"]
+layout_mode = 2
+mouse_filter = 1
+text = "显示缩放"
+
+[node name="SpinBox" type="SpinBox" parent="MarginContainer/SmoothScrollContainer/VBoxContainer/PanelContainer/VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer2"]
+layout_mode = 2
+size_flags_horizontal = 10
+mouse_filter = 1
+theme = SubResource("Theme_yaaqs")
+min_value = 50.0
+max_value = 200.0
+value = 100.0
+alignment = 1
+suffix = "%"
+custom_arrow_step = 25.0

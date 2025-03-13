@@ -1,4 +1,4 @@
-[gd_resource type="Theme" load_steps=17 format=3 uid="uid://26j2wsw1c43m"]
+[gd_resource type="Theme" load_steps=25 format=3 uid="uid://26j2wsw1c43m"]
 
 [ext_resource type="Script" uid="uid://bk3tot6c35bwu" path="res://Src/Utils/IconTexture2D.cs" id="1_asgjk"]
 
@@ -122,6 +122,70 @@ corner_radius_bottom_left = 5
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_h252r"]
 
+[sub_resource type="Texture2D" id="Texture2D_asgjk"]
+resource_local_to_scene = false
+resource_name = ""
+script = ExtResource("1_asgjk")
+IconName = "chevron-down"
+FontSize = 18
+metadata/_custom_type_script = "uid://bk3tot6c35bwu"
+
+[sub_resource type="Texture2D" id="Texture2D_bgbrj"]
+resource_local_to_scene = false
+resource_name = ""
+script = ExtResource("1_asgjk")
+IconName = "chevron-down"
+FontSize = 18
+metadata/_custom_type_script = "uid://bk3tot6c35bwu"
+
+[sub_resource type="Texture2D" id="Texture2D_vg7xs"]
+resource_local_to_scene = false
+resource_name = ""
+script = ExtResource("1_asgjk")
+IconName = "chevron-down"
+FontSize = 18
+metadata/_custom_type_script = "uid://bk3tot6c35bwu"
+
+[sub_resource type="Texture2D" id="Texture2D_4tsj6"]
+resource_local_to_scene = false
+resource_name = ""
+script = ExtResource("1_asgjk")
+IconName = "chevron-down"
+FontSize = 18
+metadata/_custom_type_script = "uid://bk3tot6c35bwu"
+
+[sub_resource type="Texture2D" id="Texture2D_h252r"]
+resource_local_to_scene = false
+resource_name = ""
+script = ExtResource("1_asgjk")
+IconName = "chevron-up"
+FontSize = 18
+metadata/_custom_type_script = "uid://bk3tot6c35bwu"
+
+[sub_resource type="Texture2D" id="Texture2D_0rg2h"]
+resource_local_to_scene = false
+resource_name = ""
+script = ExtResource("1_asgjk")
+IconName = "chevron-up"
+FontSize = 18
+metadata/_custom_type_script = "uid://bk3tot6c35bwu"
+
+[sub_resource type="Texture2D" id="Texture2D_17a5b"]
+resource_local_to_scene = false
+resource_name = ""
+script = ExtResource("1_asgjk")
+IconName = "chevron-up"
+FontSize = 18
+metadata/_custom_type_script = "uid://bk3tot6c35bwu"
+
+[sub_resource type="Texture2D" id="Texture2D_pur85"]
+resource_local_to_scene = false
+resource_name = ""
+script = ExtResource("1_asgjk")
+IconName = "chevron-up"
+FontSize = 18
+metadata/_custom_type_script = "uid://bk3tot6c35bwu"
+
 [resource]
 Button/styles/focus = SubResource("StyleBoxEmpty_oarc7")
 CheckBox/colors/checkbox_unchecked_color = Color(0.880502, 0.880502, 0.880502, 1)
@@ -141,3 +205,11 @@ OptionButton/icons/arrow = SubResource("Texture2D_b82ki")
 PopupMenu/styles/hover = SubResource("StyleBoxFlat_7eosv")
 PopupMenu/styles/panel = SubResource("StyleBoxFlat_8ilox")
 RichTextLabel/styles/focus = SubResource("StyleBoxEmpty_h252r")
+SpinBox/icons/down = SubResource("Texture2D_asgjk")
+SpinBox/icons/down_disabled = SubResource("Texture2D_bgbrj")
+SpinBox/icons/down_hover = SubResource("Texture2D_vg7xs")
+SpinBox/icons/down_pressed = SubResource("Texture2D_4tsj6")
+SpinBox/icons/up = SubResource("Texture2D_h252r")
+SpinBox/icons/up_disabled = SubResource("Texture2D_0rg2h")
+SpinBox/icons/up_hover = SubResource("Texture2D_17a5b")
+SpinBox/icons/up_pressed = SubResource("Texture2D_pur85")
