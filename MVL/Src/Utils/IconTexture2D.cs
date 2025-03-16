@@ -27,6 +27,17 @@ public partial class IconTexture2D : Texture2D {
 		}
 	} = 24;
 
+	[Export]
+	public FontFile FontFile {
+		get;
+		set {
+			field.Changed -= EmitChanged;
+			field = value;
+			value.Changed += EmitChanged;
+			EmitChanged();
+		}
+	} = GD.Load<FontFile>("uid://dp7r8itfqvqca");
+
 	private long _iconChar;
 
 	public IconTexture2D() { FontFile.Changed += EmitChanged; }
@@ -44,8 +55,6 @@ public partial class IconTexture2D : Texture2D {
 	public override int _GetHeight() { return (int)FontFile.GetCharSize(_iconChar, FontSize).Y; }
 
 	public override int _GetWidth() { return (int)FontFile.GetCharSize(_iconChar, FontSize).X; }
-
-	static private readonly FontFile FontFile = GD.Load<FontFile>("uid://dp7r8itfqvqca");
 
 	[JsonDictionary("Assets/Icon/MD/icons.json")]
 	static private partial Dictionary<string, string> Icons { get; }
