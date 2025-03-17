@@ -22,6 +22,10 @@ boot_splash/show_image=false
 config/icon="uid://cg2dshwidpbbv"
 config/windows_native_icon="res://Assets/Icon/icon.ico"
 
+[audio]
+
+driver/driver="Dummy"
+
 [display]
 
 window/size/viewport_width=1162
