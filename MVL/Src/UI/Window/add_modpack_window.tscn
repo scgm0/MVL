@@ -1,8 +1,9 @@
-[gd_scene load_steps=8 format=3 uid="uid://ccfq2fesgeykj"]
+[gd_scene load_steps=9 format=3 uid="uid://ccfq2fesgeykj"]
 
 [ext_resource type="PackedScene" uid="uid://bu4hwijkbc8sm" path="res://Src/UI/Window/base_window.tscn" id="1_fvt7b"]
 [ext_resource type="Script" uid="uid://dstnk40xqjp6x" path="res://Src/UI/Window/AddModpackWindow.cs" id="1_vgayu"]
 [ext_resource type="Script" uid="uid://bk3tot6c35bwu" path="res://Src/Utils/IconTexture2D.cs" id="3_i7wln"]
+[ext_resource type="FontFile" uid="uid://dp7r8itfqvqca" path="res://Assets/Font/materialdesignicons-webfont.woff2" id="4_b82ki"]
 [ext_resource type="FontFile" uid="uid://bmgx1vyg6bavd" path="res://Assets/Font/HarmonyOS_Sans_SC_Bold.ttf" id="4_vgayu"]
 
 [sub_resource type="Texture2D" id="Texture2D_5jy5j"]
@@ -10,7 +11,8 @@ resource_local_to_scene = false
 resource_name = ""
 script = ExtResource("3_i7wln")
 IconName = "alert-circle-outline"
-FontSize = 18
+FontSize = 16
+FontFile = ExtResource("4_b82ki")
 metadata/_custom_type_script = ExtResource("3_i7wln")
 
 [sub_resource type="Texture2D" id="Texture2D_2ju0j"]
@@ -19,6 +21,7 @@ resource_name = ""
 script = ExtResource("3_i7wln")
 IconName = "file-plus-outline"
 FontSize = 24
+FontFile = ExtResource("4_b82ki")
 metadata/_custom_type_script = ExtResource("3_i7wln")
 
 [sub_resource type="Texture2D" id="Texture2D_vgayu"]
@@ -27,6 +30,7 @@ resource_name = ""
 script = ExtResource("3_i7wln")
 IconName = "file-settings-outline"
 FontSize = 24
+FontFile = ExtResource("4_b82ki")
 metadata/_custom_type_script = ExtResource("3_i7wln")
 
 [node name="AddModpackWindow" node_paths=PackedStringArray("_modpackName", "_modpackPath", "_createPath", "_folderButton", "_fileDialog", "_gameVersion", "_releasePath", "_tooltip") instance=ExtResource("1_fvt7b")]

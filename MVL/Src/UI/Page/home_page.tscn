@@ -1,12 +1,13 @@
-[gd_scene load_steps=26 format=3 uid="uid://wtrk0xtd36kj"]
+[gd_scene load_steps=27 format=3 uid="uid://wtrk0xtd36kj"]
 
 [ext_resource type="Script" uid="uid://ukwbt00ugn6v" path="res://Src/UI/Page/HomePage.cs" id="1_j4kqc"]
 [ext_resource type="PackedScene" uid="uid://don6xai5trupe" path="res://Src/UI/Item/select_modpack_item.tscn" id="2_glb6t"]
 [ext_resource type="Script" uid="uid://bk3tot6c35bwu" path="res://Src/Utils/IconTexture2D.cs" id="3_1jowr"]
 [ext_resource type="Shader" uid="uid://bw4cstfk8udci" path="res://Assets/Shader/blur.gdshader" id="3_j4kqc"]
 [ext_resource type="FontFile" uid="uid://bmgx1vyg6bavd" path="res://Assets/Font/HarmonyOS_Sans_SC_Bold.ttf" id="4_k556s"]
-[ext_resource type="Script" uid="uid://cre6m68jy0aad" path="res://addons/SmoothScroll/SmoothScrollContainer.gd" id="6_rwne7"]
-[ext_resource type="Script" uid="uid://41yydm3vncfj" path="res://addons/SmoothScroll/scroll_damper/expo_scroll_damper.gd" id="7_glb6t"]
+[ext_resource type="FontFile" uid="uid://dp7r8itfqvqca" path="res://Assets/Font/materialdesignicons-webfont.woff2" id="6_gi4mh"]
+[ext_resource type="Script" uid="uid://bgqglerkcylxx" path="res://addons/SmoothScroll/SmoothScrollContainer.gd" id="6_rwne7"]
+[ext_resource type="Script" uid="uid://b7h0k2h2qwlqv" path="res://addons/SmoothScroll/scroll_damper/expo_scroll_damper.gd" id="7_glb6t"]
 [ext_resource type="ButtonGroup" uid="uid://bcqmgl5krt5h5" path="res://Assets/Gui/select_modpack_button_group.tres" id="10_vb8vt"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_glb6t"]
@@ -41,6 +42,7 @@ resource_name = ""
 script = ExtResource("3_1jowr")
 IconName = "chevron-up"
 FontSize = 18
+FontFile = ExtResource("6_gi4mh")
 metadata/_custom_type_script = "uid://bk3tot6c35bwu"
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_k556s"]
@@ -315,7 +317,6 @@ script = ExtResource("6_rwne7")
 wheel_scroll_damper = SubResource("Resource_gi4mh")
 dragging_scroll_damper = SubResource("Resource_vb8vt")
 allow_horizontal_scroll = false
-metadata/_custom_type_script = "uid://cre6m68jy0aad"
 
 [node name="VBoxContainer" type="VBoxContainer" parent="Control/Button/PanelContainer/SmoothScrollContainer"]
 layout_mode = 2

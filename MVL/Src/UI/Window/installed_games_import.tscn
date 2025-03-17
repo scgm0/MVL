@@ -3,8 +3,8 @@
 [ext_resource type="PackedScene" uid="uid://bu4hwijkbc8sm" path="res://Src/UI/Window/base_window.tscn" id="1_fvt7b"]
 [ext_resource type="Script" uid="uid://kioshjbmjlip" path="res://Src/UI/Window/InstalledGamesImport.cs" id="1_xxpfc"]
 [ext_resource type="PackedScene" uid="uid://cpbcd3vre7ii8" path="res://Src/UI/Item/installed_game_item.tscn" id="2_l32jt"]
-[ext_resource type="Script" uid="uid://cre6m68jy0aad" path="res://addons/SmoothScroll/SmoothScrollContainer.gd" id="5_yal0d"]
-[ext_resource type="Script" uid="uid://41yydm3vncfj" path="res://addons/SmoothScroll/scroll_damper/expo_scroll_damper.gd" id="6_2rgyo"]
+[ext_resource type="Script" uid="uid://bgqglerkcylxx" path="res://addons/SmoothScroll/SmoothScrollContainer.gd" id="5_yal0d"]
+[ext_resource type="Script" uid="uid://b7h0k2h2qwlqv" path="res://addons/SmoothScroll/scroll_damper/expo_scroll_damper.gd" id="6_2rgyo"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ty1b0"]
 content_margin_left = 4.0
@@ -55,7 +55,6 @@ script = ExtResource("5_yal0d")
 wheel_scroll_damper = SubResource("Resource_6o7np")
 dragging_scroll_damper = SubResource("Resource_3nw38")
 allow_horizontal_scroll = false
-metadata/_custom_type_script = "uid://cre6m68jy0aad"
 
 [node name="MarginContainer" type="MarginContainer" parent="PanelContainer/VBoxContainer/SmoothScrollContainer" index="0"]
 layout_mode = 2

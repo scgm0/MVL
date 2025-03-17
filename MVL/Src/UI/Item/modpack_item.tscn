@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=3 uid="uid://d3yuqxh7olknc"]
+[gd_scene load_steps=16 format=3 uid="uid://d3yuqxh7olknc"]
 
 [ext_resource type="Material" uid="uid://c0sb2bjy16ljf" path="res://Assets/Material/button_blur.tres" id="1_00er1"]
 [ext_resource type="Script" uid="uid://cwh0mdeoogvqa" path="res://Src/UI/Item/ModpackItem.cs" id="1_j0hm1"]
@@ -6,6 +6,7 @@
 [ext_resource type="Texture2D" uid="uid://d3mq4tlr6rr01" path="res://Assets/Icon/VS/gameicon.png" id="2_x6kgn"]
 [ext_resource type="FontFile" uid="uid://bmgx1vyg6bavd" path="res://Assets/Font/HarmonyOS_Sans_SC_Bold.ttf" id="3_3qaia"]
 [ext_resource type="Script" uid="uid://bk3tot6c35bwu" path="res://Src/Utils/IconTexture2D.cs" id="4_32kh6"]
+[ext_resource type="FontFile" uid="uid://dp7r8itfqvqca" path="res://Assets/Font/materialdesignicons-webfont.woff2" id="6_60yl2"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_jptkp"]
 
@@ -55,6 +56,7 @@ resource_name = ""
 script = ExtResource("4_32kh6")
 IconName = "unfold-more-horizontal"
 FontSize = 24
+FontFile = ExtResource("6_60yl2")
 metadata/_custom_type_script = ExtResource("4_32kh6")
 
 [sub_resource type="Texture2D" id="Texture2D_364to"]
@@ -63,6 +65,7 @@ resource_name = ""
 script = ExtResource("4_32kh6")
 IconName = "play"
 FontSize = 30
+FontFile = ExtResource("6_60yl2")
 metadata/_custom_type_script = ExtResource("4_32kh6")
 
 [node name="ModpackItem" type="PanelContainer" node_paths=PackedStringArray("_modpackName", "_modpackPath", "_modCount", "_versionButton", "_releaseButton", "_playButton")]

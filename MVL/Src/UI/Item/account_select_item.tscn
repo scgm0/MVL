@@ -1,7 +1,8 @@
-[gd_scene load_steps=8 format=3 uid="uid://cns5w84qytq88"]
+[gd_scene load_steps=9 format=3 uid="uid://cns5w84qytq88"]
 
 [ext_resource type="Script" uid="uid://bnhdvndlmh364" path="res://Src/UI/Item/AccountSelectItem.cs" id="1_dlcfs"]
 [ext_resource type="Script" uid="uid://bk3tot6c35bwu" path="res://Src/Utils/IconTexture2D.cs" id="1_y6v4b"]
+[ext_resource type="FontFile" uid="uid://dp7r8itfqvqca" path="res://Assets/Font/materialdesignicons-webfont.woff2" id="2_76gv2"]
 [ext_resource type="ButtonGroup" uid="uid://dsh2cgven1h16" path="res://Assets/Gui/account_select_button_group.tres" id="2_87k83"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_364to"]
@@ -23,6 +24,7 @@ resource_name = ""
 script = ExtResource("1_y6v4b")
 IconName = "trash-can-outline"
 FontSize = 18
+FontFile = ExtResource("2_76gv2")
 metadata/_custom_type_script = "uid://bk3tot6c35bwu"
 
 [sub_resource type="Texture2D" id="Texture2D_6are0"]
@@ -31,6 +33,7 @@ resource_name = ""
 script = ExtResource("1_y6v4b")
 IconName = "pencil-outline"
 FontSize = 18
+FontFile = ExtResource("2_76gv2")
 metadata/_custom_type_script = "uid://bk3tot6c35bwu"
 
 [node name="AccountSelectItem" type="PanelContainer" node_paths=PackedStringArray("_accountNameLabel", "_removeButton", "_editButton", "_checkBox")]

@@ -1,6 +1,8 @@
-[gd_resource type="Theme" load_steps=25 format=3 uid="uid://26j2wsw1c43m"]
+[gd_resource type="Theme" load_steps=30 format=3 uid="uid://26j2wsw1c43m"]
 
 [ext_resource type="Script" uid="uid://bk3tot6c35bwu" path="res://Src/Utils/IconTexture2D.cs" id="1_asgjk"]
+[ext_resource type="FontFile" uid="uid://dp7r8itfqvqca" path="res://Assets/Font/materialdesignicons-webfont.woff2" id="1_bgbrj"]
+[ext_resource type="FontFile" uid="uid://bmgx1vyg6bavd" path="res://Assets/Font/HarmonyOS_Sans_SC_Bold.ttf" id="2_h252r"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_oarc7"]
 
@@ -10,6 +12,7 @@ resource_name = ""
 script = ExtResource("1_asgjk")
 IconName = "checkbox-marked"
 FontSize = 16
+FontFile = ExtResource("1_bgbrj")
 metadata/_custom_type_script = "uid://bk3tot6c35bwu"
 
 [sub_resource type="Texture2D" id="Texture2D_gblyu"]
@@ -18,6 +21,7 @@ resource_name = ""
 script = ExtResource("1_asgjk")
 IconName = "radiobox-marked"
 FontSize = 16
+FontFile = ExtResource("1_bgbrj")
 metadata/_custom_type_script = ExtResource("1_asgjk")
 
 [sub_resource type="Texture2D" id="Texture2D_364to"]
@@ -26,6 +30,7 @@ resource_name = ""
 script = ExtResource("1_asgjk")
 IconName = "radiobox-blank"
 FontSize = 16
+FontFile = ExtResource("1_bgbrj")
 metadata/_custom_type_script = ExtResource("1_asgjk")
 
 [sub_resource type="Texture2D" id="Texture2D_6are0"]
@@ -34,6 +39,7 @@ resource_name = ""
 script = ExtResource("1_asgjk")
 IconName = "checkbox-blank-outline"
 FontSize = 16
+FontFile = ExtResource("1_bgbrj")
 metadata/_custom_type_script = ExtResource("1_asgjk")
 
 [sub_resource type="Texture2D" id="Texture2D_bdark"]
@@ -42,6 +48,7 @@ resource_name = ""
 script = ExtResource("1_asgjk")
 IconName = "toggle-switch"
 FontSize = 24
+FontFile = ExtResource("1_bgbrj")
 metadata/_custom_type_script = ExtResource("1_asgjk")
 
 [sub_resource type="Texture2D" id="Texture2D_u0mv6"]
@@ -50,6 +57,7 @@ resource_name = ""
 script = ExtResource("1_asgjk")
 IconName = "toggle-switch-off-outline"
 FontSize = 24
+FontFile = ExtResource("1_bgbrj")
 metadata/_custom_type_script = ExtResource("1_asgjk")
 
 [sub_resource type="Texture2D" id="Texture2D_i7wln"]
@@ -58,6 +66,7 @@ resource_name = ""
 script = ExtResource("1_asgjk")
 IconName = "close"
 FontSize = 18
+FontFile = ExtResource("1_bgbrj")
 metadata/_custom_type_script = ExtResource("1_asgjk")
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_asgjk"]
@@ -90,6 +99,7 @@ resource_name = ""
 script = ExtResource("1_asgjk")
 IconName = "chevron-down"
 FontSize = 24
+FontFile = ExtResource("1_bgbrj")
 metadata/_custom_type_script = "uid://bk3tot6c35bwu"
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_7eosv"]
@@ -122,12 +132,39 @@ corner_radius_bottom_left = 5
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_h252r"]
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_bgbrj"]
+content_margin_left = 10.0
+content_margin_top = 10.0
+content_margin_right = 10.0
+content_margin_bottom = 10.0
+bg_color = Color(0.137255, 0.137255, 0.137255, 1)
+border_width_left = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.588235, 0.588235, 0.588235, 0.588235)
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_h252r"]
+content_margin_left = 10.0
+content_margin_top = 10.0
+content_margin_right = 10.0
+content_margin_bottom = 10.0
+bg_color = Color(0, 0, 0, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_color = Color(0.588235, 0.588235, 0.588235, 0.588235)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+
 [sub_resource type="Texture2D" id="Texture2D_asgjk"]
 resource_local_to_scene = false
 resource_name = ""
 script = ExtResource("1_asgjk")
 IconName = "chevron-down"
 FontSize = 18
+FontFile = ExtResource("1_bgbrj")
 metadata/_custom_type_script = "uid://bk3tot6c35bwu"
 
 [sub_resource type="Texture2D" id="Texture2D_bgbrj"]
@@ -136,6 +173,7 @@ resource_name = ""
 script = ExtResource("1_asgjk")
 IconName = "chevron-down"
 FontSize = 18
+FontFile = ExtResource("1_bgbrj")
 metadata/_custom_type_script = "uid://bk3tot6c35bwu"
 
 [sub_resource type="Texture2D" id="Texture2D_vg7xs"]
@@ -144,6 +182,7 @@ resource_name = ""
 script = ExtResource("1_asgjk")
 IconName = "chevron-down"
 FontSize = 18
+FontFile = ExtResource("1_bgbrj")
 metadata/_custom_type_script = "uid://bk3tot6c35bwu"
 
 [sub_resource type="Texture2D" id="Texture2D_4tsj6"]
@@ -152,6 +191,7 @@ resource_name = ""
 script = ExtResource("1_asgjk")
 IconName = "chevron-down"
 FontSize = 18
+FontFile = ExtResource("1_bgbrj")
 metadata/_custom_type_script = "uid://bk3tot6c35bwu"
 
 [sub_resource type="Texture2D" id="Texture2D_h252r"]
@@ -160,6 +200,7 @@ resource_name = ""
 script = ExtResource("1_asgjk")
 IconName = "chevron-up"
 FontSize = 18
+FontFile = ExtResource("1_bgbrj")
 metadata/_custom_type_script = "uid://bk3tot6c35bwu"
 
 [sub_resource type="Texture2D" id="Texture2D_0rg2h"]
@@ -168,6 +209,7 @@ resource_name = ""
 script = ExtResource("1_asgjk")
 IconName = "chevron-up"
 FontSize = 18
+FontFile = ExtResource("1_bgbrj")
 metadata/_custom_type_script = "uid://bk3tot6c35bwu"
 
 [sub_resource type="Texture2D" id="Texture2D_17a5b"]
@@ -176,6 +218,7 @@ resource_name = ""
 script = ExtResource("1_asgjk")
 IconName = "chevron-up"
 FontSize = 18
+FontFile = ExtResource("1_bgbrj")
 metadata/_custom_type_script = "uid://bk3tot6c35bwu"
 
 [sub_resource type="Texture2D" id="Texture2D_pur85"]
@@ -184,7 +227,10 @@ resource_name = ""
 script = ExtResource("1_asgjk")
 IconName = "chevron-up"
 FontSize = 18
+FontFile = ExtResource("1_bgbrj")
 metadata/_custom_type_script = "uid://bk3tot6c35bwu"
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_bgbrj"]
 
 [resource]
 Button/styles/focus = SubResource("StyleBoxEmpty_oarc7")
@@ -205,6 +251,12 @@ OptionButton/icons/arrow = SubResource("Texture2D_b82ki")
 PopupMenu/styles/hover = SubResource("StyleBoxFlat_7eosv")
 PopupMenu/styles/panel = SubResource("StyleBoxFlat_8ilox")
 RichTextLabel/styles/focus = SubResource("StyleBoxEmpty_h252r")
+SettingItemPanel/base_type = &"PanelContainer"
+SettingItemPanel/styles/panel = SubResource("StyleBoxFlat_bgbrj")
+SettingItemTitle/base_type = &"PanelContainer"
+SettingItemTitle/font_sizes/font_size = 20
+SettingItemTitle/fonts/font = ExtResource("2_h252r")
+SettingItemTitle/styles/panel = SubResource("StyleBoxFlat_h252r")
 SpinBox/icons/down = SubResource("Texture2D_asgjk")
 SpinBox/icons/down_disabled = SubResource("Texture2D_bgbrj")
 SpinBox/icons/down_hover = SubResource("Texture2D_vg7xs")
@@ -213,3 +265,5 @@ SpinBox/icons/up = SubResource("Texture2D_h252r")
 SpinBox/icons/up_disabled = SubResource("Texture2D_0rg2h")
 SpinBox/icons/up_hover = SubResource("Texture2D_17a5b")
 SpinBox/icons/up_pressed = SubResource("Texture2D_pur85")
+SpinBoxInnerLineEdit/base_type = &"LineEdit"
+SpinBoxInnerLineEdit/styles/normal = SubResource("StyleBoxEmpty_bgbrj")

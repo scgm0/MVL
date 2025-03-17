@@ -3,6 +3,7 @@
 [ext_resource type="Script" uid="uid://dp4m2hf5ijyk8" path="res://Src/UI/FoldableContainer.cs" id="1_ir2ca"]
 [ext_resource type="FontFile" uid="uid://bmgx1vyg6bavd" path="res://Assets/Font/HarmonyOS_Sans_SC_Bold.ttf" id="1_rmbn7"]
 [ext_resource type="Script" uid="uid://bk3tot6c35bwu" path="res://Src/Utils/IconTexture2D.cs" id="2_ir2ca"]
+[ext_resource type="FontFile" uid="uid://dp7r8itfqvqca" path="res://Assets/Font/materialdesignicons-webfont.woff2" id="2_s0ot7"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_0pqmy"]
 bg_color = Color(0.058056, 0.0580561, 0.058056, 1)
@@ -17,6 +18,7 @@ resource_name = ""
 script = ExtResource("2_ir2ca")
 IconName = "chevron-right"
 FontSize = 24
+FontFile = ExtResource("2_s0ot7")
 metadata/_custom_type_script = "uid://bk3tot6c35bwu"
 
 [sub_resource type="Texture2D" id="Texture2D_s0ot7"]
@@ -25,6 +27,7 @@ resource_name = ""
 script = ExtResource("2_ir2ca")
 IconName = "chevron-down"
 FontSize = 24
+FontFile = ExtResource("2_s0ot7")
 metadata/_custom_type_script = "uid://bk3tot6c35bwu"
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_f6dwc"]

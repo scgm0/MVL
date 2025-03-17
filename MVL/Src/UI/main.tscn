@@ -1,4 +1,4 @@
-[gd_scene load_steps=63 format=3 uid="uid://514oox50h8yl"]
+[gd_scene load_steps=64 format=3 uid="uid://514oox50h8yl"]
 
 [ext_resource type="Script" uid="uid://cvyeyg8ttnwmu" path="res://Src/UI/Main.cs" id="1_1opgh"]
 [ext_resource type="Texture2D" uid="uid://bhh1jvyj73qxh" path="res://Assets/Gui/Background.png" id="2_1opgh"]
@@ -16,6 +16,7 @@
 [ext_resource type="Script" uid="uid://dvjtigpqee0jw" path="res://Src/UI/Item/MenuItem.cs" id="7_bl4fu"]
 [ext_resource type="Material" uid="uid://j3isaxpvqgbb" path="res://Assets/Material/blur.tres" id="9_bmwv3"]
 [ext_resource type="Script" uid="uid://bk3tot6c35bwu" path="res://Src/Utils/IconTexture2D.cs" id="13_7nt4r"]
+[ext_resource type="FontFile" uid="uid://dp7r8itfqvqca" path="res://Assets/Font/materialdesignicons-webfont.woff2" id="13_a6wm3"]
 [ext_resource type="Shader" uid="uid://bw4cstfk8udci" path="res://Assets/Shader/blur.gdshader" id="14_gblyu"]
 [ext_resource type="PackedScene" uid="uid://wtrk0xtd36kj" path="res://Src/UI/Page/home_page.tscn" id="14_oarc7"]
 [ext_resource type="PackedScene" uid="uid://colclcegjal1y" path="res://Src/UI/Page/modpack_page.tscn" id="16_bmwv3"]
@@ -39,6 +40,7 @@ resource_name = ""
 script = ExtResource("13_7nt4r")
 IconName = "menu-close"
 FontSize = 24
+FontFile = ExtResource("13_a6wm3")
 metadata/_custom_type_script = ExtResource("13_7nt4r")
 
 [sub_resource type="Texture2D" id="Texture2D_bmwv3"]
@@ -47,6 +49,7 @@ resource_name = ""
 script = ExtResource("13_7nt4r")
 IconName = "home"
 FontSize = 23
+FontFile = ExtResource("13_a6wm3")
 metadata/_custom_type_script = ExtResource("13_7nt4r")
 
 [sub_resource type="Texture2D" id="Texture2D_a6wm3"]
@@ -55,6 +58,7 @@ resource_name = ""
 script = ExtResource("13_7nt4r")
 IconName = "package-variant-closed"
 FontSize = 24
+FontFile = ExtResource("13_a6wm3")
 metadata/_custom_type_script = ExtResource("13_7nt4r")
 
 [sub_resource type="Texture2D" id="Texture2D_53u4p"]
@@ -63,6 +67,7 @@ resource_name = ""
 script = ExtResource("13_7nt4r")
 IconName = "inbox-full"
 FontSize = 24
+FontFile = ExtResource("13_a6wm3")
 metadata/_custom_type_script = ExtResource("13_7nt4r")
 
 [sub_resource type="Texture2D" id="Texture2D_08ol6"]
@@ -71,6 +76,7 @@ resource_name = ""
 script = ExtResource("13_7nt4r")
 IconName = "widgets"
 FontSize = 24
+FontFile = ExtResource("13_a6wm3")
 metadata/_custom_type_script = ExtResource("13_7nt4r")
 
 [sub_resource type="Texture2D" id="Texture2D_30yt8"]
@@ -79,6 +85,7 @@ resource_name = ""
 script = ExtResource("13_7nt4r")
 IconName = "cog"
 FontSize = 24
+FontFile = ExtResource("13_a6wm3")
 metadata/_custom_type_script = ExtResource("13_7nt4r")
 
 [sub_resource type="Texture2D" id="Texture2D_5lwjt"]
@@ -87,6 +94,7 @@ resource_name = ""
 script = ExtResource("13_7nt4r")
 IconName = "information"
 FontSize = 24
+FontFile = ExtResource("13_a6wm3")
 metadata/_custom_type_script = ExtResource("13_7nt4r")
 
 [sub_resource type="Animation" id="Animation_syw1k"]
@@ -264,6 +272,7 @@ resource_name = ""
 script = ExtResource("13_7nt4r")
 IconName = "plus"
 FontSize = 24
+FontFile = ExtResource("13_a6wm3")
 metadata/_custom_type_script = "uid://bk3tot6c35bwu"
 
 [sub_resource type="Animation" id="Animation_bmwv3"]
@@ -321,6 +330,7 @@ resource_name = ""
 script = ExtResource("13_7nt4r")
 IconName = "window-minimize"
 FontSize = 14
+FontFile = ExtResource("13_a6wm3")
 metadata/_custom_type_script = ExtResource("13_7nt4r")
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_o4ctv"]
@@ -337,6 +347,7 @@ resource_name = ""
 script = ExtResource("13_7nt4r")
 IconName = "window-close"
 FontSize = 14
+FontFile = ExtResource("13_a6wm3")
 metadata/_custom_type_script = ExtResource("13_7nt4r")
 
 [node name="Main" type="Control" node_paths=PackedStringArray("_minButton", "_closeButton", "_accountButton", "_accountSelectButton", "_accountSelectContainer", "_accountSelectScrollContainer", "_accountSelectAddButton", "_accountSelectListContainer", "_accountSelectAnimationPlayer")]

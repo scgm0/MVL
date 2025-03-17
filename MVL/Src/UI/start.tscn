@@ -207,7 +207,6 @@ render_target_update_mode = 4
 [node name="Main" parent="MarginContainer/SubViewportContainer/SubViewport" node_paths=PackedStringArray("_marginContainer", "_subViewport") instance=ExtResource("1_7ma3r")]
 _marginContainer = NodePath("../../..")
 _subViewport = NodePath("..")
-_roundMaterial = ExtResource("2_874xg")
 
 [node name="TextureRect" type="TextureRect" parent="."]
 material = ExtResource("2_874xg")

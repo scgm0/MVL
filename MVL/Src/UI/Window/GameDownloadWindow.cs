@@ -272,12 +272,12 @@ public partial class GameDownloadWindow : BaseWindow {
 		_cancellation = new();
 
 		await Task.Run(async () => { await GetReleases(releaseUrl); }, _cancellation.Token);
-		ValidateInputs();
 
 		if (_cancellation is null || _cancellation.IsCancellationRequested) {
 			return;
 		}
 
+		ValidateInputs();
 		_loadingControl.Hide();
 		_contentContainer.Show();
 	}
