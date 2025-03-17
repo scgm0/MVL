@@ -1,4 +1,4 @@
-[gd_resource type="Theme" load_steps=30 format=3 uid="uid://26j2wsw1c43m"]
+[gd_resource type="Theme" load_steps=24 format=3 uid="uid://26j2wsw1c43m"]
 
 [ext_resource type="Script" uid="uid://bk3tot6c35bwu" path="res://Src/Utils/IconTexture2D.cs" id="1_asgjk"]
 [ext_resource type="FontFile" uid="uid://dp7r8itfqvqca" path="res://Assets/Font/materialdesignicons-webfont.woff2" id="1_bgbrj"]
@@ -6,7 +6,7 @@
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_oarc7"]
 
-[sub_resource type="Texture2D" id="Texture2D_oarc7"]
+[sub_resource type="Texture2D" id="Texture2D_0rg2h"]
 resource_local_to_scene = false
 resource_name = ""
 script = ExtResource("1_asgjk")
@@ -15,59 +15,59 @@ FontSize = 16
 FontFile = ExtResource("1_bgbrj")
 metadata/_custom_type_script = "uid://bk3tot6c35bwu"
 
-[sub_resource type="Texture2D" id="Texture2D_gblyu"]
+[sub_resource type="Texture2D" id="Texture2D_17a5b"]
 resource_local_to_scene = false
 resource_name = ""
 script = ExtResource("1_asgjk")
 IconName = "radiobox-marked"
 FontSize = 16
 FontFile = ExtResource("1_bgbrj")
-metadata/_custom_type_script = ExtResource("1_asgjk")
+metadata/_custom_type_script = "uid://bk3tot6c35bwu"
 
-[sub_resource type="Texture2D" id="Texture2D_364to"]
+[sub_resource type="Texture2D" id="Texture2D_pur85"]
 resource_local_to_scene = false
 resource_name = ""
 script = ExtResource("1_asgjk")
 IconName = "radiobox-blank"
 FontSize = 16
 FontFile = ExtResource("1_bgbrj")
-metadata/_custom_type_script = ExtResource("1_asgjk")
+metadata/_custom_type_script = "uid://bk3tot6c35bwu"
 
-[sub_resource type="Texture2D" id="Texture2D_6are0"]
+[sub_resource type="Texture2D" id="Texture2D_vje8o"]
 resource_local_to_scene = false
 resource_name = ""
 script = ExtResource("1_asgjk")
 IconName = "checkbox-blank-outline"
 FontSize = 16
 FontFile = ExtResource("1_bgbrj")
-metadata/_custom_type_script = ExtResource("1_asgjk")
+metadata/_custom_type_script = "uid://bk3tot6c35bwu"
 
-[sub_resource type="Texture2D" id="Texture2D_bdark"]
+[sub_resource type="Texture2D" id="Texture2D_bgbrj"]
 resource_local_to_scene = false
 resource_name = ""
 script = ExtResource("1_asgjk")
 IconName = "toggle-switch"
 FontSize = 24
 FontFile = ExtResource("1_bgbrj")
-metadata/_custom_type_script = ExtResource("1_asgjk")
+metadata/_custom_type_script = "uid://bk3tot6c35bwu"
 
-[sub_resource type="Texture2D" id="Texture2D_u0mv6"]
+[sub_resource type="Texture2D" id="Texture2D_vg7xs"]
 resource_local_to_scene = false
 resource_name = ""
 script = ExtResource("1_asgjk")
 IconName = "toggle-switch-off-outline"
 FontSize = 24
 FontFile = ExtResource("1_bgbrj")
-metadata/_custom_type_script = ExtResource("1_asgjk")
+metadata/_custom_type_script = "uid://bk3tot6c35bwu"
 
-[sub_resource type="Texture2D" id="Texture2D_i7wln"]
+[sub_resource type="Texture2D" id="Texture2D_4tsj6"]
 resource_local_to_scene = false
 resource_name = ""
 script = ExtResource("1_asgjk")
 IconName = "close"
 FontSize = 18
 FontFile = ExtResource("1_bgbrj")
-metadata/_custom_type_script = ExtResource("1_asgjk")
+metadata/_custom_type_script = "uid://bk3tot6c35bwu"
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_asgjk"]
 
@@ -158,7 +158,7 @@ border_color = Color(0.588235, 0.588235, 0.588235, 0.588235)
 corner_radius_top_left = 8
 corner_radius_top_right = 8
 
-[sub_resource type="Texture2D" id="Texture2D_asgjk"]
+[sub_resource type="Texture2D" id="Texture2D_bx4kv"]
 resource_local_to_scene = false
 resource_name = ""
 script = ExtResource("1_asgjk")
@@ -167,61 +167,7 @@ FontSize = 18
 FontFile = ExtResource("1_bgbrj")
 metadata/_custom_type_script = "uid://bk3tot6c35bwu"
 
-[sub_resource type="Texture2D" id="Texture2D_bgbrj"]
-resource_local_to_scene = false
-resource_name = ""
-script = ExtResource("1_asgjk")
-IconName = "chevron-down"
-FontSize = 18
-FontFile = ExtResource("1_bgbrj")
-metadata/_custom_type_script = "uid://bk3tot6c35bwu"
-
-[sub_resource type="Texture2D" id="Texture2D_vg7xs"]
-resource_local_to_scene = false
-resource_name = ""
-script = ExtResource("1_asgjk")
-IconName = "chevron-down"
-FontSize = 18
-FontFile = ExtResource("1_bgbrj")
-metadata/_custom_type_script = "uid://bk3tot6c35bwu"
-
-[sub_resource type="Texture2D" id="Texture2D_4tsj6"]
-resource_local_to_scene = false
-resource_name = ""
-script = ExtResource("1_asgjk")
-IconName = "chevron-down"
-FontSize = 18
-FontFile = ExtResource("1_bgbrj")
-metadata/_custom_type_script = "uid://bk3tot6c35bwu"
-
-[sub_resource type="Texture2D" id="Texture2D_h252r"]
-resource_local_to_scene = false
-resource_name = ""
-script = ExtResource("1_asgjk")
-IconName = "chevron-up"
-FontSize = 18
-FontFile = ExtResource("1_bgbrj")
-metadata/_custom_type_script = "uid://bk3tot6c35bwu"
-
-[sub_resource type="Texture2D" id="Texture2D_0rg2h"]
-resource_local_to_scene = false
-resource_name = ""
-script = ExtResource("1_asgjk")
-IconName = "chevron-up"
-FontSize = 18
-FontFile = ExtResource("1_bgbrj")
-metadata/_custom_type_script = "uid://bk3tot6c35bwu"
-
-[sub_resource type="Texture2D" id="Texture2D_17a5b"]
-resource_local_to_scene = false
-resource_name = ""
-script = ExtResource("1_asgjk")
-IconName = "chevron-up"
-FontSize = 18
-FontFile = ExtResource("1_bgbrj")
-metadata/_custom_type_script = "uid://bk3tot6c35bwu"
-
-[sub_resource type="Texture2D" id="Texture2D_pur85"]
+[sub_resource type="Texture2D" id="Texture2D_belqv"]
 resource_local_to_scene = false
 resource_name = ""
 script = ExtResource("1_asgjk")
@@ -235,15 +181,15 @@ metadata/_custom_type_script = "uid://bk3tot6c35bwu"
 [resource]
 Button/styles/focus = SubResource("StyleBoxEmpty_oarc7")
 CheckBox/colors/checkbox_unchecked_color = Color(0.880502, 0.880502, 0.880502, 1)
-CheckBox/icons/checked = SubResource("Texture2D_oarc7")
-CheckBox/icons/radio_checked = SubResource("Texture2D_gblyu")
-CheckBox/icons/radio_unchecked_disabled = SubResource("Texture2D_364to")
-CheckBox/icons/unchecked = SubResource("Texture2D_6are0")
+CheckBox/icons/checked = SubResource("Texture2D_0rg2h")
+CheckBox/icons/radio_checked = SubResource("Texture2D_17a5b")
+CheckBox/icons/radio_unchecked = SubResource("Texture2D_pur85")
+CheckBox/icons/unchecked = SubResource("Texture2D_vje8o")
 CheckButton/colors/button_unchecked_color = Color(0.881379, 0.881379, 0.881379, 1)
-CheckButton/icons/checked = SubResource("Texture2D_bdark")
-CheckButton/icons/unchecked = SubResource("Texture2D_u0mv6")
+CheckButton/icons/checked = SubResource("Texture2D_bgbrj")
+CheckButton/icons/unchecked = SubResource("Texture2D_vg7xs")
 LineEdit/font_sizes/font_size = 14
-LineEdit/icons/clear = SubResource("Texture2D_i7wln")
+LineEdit/icons/clear = SubResource("Texture2D_4tsj6")
 LineEdit/styles/focus = SubResource("StyleBoxEmpty_asgjk")
 LineEdit/styles/normal = SubResource("StyleBoxFlat_i7wln")
 LineEdit/styles/read_only = SubResource("StyleBoxFlat_asgjk")
@@ -257,13 +203,13 @@ SettingItemTitle/base_type = &"PanelContainer"
 SettingItemTitle/font_sizes/font_size = 20
 SettingItemTitle/fonts/font = ExtResource("2_h252r")
 SettingItemTitle/styles/panel = SubResource("StyleBoxFlat_h252r")
-SpinBox/icons/down = SubResource("Texture2D_asgjk")
-SpinBox/icons/down_disabled = SubResource("Texture2D_bgbrj")
-SpinBox/icons/down_hover = SubResource("Texture2D_vg7xs")
-SpinBox/icons/down_pressed = SubResource("Texture2D_4tsj6")
-SpinBox/icons/up = SubResource("Texture2D_h252r")
-SpinBox/icons/up_disabled = SubResource("Texture2D_0rg2h")
-SpinBox/icons/up_hover = SubResource("Texture2D_17a5b")
-SpinBox/icons/up_pressed = SubResource("Texture2D_pur85")
+SpinBox/icons/down = SubResource("Texture2D_bx4kv")
+SpinBox/icons/down_disabled = SubResource("Texture2D_bx4kv")
+SpinBox/icons/down_hover = SubResource("Texture2D_bx4kv")
+SpinBox/icons/down_pressed = SubResource("Texture2D_bx4kv")
+SpinBox/icons/up = SubResource("Texture2D_belqv")
+SpinBox/icons/up_disabled = SubResource("Texture2D_belqv")
+SpinBox/icons/up_hover = SubResource("Texture2D_belqv")
+SpinBox/icons/up_pressed = SubResource("Texture2D_belqv")
 SpinBoxInnerLineEdit/base_type = &"LineEdit"
 SpinBoxInnerLineEdit/styles/normal = SubResource("StyleBoxEmpty_bgbrj")
