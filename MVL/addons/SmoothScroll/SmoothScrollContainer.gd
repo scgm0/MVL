@@ -20,10 +20,10 @@ var wheel_scroll_damper: ScrollDamper = ExpoScrollDamper.new()
 var dragging_scroll_damper: ScrollDamper = ExpoScrollDamper.new()
 ### Allow dragging with mouse or not
 @export
-var drag_with_mouse = true
+var drag_with_mouse := true
 ## Allow dragging with touch or not
 @export
-var drag_with_touch = true
+var drag_with_touch := true
 
 @export_group("Container")
 ## Below this value, snap content to boundary
@@ -85,6 +85,8 @@ var h_scrollbar_dragging := false
 var v_scrollbar_dragging := false
 ## When ture, `content_node` follows drag position
 var content_dragging := false
+## When ture, `content_node` has moved by dragging
+var content_dragging_moved := false
 ## Timer for hiding scroll bar
 var scrollbar_hide_timer := Timer.new()
 ## Tween for showing scroll bar
@@ -103,8 +105,6 @@ var drag_temp_data := []
 var is_in_deadzone := false
 ## Whether mouse is on h or v scroll bar
 var mouse_on_scrollbar := false
-## Last velocity from a screen drag
-var last_drag_velocity := Vector2(0,0)
 
 ## If content is being scrolled
 var is_scrolling := false:
@@ -151,25 +151,18 @@ func _process(delta: float) -> void:
 	if Engine.is_editor_hint(): return
 	scroll(true, velocity.y, pos.y, delta)
 	scroll(false, velocity.x, pos.x, delta)
-	# Update vertical scroll bar
-	get_v_scroll_bar().set_value_no_signal(-pos.y)
-	# Update horizontal scroll bar
-	get_h_scroll_bar().set_value_no_signal(-pos.x)
-	# Always show sroll bars when scrolling or mouse is on any scroll bar
-	if hide_scrollbar_over_time and (is_scrolling or mouse_on_scrollbar):
-		show_scrollbars()
-	# Update state
-	update_state()
+	update_scrollbars()
+	update_is_scrolling()
 
 	if debug_mode:
 		queue_redraw()
 
 # Detecting mouse entering and exiting scroll bar
-func _mouse_on_scroll_bar(entered :bool) -> void:
+func _mouse_on_scroll_bar(entered: bool) -> void:
 	mouse_on_scrollbar = entered
 
 # Forwarding scroll inputs from scrollbar
-func _scrollbar_input(event: InputEvent, vertical : bool) -> void:
+func _scrollbar_input(event: InputEvent, vertical: bool) -> void:
 	if event is InputEventMouseButton:
 		if event.button_index == MOUSE_BUTTON_WHEEL_DOWN\
 		or event.button_index == MOUSE_BUTTON_WHEEL_UP\
@@ -303,7 +296,6 @@ func _gui_input(event: InputEvent) -> void:
 		else:
 			content_dragging = false
 			is_in_deadzone = false
-			velocity = last_drag_velocity
 	# Handle input if handle_input is true
 	if handle_input:
 		get_tree().get_root().set_input_as_handled()
@@ -342,7 +334,7 @@ func _set_hide_scrollbar_over_time(value: bool) -> bool:
 			scrollbar_hide_timer.start(scrollbar_hide_time)
 	return value
 
-func _get(property) -> Variant:
+func _get(property: StringName) -> Variant:
 	match property:
 		"scroll_horizontal":
 			if !content_node: return 0
@@ -353,7 +345,7 @@ func _get(property) -> Variant:
 		_:
 			return null
 
-func _set(property, value) -> bool:
+func _set(property: StringName, value: Variant) -> bool:
 	match property:
 		"scroll_horizontal":
 			if !content_node:
@@ -409,7 +401,12 @@ func scroll(vertical: bool, axis_velocity: float, axis_pos: float, delta: float)
 		axis_velocity = snap_result[0]
 		axis_pos = snap_result[1]
 	else:
-		axis_velocity = 0.0
+		# Preserve dragging velocity for 1 frame
+		# in case no movement event while releasing dragging with touch
+		if content_dragging_moved:
+			content_dragging_moved = false
+		else:
+			axis_velocity = 0.0
 	# If using scroll bar dragging, set the content_node's
 	# position by using the scrollbar position
 	if handle_scrollbar_drag():
@@ -530,6 +527,8 @@ func handle_content_dragging() -> void:
 		drag_temp_data[0] = 0.0
 		drag_temp_data[1] = 0.0
 	
+	content_dragging_moved = true
+	
 	var calculate_dest = func(delta: float, damping: float) -> float:
 		if delta >= 0.0:
 			return delta / (1 + delta * damping * 0.00001)
@@ -558,7 +557,6 @@ func handle_content_dragging() -> void:
 			drag_temp_data[1]	# Temp y relative accumulation
 		) + drag_temp_data[3]
 		velocity.y = (y_pos - pos.y) / get_process_delta_time()
-		last_drag_velocity.y = velocity.y
 		pos.y = y_pos
 	if should_scroll_horizontal():
 		var x_pos = calculate_position.call(
@@ -567,7 +565,6 @@ func handle_content_dragging() -> void:
 			drag_temp_data[0]	# Temp x relative accumulation
 		) + drag_temp_data[2]
 		velocity.x = (x_pos - pos.x) / get_process_delta_time()
-		last_drag_velocity.x = velocity.x
 		pos.x = x_pos
 
 func remove_all_children_focus(node: Node) -> void:
@@ -578,7 +575,7 @@ func remove_all_children_focus(node: Node) -> void:
 	for child in node.get_children():
 		remove_all_children_focus(child)
 
-func update_state() -> void:
+func update_is_scrolling() -> void:
 	if(
 		(content_dragging and not is_in_deadzone)
 		or any_scroll_bar_dragged()
@@ -587,6 +584,20 @@ func update_state() -> void:
 		is_scrolling = true
 	else:
 		is_scrolling = false
+
+func update_scrollbars() -> void:
+	# Update vertical scroll bar
+	if get_v_scroll_bar().value != -pos.y:
+		get_v_scroll_bar().set_value_no_signal(-pos.y)
+		get_v_scroll_bar().queue_redraw()
+	# Update horizontal scroll bar
+	if get_h_scroll_bar().value != -pos.x:
+		get_h_scroll_bar().set_value_no_signal(-pos.x)
+		get_h_scroll_bar().queue_redraw()
+	
+	# Always show sroll bars when scrolling or mouse is on any scroll bar
+	if hide_scrollbar_over_time and (is_scrolling or mouse_on_scrollbar):
+		show_scrollbars()
 
 func init_drag_temp_data() -> void:
 	# Calculate the size difference between this container and content_node
@@ -878,8 +889,8 @@ func show_scrollbars(time: float = scrollbar_fade_in_time) -> void:
 			scrollbar_show_tween.tween_property(get_v_scroll_bar(), 'modulate', Color.WHITE, time)
 			scrollbar_show_tween.tween_property(get_h_scroll_bar(), 'modulate', Color.WHITE, time)
 
-## Scroll to position to ensure control visible
-func ensure_control_visible(control : Control) -> void:
+## Scroll to position to ensure the given control node is visible
+func ensure_control_visible(control: Control) -> void:
 	if !content_node: return
 	if !content_node.is_ancestor_of(control): return
 	if !scroll_damper: return
