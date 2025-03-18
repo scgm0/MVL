@@ -133,15 +133,14 @@ corner_radius_bottom_left = 5
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_h252r"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_bgbrj"]
-content_margin_left = 10.0
-content_margin_top = 10.0
-content_margin_right = 10.0
-content_margin_bottom = 10.0
-bg_color = Color(0.137255, 0.137255, 0.137255, 1)
+bg_color = Color(0, 0, 0, 1)
 border_width_left = 1
+border_width_top = 1
 border_width_right = 1
 border_width_bottom = 1
 border_color = Color(0.588235, 0.588235, 0.588235, 0.588235)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
 corner_radius_bottom_right = 8
 corner_radius_bottom_left = 8
 
@@ -150,11 +149,7 @@ content_margin_left = 10.0
 content_margin_top = 10.0
 content_margin_right = 10.0
 content_margin_bottom = 10.0
-bg_color = Color(0, 0, 0, 1)
-border_width_left = 1
-border_width_top = 1
-border_width_right = 1
-border_color = Color(0.588235, 0.588235, 0.588235, 0.588235)
+bg_color = Color(0, 0, 0, 0.6)
 corner_radius_top_left = 8
 corner_radius_top_right = 8
 
@@ -177,6 +172,10 @@ FontFile = ExtResource("1_bgbrj")
 metadata/_custom_type_script = "uid://bk3tot6c35bwu"
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_bgbrj"]
+content_margin_left = 4.0
+content_margin_top = 4.0
+content_margin_right = 4.0
+content_margin_bottom = 4.0
 
 [resource]
 Button/styles/focus = SubResource("StyleBoxEmpty_oarc7")
@@ -199,10 +198,10 @@ PopupMenu/styles/panel = SubResource("StyleBoxFlat_8ilox")
 RichTextLabel/styles/focus = SubResource("StyleBoxEmpty_h252r")
 SettingItemPanel/base_type = &"PanelContainer"
 SettingItemPanel/styles/panel = SubResource("StyleBoxFlat_bgbrj")
-SettingItemTitle/base_type = &"PanelContainer"
+SettingItemTitle/base_type = &"Label"
 SettingItemTitle/font_sizes/font_size = 20
 SettingItemTitle/fonts/font = ExtResource("2_h252r")
-SettingItemTitle/styles/panel = SubResource("StyleBoxFlat_h252r")
+SettingItemTitle/styles/normal = SubResource("StyleBoxFlat_h252r")
 SpinBox/icons/down = SubResource("Texture2D_bx4kv")
 SpinBox/icons/down_disabled = SubResource("Texture2D_bx4kv")
 SpinBox/icons/down_hover = SubResource("Texture2D_bx4kv")

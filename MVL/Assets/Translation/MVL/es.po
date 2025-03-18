@@ -256,8 +256,32 @@ msgstr ""
 msgid "界面"
 msgstr ""
 
-msgid "语言"
+msgid "显示语言"
 msgstr ""
 
 msgid "显示缩放"
+msgstr ""
+
+msgid "网络"
+msgstr ""
+
+msgid "代理地址"
+msgstr ""
+
+msgid "下载线程"
+msgstr ""
+
+msgid "目录"
+msgstr ""
+
+msgid "整合目录"
+msgstr ""
+
+msgid "版本目录"
+msgstr ""
+
+msgid "若为空，则使用系统代理"
+msgstr ""
+
+msgid "若为无效路径，则使用默认目录"
 msgstr ""

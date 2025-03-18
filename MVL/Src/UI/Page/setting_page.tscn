@@ -7,6 +7,7 @@
 [ext_resource type="Script" uid="uid://b7h0k2h2qwlqv" path="res://addons/SmoothScroll/scroll_damper/expo_scroll_damper.gd" id="3_tr7nv"]
 [ext_resource type="Material" uid="uid://c0sb2bjy16ljf" path="res://Assets/Material/button_blur.tres" id="4_tr7nv"]
 [ext_resource type="FontFile" uid="uid://dp7r8itfqvqca" path="res://Assets/Font/materialdesignicons-webfont.woff2" id="4_yaaqs"]
+[ext_resource type="Script" uid="uid://bk3tot6c35bwu" path="res://Src/Utils/IconTexture2D.cs" id="8_axk81"]
 
 [sub_resource type="Resource" id="Resource_mhakp"]
 script = ExtResource("3_tr7nv")
@@ -20,28 +21,6 @@ friction = 4.0
 minimum_velocity = 0.4
 rebound_strength = 7.0
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ei28a"]
-bg_color = Color(0, 0, 0, 1)
-border_width_left = 1
-border_width_top = 1
-border_width_right = 1
-border_width_bottom = 1
-border_color = Color(0.588235, 0.588235, 0.588235, 0.588235)
-corner_radius_top_left = 8
-corner_radius_top_right = 8
-corner_radius_bottom_right = 8
-corner_radius_bottom_left = 8
-corner_detail = 5
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_yoik7"]
-content_margin_left = 10.0
-content_margin_top = 10.0
-content_margin_right = 10.0
-content_margin_bottom = 10.0
-bg_color = Color(0, 0, 0, 0.6)
-corner_radius_top_left = 8
-corner_radius_top_right = 8
-
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_yoik7"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_axk81"]
@@ -50,6 +29,15 @@ corner_radius_top_right = 8
 LineEdit/font_sizes/font_size = 16
 LineEdit/styles/focus = SubResource("StyleBoxEmpty_yoik7")
 LineEdit/styles/normal = SubResource("StyleBoxEmpty_axk81")
+
+[sub_resource type="Texture2D" id="Texture2D_yaaqs"]
+resource_local_to_scene = false
+resource_name = ""
+script = ExtResource("8_axk81")
+IconName = "file-settings-outline"
+FontSize = 18
+FontFile = ExtResource("4_yaaqs")
+metadata/_custom_type_script = "uid://bk3tot6c35bwu"
 
 [node name="SettingPage" type="Control" node_paths=PackedStringArray("_languageOptionButton", "_displayScaleSpinbox", "Main")]
 layout_mode = 3
@@ -84,7 +72,6 @@ drag_with_mouse = false
 drag_with_touch = false
 allow_horizontal_scroll = false
 handle_input = false
-metadata/_custom_type_script = "uid://cre6m68jy0aad"
 
 [node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/SmoothScrollContainer"]
 layout_mode = 2
@@ -95,22 +82,22 @@ size_flags_vertical = 3
 material = ExtResource("4_tr7nv")
 layout_mode = 2
 mouse_filter = 1
-theme_override_styles/panel = SubResource("StyleBoxFlat_ei28a")
+theme_type_variation = &"SettingItemPanel"
 
 [node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/SmoothScrollContainer/VBoxContainer/PanelContainer"]
 layout_mode = 2
+theme_override_constants/separation = 0
 
 [node name="Label" type="Label" parent="MarginContainer/SmoothScrollContainer/VBoxContainer/PanelContainer/VBoxContainer"]
 layout_mode = 2
 mouse_filter = 1
-theme_override_fonts/font = ExtResource("2_yoik7")
-theme_override_font_sizes/font_size = 20
-theme_override_styles/normal = SubResource("StyleBoxFlat_yoik7")
+theme_type_variation = &"SettingItemTitle"
 text = "界面"
 
 [node name="MarginContainer" type="MarginContainer" parent="MarginContainer/SmoothScrollContainer/VBoxContainer/PanelContainer/VBoxContainer"]
 layout_mode = 2
 theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
 theme_override_constants/margin_right = 10
 theme_override_constants/margin_bottom = 10
 
@@ -124,7 +111,7 @@ layout_mode = 2
 layout_mode = 2
 size_flags_horizontal = 0
 mouse_filter = 1
-text = "语言"
+text = "显示语言"
 vertical_alignment = 1
 
 [node name="OptionButton" type="OptionButton" parent="MarginContainer/SmoothScrollContainer/VBoxContainer/PanelContainer/VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer"]
@@ -151,3 +138,132 @@ value = 100.0
 alignment = 1
 suffix = "%"
 custom_arrow_step = 25.0
+
+[node name="PanelContainer2" type="PanelContainer" parent="MarginContainer/SmoothScrollContainer/VBoxContainer"]
+material = ExtResource("4_tr7nv")
+layout_mode = 2
+mouse_filter = 1
+theme_type_variation = &"SettingItemPanel"
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/SmoothScrollContainer/VBoxContainer/PanelContainer2"]
+layout_mode = 2
+theme_override_constants/separation = 0
+
+[node name="Label" type="Label" parent="MarginContainer/SmoothScrollContainer/VBoxContainer/PanelContainer2/VBoxContainer"]
+layout_mode = 2
+mouse_filter = 1
+theme_type_variation = &"SettingItemTitle"
+text = "网络"
+
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/SmoothScrollContainer/VBoxContainer/PanelContainer2/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/SmoothScrollContainer/VBoxContainer/PanelContainer2/VBoxContainer/MarginContainer"]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/SmoothScrollContainer/VBoxContainer/PanelContainer2/VBoxContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/SmoothScrollContainer/VBoxContainer/PanelContainer2/VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+mouse_filter = 1
+text = "代理地址"
+
+[node name="LineEdit" type="LineEdit" parent="MarginContainer/SmoothScrollContainer/VBoxContainer/PanelContainer2/VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 10
+theme_type_variation = &"SpinBoxInnerLineEdit"
+placeholder_text = "若为空，则使用系统代理"
+alignment = 2
+expand_to_text_length = true
+clear_button_enabled = true
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer/SmoothScrollContainer/VBoxContainer/PanelContainer2/VBoxContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="Label" type="Label" parent="MarginContainer/SmoothScrollContainer/VBoxContainer/PanelContainer2/VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer2"]
+layout_mode = 2
+mouse_filter = 1
+text = "下载线程"
+
+[node name="SpinBox" type="SpinBox" parent="MarginContainer/SmoothScrollContainer/VBoxContainer/PanelContainer2/VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer2"]
+layout_mode = 2
+size_flags_horizontal = 10
+min_value = 1.0
+max_value = 64.0
+value = 1.0
+alignment = 2
+suffix = "x"
+
+[node name="PanelContainer3" type="PanelContainer" parent="MarginContainer/SmoothScrollContainer/VBoxContainer"]
+material = ExtResource("4_tr7nv")
+layout_mode = 2
+mouse_filter = 1
+theme_type_variation = &"SettingItemPanel"
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/SmoothScrollContainer/VBoxContainer/PanelContainer3"]
+layout_mode = 2
+theme_override_constants/separation = 0
+
+[node name="Label" type="Label" parent="MarginContainer/SmoothScrollContainer/VBoxContainer/PanelContainer3/VBoxContainer"]
+layout_mode = 2
+mouse_filter = 1
+theme_type_variation = &"SettingItemTitle"
+text = "目录"
+
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/SmoothScrollContainer/VBoxContainer/PanelContainer3/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/SmoothScrollContainer/VBoxContainer/PanelContainer3/VBoxContainer/MarginContainer"]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/SmoothScrollContainer/VBoxContainer/PanelContainer3/VBoxContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/SmoothScrollContainer/VBoxContainer/PanelContainer3/VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+mouse_filter = 1
+text = "整合目录"
+
+[node name="LineEdit" type="LineEdit" parent="MarginContainer/SmoothScrollContainer/VBoxContainer/PanelContainer3/VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 10
+theme_type_variation = &"SpinBoxInnerLineEdit"
+placeholder_text = "若为无效路径，则使用默认目录"
+alignment = 2
+expand_to_text_length = true
+
+[node name="Button" type="Button" parent="MarginContainer/SmoothScrollContainer/VBoxContainer/PanelContainer3/VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+icon = SubResource("Texture2D_yaaqs")
+flat = true
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer/SmoothScrollContainer/VBoxContainer/PanelContainer3/VBoxContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/SmoothScrollContainer/VBoxContainer/PanelContainer3/VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer2"]
+layout_mode = 2
+mouse_filter = 1
+text = "版本目录"
+
+[node name="LineEdit" type="LineEdit" parent="MarginContainer/SmoothScrollContainer/VBoxContainer/PanelContainer3/VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer2"]
+layout_mode = 2
+size_flags_horizontal = 10
+theme_type_variation = &"SpinBoxInnerLineEdit"
+placeholder_text = "若为无效路径，则使用默认目录"
+alignment = 2
+expand_to_text_length = true
+
+[node name="Button" type="Button" parent="MarginContainer/SmoothScrollContainer/VBoxContainer/PanelContainer3/VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer2"]
+layout_mode = 2
+icon = SubResource("Texture2D_yaaqs")
+flat = true
