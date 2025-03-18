@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Text.Json;
 using Godot;
 using SharedLibrary;
+using Environment = System.Environment;
 
 namespace MVL.Utils.Config;
 
@@ -10,9 +11,12 @@ public class BaseConfig {
 
 	public string CurrentModpack { get; set; } = "";
 	public string CurrentAccount { get; set; } = "";
-	public string Language { get; set; } = OS.GetLocale();
+	public string DisplayLanguage { get; set; } = OS.GetLocale();
 	public float DisplayScale { get; set; } = Tools.GetAutoDisplayScale();
-	public string ProxyUrl { get; set; } = "";
+	public string ProxyAddress { get; set; } = "";
+	public int DownloadThreads { get; set; } = Environment.ProcessorCount;
+	public string ModpackFolder { get; set; } = Paths.ModpackFolder;
+	public string ReleaseFolder { get; set; } = Paths.ReleaseFolder;
 	public List<string> Release { get; set; } = [];
 	public List<string> Modpack { get; set; } = [];
 	public List<Account> Account { get; set; } = [];

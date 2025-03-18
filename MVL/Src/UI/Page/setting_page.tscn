@@ -1,25 +1,11 @@
-[gd_scene load_steps=15 format=3 uid="uid://bp02so1m0q7m0"]
+[gd_scene load_steps=11 format=3 uid="uid://bp02so1m0q7m0"]
 
 [ext_resource type="Script" uid="uid://er6sd5rjfnp5" path="res://Src/UI/Page/SettingPage.cs" id="1_f2m4w"]
-[ext_resource type="Script" uid="uid://bgqglerkcylxx" path="res://addons/SmoothScroll/SmoothScrollContainer.gd" id="2_ei28a"]
 [ext_resource type="FontFile" uid="uid://bmgx1vyg6bavd" path="res://Assets/Font/HarmonyOS_Sans_SC_Bold.ttf" id="2_yoik7"]
 [ext_resource type="FontFile" uid="uid://d0e3mw7yvdf0v" path="res://Assets/Font/HarmonyOS_Sans_SC_Regular.ttf" id="3_axk81"]
-[ext_resource type="Script" uid="uid://b7h0k2h2qwlqv" path="res://addons/SmoothScroll/scroll_damper/expo_scroll_damper.gd" id="3_tr7nv"]
 [ext_resource type="Material" uid="uid://c0sb2bjy16ljf" path="res://Assets/Material/button_blur.tres" id="4_tr7nv"]
 [ext_resource type="FontFile" uid="uid://dp7r8itfqvqca" path="res://Assets/Font/materialdesignicons-webfont.woff2" id="4_yaaqs"]
 [ext_resource type="Script" uid="uid://bk3tot6c35bwu" path="res://Src/Utils/IconTexture2D.cs" id="8_axk81"]
-
-[sub_resource type="Resource" id="Resource_mhakp"]
-script = ExtResource("3_tr7nv")
-friction = 4.0
-minimum_velocity = 0.4
-rebound_strength = 7.0
-
-[sub_resource type="Resource" id="Resource_4s13v"]
-script = ExtResource("3_tr7nv")
-friction = 4.0
-minimum_velocity = 0.4
-rebound_strength = 7.0
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_yoik7"]
 
@@ -39,7 +25,7 @@ FontSize = 18
 FontFile = ExtResource("4_yaaqs")
 metadata/_custom_type_script = "uid://bk3tot6c35bwu"
 
-[node name="SettingPage" type="Control" node_paths=PackedStringArray("_languageOptionButton", "_displayScaleSpinbox", "Main")]
+[node name="SettingPage" type="Control" node_paths=PackedStringArray("_displayLanguageOptionButton", "_displayScaleSpinbox", "_proxyAddressLineEdit", "_downloadThreadSpinbox", "_modpackFolderLineEdit", "_modpackFolderButton", "_releaseFolderLineEdit", "_releaseFolderButton", "Main")]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -49,8 +35,14 @@ grow_vertical = 2
 mouse_filter = 2
 script = ExtResource("1_f2m4w")
 _fonts = Array[FontFile]([ExtResource("2_yoik7"), ExtResource("3_axk81"), ExtResource("4_yaaqs")])
-_languageOptionButton = NodePath("MarginContainer/SmoothScrollContainer/VBoxContainer/PanelContainer/VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer/OptionButton")
-_displayScaleSpinbox = NodePath("MarginContainer/SmoothScrollContainer/VBoxContainer/PanelContainer/VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer2/SpinBox")
+_displayLanguageOptionButton = NodePath("MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer/OptionButton")
+_displayScaleSpinbox = NodePath("MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer2/SpinBox")
+_proxyAddressLineEdit = NodePath("MarginContainer/VBoxContainer/PanelContainer2/VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer/LineEdit")
+_downloadThreadSpinbox = NodePath("MarginContainer/VBoxContainer/PanelContainer2/VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer2/SpinBox")
+_modpackFolderLineEdit = NodePath("MarginContainer/VBoxContainer/PanelContainer3/VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer/LineEdit")
+_modpackFolderButton = NodePath("MarginContainer/VBoxContainer/PanelContainer3/VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer/Button")
+_releaseFolderLineEdit = NodePath("MarginContainer/VBoxContainer/PanelContainer3/VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer2/LineEdit")
+_releaseFolderButton = NodePath("MarginContainer/VBoxContainer/PanelContainer3/VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer2/Button")
 Main = NodePath("MarginContainer")
 metadata/_tab_index = 5
 
@@ -62,73 +54,63 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="SmoothScrollContainer" type="ScrollContainer" parent="MarginContainer"]
-layout_mode = 2
-horizontal_scroll_mode = 0
-script = ExtResource("2_ei28a")
-wheel_scroll_damper = SubResource("Resource_mhakp")
-dragging_scroll_damper = SubResource("Resource_4s13v")
-drag_with_mouse = false
-drag_with_touch = false
-allow_horizontal_scroll = false
-handle_input = false
-
-[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/SmoothScrollContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
+theme_override_constants/separation = 20
 
-[node name="PanelContainer" type="PanelContainer" parent="MarginContainer/SmoothScrollContainer/VBoxContainer"]
+[node name="PanelContainer" type="PanelContainer" parent="MarginContainer/VBoxContainer"]
 material = ExtResource("4_tr7nv")
 layout_mode = 2
 mouse_filter = 1
 theme_type_variation = &"SettingItemPanel"
 
-[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/SmoothScrollContainer/VBoxContainer/PanelContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/PanelContainer"]
 layout_mode = 2
 theme_override_constants/separation = 0
 
-[node name="Label" type="Label" parent="MarginContainer/SmoothScrollContainer/VBoxContainer/PanelContainer/VBoxContainer"]
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/PanelContainer/VBoxContainer"]
 layout_mode = 2
 mouse_filter = 1
 theme_type_variation = &"SettingItemTitle"
 text = "界面"
 
-[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/SmoothScrollContainer/VBoxContainer/PanelContainer/VBoxContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/VBoxContainer/PanelContainer/VBoxContainer"]
 layout_mode = 2
 theme_override_constants/margin_left = 10
 theme_override_constants/margin_top = 10
 theme_override_constants/margin_right = 10
 theme_override_constants/margin_bottom = 10
 
-[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/SmoothScrollContainer/VBoxContainer/PanelContainer/VBoxContainer/MarginContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/MarginContainer"]
 layout_mode = 2
 
-[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/SmoothScrollContainer/VBoxContainer/PanelContainer/VBoxContainer/MarginContainer/VBoxContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/MarginContainer/VBoxContainer"]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="MarginContainer/SmoothScrollContainer/VBoxContainer/PanelContainer/VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer"]
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 0
 mouse_filter = 1
 text = "显示语言"
 vertical_alignment = 1
 
-[node name="OptionButton" type="OptionButton" parent="MarginContainer/SmoothScrollContainer/VBoxContainer/PanelContainer/VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer"]
+[node name="OptionButton" type="OptionButton" parent="MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 10
 flat = true
 alignment = 2
 
-[node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer/SmoothScrollContainer/VBoxContainer/PanelContainer/VBoxContainer/MarginContainer/VBoxContainer"]
+[node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/MarginContainer/VBoxContainer"]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="MarginContainer/SmoothScrollContainer/VBoxContainer/PanelContainer/VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer2"]
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer2"]
 layout_mode = 2
 mouse_filter = 1
 text = "显示缩放"
 
-[node name="SpinBox" type="SpinBox" parent="MarginContainer/SmoothScrollContainer/VBoxContainer/PanelContainer/VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer2"]
+[node name="SpinBox" type="SpinBox" parent="MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer2"]
 layout_mode = 2
 size_flags_horizontal = 10
 theme = SubResource("Theme_yaaqs")
@@ -139,41 +121,41 @@ alignment = 1
 suffix = "%"
 custom_arrow_step = 25.0
 
-[node name="PanelContainer2" type="PanelContainer" parent="MarginContainer/SmoothScrollContainer/VBoxContainer"]
+[node name="PanelContainer2" type="PanelContainer" parent="MarginContainer/VBoxContainer"]
 material = ExtResource("4_tr7nv")
 layout_mode = 2
 mouse_filter = 1
 theme_type_variation = &"SettingItemPanel"
 
-[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/SmoothScrollContainer/VBoxContainer/PanelContainer2"]
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/PanelContainer2"]
 layout_mode = 2
 theme_override_constants/separation = 0
 
-[node name="Label" type="Label" parent="MarginContainer/SmoothScrollContainer/VBoxContainer/PanelContainer2/VBoxContainer"]
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/PanelContainer2/VBoxContainer"]
 layout_mode = 2
 mouse_filter = 1
 theme_type_variation = &"SettingItemTitle"
 text = "网络"
 
-[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/SmoothScrollContainer/VBoxContainer/PanelContainer2/VBoxContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/VBoxContainer/PanelContainer2/VBoxContainer"]
 layout_mode = 2
 theme_override_constants/margin_left = 10
 theme_override_constants/margin_top = 10
 theme_override_constants/margin_right = 10
 theme_override_constants/margin_bottom = 10
 
-[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/SmoothScrollContainer/VBoxContainer/PanelContainer2/VBoxContainer/MarginContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/PanelContainer2/VBoxContainer/MarginContainer"]
 layout_mode = 2
 
-[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/SmoothScrollContainer/VBoxContainer/PanelContainer2/VBoxContainer/MarginContainer/VBoxContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/PanelContainer2/VBoxContainer/MarginContainer/VBoxContainer"]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="MarginContainer/SmoothScrollContainer/VBoxContainer/PanelContainer2/VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer"]
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/PanelContainer2/VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer"]
 layout_mode = 2
 mouse_filter = 1
 text = "代理地址"
 
-[node name="LineEdit" type="LineEdit" parent="MarginContainer/SmoothScrollContainer/VBoxContainer/PanelContainer2/VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer"]
+[node name="LineEdit" type="LineEdit" parent="MarginContainer/VBoxContainer/PanelContainer2/VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 10
 theme_type_variation = &"SpinBoxInnerLineEdit"
@@ -182,16 +164,16 @@ alignment = 2
 expand_to_text_length = true
 clear_button_enabled = true
 
-[node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer/SmoothScrollContainer/VBoxContainer/PanelContainer2/VBoxContainer/MarginContainer/VBoxContainer"]
+[node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer/VBoxContainer/PanelContainer2/VBoxContainer/MarginContainer/VBoxContainer"]
 layout_mode = 2
 theme_override_constants/separation = 10
 
-[node name="Label" type="Label" parent="MarginContainer/SmoothScrollContainer/VBoxContainer/PanelContainer2/VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer2"]
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/PanelContainer2/VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer2"]
 layout_mode = 2
 mouse_filter = 1
 text = "下载线程"
 
-[node name="SpinBox" type="SpinBox" parent="MarginContainer/SmoothScrollContainer/VBoxContainer/PanelContainer2/VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer2"]
+[node name="SpinBox" type="SpinBox" parent="MarginContainer/VBoxContainer/PanelContainer2/VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer2"]
 layout_mode = 2
 size_flags_horizontal = 10
 min_value = 1.0
@@ -200,41 +182,41 @@ value = 1.0
 alignment = 2
 suffix = "x"
 
-[node name="PanelContainer3" type="PanelContainer" parent="MarginContainer/SmoothScrollContainer/VBoxContainer"]
+[node name="PanelContainer3" type="PanelContainer" parent="MarginContainer/VBoxContainer"]
 material = ExtResource("4_tr7nv")
 layout_mode = 2
 mouse_filter = 1
 theme_type_variation = &"SettingItemPanel"
 
-[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/SmoothScrollContainer/VBoxContainer/PanelContainer3"]
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/PanelContainer3"]
 layout_mode = 2
 theme_override_constants/separation = 0
 
-[node name="Label" type="Label" parent="MarginContainer/SmoothScrollContainer/VBoxContainer/PanelContainer3/VBoxContainer"]
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/PanelContainer3/VBoxContainer"]
 layout_mode = 2
 mouse_filter = 1
 theme_type_variation = &"SettingItemTitle"
 text = "目录"
 
-[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/SmoothScrollContainer/VBoxContainer/PanelContainer3/VBoxContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/VBoxContainer/PanelContainer3/VBoxContainer"]
 layout_mode = 2
 theme_override_constants/margin_left = 10
 theme_override_constants/margin_top = 10
 theme_override_constants/margin_right = 10
 theme_override_constants/margin_bottom = 10
 
-[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/SmoothScrollContainer/VBoxContainer/PanelContainer3/VBoxContainer/MarginContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/PanelContainer3/VBoxContainer/MarginContainer"]
 layout_mode = 2
 
-[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/SmoothScrollContainer/VBoxContainer/PanelContainer3/VBoxContainer/MarginContainer/VBoxContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/PanelContainer3/VBoxContainer/MarginContainer/VBoxContainer"]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="MarginContainer/SmoothScrollContainer/VBoxContainer/PanelContainer3/VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer"]
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/PanelContainer3/VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer"]
 layout_mode = 2
 mouse_filter = 1
 text = "整合目录"
 
-[node name="LineEdit" type="LineEdit" parent="MarginContainer/SmoothScrollContainer/VBoxContainer/PanelContainer3/VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer"]
+[node name="LineEdit" type="LineEdit" parent="MarginContainer/VBoxContainer/PanelContainer3/VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 10
 theme_type_variation = &"SpinBoxInnerLineEdit"
@@ -242,20 +224,20 @@ placeholder_text = "若为无效路径，则使用默认目录"
 alignment = 2
 expand_to_text_length = true
 
-[node name="Button" type="Button" parent="MarginContainer/SmoothScrollContainer/VBoxContainer/PanelContainer3/VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer"]
+[node name="Button" type="Button" parent="MarginContainer/VBoxContainer/PanelContainer3/VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer"]
 layout_mode = 2
 icon = SubResource("Texture2D_yaaqs")
 flat = true
 
-[node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer/SmoothScrollContainer/VBoxContainer/PanelContainer3/VBoxContainer/MarginContainer/VBoxContainer"]
+[node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer/VBoxContainer/PanelContainer3/VBoxContainer/MarginContainer/VBoxContainer"]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="MarginContainer/SmoothScrollContainer/VBoxContainer/PanelContainer3/VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer2"]
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/PanelContainer3/VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer2"]
 layout_mode = 2
 mouse_filter = 1
 text = "版本目录"
 
-[node name="LineEdit" type="LineEdit" parent="MarginContainer/SmoothScrollContainer/VBoxContainer/PanelContainer3/VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer2"]
+[node name="LineEdit" type="LineEdit" parent="MarginContainer/VBoxContainer/PanelContainer3/VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer2"]
 layout_mode = 2
 size_flags_horizontal = 10
 theme_type_variation = &"SpinBoxInnerLineEdit"
@@ -263,7 +245,7 @@ placeholder_text = "若为无效路径，则使用默认目录"
 alignment = 2
 expand_to_text_length = true
 
-[node name="Button" type="Button" parent="MarginContainer/SmoothScrollContainer/VBoxContainer/PanelContainer3/VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer2"]
+[node name="Button" type="Button" parent="MarginContainer/VBoxContainer/PanelContainer3/VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer2"]
 layout_mode = 2
 icon = SubResource("Texture2D_yaaqs")
 flat = true

@@ -86,9 +86,9 @@ public partial class GameDownloadWindow : BaseWindow {
 		_contentContainer.Hide();
 		_progressBar.Hide();
 
-		_releasePath.Text = Path.Combine(Paths.ReleaseFolder, _releaseName.Text).NormalizePath();
-		_fileDialog.CurrentPath = Paths.ReleaseFolder;
-		_fileDialog.CurrentDir = Paths.ReleaseFolder;
+		_releasePath.Text = Path.Combine(Main.BaseConfig.ReleaseFolder, _releaseName.Text).NormalizePath();
+		_fileDialog.CurrentPath = Main.BaseConfig.ReleaseFolder;
+		_fileDialog.CurrentDir = Main.BaseConfig.ReleaseFolder;
 
 		_releaseName.TextChanged += ReleaseNameOnTextChanged;
 		_folderButton.Pressed += _fileDialog.Show;
@@ -210,10 +210,10 @@ public partial class GameDownloadWindow : BaseWindow {
 			.WithFileName(downloadInfo.FileName)
 			.WithConfiguration(new() {
 				ParallelDownload = true,
-				ChunkCount = 8,
-				ParallelCount = 8,
+				ChunkCount = Main.BaseConfig.DownloadThreads,
+				ParallelCount = Main.BaseConfig.DownloadThreads,
 				RequestConfiguration = new() {
-					Proxy = string.IsNullOrEmpty(Main.BaseConfig.ProxyUrl) ? null : new WebProxy(Main.BaseConfig.ProxyUrl)
+					Proxy = string.IsNullOrEmpty(Main.BaseConfig.ProxyAddress) ? null : new WebProxy(Main.BaseConfig.ProxyAddress)
 				}
 			})
 			.Build();

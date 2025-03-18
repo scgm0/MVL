@@ -103,8 +103,8 @@ public partial class AddModpackWindow : BaseWindow {
 		_modpackPath.TextChanged += ModpackPathOnTextChanged;
 		_createPath.Toggled += CreatePathOnToggled;
 		_folderButton.Pressed += _fileDialog.Show;
-		_fileDialog.CurrentPath = Paths.ModpackFolder;
-		_fileDialog.CurrentDir = Paths.ModpackFolder;
+		_fileDialog.CurrentPath = Main.BaseConfig.ModpackFolder;
+		_fileDialog.CurrentDir = Main.BaseConfig.ModpackFolder;
 		_fileDialog.DirSelected += FileDialogOnDirSelected;
 		CancelButton.Pressed += CancelButtonOnPressed;
 		OkButton.Pressed += OkButtonOnPressed;
@@ -115,7 +115,7 @@ public partial class AddModpackWindow : BaseWindow {
 			_gameVersion.Select(-1);
 		}
 
-		SetModpackPath(Path.Combine(Paths.ModpackFolder, _modpackName.Text).NormalizePath());
+		SetModpackPath(Path.Combine(Main.BaseConfig.ModpackFolder, _modpackName.Text).NormalizePath());
 	}
 
 	private void FileDialogOnDirSelected(string path) {

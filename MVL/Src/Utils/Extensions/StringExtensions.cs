@@ -158,6 +158,7 @@ public static class StringExtensions {
 	public static string NormalizePath(this string path) {
 		if (string.IsNullOrEmpty(path)) return path;
 
+		path = Path.Combine(OS.GetExecutablePath(), path);
 		var fullPath = Path.GetFullPath(path.GetBaseDir());
 
 		fullPath = Path.Combine(fullPath, Path.GetFileName(path)).Replace(Path.AltDirectorySeparatorChar, Path.DirectorySeparatorChar);

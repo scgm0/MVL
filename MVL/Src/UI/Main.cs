@@ -169,7 +169,7 @@ public partial class Main : NativeWindowUtility {
 
 		FlurlHttp.Clients.WithDefaults(builder => {
 			builder.ConfigureInnerHandler(handler => {
-				handler.Proxy = string.IsNullOrEmpty(BaseConfig.ProxyUrl) ? null : new WebProxy(BaseConfig.ProxyUrl);
+				handler.Proxy = string.IsNullOrEmpty(BaseConfig.ProxyAddress) ? null : new WebProxy(BaseConfig.ProxyAddress);
 			});
 		});
 	}
