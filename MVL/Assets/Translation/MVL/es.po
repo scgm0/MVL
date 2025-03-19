@@ -5,15 +5,15 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: 神麤詭末的复古物语启动器\n"
-"PO-Revision-Date: 2025-03-12 15:00+0000\n"
-"Last-Translator: 神麤詭末 <2682963017@qq.com>\n"
+"PO-Revision-Date: 2025-03-20 10:51+0000\n"
+"Last-Translator: Xurxo Martínez Ferreira <xurxolaxe@gmail.com>\n"
 "Language-Team: Spanish <https://hosted.weblate.org/projects/mvl/mvl/es/>\n"
 "Language: es\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8-bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.10.3-dev\n"
+"X-Generator: Weblate 5.11-dev\n"
 
 msgid "神麤詭末的复古物语启动器"
 msgstr "Vintage Story Launcher de MystiVaid"
@@ -28,7 +28,7 @@ msgid "整合"
 msgstr "Modpack"
 
 msgid "版本"
-msgstr "Versión"
+msgstr "Versiónes"
 
 msgid "模组"
 msgstr "Mod"
@@ -55,10 +55,10 @@ msgid "取消"
 msgstr "Cancelar"
 
 msgid "贡献者"
-msgstr "Contibuidor"
+msgstr "Contibuidores"
 
 msgid "赞助者"
-msgstr "Patrocinador"
+msgstr "Patrocinadores"
 
 msgid "许可证"
 msgstr "Licencia"
@@ -73,7 +73,7 @@ msgid "主要开发者"
 msgstr "Desarrollador Principal"
 
 msgid "开发人员"
-msgstr "Desarollador"
+msgstr "Desarolladores"
 
 msgid "私人赞助"
 msgstr "Patrocinador Privado"
@@ -158,7 +158,7 @@ msgid "整合包路径:"
 msgstr "Carpeta del Modpack:"
 
 msgid "创建文件夹"
-msgstr "Creando Carpetas"
+msgstr "Crear carpetas"
 
 msgid "路径不能为空"
 msgstr "La carpeta no puede estar vacía"
@@ -240,54 +240,54 @@ msgstr ""
 
 msgid "不喜欢MVL？那么您还可以试试另一款复古物语启动器: [wave][pulse][rainbow][url=https://vsldocs.xurxomf.xyz]VS Launcher[/url][/rainbow][/pulse][/wave]"
 msgstr ""
-"No te gusta MVS? Entonces puedes probar otro launcher de Vintage Story: "
+"No te gusta MVL? Entonces puedes probar otro launcher de Vintage Story: "
 "[wave][pulse][rainbow][url=https://vsldocs.xurxomf.xyz]VS Launcher[/url][/"
 "rainbow][/pulse][/wave]"
 
 msgid "英语翻译"
-msgstr ""
+msgstr "Traducción al inglés"
 
 msgid "西班牙语翻译"
-msgstr ""
+msgstr "Traducción al español"
 
 msgid "法语翻译"
-msgstr ""
+msgstr "Traducción al francés"
 
 msgid "界面"
-msgstr ""
+msgstr "Interfaz"
 
 msgid "显示语言"
-msgstr ""
+msgstr "Idioma de visualización"
 
 msgid "显示缩放"
-msgstr ""
+msgstr "Zoom de pantalla"
 
 msgid "网络"
-msgstr ""
+msgstr "Red"
 
 msgid "代理地址"
-msgstr ""
+msgstr "Dirección proxy"
 
 msgid "下载线程"
-msgstr ""
+msgstr "Hilos de descarga"
 
 msgid "目录"
-msgstr ""
+msgstr "Tabla de contenido"
 
 msgid "整合目录"
-msgstr ""
+msgstr "Directorio de modpacks"
 
 msgid "版本目录"
-msgstr ""
+msgstr "Directorio de versiones"
 
 msgid "若为空，则使用系统代理"
-msgstr ""
+msgstr "Si está vacío se utiliza el proxy del sistema"
 
 msgid "若为无效路径，则使用默认目录"
-msgstr ""
+msgstr "Si la ruta no es válida se utiliza el directorio predeterminado"
 
 msgid "警告"
-msgstr ""
+msgstr "Advertencia"
 
 msgid "启动器运行中，无法重复启动"
-msgstr ""
+msgstr "El launcher se está ejecutando y no se puede reiniciar"
