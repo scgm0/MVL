@@ -313,3 +313,8 @@ layout_mode = 2
 size_flags_horizontal = 6
 text = "ModDB"
 uri = "https://mods.vintagestory.at/mvl"
+
+[node name="LinkButton4" type="LinkButton" parent="MarginContainer/VBoxContainer/PanelContainer2/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+text = "Weblate"
+uri = "https://hosted.weblate.org/engage/mvl"
