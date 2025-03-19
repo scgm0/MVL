@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: 神麤詭末的复古物语启动器\n"
-"PO-Revision-Date: 2025-03-18 12:34+0000\n"
+"PO-Revision-Date: 2025-03-20 10:51+0000\n"
 "Last-Translator: 神麤詭末 <2682963017@qq.com>\n"
 "Language-Team: English <https://hosted.weblate.org/projects/mvl/mvl/en/>\n"
 "Language: en\n"
@@ -284,7 +284,7 @@ msgid "若为无效路径，则使用默认目录"
 msgstr "If the path is invalid, the default directory will be used"
 
 msgid "警告"
-msgstr ""
+msgstr "Warning"
 
 msgid "启动器运行中，无法重复启动"
-msgstr ""
+msgstr "Launcher is running and cannot be started repeatedly"
