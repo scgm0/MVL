@@ -282,3 +282,9 @@ msgstr "If empty, use the system proxy"
 
 msgid "若为无效路径，则使用默认目录"
 msgstr "If the path is invalid, the default directory will be used"
+
+msgid "警告"
+msgstr ""
+
+msgid "启动器运行中，无法重复启动"
+msgstr ""

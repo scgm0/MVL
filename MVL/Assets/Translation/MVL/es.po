@@ -285,3 +285,9 @@ msgstr ""
 
 msgid "若为无效路径，则使用默认目录"
 msgstr ""
+
+msgid "警告"
+msgstr ""
+
+msgid "启动器运行中，无法重复启动"
+msgstr ""

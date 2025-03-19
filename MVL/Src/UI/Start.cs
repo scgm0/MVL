@@ -58,7 +58,7 @@ public partial class Start : Control {
 				var eventCode = (AppEventEnum)BitConverter.ToInt32(buffer, 0);
 				switch (eventCode) {
 					case AppEventEnum.RepeatStartup:
-						OS.Alert("启动器运行中，无法重复启动", "警告");
+						OS.Alert(TranslationServer.Translate("启动器运行中，无法重复启动"), TranslationServer.Translate("警告"));
 						break;
 					default: throw new ArgumentOutOfRangeException();
 				}
