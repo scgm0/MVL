@@ -243,12 +243,23 @@ public partial class GameDownloadWindow : BaseWindow {
 
 	private async void ExtractGame(string filePath, string outputDir, string name) {
 		TitleLabel!.Text = "提取中...";
+		CancelButton!.Disabled = true;
 		_progressBar!.Hide();
+
+		var assetDir = Path.Combine(outputDir, name, "assets");
+		if (Directory.Exists(assetDir)) {
+			foreach (var fileSystemEntry in Directory.GetFileSystemEntries(assetDir, "version-*.txt", SearchOption.TopDirectoryOnly)) {
+				File.Delete(Path.Combine(assetDir, fileSystemEntry));
+			}
+		}
+
 #if GODOT_WINDOWS
 		await ExtractInnoSetupAsync(filePath, outputDir, name);
 #elif GODOT_LINUXBSD
 		await ExtractTarGzAsync(filePath, outputDir, name);
 #endif
+
+		CancelButton.Disabled = false;
 		await Hide();
 		EmitSignalInstallGame(Path.Combine(outputDir, name));
 	}
