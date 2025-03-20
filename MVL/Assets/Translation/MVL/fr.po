@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: 神麤詭末的复古物语启动器\n"
-"PO-Revision-Date: 2025-03-12 16:30+0000\n"
+"PO-Revision-Date: 2025-03-20 10:51+0000\n"
 "Last-Translator: LorIlcs <soumanadrx@gmail.com>\n"
 "Language-Team: French <https://hosted.weblate.org/projects/mvl/mvl/fr/>\n"
 "Language: fr\n"
@@ -13,7 +13,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8-bit\n"
 "Plural-Forms: nplurals=2; plural=n > 1;\n"
-"X-Generator: Weblate 5.10.3-dev\n"
+"X-Generator: Weblate 5.11-dev\n"
 
 msgid "神麤詭末的复古物语启动器"
 msgstr "Launcher Vintage Story de MystiVaid"
@@ -118,7 +118,7 @@ msgid "将自动创建文件夹"
 msgstr "Les dossiers seront crées automatiquement"
 
 msgid "文件夹不为空，确定选择它吗？"
-msgstr "Le dossier n'est pas vide, êtes-vous sûr de vouloir le sélectionner?"
+msgstr "Le dossier n'est pas vide, êtes-vous sûr de vouloir le sélectionner ?"
 
 msgid "文件夹存在且为空"
 msgstr "Le dossier existe et est vide"
@@ -247,49 +247,49 @@ msgstr ""
 "rainbow][/pulse][/wave]"
 
 msgid "英语翻译"
-msgstr "Traduction Française"
+msgstr "Traduction Anglaise"
 
 msgid "西班牙语翻译"
-msgstr "Traduction française"
+msgstr "Traduction espagnole"
 
 msgid "法语翻译"
-msgstr ""
+msgstr "Traduction française"
 
 msgid "界面"
-msgstr ""
+msgstr "Interface"
 
 msgid "显示语言"
-msgstr ""
+msgstr "Langues d'affichage"
 
 msgid "显示缩放"
-msgstr ""
+msgstr "Taille de l'affichage"
 
 msgid "网络"
-msgstr ""
+msgstr "Réseau"
 
 msgid "代理地址"
-msgstr ""
+msgstr "Adresse Proxy"
 
 msgid "下载线程"
-msgstr ""
+msgstr "Fils de téléchargement"
 
 msgid "目录"
-msgstr ""
+msgstr "Dossier"
 
 msgid "整合目录"
-msgstr ""
+msgstr "Dossier des modpacks"
 
 msgid "版本目录"
-msgstr ""
+msgstr "Dossier des versions"
 
 msgid "若为空，则使用系统代理"
-msgstr ""
+msgstr "Si vide, utilisez le proxy du système"
 
 msgid "若为无效路径，则使用默认目录"
-msgstr ""
+msgstr "Si le chemin d'accès et invalide, Le chemin par défaut sera utilisé"
 
 msgid "警告"
-msgstr ""
+msgstr "Avertissement"
 
 msgid "启动器运行中，无法重复启动"
-msgstr ""
+msgstr "Le launcher tourne déjà, impossible de le lancer plusieurs fois"
