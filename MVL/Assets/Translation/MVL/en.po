@@ -5,8 +5,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: 神麤詭末的复古物语启动器\n"
-"PO-Revision-Date: 2025-03-20 10:51+0000\n"
-"Last-Translator: 神麤詭末 <2682963017@qq.com>\n"
+"PO-Revision-Date: 2025-03-23 07:01+0000\n"
+"Last-Translator: Beeamo <beeamo72@gmail.com>\n"
 "Language-Team: English <https://hosted.weblate.org/projects/mvl/mvl/en/>\n"
 "Language: en\n"
 "MIME-Version: 1.0\n"
@@ -91,7 +91,7 @@ msgid "账号登录"
 msgstr "Account Login"
 
 msgid "请先在整合界面添加一个整合包"
-msgstr "Please first add an modpack in the modpack interface"
+msgstr "Please first add a modpack in the modpack interface"
 
 msgid "请先在版本界面中导入游戏"
 msgstr "Please first import the game in the release interface"
@@ -121,7 +121,7 @@ msgid "神麤詭末的复古物语启动器"
 msgstr "MystiVaid's VintageStory Launcher"
 
 msgid "文件夹不为空，确定选择它吗？"
-msgstr "Folder is not empty, sure you want to select it?"
+msgstr "The folder is not empty, are you sure you want to select it?"
 
 msgid "请先选择一个整合包"
 msgstr "Please select a modpack first"
@@ -145,7 +145,9 @@ msgid "请选择版本"
 msgstr "Please select version"
 
 msgid "确定要删除账号 [color=#0078d7][b]{0}[/b][/color] 吗？"
-msgstr "Sure you want to delete the account [color=#0078d7][b]{0}[/b][/color]?"
+msgstr ""
+"Are you sure you want to delete the account [color=#0078d7][b]{0}[/b][/color]"
+"?"
 
 msgid "整合包名称:"
 msgstr "Modpack Name:"
@@ -178,7 +180,7 @@ msgid "若账号开启了2FA，则不能为空"
 msgstr "If the account has 2FA enabled, it cannot be empty"
 
 msgid "玩家名称:"
-msgstr "Player Name:"
+msgstr "Player name:"
 
 msgid "玩家名称不能为空"
 msgstr "Player name cannot be empty"
@@ -199,7 +201,7 @@ msgid "名称包含非法字符"
 msgstr "Name contains illegal characters"
 
 msgid "该名称已存在"
-msgstr "Existence of the name"
+msgstr "Name already exists"
 
 msgid "安装路径:"
 msgstr "Installation Path:"
