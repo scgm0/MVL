@@ -23,6 +23,7 @@
 ## 英语翻译
 
     神麤詭末 <https://github.com/scgm0>
+    Beeamo <https://github.com/Beeamo>
 
 ## 西班牙语翻译
 
