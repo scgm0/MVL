@@ -5,8 +5,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: 神麤詭末的复古物语启动器\n"
-"PO-Revision-Date: 2025-03-23 07:01+0000\n"
-"Last-Translator: Beeamo <beeamo72@gmail.com>\n"
+"PO-Revision-Date: 2025-03-24 11:56+0000\n"
+"Last-Translator: 神麤詭末 <2682963017@qq.com>\n"
 "Language-Team: English <https://hosted.weblate.org/projects/mvl/mvl/en/>\n"
 "Language: en\n"
 "MIME-Version: 1.0\n"
@@ -174,13 +174,13 @@ msgid "离线模式"
 msgstr "Offline Mode"
 
 msgid "访问代码:"
-msgstr "Access code:"
+msgstr "Access Code:"
 
 msgid "若账号开启了2FA，则不能为空"
 msgstr "If the account has 2FA enabled, it cannot be empty"
 
 msgid "玩家名称:"
-msgstr "Player name:"
+msgstr "Player Name:"
 
 msgid "玩家名称不能为空"
 msgstr "Player name cannot be empty"
