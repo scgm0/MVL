@@ -181,7 +181,7 @@ vertical_alignment = 1
 [node name="Label" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer"]
 layout_mode = 2
 theme_override_constants/outline_size = 4
-text = "Copyright (c) 2025 神麤詭末"
+text = "一个免费、开源且由社区驱动的复古物语启动器"
 
 [node name="PanelContainer" type="PanelContainer" parent="MarginContainer/VBoxContainer"]
 material = SubResource("ShaderMaterial_2do0o")
