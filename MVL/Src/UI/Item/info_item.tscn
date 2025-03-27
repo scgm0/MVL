@@ -36,7 +36,6 @@ text = "标题"
 layout_mode = 2
 size_flags_vertical = 0
 focus_mode = 2
-theme_override_colors/selection_color = Color(0.6, 0.6, 0.6, 0.6)
 theme_override_styles/normal = SubResource("StyleBoxFlat_7nt4r")
 bbcode_enabled = true
 text = "内容"
