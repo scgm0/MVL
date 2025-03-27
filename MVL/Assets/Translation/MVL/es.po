@@ -291,3 +291,9 @@ msgstr "Advertencia"
 
 msgid "启动器运行中，无法重复启动"
 msgstr "El launcher se está ejecutando y no se puede reiniciar"
+
+msgid "复古物语"
+msgstr ""
+
+msgid "一个免费、开源且由社区驱动的复古物语启动器"
+msgstr ""

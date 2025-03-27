@@ -293,3 +293,9 @@ msgstr "Avertissement"
 
 msgid "启动器运行中，无法重复启动"
 msgstr "Le launcher tourne déjà, impossible de le lancer plusieurs fois"
+
+msgid "复古物语"
+msgstr ""
+
+msgid "一个免费、开源且由社区驱动的复古物语启动器"
+msgstr ""
