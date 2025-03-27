@@ -279,3 +279,6 @@ msgstr ""
 
 msgid "启动器运行中，无法重复启动"
 msgstr ""
+
+msgid "复古物语"
+msgstr ""

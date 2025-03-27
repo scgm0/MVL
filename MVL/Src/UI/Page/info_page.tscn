@@ -276,6 +276,7 @@ bbcode_enabled = true
 text = "如果启动器对您有所帮助且您财力有余，可以赞助一下开发者，您的支持将促进启动器的开发与完善: [color=#3c7fe1][url]https://afdian.com/a/MystiVaid[/url][/color]"
 fit_content = true
 autowrap_mode = 2
+context_menu_enabled = true
 horizontal_alignment = 1
 threaded = true
 selection_enabled = true
@@ -288,6 +289,7 @@ bbcode_enabled = true
 text = "不喜欢MVL？那么您还可以试试另一款复古物语启动器: [wave][pulse][rainbow][url=https://vsldocs.xurxomf.xyz]VS Launcher[/url][/rainbow][/pulse][/wave]"
 fit_content = true
 autowrap_mode = 2
+context_menu_enabled = true
 horizontal_alignment = 1
 threaded = true
 selection_enabled = true
@@ -318,3 +320,8 @@ uri = "https://mods.vintagestory.at/mvl"
 layout_mode = 2
 text = "Weblate"
 uri = "https://hosted.weblate.org/engage/mvl"
+
+[node name="LinkButton5" type="LinkButton" parent="MarginContainer/VBoxContainer/PanelContainer2/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+text = "复古物语"
+uri = "https://www.vintagestory.at/"
