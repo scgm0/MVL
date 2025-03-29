@@ -297,3 +297,6 @@ msgstr ""
 
 msgid "一个免费、开源且由社区驱动的复古物语启动器"
 msgstr ""
+
+msgid "{0} 需要安装 .NET {1}\n点击链接下载安装：\n[color=#3c7fe1][url]https://dotnet.microsoft.com/download/dotnet/{2}[/url][/color]\n是否尝试强制启动游戏？"
+msgstr ""

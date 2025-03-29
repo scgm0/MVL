@@ -1,4 +1,3 @@
-using System;
 using System.IO;
 using System.Linq;
 using Godot;
@@ -66,7 +65,7 @@ public partial class ModpackItem : PanelContainer {
 			var icon = (IconTexture2D)_playButton!.Icon;
 			icon.IconName = "stop";
 			_playButton.Modulate = Colors.Red;
-			Main.CurrentGameProcess!.Exited += CurrentGameProcessOnExited;
+			Main.GameExitEvent += MainOnGameExitEvent;
 		}
 
 		var modsPath = Path.Combine(ModpackConfig.Path!, "Mods");
@@ -78,10 +77,20 @@ public partial class ModpackItem : PanelContainer {
 		_playButton.Pressed += PlayButtonOnPressed;
 	}
 
+	private void MainOnGameExitEvent() {
+		Dispatcher.SynchronizationContext.Post(_ => {
+			var icon = (IconTexture2D)_playButton!.Icon;
+			icon.IconName = "play";
+			_playButton.Modulate = Colors.White;
+		}, null);
+	}
+
 	public override void _ExitTree() {
-		if (Main.CurrentGameProcess is not null) {
-			Main.CurrentGameProcess.Exited -= CurrentGameProcessOnExited;
+		if (Main.CurrentModpack != ModpackConfig) {
+			return;
 		}
+
+		Main.GameExitEvent -= MainOnGameExitEvent;
 	}
 
 	private void VersionButtonOnPressed() {
@@ -112,19 +121,19 @@ public partial class ModpackItem : PanelContainer {
 	}
 
 	private void PlayButtonOnPressed() {
-		if (Main.CurrentGameProcess is null) {
+		if (Main.CurrentModpack is null) {
 			var icon = (IconTexture2D)_playButton!.Icon;
 			icon.IconName = "stop";
 			_playButton.Modulate = Colors.Red;
-			Main.CurrentModpack = ModpackConfig;
-			Main.StartGame(ModpackConfig!.ReleasePath!, ModpackConfig.Path!);
-			Main.CurrentGameProcess!.Exited += CurrentGameProcessOnExited;
+			Main.GameExitEvent += MainOnGameExitEvent;
+			Main.Instance?.StartGame(ModpackConfig!);
 		} else {
-			Main.CurrentGameProcess.Kill();
+			Main.CurrentGameProcess?.Kill();
 		}
 	}
 
-	private void CurrentGameProcessOnExited(object? sender, EventArgs e) {
+	private void CurrentGameProcessOnExited() {
+		Main.GameExitEvent -= MainOnGameExitEvent;
 		Dispatcher.SynchronizationContext.Post(_ => {
 			var icon = (IconTexture2D)_playButton!.Icon;
 			icon.IconName = "play";

@@ -1,5 +1,4 @@
 using Godot;
-using System;
 using MVL.UI.Item;
 using MVL.Utils;
 using MVL.Utils.Config;
@@ -66,18 +65,19 @@ public partial class HomePage : MenuPage {
 			UpdateInfo();
 		};
 		_playButton.Pressed += StartButtonOnPressed;
+		UI.Main.GameExitEvent += MainOnGameExitEvent;
 
 		UpdateInfo();
 	}
 
+	private void MainOnGameExitEvent() { CallDeferred(nameof(UpdateInfo)); }
+
 	private void StartButtonOnPressed() {
-		if (UI.Main.CurrentGameProcess is null) {
+		if (UI.Main.CurrentModpack is null) {
 			var modpackConfig = UI.Main.ModpackConfigs[UI.Main.BaseConfig.CurrentModpack];
-			UI.Main.CurrentModpack = modpackConfig;
-			UI.Main.StartGame(modpackConfig.ReleasePath!, modpackConfig.Path!);
-			UI.Main.CurrentGameProcess!.Exited += CurrentGameProcessOnExited;
+			_ = UI.Main.Instance?.StartGame(modpackConfig);
 		} else {
-			UI.Main.CurrentGameProcess.Kill();
+			UI.Main.CurrentGameProcess?.Kill();
 		}
 
 		UpdateInfo();
@@ -172,13 +172,9 @@ public partial class HomePage : MenuPage {
 			}
 		}
 
-		if (UI.Main.CurrentGameProcess is null) return;
+		if (UI.Main.CurrentModpack is null) return;
 		_playButton!.Disabled = false;
 		_playButton!.Text = "停止游戏";
 		_playButton!.Modulate = Colors.Red;
-		UI.Main.CurrentGameProcess.Exited -= CurrentGameProcessOnExited;
-		UI.Main.CurrentGameProcess.Exited += CurrentGameProcessOnExited;
 	}
-
-	private void CurrentGameProcessOnExited(object? sender, EventArgs e) { CallDeferred(nameof(UpdateInfo)); }
 }

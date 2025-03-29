@@ -23,9 +23,9 @@ public record ReleaseInfo {
 
 	public string Name { get; set; } = string.Empty;
 	public string? TargetFrameworkName { get; private set; }
-	public string? TargetFrameworkVersion { get; private set; }
+	public Version? TargetFrameworkVersion { get; private set; }
 
-	public static (string? FrameworkName, string? Version) GetTargetFramework(string assemblyPath) {
+	public static (string FrameworkName, Version? Version) GetTargetFramework(string assemblyPath) {
 		using var assembly = AssemblyDefinition.ReadAssembly(assemblyPath);
 		var targetFrameworkAttributeName = typeof(System.Runtime.Versioning.TargetFrameworkAttribute).FullName;
 
@@ -34,14 +34,14 @@ public record ReleaseInfo {
 				select ParseFramework((string)attribute.ConstructorArguments[0].Value)).FirstOrDefault();
 	}
 
-	public static (string? FrameworkName, string? Version) ParseFramework(string framework) {
+	public static (string? FrameworkName, Version? Version) ParseFramework(string framework) {
 		var parts = framework.Split(',');
-		var name = parts[0].Trim()[1..];
+		var name = parts[0].Trim()[1..].Replace("App", string.Empty);
 		var version = ParseVersionFromFramework(framework);
 		return (name, version);
 	}
 
-	public static string? ParseVersionFromFramework(string framework) {
+	public static Version? ParseVersionFromFramework(string framework) {
 		try {
 			const string versionPrefix = "Version=";
 			var versionIndex = framework.IndexOf(versionPrefix, StringComparison.OrdinalIgnoreCase);
@@ -52,7 +52,7 @@ public record ReleaseInfo {
 			var versionString = framework[(versionIndex + versionPrefix.Length)..]
 				.TrimStart('v', 'V');
 
-			return versionString;
+			return System.Version.Parse(versionString);
 		} catch {
 			return null;
 		}

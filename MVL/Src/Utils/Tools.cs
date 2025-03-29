@@ -1,9 +1,13 @@
 using System;
+using System.Diagnostics;
+using System.Threading.Tasks;
 using Godot;
 
 namespace MVL.Utils;
 
 public static class Tools {
+	public static void RichTextOpenUrl(Variant url) { Task.Run(() => OS.ShellOpen(url.AsString())); }
+
 	public static float GetAutoDisplayScale() {
 #if GODOT_LINUXBSD
 		if (DisplayServer.GetName() == "Wayland") {
@@ -38,4 +42,46 @@ public static class Tools {
 
 		return value - Math.Floor(value);
 	}
+
+	public static async Task<bool> HasRequiredDotNetVersionInstalled(string targetFrameworkName, Version targetFrameworkVersion) {
+		try {
+			using var process = new Process();
+			process.StartInfo = new() {
+				FileName = "dotnet",
+				Arguments = "--list-runtimes",
+				RedirectStandardOutput = true,
+				RedirectStandardError = true,
+				UseShellExecute = false,
+				CreateNoWindow = true
+			};
+
+			process.Start();
+			await process.WaitForExitAsync();
+
+			if (process.ExitCode != 0) {
+				return false;
+			}
+
+			while (await process.StandardOutput.ReadLineAsync() is { } line) {
+				if (!line.Contains(targetFrameworkName, StringComparison.OrdinalIgnoreCase)) {
+					continue;
+				}
+
+				var runtimeInfo = line.Trim().Split(' ', StringSplitOptions.RemoveEmptyEntries);
+				if (runtimeInfo.Length < 2)
+					continue;
+
+				var versionString = runtimeInfo[1];
+				if (Version.TryParse(versionString, out var installedVersion) &&
+					installedVersion.Major == targetFrameworkVersion.Major) {
+					return true;
+				}
+			}
+
+			return false;
+		} catch (Exception) {
+			return false;
+		}
+	}
+
 }

@@ -1,6 +1,8 @@
+using System.Collections.Generic;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using Godot;
+using MVL.UI;
 using MVL.Utils.Game;
 
 namespace MVL.Utils.Config;
@@ -9,7 +11,14 @@ public class ModpackConfig {
 	private string _configPath = string.Empty;
 	public string? Name { get; set; }
 	public GameVersion? Version { get; set; }
-	public string? ReleasePath { get; set; }
+
+	public string? ReleasePath {
+		get;
+		set {
+			field = value;
+			ReleaseInfo = Main.ReleaseInfos.GetValueOrDefault(field ?? string.Empty);
+		}
+	}
 
 	[JsonIgnore]
 	public string? Path {
@@ -21,6 +30,8 @@ public class ModpackConfig {
 			}
 		}
 	}
+
+	public ReleaseInfo? ReleaseInfo;
 
 	public static ModpackConfig Load(string modpackPath) {
 		var configPath = System.IO.Path.Combine(modpackPath, "modpack.json");

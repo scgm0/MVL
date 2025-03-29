@@ -103,6 +103,7 @@ public partial class Main : NativeWindowUtility {
 
 	public static SceneTree SceneTree { get; } = (SceneTree)Engine.GetMainLoop();
 
+	public static event Action GameExitEvent;
 	public Main() { Instance = this; }
 
 	public override void _Ready() {
@@ -463,7 +464,6 @@ public partial class Main : NativeWindowUtility {
 		}
 	}
 
-	public static void RichTextOpenUrl(Variant url) { Task.Run(() => OS.ShellOpen(url.AsString())); }
 
 	public static DirAccess CopyVsRun() {
 		var tmp = DirAccess.CreateTemp("VSRun");
@@ -538,6 +538,45 @@ public partial class Main : NativeWindowUtility {
 		}
 	}
 
+	public async Task StartGame(ModpackConfig modpackConfig) {
+		CurrentModpack = modpackConfig;
+		var releaseInfo = modpackConfig.ReleaseInfo;
+		if (releaseInfo is null) {
+			GameExitEvent.Invoke();
+			CurrentModpack = null;
+			GD.PrintErr("ReleaseInfo is null");
+			return;
+		}
+
+		var hasDotnet =
+			await Tools.HasRequiredDotNetVersionInstalled(releaseInfo.TargetFrameworkName!,
+				releaseInfo.TargetFrameworkVersion!);
+		if (!hasDotnet) {
+			var confirmationWindow = _confirmationWindowScene!.Instantiate<ConfirmationWindow>();
+			confirmationWindow.Modulate = Colors.Transparent;
+			confirmationWindow.Message =
+				string.Format(
+					Tr("{0} 需要安装 .NET {1}\n点击链接下载安装：\n[color=#3c7fe1][url]https://dotnet.microsoft.com/download/dotnet/{2}[/url][/color]\n是否尝试强制启动游戏？"),
+					releaseInfo.Version.ShortGameVersion,
+					releaseInfo.TargetFrameworkVersion,
+					releaseInfo.TargetFrameworkVersion);
+			confirmationWindow.Hidden += confirmationWindow.QueueFree;
+			confirmationWindow.Confirm += async () => {
+				await confirmationWindow.Hide();
+				StartGame(releaseInfo.Path, modpackConfig.Path!);
+			};
+			confirmationWindow.Cancel += () => {
+				GameExitEvent.Invoke();
+				CurrentModpack = null;
+			};
+			AddChild(confirmationWindow);
+			await confirmationWindow.Show();
+			return;
+		}
+
+		StartGame(releaseInfo.Path, modpackConfig.Path!);
+	}
+
 	public static void StartGame(
 		string gamePath,
 		string dataPath,
@@ -555,12 +594,14 @@ public partial class Main : NativeWindowUtility {
 				command.Replace("%command%", $"dotnet \"{Path.Combine(tmp.GetCurrentDir(), "VSRun.dll").NormalizePath()}\""));
 			CurrentGameProcess = process;
 			process.Exited += (_, _) => {
+				GameExitEvent.Invoke();
 				tmp.Dispose();
 				process.Dispose();
 				CurrentGameProcess = null;
 				CurrentModpack = null;
 			};
 		} catch (Exception e) {
+			GameExitEvent.Invoke();
 			GD.PrintErr(e);
 		}
 	}

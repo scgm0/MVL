@@ -1,4 +1,6 @@
+using System.Threading.Tasks;
 using Godot;
+using MVL.Utils;
 using MVL.Utils.Help;
 
 namespace MVL.UI.Window;
@@ -27,8 +29,14 @@ public partial class ConfirmationWindow : BaseWindow {
 		_messageLabel.NotNull();
 
 		_messageLabel.Text = Message;
+		_messageLabel.MetaClicked += Tools.RichTextOpenUrl;
 
 		OkButton.Pressed += EmitSignalConfirm;
 		CancelButton.Pressed += CancelButtonOnPressed;
+	}
+
+	public override async Task Show() {
+		await ToSignal(_messageLabel!, Control.SignalName.MinimumSizeChanged);
+		await base.Show();
 	}
 }

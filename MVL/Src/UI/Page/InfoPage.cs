@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using Godot;
 using MVL.UI.Item;
+using MVL.Utils;
 using MVL.Utils.Help;
 
 namespace MVL.UI.Page;
@@ -52,8 +53,8 @@ public partial class InfoPage : MenuPage {
 		_versionLabel.Text = $"v{ProjectSettings.GetSetting("application/config/version")}";
 		VisibilityChanged += OnVisibilityChanged;
 		_buttonGroup.Pressed += ButtonGroupOnPressed;
-		_richText.MetaClicked += UI.Main.RichTextOpenUrl;
-		_richText2.MetaClicked += UI.Main.RichTextOpenUrl;
+		_richText.MetaClicked += Tools.RichTextOpenUrl;
+		_richText2.MetaClicked += Tools.RichTextOpenUrl;
 		UpdateList(Info.AUTHORS);
 	}
 

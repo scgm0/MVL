@@ -28,18 +28,24 @@ public partial class BaseWindow : Control {
 		TitleLabel.NotNull();
 		CancelButton.NotNull();
 		OkButton.NotNull();
-		_container.PivotOffset = _container.Size / 2.0f;
+		_container.MinimumSizeChanged += ContainerOnMinimumSizeChanged;
+	}
+
+	private void ContainerOnMinimumSizeChanged() {
+		_container!.PivotOffset = _container.Size / 2.0f;
 	}
 
 	public new virtual async Task Show() {
+		_container!.PivotOffset = _container.Size / 2.0f;
 		Modulate = Colors.Transparent;
-		_container!.Scale = Vector2.Zero;
+		_container.Scale = Vector2.Zero;
 		base.Show();
 		_animationPlayer!.Play(StringNames.Show);
 		await ToSignal(_animationPlayer, AnimationMixer.SignalName.AnimationFinished);
 	}
 
 	public new virtual async Task Hide() {
+		_container!.PivotOffset = _container.Size / 2.0f;
 		_animationPlayer!.PlayBackwards(StringNames.Show);
 		await ToSignal(_animationPlayer, AnimationMixer.SignalName.AnimationFinished);
 		base.Hide();

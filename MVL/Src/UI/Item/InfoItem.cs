@@ -1,4 +1,5 @@
 using Godot;
+using MVL.Utils;
 using MVL.Utils.Help;
 
 namespace MVL.UI.Item;
@@ -35,6 +36,6 @@ public partial class InfoItem : Control {
 		_content.NotNull();
 		_title.Text = Title;
 		_content.Text = Content;
-		_content.MetaClicked += Main.RichTextOpenUrl;
+		_content.MetaClicked += Tools.RichTextOpenUrl;
 	}
 }
