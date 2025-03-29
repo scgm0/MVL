@@ -5,8 +5,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: 神麤詭末的复古物语启动器\n"
-"PO-Revision-Date: 2025-03-20 10:51+0000\n"
-"Last-Translator: Xurxo Martínez Ferreira <xurxolaxe@gmail.com>\n"
+"PO-Revision-Date: 2025-03-29 22:29+0000\n"
+"Last-Translator: 神麤詭末 <2682963017@qq.com>\n"
 "Language-Team: Spanish <https://hosted.weblate.org/projects/mvl/mvl/es/>\n"
 "Language: es\n"
 "MIME-Version: 1.0\n"
@@ -299,4 +299,7 @@ msgid "一个免费、开源且由社区驱动的复古物语启动器"
 msgstr ""
 
 msgid "{0} 需要安装 .NET {1}\n点击链接下载安装：\n[color=#3c7fe1][url]https://dotnet.microsoft.com/download/dotnet/{2}[/url][/color]\n是否尝试强制启动游戏？"
+msgstr ""
+
+msgid "测试"
 msgstr ""
