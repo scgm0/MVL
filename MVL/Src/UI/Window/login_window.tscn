@@ -114,6 +114,12 @@ layout_mode = 2
 toggle_mode = true
 icon = SubResource("Texture2D_l4pum")
 
+[node name="LinkButton" type="LinkButton" parent="PanelContainer/VBoxContainer/MarginContainer/VBoxContainer" index="2"]
+layout_mode = 2
+size_flags_horizontal = 8
+text = "无法登录？检查您的游戏账号"
+uri = "https://account.vintagestory.at"
+
 [node name="VBoxContainer2" type="VBoxContainer" parent="PanelContainer/VBoxContainer/MarginContainer" index="2"]
 visible = false
 layout_mode = 2

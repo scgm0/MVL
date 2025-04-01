@@ -305,5 +305,5 @@ msgstr ""
 "[/color]\n"
 "Would you like to attempt to force start the game?"
 
-msgid "测试"
-msgstr "Test"
+msgid "无法登录？检查您的游戏账号"
+msgstr "Can't log in? Check your game account"

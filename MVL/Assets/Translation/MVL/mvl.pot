@@ -289,5 +289,5 @@ msgstr ""
 msgid "{0} 需要安装 .NET {1}\n点击链接下载安装：\n[color=#3c7fe1][url]https://dotnet.microsoft.com/download/dotnet/{2}[/url][/color]\n是否尝试强制启动游戏？"
 msgstr ""
 
-msgid "测试"
+msgid "无法登录？检查您的游戏账号"
 msgstr ""
