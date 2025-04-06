@@ -1,10 +1,9 @@
-[gd_scene load_steps=64 format=3 uid="uid://514oox50h8yl"]
+[gd_scene load_steps=63 format=3 uid="uid://514oox50h8yl"]
 
 [ext_resource type="Script" uid="uid://cvyeyg8ttnwmu" path="res://Src/UI/Main.cs" id="1_1opgh"]
 [ext_resource type="Texture2D" uid="uid://bhh1jvyj73qxh" path="res://Assets/Gui/Background.png" id="2_1opgh"]
 [ext_resource type="PackedScene" uid="uid://dwckxgkp7j0oc" path="res://Src/UI/Window/login_window.tscn" id="2_gblyu"]
 [ext_resource type="Texture2D" uid="uid://bqv5hbr6w0cu" path="res://Assets/Icon/icon.png" id="2_xnuua"]
-[ext_resource type="Texture2D" uid="uid://cg2dshwidpbbv" path="res://Assets/Icon/icon.svg" id="3_53u4p"]
 [ext_resource type="PackedScene" uid="uid://d21bm32gkwqcr" path="res://Src/UI/Window/installed_games_import.tscn" id="3_a5da0"]
 [ext_resource type="ButtonGroup" uid="uid://c644g3bgevb7h" path="res://Assets/Gui/menu_button_group.tres" id="4_megpf"]
 [ext_resource type="PackedScene" uid="uid://cns5w84qytq88" path="res://Src/UI/Item/account_select_item.tscn" id="5_365jr"]
@@ -359,7 +358,6 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_1opgh")
 _loginWindowScene = ExtResource("2_gblyu")
-_iconTexture = ExtResource("3_53u4p")
 _installedGamesImportScene = ExtResource("3_a5da0")
 _accountSelectItemScene = ExtResource("5_365jr")
 _confirmationWindowScene = ExtResource("6_a6wm3")

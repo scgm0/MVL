@@ -31,9 +31,6 @@ public partial class Main : NativeWindowUtility {
 	private PackedScene? _loginWindowScene;
 
 	[Export]
-	private Texture2D? _iconTexture;
-
-	[Export]
 	private PackedScene? _installedGamesImportScene;
 
 	[Export]
@@ -103,7 +100,7 @@ public partial class Main : NativeWindowUtility {
 
 	public static SceneTree SceneTree { get; } = (SceneTree)Engine.GetMainLoop();
 
-	public static event Action GameExitEvent;
+	public static event Action? GameExitEvent;
 	public Main() { Instance = this; }
 
 	public override void _Ready() {
@@ -115,7 +112,6 @@ public partial class Main : NativeWindowUtility {
 		base._Ready();
 
 		_loginWindowScene.NotNull();
-		_iconTexture.NotNull();
 		_installedGamesImportScene.NotNull();
 		_accountSelectItemScene.NotNull();
 		_confirmationWindowScene.NotNull();
@@ -130,8 +126,6 @@ public partial class Main : NativeWindowUtility {
 		_accountSelectAddButton.NotNull();
 		_accountSelectListContainer.NotNull();
 		_accountSelectAnimationPlayer.NotNull();
-
-		DisplayServer.SetIcon(_iconTexture.GetImage());
 
 		SceneTree.Root.SizeChanged += RootOnSizeChanged;
 
@@ -542,7 +536,7 @@ public partial class Main : NativeWindowUtility {
 		CurrentModpack = modpackConfig;
 		var releaseInfo = modpackConfig.ReleaseInfo;
 		if (releaseInfo is null) {
-			GameExitEvent.Invoke();
+			GameExitEvent?.Invoke();
 			CurrentModpack = null;
 			GD.PrintErr("ReleaseInfo is null");
 			return;
@@ -566,7 +560,7 @@ public partial class Main : NativeWindowUtility {
 				StartGame(releaseInfo.Path, modpackConfig.Path!);
 			};
 			confirmationWindow.Cancel += () => {
-				GameExitEvent.Invoke();
+				GameExitEvent?.Invoke();
 				CurrentModpack = null;
 			};
 			AddChild(confirmationWindow);
@@ -594,14 +588,14 @@ public partial class Main : NativeWindowUtility {
 				command.Replace("%command%", $"dotnet \"{Path.Combine(tmp.GetCurrentDir(), "VSRun.dll").NormalizePath()}\""));
 			CurrentGameProcess = process;
 			process.Exited += (_, _) => {
-				GameExitEvent.Invoke();
+				GameExitEvent?.Invoke();
 				tmp.Dispose();
 				process.Dispose();
 				CurrentGameProcess = null;
 				CurrentModpack = null;
 			};
 		} catch (Exception e) {
-			GameExitEvent.Invoke();
+			GameExitEvent?.Invoke();
 			GD.PrintErr(e);
 		}
 	}
