@@ -14,7 +14,7 @@ script = ExtResource("3_l4pum")
 IconName = "alert-circle-outline"
 FontSize = 16
 FontFile = ExtResource("5_tcmql")
-metadata/_custom_type_script = ExtResource("3_l4pum")
+metadata/_custom_type_script = "uid://bk3tot6c35bwu"
 
 [sub_resource type="Texture2D" id="Texture2D_l4pum"]
 resource_local_to_scene = false

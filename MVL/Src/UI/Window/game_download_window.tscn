@@ -19,7 +19,7 @@ script = ExtResource("6_endwm")
 IconName = "alert-circle-outline"
 FontSize = 16
 FontFile = ExtResource("8_lb40e")
-metadata/_custom_type_script = ExtResource("6_endwm")
+metadata/_custom_type_script = "uid://bk3tot6c35bwu"
 
 [sub_resource type="Texture2D" id="Texture2D_w2kmj"]
 resource_local_to_scene = false
@@ -28,7 +28,7 @@ script = ExtResource("6_endwm")
 IconName = "file-settings-outline"
 FontSize = 24
 FontFile = ExtResource("8_lb40e")
-metadata/_custom_type_script = ExtResource("6_endwm")
+metadata/_custom_type_script = "uid://bk3tot6c35bwu"
 
 [sub_resource type="Resource" id="Resource_lb40e"]
 script = ExtResource("5_x3qgb")

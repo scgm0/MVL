@@ -13,7 +13,7 @@ script = ExtResource("3_i7wln")
 IconName = "alert-circle-outline"
 FontSize = 16
 FontFile = ExtResource("4_b82ki")
-metadata/_custom_type_script = ExtResource("3_i7wln")
+metadata/_custom_type_script = "uid://bk3tot6c35bwu"
 
 [sub_resource type="Texture2D" id="Texture2D_2ju0j"]
 resource_local_to_scene = false
@@ -22,7 +22,7 @@ script = ExtResource("3_i7wln")
 IconName = "file-plus-outline"
 FontSize = 24
 FontFile = ExtResource("4_b82ki")
-metadata/_custom_type_script = ExtResource("3_i7wln")
+metadata/_custom_type_script = "uid://bk3tot6c35bwu"
 
 [sub_resource type="Texture2D" id="Texture2D_vgayu"]
 resource_local_to_scene = false
@@ -31,7 +31,7 @@ script = ExtResource("3_i7wln")
 IconName = "file-settings-outline"
 FontSize = 24
 FontFile = ExtResource("4_b82ki")
-metadata/_custom_type_script = ExtResource("3_i7wln")
+metadata/_custom_type_script = "uid://bk3tot6c35bwu"
 
 [node name="AddModpackWindow" node_paths=PackedStringArray("_modpackName", "_modpackPath", "_createPath", "_folderButton", "_fileDialog", "_gameVersion", "_releasePath", "_tooltip") instance=ExtResource("1_fvt7b")]
 script = ExtResource("1_vgayu")

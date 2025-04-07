@@ -56,7 +56,7 @@ script = ExtResource("4_2dlc0")
 IconName = "plus"
 FontSize = 48
 FontFile = ExtResource("5_j43t8")
-metadata/_custom_type_script = ExtResource("4_2dlc0")
+metadata/_custom_type_script = "uid://bk3tot6c35bwu"
 
 [sub_resource type="Resource" id="Resource_bmwv3"]
 script = ExtResource("6_maqbw")

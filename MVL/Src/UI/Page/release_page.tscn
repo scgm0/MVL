@@ -82,7 +82,7 @@ script = ExtResource("5_qiv2n")
 IconName = "plus"
 FontSize = 72
 FontFile = ExtResource("7_h8roc")
-metadata/_custom_type_script = ExtResource("5_qiv2n")
+metadata/_custom_type_script = "uid://bk3tot6c35bwu"
 
 [node name="ReleasePage" type="Control" node_paths=PackedStringArray("_addReleaseButton", "_grid", "Main")]
 layout_mode = 3

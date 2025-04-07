@@ -57,7 +57,7 @@ script = ExtResource("4_32kh6")
 IconName = "unfold-more-horizontal"
 FontSize = 24
 FontFile = ExtResource("6_60yl2")
-metadata/_custom_type_script = ExtResource("4_32kh6")
+metadata/_custom_type_script = "uid://bk3tot6c35bwu"
 
 [sub_resource type="Texture2D" id="Texture2D_364to"]
 resource_local_to_scene = false
@@ -66,7 +66,7 @@ script = ExtResource("4_32kh6")
 IconName = "play"
 FontSize = 30
 FontFile = ExtResource("6_60yl2")
-metadata/_custom_type_script = ExtResource("4_32kh6")
+metadata/_custom_type_script = "uid://bk3tot6c35bwu"
 
 [node name="ModpackItem" type="PanelContainer" node_paths=PackedStringArray("_modpackName", "_modpackPath", "_modCount", "_versionButton", "_releaseButton", "_playButton")]
 material = ExtResource("1_00er1")
