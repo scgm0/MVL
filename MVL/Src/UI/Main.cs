@@ -550,7 +550,7 @@ public partial class Main : NativeWindowUtility {
 			confirmationWindow.Modulate = Colors.Transparent;
 			confirmationWindow.Message =
 				string.Format(
-					Tr("{0} 需要安装 .NET {1}\n点击链接下载安装：\n[color=#3c7fe1][url]https://dotnet.microsoft.com/download/dotnet/{2}[/url][/color]\n是否尝试强制启动游戏？"),
+					Tr("[b]{0}[/b] 需要安装 [b].NET {1} 运行时[/b]\n请点击链接下载并安装：\n[color=#3c7fe1][url]https://dotnet.microsoft.com/download/dotnet/{2}[/url][/color]\n是否尝试强制启动游戏？"),
 					releaseInfo.Version.ShortGameVersion,
 					releaseInfo.TargetFrameworkVersion,
 					releaseInfo.TargetFrameworkVersion);

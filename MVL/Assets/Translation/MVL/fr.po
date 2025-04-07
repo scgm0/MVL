@@ -300,7 +300,7 @@ msgstr ""
 msgid "一个免费、开源且由社区驱动的复古物语启动器"
 msgstr ""
 
-msgid "{0} 需要安装 .NET {1}\n点击链接下载安装：\n[color=#3c7fe1][url]https://dotnet.microsoft.com/download/dotnet/{2}[/url][/color]\n是否尝试强制启动游戏？"
+msgid "[b]{0}[/b] 需要安装 [b].NET {1} 运行时[/b]\n请点击链接下载并安装：\n[color=#3c7fe1][url]https://dotnet.microsoft.com/download/dotnet/{2}[/url][/color]\n是否尝试强制启动游戏？"
 msgstr ""
 
 msgid "无法登录？检查您的游戏账号"

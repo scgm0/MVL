@@ -300,7 +300,7 @@ msgstr ""
 "Un launcher de Vintage Story gratuito, de código abierto e impulsado por la "
 "comunidad"
 
-msgid "{0} 需要安装 .NET {1}\n点击链接下载安装：\n[color=#3c7fe1][url]https://dotnet.microsoft.com/download/dotnet/{2}[/url][/color]\n是否尝试强制启动游戏？"
+msgid "[b]{0}[/b] 需要安装 [b].NET {1} 运行时[/b]\n请点击链接下载并安装：\n[color=#3c7fe1][url]https://dotnet.microsoft.com/download/dotnet/{2}[/url][/color]\n是否尝试强制启动游戏？"
 msgstr ""
 "{0} necesita que .NET {1} esté instalado\n"
 "Haz click en el siguiente enlace para descargarlo e instalarlo:\n"
