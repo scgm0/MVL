@@ -1,4 +1,4 @@
-[gd_resource type="Theme" load_steps=32 format=3 uid="uid://26j2wsw1c43m"]
+[gd_resource type="Theme" load_steps=34 format=3 uid="uid://26j2wsw1c43m"]
 
 [ext_resource type="Script" uid="uid://bk3tot6c35bwu" path="res://Src/Utils/IconTexture2D.cs" id="1_asgjk"]
 [ext_resource type="FontFile" uid="uid://dp7r8itfqvqca" path="res://Assets/Font/materialdesignicons-webfont.woff2" id="1_bgbrj"]
@@ -129,6 +129,8 @@ bg_color = Color(0, 0, 0, 1)
 corner_radius_top_left = 5
 corner_radius_top_right = 5
 
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_4tsj6"]
+
 [sub_resource type="Texture2D" id="Texture2D_4tsj6"]
 resource_local_to_scene = false
 resource_name = ""
@@ -161,6 +163,8 @@ corner_radius_top_left = 3
 corner_radius_top_right = 3
 corner_radius_bottom_right = 3
 corner_radius_bottom_left = 3
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_0rg2h"]
 
 [sub_resource type="Texture2D" id="Texture2D_b82ki"]
 resource_local_to_scene = false
@@ -264,11 +268,13 @@ FoldableContainer/styles/title_collapsed_hover_panel = SubResource("StyleBoxFlat
 FoldableContainer/styles/title_collapsed_panel = SubResource("StyleBoxFlat_4tsj6")
 FoldableContainer/styles/title_hover_panel = SubResource("StyleBoxFlat_pur85")
 FoldableContainer/styles/title_panel = SubResource("StyleBoxFlat_0rg2h")
+Label/styles/focus = SubResource("StyleBoxEmpty_4tsj6")
 LineEdit/font_sizes/font_size = 14
 LineEdit/icons/clear = SubResource("Texture2D_4tsj6")
 LineEdit/styles/focus = SubResource("StyleBoxEmpty_asgjk")
 LineEdit/styles/normal = SubResource("StyleBoxFlat_i7wln")
 LineEdit/styles/read_only = SubResource("StyleBoxFlat_asgjk")
+LinkButton/styles/focus = SubResource("StyleBoxEmpty_0rg2h")
 OptionButton/icons/arrow = SubResource("Texture2D_b82ki")
 PopupMenu/icons/checked = SubResource("Texture2D_0rg2h")
 PopupMenu/icons/radio_checked = SubResource("Texture2D_17a5b")
