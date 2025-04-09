@@ -51,16 +51,20 @@
 
     <Target Name="PreBuild" BeforeTargets="Build">
         <ItemGroup>
-            <FilesToDelete Include="Misc/VSRun/*" />
+            <FilesToDelete Include="Misc/VSRun/**/*" />
         </ItemGroup>
         <Delete Files="@(FilesToDelete)" />
+
         <Exec Command="dotnet build &quot;../VSRun/VSRun.csproj&quot; /p:Configuration=Release" />
+
         <ItemGroup>
-            <FilesToCopy Include="../VSRun/bin/Release/net7.0/*.dll" />
-            <FilesToCopy Include="../VSRun/bin/Release/net7.0/*.json" />
-            <FilesToCopy Include="../VSRun/bin/Release/net7.0/*.pdb" />
+            <FilesToCopy Include="../VSRun/bin/Release/net*.0/*.dll" />
+            <FilesToCopy Include="../VSRun/bin/Release/net*.0/*.json" />
+            <FilesToCopy Include="../VSRun/bin/Release/net*.0/*.pdb" />
         </ItemGroup>
-        <Copy SourceFiles="@(FilesToCopy)" DestinationFolder="Misc/VSRun" />
+
+        <Copy SourceFiles="@(FilesToCopy)"
+              DestinationFolder="Misc/VSRun/%(RecursiveDir)" />
     </Target>
 
     <Target Name="Chmod" AfterTargets="LinkNative" BeforeTargets="UpxCompress" Condition="$(RuntimeIdentifier.Contains('linux')) and $([MSBuild]::IsOSPlatform('Linux'))" Inputs="$(NativeBinary)" Outputs="$(NativeBinary).chmod">

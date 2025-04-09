@@ -462,7 +462,7 @@ public partial class Main : NativeWindowUtility {
 	public static DirAccess CopyVsRun() {
 		var tmp = DirAccess.CreateTemp("VSRun");
 		var tmpRunPath = tmp.GetCurrentDir();
-		const string vsRunPath = "res://Misc/VSRun";
+		var vsRunPath = $"res://Misc/VSRun/net{CurrentModpack!.ReleaseInfo!.TargetFrameworkVersion}";
 		foreach (var file in DirAccess.GetFilesAt(vsRunPath)) {
 			var fromPath = vsRunPath.PathJoin(file);
 			tmp.Copy(fromPath, tmpRunPath.PathJoin(file).NormalizePath());
