@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=3 uid="uid://dfsyvb8tdyef2"]
+[gd_scene load_steps=15 format=3 uid="uid://dfsyvb8tdyef2"]
 
 [ext_resource type="PackedScene" uid="uid://bu4hwijkbc8sm" path="res://Src/UI/Window/base_window.tscn" id="1_42u7i"]
 [ext_resource type="Script" uid="uid://baxitom4bklvu" path="res://Src/UI/Window/GameDownloadWindow.cs" id="2_x3qgb"]
@@ -7,7 +7,6 @@
 [ext_resource type="Script" uid="uid://bgqglerkcylxx" path="res://addons/SmoothScroll/SmoothScrollContainer.gd" id="4_mud0o"]
 [ext_resource type="PackedScene" uid="uid://cpbcd3vre7ii8" path="res://Src/UI/Item/installed_game_item.tscn" id="4_puokc"]
 [ext_resource type="Script" uid="uid://b7h0k2h2qwlqv" path="res://addons/SmoothScroll/scroll_damper/expo_scroll_damper.gd" id="5_x3qgb"]
-[ext_resource type="PackedScene" uid="uid://tgy824ep0upd" path="res://Src/UI/foldable_container.tscn" id="6_1so8d"]
 [ext_resource type="Script" uid="uid://bk3tot6c35bwu" path="res://Src/Utils/IconTexture2D.cs" id="6_endwm"]
 [ext_resource type="FontFile" uid="uid://dp7r8itfqvqca" path="res://Assets/Font/materialdesignicons-webfont.woff2" id="8_lb40e"]
 [ext_resource type="FontFile" uid="uid://bmgx1vyg6bavd" path="res://Assets/Font/HarmonyOS_Sans_SC_Bold.ttf" id="10_lb40e"]
@@ -45,7 +44,6 @@ rebound_strength = 7.0
 [node name="GameDownloadWindow" node_paths=PackedStringArray("_releaseName", "_releasePath", "_folderButton", "_tooltip", "_fileDialog", "_contentContainer", "_downloadListContainer", "_loadingControl", "_progressBar") instance=ExtResource("1_42u7i")]
 script = ExtResource("2_x3qgb")
 _buttonGroup = ExtResource("3_x3qgb")
-_foldableContainerScene = ExtResource("6_1so8d")
 _releaseName = NodePath("PanelContainer/VBoxContainer/MarginContainer/VBoxContainer/VBoxContainer/LineEdit")
 _releasePath = NodePath("PanelContainer/VBoxContainer/MarginContainer/VBoxContainer/VBoxContainer2/HBoxContainer/LineEdit")
 _folderButton = NodePath("PanelContainer/VBoxContainer/MarginContainer/VBoxContainer/VBoxContainer2/HBoxContainer/Button")

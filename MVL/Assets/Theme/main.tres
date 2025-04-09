@@ -1,4 +1,4 @@
-[gd_resource type="Theme" load_steps=24 format=3 uid="uid://26j2wsw1c43m"]
+[gd_resource type="Theme" load_steps=32 format=3 uid="uid://26j2wsw1c43m"]
 
 [ext_resource type="Script" uid="uid://bk3tot6c35bwu" path="res://Src/Utils/IconTexture2D.cs" id="1_asgjk"]
 [ext_resource type="FontFile" uid="uid://dp7r8itfqvqca" path="res://Assets/Font/materialdesignicons-webfont.woff2" id="1_bgbrj"]
@@ -59,6 +59,75 @@ IconName = "toggle-switch-off-outline"
 FontSize = 24
 FontFile = ExtResource("1_bgbrj")
 metadata/_custom_type_script = "uid://bk3tot6c35bwu"
+
+[sub_resource type="Texture2D" id="Texture2D_7hr8s"]
+resource_local_to_scene = false
+resource_name = ""
+script = ExtResource("1_asgjk")
+IconName = "chevron-down"
+FontSize = 24
+FontFile = ExtResource("1_bgbrj")
+metadata/_custom_type_script = "uid://bk3tot6c35bwu"
+
+[sub_resource type="Texture2D" id="Texture2D_hypud"]
+resource_local_to_scene = false
+resource_name = ""
+script = ExtResource("1_asgjk")
+IconName = "chevron-right"
+FontSize = 24
+FontFile = ExtResource("1_bgbrj")
+metadata/_custom_type_script = "uid://bk3tot6c35bwu"
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_vg7xs"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_vg7xs"]
+content_margin_left = 10.0
+content_margin_top = 10.0
+content_margin_right = 10.0
+content_margin_bottom = 10.0
+bg_color = Color(0.1, 0.1, 0.1, 0.6)
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_17a5b"]
+content_margin_left = 4.0
+content_margin_top = 4.0
+content_margin_right = 4.0
+content_margin_bottom = 4.0
+bg_color = Color(0.207843, 0.207843, 0.207843, 1)
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_4tsj6"]
+content_margin_left = 4.0
+content_margin_top = 4.0
+content_margin_right = 4.0
+content_margin_bottom = 4.0
+bg_color = Color(0, 0, 0, 1)
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_pur85"]
+content_margin_left = 4.0
+content_margin_top = 4.0
+content_margin_right = 4.0
+content_margin_bottom = 4.0
+bg_color = Color(0.207843, 0.207843, 0.207843, 1)
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_0rg2h"]
+content_margin_left = 4.0
+content_margin_top = 4.0
+content_margin_right = 4.0
+content_margin_bottom = 4.0
+bg_color = Color(0, 0, 0, 1)
+corner_radius_top_left = 5
+corner_radius_top_right = 5
 
 [sub_resource type="Texture2D" id="Texture2D_4tsj6"]
 resource_local_to_scene = false
@@ -187,6 +256,14 @@ CheckBox/icons/unchecked = SubResource("Texture2D_vje8o")
 CheckButton/colors/button_unchecked_color = Color(0.881379, 0.881379, 0.881379, 1)
 CheckButton/icons/checked = SubResource("Texture2D_bgbrj")
 CheckButton/icons/unchecked = SubResource("Texture2D_vg7xs")
+FoldableContainer/icons/expanded_arrow = SubResource("Texture2D_7hr8s")
+FoldableContainer/icons/folded_arrow = SubResource("Texture2D_hypud")
+FoldableContainer/styles/focus = SubResource("StyleBoxEmpty_vg7xs")
+FoldableContainer/styles/panel = SubResource("StyleBoxFlat_vg7xs")
+FoldableContainer/styles/title_collapsed_hover_panel = SubResource("StyleBoxFlat_17a5b")
+FoldableContainer/styles/title_collapsed_panel = SubResource("StyleBoxFlat_4tsj6")
+FoldableContainer/styles/title_hover_panel = SubResource("StyleBoxFlat_pur85")
+FoldableContainer/styles/title_panel = SubResource("StyleBoxFlat_0rg2h")
 LineEdit/font_sizes/font_size = 14
 LineEdit/icons/clear = SubResource("Texture2D_4tsj6")
 LineEdit/styles/focus = SubResource("StyleBoxEmpty_asgjk")

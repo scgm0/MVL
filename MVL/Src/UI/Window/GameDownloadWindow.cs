@@ -25,9 +25,6 @@ public partial class GameDownloadWindow : BaseWindow {
 	private ButtonGroup? _buttonGroup;
 
 	[Export]
-	private PackedScene? _foldableContainerScene;
-
-	[Export]
 	private LineEdit? _releaseName;
 
 	[Export]
@@ -70,7 +67,6 @@ public partial class GameDownloadWindow : BaseWindow {
 	public override void _Ready() {
 		base._Ready();
 		NullExceptionHelper.NotNull(_buttonGroup,
-			_foldableContainerScene,
 			_releaseName,
 			_releasePath,
 			_folderButton,
@@ -304,9 +300,13 @@ public partial class GameDownloadWindow : BaseWindow {
 				var i = 1;
 				var minVersion = new GameVersion("1.18.8");
 				foreach (var group in _releases.Where(kv => GameVersion.ComparerVersion(kv.Key, minVersion) > -1).GroupBy(r => r.Key.OverallVersion)) {
-					var container = _foldableContainerScene!.Instantiate<FoldableContainer>();
-					container.Title = group.Key;
+					var container = new FoldableContainer();
+					container.Folded = true;
+					container.Text = group.Key;
 					container.Modulate = Colors.Transparent;
+
+					var vbox = new VBoxContainer();
+					vbox.AddThemeConstantOverride(StringNames.Separation, 10);
 
 					foreach (var (gameVersion, gameRelease) in group) {
 						GD.PrintS(gameVersion, gameRelease);
@@ -319,9 +319,10 @@ public partial class GameDownloadWindow : BaseWindow {
 						item.GamePath = gameRelease.Linux.FileName;
 #endif
 						item.SingleSelect = true;
-						container.AddChild(item);
+						vbox.AddChild(item);
 					}
 
+					container.AddChild(vbox);
 					var tween = container.CreateTween();
 					tween.TweenProperty(container, "modulate:a", 1f, 0.2f).SetDelay(i * 0.1);
 					tween.Parallel().TweenProperty(container, "scale:x", 1f, 0.2f).From(0f).SetDelay(i * 0.1);
