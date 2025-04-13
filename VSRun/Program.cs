@@ -5,7 +5,6 @@ using System.Text.Json.Serialization;
 using HarmonyLib;
 using SharedLibrary;
 using Vintagestory.API.Config;
-using Vintagestory.Client.MaxObf;
 using Vintagestory.Client.NoObf;
 
 // ReSharper disable UnusedMember.Global
@@ -62,6 +61,8 @@ public static class Program {
 	}
 
 	public static void StartGame(string[] args) {
+		Harmony.PatchCategory("ServerSystemLoadConfig");
+
 		if (Config.UseAnsiLogger) {
 			Harmony.PatchCategory(nameof(Console));
 		}
