@@ -10,9 +10,6 @@ namespace MVL.UI.Page;
 
 public partial class SettingPage : MenuPage {
 	[Export]
-	private FontFile[]? _fonts;
-
-	[Export]
 	private OptionButton? _displayLanguageOptionButton;
 
 	[Export]
@@ -40,7 +37,6 @@ public partial class SettingPage : MenuPage {
 
 	public override void _Ready() {
 		base._Ready();
-		_fonts.NotNull();
 		_displayLanguageOptionButton.NotNull();
 		_displayScaleSpinbox.NotNull();
 		_proxyAddressLineEdit.NotNull();
@@ -151,12 +147,9 @@ public partial class SettingPage : MenuPage {
 	}
 
 	private void DisplayScaleSpinboxOnValueChanged(double value) {
-		UI.Main.BaseConfig.DisplayScale = (float)(_displayScaleSpinbox!.Value / 100);
+		UI.Main.BaseConfig.DisplayScale = _displayScaleSpinbox!.Value / 100;
 		UI.Main.SceneTree.Root.MinSize = new(Mathf.CeilToInt(1122 * UI.Main.BaseConfig.DisplayScale),
 			Mathf.CeilToInt(618 * UI.Main.BaseConfig.DisplayScale));
-		foreach (var fontFile in _fonts!) {
-			fontFile.Oversampling = UI.Main.BaseConfig.DisplayScale;
-		}
 
 		UI.Main.Instance?.WindowMaterial?.SetShaderParameter(StringNames.Radius, 10 * UI.Main.BaseConfig.DisplayScale);
 		UI.Main.Instance?.RootOnSizeChanged();
