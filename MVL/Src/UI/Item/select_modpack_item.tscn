@@ -1,4 +1,4 @@
-[gd_scene load_steps=6 format=3 uid="uid://don6xai5trupe"]
+[gd_scene load_steps=7 format=3 uid="uid://don6xai5trupe"]
 
 [ext_resource type="Material" uid="uid://c0sb2bjy16ljf" path="res://Assets/Material/button_blur.tres" id="1_y147p"]
 [ext_resource type="Script" uid="uid://dbh7uve1ltyh" path="res://Src/UI/Item/SelectModpackItem.cs" id="2_6bxys"]
@@ -15,6 +15,19 @@ corner_radius_top_left = 5
 corner_radius_top_right = 5
 corner_radius_bottom_right = 5
 corner_radius_bottom_left = 5
+
+[sub_resource type="GDScript" id="GDScript_y147p"]
+script/source = "extends Button
+@onready var check_box: CheckBox = $\"../HBoxContainer/CheckBox\"
+
+func _ready() -> void:
+	pressed.connect(_on_pressed)
+
+func _on_pressed() -> void:
+	check_box.button_pressed = true
+	check_box.pressed.emit()
+	pass
+"
 
 [node name="SelectModpackItem" type="PanelContainer" node_paths=PackedStringArray("_modpackIconTexture", "_modpackNameLabel", "_releaseNameLabel", "_releaseVersionLabel", "_selectButton")]
 material = ExtResource("1_y147p")
@@ -89,3 +102,8 @@ layout_mode = 2
 size_flags_horizontal = 8
 mouse_filter = 1
 button_group = ExtResource("4_hwrtc")
+
+[node name="Button" type="Button" parent="."]
+modulate = Color(1, 1, 1, 0)
+layout_mode = 2
+script = SubResource("GDScript_y147p")
