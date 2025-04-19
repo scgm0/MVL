@@ -1,9 +1,11 @@
+using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.IO;
 using System.Text.Json;
 using System.Text.Json.Serialization;
-using Godot;
 using MVL.UI;
 using MVL.Utils.Game;
+using FileAccess = Godot.FileAccess;
 
 namespace MVL.Utils.Config;
 
@@ -24,13 +26,46 @@ public class ModpackConfig {
 	public string? Path {
 		get;
 		set {
+			if (field == value) {
+				return;
+			}
+
 			field = value;
-			if (value != null) {
-				_configPath = System.IO.Path.Combine(value, "modpack.json");
+			if (value == null) {
+				return;
+			}
+
+			Mods = [];
+			_configPath = System.IO.Path.Combine(value, "modpack.json");
+			var modsPath = System.IO.Path.Combine(value, "Mods");
+			if (!Directory.Exists(modsPath)) {
+				return;
+			}
+
+			foreach (var entry in Directory.GetFiles(modsPath, "*.zip", SearchOption.TopDirectoryOnly)) {
+				var modInfo = ModInfo.FromZip(entry);
+				if (modInfo != null) {
+					Mods[entry] = modInfo;
+				}
+			}
+
+			foreach (var entry in Directory.GetFiles(modsPath, "*.dll", SearchOption.TopDirectoryOnly)) {
+				var modInfo = ModInfo.FromAssembly(entry);
+				if (modInfo != null) {
+					Mods[entry] = modInfo;
+				}
+			}
+
+			foreach (var directory in Directory.GetDirectories(modsPath)) {
+				var modInfo = ModInfo.FromDirectory(directory);
+				if (modInfo != null) {
+					Mods[directory] = modInfo;
+				}
 			}
 		}
 	}
 
+	public ConcurrentDictionary<string, ModInfo> Mods = [];
 	public ReleaseInfo? ReleaseInfo;
 
 	public static ModpackConfig Load(string modpackPath) {

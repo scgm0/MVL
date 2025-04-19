@@ -1,3 +1,4 @@
+using System.Threading.Tasks;
 using Godot;
 using MVL.UI.Item;
 using MVL.UI.Window;
@@ -63,7 +64,7 @@ public partial class ModpackPage : MenuPage {
 		UpdateList();
 	}
 
-	public void UpdateList() {
+	public async void UpdateList() {
 		foreach (var child in _list!.GetChildren()) {
 			if (child == _addModpackButton) {
 				continue;
@@ -72,7 +73,7 @@ public partial class ModpackPage : MenuPage {
 			child.QueueFree();
 		}
 
-		UI.Main.CheckModpackConfig();
+		await Task.Run(UI.Main.CheckModpackConfig);
 		var i = 1;
 		foreach (var path in UI.Main.BaseConfig.Modpack) {
 			var modpack = UI.Main.ModpackConfigs[path];

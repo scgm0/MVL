@@ -1,3 +1,4 @@
+using System.Threading.Tasks;
 using Godot;
 using MVL.UI.Item;
 using MVL.Utils;
@@ -43,7 +44,7 @@ public partial class HomePage : MenuPage {
 	[Export]
 	private AnimationPlayer? _animationPlayer;
 
-	public override void _Ready() {
+	public override async void _Ready() {
 		_selectModpackItemScene.NotNull();
 		_buttonGroup.NotNull();
 		_playButton.NotNull();
@@ -59,20 +60,20 @@ public partial class HomePage : MenuPage {
 
 		_modpackInfoControl.Pressed += HideSelectModpackPanel;
 		_selectModpackButton.Pressed += ShowSelectModpackPanel;
-		VisibilityChanged += UpdateInfo;
+		VisibilityChanged += async () => await UpdateInfo();
 		_buttonGroup.Pressed += async button => {
 			await ToSignal(button, BaseButton.SignalName.Pressed);
-			UpdateInfo();
+			await UpdateInfo();
 		};
 		_playButton.Pressed += StartButtonOnPressed;
 		UI.Main.GameExitEvent += MainOnGameExitEvent;
 
-		UpdateInfo();
+		await UpdateInfo();
 	}
 
 	private void MainOnGameExitEvent() { CallDeferred(nameof(UpdateInfo)); }
 
-	private void StartButtonOnPressed() {
+	private async void StartButtonOnPressed() {
 		if (UI.Main.CurrentModpack is null) {
 			var modpackConfig = UI.Main.ModpackConfigs[UI.Main.BaseConfig.CurrentModpack];
 			_ = UI.Main.Instance?.StartGame(modpackConfig);
@@ -80,7 +81,7 @@ public partial class HomePage : MenuPage {
 			UI.Main.CurrentGameProcess?.Kill();
 		}
 
-		UpdateInfo();
+		await UpdateInfo();
 	}
 
 	private async void ShowSelectModpackPanel() {
@@ -139,10 +140,11 @@ public partial class HomePage : MenuPage {
 		}
 	}
 
-	private void UpdateInfo() {
-		UI.Main.CheckReleaseInfo();
-		UI.Main.CheckModpackConfig();
-
+	private async Task UpdateInfo() {
+		await Task.Run(() => {
+			UI.Main.CheckReleaseInfo();
+			UI.Main.CheckModpackConfig();
+		});
 		_playButton!.Modulate = Colors.White;
 		_playButton!.Text = "启动游戏";
 		_selectModpackButton!.Modulate = Colors.White;
