@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -92,11 +93,11 @@ public partial class Main : NativeWindowUtility {
 	public static Process? CurrentGameProcess { get; set; }
 	public static ModpackConfig? CurrentModpack { get; set; }
 
-	public static Dictionary<string, ReleaseInfo> ReleaseInfos { get; } = new();
+	public static ConcurrentDictionary<string, ReleaseInfo> ReleaseInfos { get; } = new();
 
-	public static Dictionary<string, ModpackConfig> ModpackConfigs { get; } = new();
+	public static ConcurrentDictionary<string, ModpackConfig> ModpackConfigs { get; } = new();
 
-	public static Dictionary<string, Account> Accounts { get; } = new();
+	public static ConcurrentDictionary<string, Account> Accounts { get; } = new();
 
 	public static SceneTree SceneTree { get; } = (SceneTree)Engine.GetMainLoop();
 
@@ -324,9 +325,11 @@ public partial class Main : NativeWindowUtility {
 		BaseConfig.Save(BaseConfig);
 	}
 
-	public void Init() {
-		CheckReleaseInfo();
-		CheckModpackConfig();
+	public async void Init() {
+		await Task.Run(() => {
+			CheckReleaseInfo();
+			CheckModpackConfig();
+		});
 		CheckAccount();
 
 		if (BaseConfig.Release.Count == 0 && InstalledGamesImport.InstalledGamePaths.Length > 0) {
@@ -398,7 +401,7 @@ public partial class Main : NativeWindowUtility {
 
 
 	static private void RemoveRelease(string path) {
-		ReleaseInfos.Remove(path);
+		ReleaseInfos.Remove(path, out _);
 		BaseConfig.Release.Remove(path);
 	}
 
@@ -441,7 +444,7 @@ public partial class Main : NativeWindowUtility {
 	}
 
 	static private void RemoveModpack(string path) {
-		ModpackConfigs.Remove(path);
+		ModpackConfigs.Remove(path, out _);
 		BaseConfig.Modpack.Remove(path);
 	}
 
