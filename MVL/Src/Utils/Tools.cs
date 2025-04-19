@@ -43,7 +43,9 @@ public static class Tools {
 		return value - Math.Floor(value);
 	}
 
-	public static async Task<bool> HasRequiredDotNetVersionInstalled(string targetFrameworkName, Version targetFrameworkVersion) {
+	public static async Task<bool> HasRequiredDotNetVersionInstalled(
+		string targetFrameworkName,
+		Version targetFrameworkVersion) {
 		try {
 			using var process = new Process();
 			process.StartInfo = new() {
@@ -84,4 +86,9 @@ public static class Tools {
 		}
 	}
 
+	public static Texture2D CreateTextureFromBytes(byte[] iconBytes) {
+		using var image = new Image();
+		image.LoadPngFromBuffer(iconBytes);
+		return ImageTexture.CreateFromImage(image);
+	}
 }
