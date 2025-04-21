@@ -71,7 +71,9 @@ public partial class HomePage : MenuPage {
 		await UpdateInfo();
 	}
 
-	private void MainOnGameExitEvent() { CallDeferred(nameof(UpdateInfo)); }
+	private void MainOnGameExitEvent() {
+		Dispatcher.SynchronizationContext.Post(async void (_) => { await UpdateInfo(); }, null);
+	}
 
 	private async void StartButtonOnPressed() {
 		if (UI.Main.CurrentModpack is null) {
