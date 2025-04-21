@@ -1,7 +1,6 @@
 [gd_resource type="Theme" load_steps=34 format=3 uid="uid://26j2wsw1c43m"]
 
 [ext_resource type="Script" uid="uid://bk3tot6c35bwu" path="res://Src/Utils/IconTexture2D.cs" id="1_asgjk"]
-[ext_resource type="FontFile" uid="uid://dp7r8itfqvqca" path="res://Assets/Font/materialdesignicons-webfont.woff2" id="1_bgbrj"]
 [ext_resource type="FontFile" uid="uid://bmgx1vyg6bavd" path="res://Assets/Font/HarmonyOS_Sans_SC_Bold.ttf" id="2_h252r"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_oarc7"]
@@ -12,7 +11,6 @@ resource_name = ""
 script = ExtResource("1_asgjk")
 IconName = "checkbox-marked"
 FontSize = 16
-FontFile = ExtResource("1_bgbrj")
 metadata/_custom_type_script = "uid://bk3tot6c35bwu"
 
 [sub_resource type="Texture2D" id="Texture2D_17a5b"]
@@ -21,7 +19,6 @@ resource_name = ""
 script = ExtResource("1_asgjk")
 IconName = "radiobox-marked"
 FontSize = 16
-FontFile = ExtResource("1_bgbrj")
 metadata/_custom_type_script = "uid://bk3tot6c35bwu"
 
 [sub_resource type="Texture2D" id="Texture2D_pur85"]
@@ -30,7 +27,6 @@ resource_name = ""
 script = ExtResource("1_asgjk")
 IconName = "radiobox-blank"
 FontSize = 16
-FontFile = ExtResource("1_bgbrj")
 metadata/_custom_type_script = "uid://bk3tot6c35bwu"
 
 [sub_resource type="Texture2D" id="Texture2D_vje8o"]
@@ -39,7 +35,6 @@ resource_name = ""
 script = ExtResource("1_asgjk")
 IconName = "checkbox-blank-outline"
 FontSize = 16
-FontFile = ExtResource("1_bgbrj")
 metadata/_custom_type_script = "uid://bk3tot6c35bwu"
 
 [sub_resource type="Texture2D" id="Texture2D_bgbrj"]
@@ -48,7 +43,6 @@ resource_name = ""
 script = ExtResource("1_asgjk")
 IconName = "toggle-switch"
 FontSize = 24
-FontFile = ExtResource("1_bgbrj")
 metadata/_custom_type_script = "uid://bk3tot6c35bwu"
 
 [sub_resource type="Texture2D" id="Texture2D_vg7xs"]
@@ -57,7 +51,6 @@ resource_name = ""
 script = ExtResource("1_asgjk")
 IconName = "toggle-switch-off-outline"
 FontSize = 24
-FontFile = ExtResource("1_bgbrj")
 metadata/_custom_type_script = "uid://bk3tot6c35bwu"
 
 [sub_resource type="Texture2D" id="Texture2D_7hr8s"]
@@ -66,7 +59,6 @@ resource_name = ""
 script = ExtResource("1_asgjk")
 IconName = "chevron-down"
 FontSize = 24
-FontFile = ExtResource("1_bgbrj")
 metadata/_custom_type_script = "uid://bk3tot6c35bwu"
 
 [sub_resource type="Texture2D" id="Texture2D_hypud"]
@@ -75,7 +67,6 @@ resource_name = ""
 script = ExtResource("1_asgjk")
 IconName = "chevron-right"
 FontSize = 24
-FontFile = ExtResource("1_bgbrj")
 metadata/_custom_type_script = "uid://bk3tot6c35bwu"
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_vg7xs"]
@@ -137,7 +128,6 @@ resource_name = ""
 script = ExtResource("1_asgjk")
 IconName = "close"
 FontSize = 18
-FontFile = ExtResource("1_bgbrj")
 metadata/_custom_type_script = "uid://bk3tot6c35bwu"
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_asgjk"]
@@ -172,7 +162,6 @@ resource_name = ""
 script = ExtResource("1_asgjk")
 IconName = "chevron-down"
 FontSize = 24
-FontFile = ExtResource("1_bgbrj")
 metadata/_custom_type_script = "uid://bk3tot6c35bwu"
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_7eosv"]
@@ -232,7 +221,6 @@ resource_name = ""
 script = ExtResource("1_asgjk")
 IconName = "chevron-down"
 FontSize = 18
-FontFile = ExtResource("1_bgbrj")
 metadata/_custom_type_script = "uid://bk3tot6c35bwu"
 
 [sub_resource type="Texture2D" id="Texture2D_belqv"]
@@ -241,7 +229,6 @@ resource_name = ""
 script = ExtResource("1_asgjk")
 IconName = "chevron-up"
 FontSize = 18
-FontFile = ExtResource("1_bgbrj")
 metadata/_custom_type_script = "uid://bk3tot6c35bwu"
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_bgbrj"]
@@ -249,6 +236,22 @@ content_margin_left = 4.0
 content_margin_top = 4.0
 content_margin_right = 4.0
 content_margin_bottom = 4.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_vje8o"]
+content_margin_left = 4.0
+content_margin_top = 4.0
+content_margin_right = 4.0
+content_margin_bottom = 4.0
+bg_color = Color(1, 1, 1, 0.75)
+draw_center = false
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+expand_margin_left = 2.0
+expand_margin_top = 2.0
+expand_margin_right = 2.0
+expand_margin_bottom = 2.0
 
 [resource]
 Button/styles/focus = SubResource("StyleBoxEmpty_oarc7")
@@ -300,3 +303,4 @@ SpinBox/icons/up_hover = SubResource("Texture2D_belqv")
 SpinBox/icons/up_pressed = SubResource("Texture2D_belqv")
 SpinBoxInnerLineEdit/base_type = &"LineEdit"
 SpinBoxInnerLineEdit/styles/normal = SubResource("StyleBoxEmpty_bgbrj")
+VScrollBar/styles/scroll_focus = SubResource("StyleBoxFlat_vje8o")

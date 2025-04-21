@@ -14,7 +14,6 @@ public partial class IconTexture2D : Texture2D {
 		set {
 			if (field == value) return;
 			field = value;
-			_iconChar = Icons.TryGetValue(value, out var hexString) ? long.Parse(hexString, NumberStyles.HexNumber) : 0;
 			EmitChanged();
 		}
 	} = "";
@@ -29,49 +28,38 @@ public partial class IconTexture2D : Texture2D {
 		}
 	} = 24;
 
-	[Export]
-	public FontFile? FontFile {
-		get;
-		set {
-			if (field == value) return;
-			if (field != null) {
-				field.Changed -= ((Resource)this).EmitChanged;
-			}
+	private SvgTexture _svgTexture = new();
 
-			field = value;
-			if (value != null) {
-				value.Changed += ((Resource)this).EmitChanged;
-			}
-
-			EmitChanged();
-		}
-	} = GD.Load<FontFile>("uid://dp7r8itfqvqca");
-
-	private long _iconChar;
-	private Vector2I _iconSize;
-
-	public IconTexture2D() { FontFile.Changed += EmitChanged; }
+	public IconTexture2D() { EmitChanged(); }
 
 	public new void EmitChanged() {
-		_iconSize = (Vector2I)(FontFile?.GetCharSize(_iconChar, FontSize) ?? Vector2I.Zero);
+		_svgTexture.Source = Icons.TryGetValue(IconName, out var str) ? str : string.Empty;
+		_svgTexture.SetSizeOverride(new(FontSize, FontSize));
+		_svgTexture.EmitChanged();
 		base.EmitChanged();
 	}
 
 	public override void _Draw(Rid toCanvasItem, Vector2 pos, Color modulate, bool transpose) {
-		if (FontFile == null) return;
-		var newPos = new Vector2(pos.X, pos.Y + FontFile.GetAscent(FontSize));
-		FontFile.DrawChar(toCanvasItem, newPos, _iconChar, FontSize, modulate);
+		_svgTexture.Draw(toCanvasItem, pos, modulate, transpose);
 	}
 
 	public override void _DrawRect(Rid toCanvasItem, Rect2 rect, bool tile, Color modulate, bool transpose) {
-		if (FontFile == null) return;
-		var pos = new Vector2(rect.Position.X, rect.Position.Y + FontFile.GetAscent(FontSize));
-		FontFile.DrawChar(toCanvasItem, pos, _iconChar, FontSize, modulate);
+		_svgTexture.DrawRect(toCanvasItem, rect, tile, modulate, transpose);
 	}
 
-	public override int _GetHeight() { return _iconSize.Y; }
+	public override void _DrawRectRegion(
+		Rid toCanvasItem,
+		Rect2 rect,
+		Rect2 srcRect,
+		Color modulate,
+		bool transpose,
+		bool clipUv) {
+		_svgTexture.DrawRectRegion(toCanvasItem, rect, srcRect, modulate, transpose, clipUv);
+	}
 
-	public override int _GetWidth() { return _iconSize.X; }
+	public override int _GetHeight() { return _svgTexture.GetHeight(); }
+
+	public override int _GetWidth() { return _svgTexture.GetWidth(); }
 
 	[JsonDictionary("Assets/Icon/MD/icons.json")]
 	static private partial Dictionary<string, string> Icons { get; }
