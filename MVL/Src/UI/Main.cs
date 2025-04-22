@@ -176,7 +176,7 @@ public partial class Main : NativeWindowUtility {
 		_accountButton!.ButtonPressed = false;
 		_accountSelectButton!.Hide();
 		foreach (var child in _accountSelectListContainer!.GetChildren()) {
-			child.QueueFree();
+			child.Free();
 		}
 
 		CheckAccount();
@@ -186,11 +186,9 @@ public partial class Main : NativeWindowUtility {
 		var loginWindow = await OpenAccountSelectWindow();
 		loginWindow.Login += async _ => {
 			foreach (var child in _accountSelectListContainer!.GetChildren()) {
-				child.QueueFree();
-				await ToSignal(_accountSelectListContainer!, Container.SignalName.SortChildren);
+				child.Free();
 			}
 
-			await ToSignal(SceneTree, SceneTree.SignalName.ProcessFrame);
 			AccountButtonOnPressed();
 		};
 	}
@@ -212,21 +210,29 @@ public partial class Main : NativeWindowUtility {
 				Y = _accountButton.GlobalPosition.Y + _accountButton.Size.Y + 3
 			};
 
-			foreach (var account in BaseConfig.Account) {
+			var maxHeight = 0f;
+			for (var index = 0; index < BaseConfig.Account.Count; index++) {
+				var account = BaseConfig.Account[index];
 				var accountItem = _accountSelectItemScene!.Instantiate<AccountSelectItem>();
 				accountItem.Account = account;
 				accountItem.Select += AccountItemOnSelect;
 				accountItem.Edit += AccountItemOnEdit;
 				accountItem.Remove += AccountItemOnRemove;
 				_accountSelectListContainer!.AddChild(accountItem);
-				await ToSignal(_accountSelectListContainer!, Container.SignalName.SortChildren);
+				if (index == 4) {
+					maxHeight = _accountSelectContainer!.GetCombinedMinimumSize().Y;
+				}
 			}
 
-			await ToSignal(SceneTree, SceneTree.SignalName.ProcessFrame);
-
+			_accountSelectContainer.Size = _accountSelectContainer!.GetCombinedMinimumSize();
 			_accountSelectScrollContainer.VerticalScrollMode = ScrollContainer.ScrollMode.ShowNever;
-			_accountSelectContainer.Modulate = Colors.White;
 
+			if (maxHeight > 0 && _accountSelectContainer!.Size.Y > maxHeight) {
+				_accountSelectScrollContainer.VerticalScrollMode = ScrollContainer.ScrollMode.Auto;
+				_accountSelectContainer!.Size = _accountSelectContainer!.Size with { Y = maxHeight };
+			}
+
+			_accountSelectContainer.Modulate = Colors.White;
 			var animation = _accountSelectAnimationPlayer!.GetAnimationLibrary("").GetAnimation(StringNames.Show);
 			animation.TrackSetKeyValue(0, 0, new Vector2(_accountSelectContainer.Size.X, 0));
 			animation.TrackSetKeyValue(0, 1, _accountSelectContainer.Size);
@@ -258,11 +264,9 @@ public partial class Main : NativeWindowUtility {
 
 			if (BaseConfig.Account.Count > 0) {
 				foreach (var child in _accountSelectListContainer!.GetChildren()) {
-					child.QueueFree();
-					await ToSignal(_accountSelectListContainer!, Container.SignalName.SortChildren);
+					child.Free();
 				}
 
-				await ToSignal(SceneTree, SceneTree.SignalName.ProcessFrame);
 				AccountButtonOnPressed();
 				CheckAccount();
 			} else {
@@ -278,11 +282,9 @@ public partial class Main : NativeWindowUtility {
 		var loginWindow = await OpenAccountSelectWindow(item.Account);
 		loginWindow.Login += async _ => {
 			foreach (var child in _accountSelectListContainer!.GetChildren()) {
-				child.QueueFree();
-				await ToSignal(_accountSelectListContainer!, Container.SignalName.SortChildren);
+				child.Free();
 			}
 
-			await ToSignal(SceneTree, SceneTree.SignalName.ProcessFrame);
 			AccountButtonOnPressed();
 		};
 	}
@@ -553,7 +555,8 @@ public partial class Main : NativeWindowUtility {
 			confirmationWindow.Modulate = Colors.Transparent;
 			confirmationWindow.Message =
 				string.Format(
-					Tr("[b]{0}[/b] 需要安装 [b].NET {1} 运行时[/b]\n请点击链接下载并安装：\n[color=#3c7fe1][url]https://dotnet.microsoft.com/download/dotnet/{2}[/url][/color]\n是否尝试强制启动游戏？"),
+					Tr(
+						"[b]{0}[/b] 需要安装 [b].NET {1} 运行时[/b]\n请点击链接下载并安装：\n[color=#3c7fe1][url]https://dotnet.microsoft.com/download/dotnet/{2}[/url][/color]\n是否尝试强制启动游戏？"),
 					releaseInfo.Version.ShortGameVersion,
 					releaseInfo.TargetFrameworkVersion,
 					releaseInfo.TargetFrameworkVersion);

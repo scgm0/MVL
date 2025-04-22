@@ -86,14 +86,16 @@ public partial class HomePage : MenuPage {
 		await UpdateInfo();
 	}
 
-	private async void ShowSelectModpackPanel() {
+	private void ShowSelectModpackPanel() {
 		_modpackInfoScrollContainer!.Call(StringNames.Scroll, true, 0, 0, 0);
 		_modpackInfoScrollContainer!.VerticalScrollMode = ScrollContainer.ScrollMode.Disabled;
 		_modpackInfoControl!.Modulate = Colors.Transparent;
 		_modpackInfoControl.Show();
 
 		SelectModpackItem? selectedItem = null;
-		foreach (var path in UI.Main.BaseConfig.Modpack) {
+		var maxHeight = 0f;
+		for (var index = 0; index < UI.Main.BaseConfig.Modpack.Count; index++) {
+			var path = UI.Main.BaseConfig.Modpack[index];
 			var modpackConfig = UI.Main.ModpackConfigs[path];
 			var item = _selectModpackItemScene!.Instantiate<SelectModpackItem>();
 			item.ModpackConfig = modpackConfig;
@@ -102,14 +104,17 @@ public partial class HomePage : MenuPage {
 				selectedItem = item;
 			}
 
-			await ToSignal(_modpackInfoVBoxContainer!, Container.SignalName.SortChildren);
+			if (index == 4) {
+				maxHeight = _modpackInfoPanel!.GetCombinedMinimumSize().Y;
+			}
 		}
 
+		_modpackInfoPanel!.Size = _modpackInfoPanel!.GetCombinedMinimumSize();
 		_modpackInfoScrollContainer.VerticalScrollMode = ScrollContainer.ScrollMode.ShowNever;
-		if (_modpackInfoPanel!.Size.Y > 250) {
+
+		if (maxHeight > 0 && _modpackInfoPanel!.Size.Y > maxHeight) {
 			_modpackInfoScrollContainer.VerticalScrollMode = ScrollContainer.ScrollMode.Auto;
-			_modpackInfoPanel!.Size = _modpackInfoPanel!.Size with { Y = 250 };
-			await ToSignal(UI.Main.SceneTree, SceneTree.SignalName.ProcessFrame);
+			_modpackInfoPanel!.Size = _modpackInfoPanel!.Size with { Y = maxHeight };
 		}
 
 		_modpackInfoPanel!.GlobalPosition =
@@ -117,6 +122,7 @@ public partial class HomePage : MenuPage {
 				X = _selectModpackButton!.GlobalPosition.X,
 				Y = _selectModpackButton.GlobalPosition.Y - _modpackInfoPanel.Size.Y - 3
 			};
+
 		var offsetTop = _modpackInfoPanel.OffsetTop;
 		_modpackInfoPanel.OffsetTop += _modpackInfoPanel.Size.Y;
 		_modpackInfoControl!.Modulate = Colors.White;
