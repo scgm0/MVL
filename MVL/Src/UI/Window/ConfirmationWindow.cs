@@ -36,7 +36,7 @@ public partial class ConfirmationWindow : BaseWindow {
 	}
 
 	public override async Task Show() {
-		await ToSignal(_messageLabel!, Control.SignalName.MinimumSizeChanged);
+		_messageLabel!.Size = _messageLabel.GetCombinedMinimumSize();
 		await base.Show();
 	}
 }
