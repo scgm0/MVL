@@ -19,7 +19,7 @@ public partial class IconTexture2D : Texture2D {
 	} = "";
 
 	[Export]
-	public int FontSize {
+	public int IconSize {
 		get;
 		set {
 			if (field == value) return;
@@ -34,7 +34,7 @@ public partial class IconTexture2D : Texture2D {
 
 	public new void EmitChanged() {
 		_svgTexture.Source = Icons.TryGetValue(IconName, out var str) ? str : string.Empty;
-		_svgTexture.SetSizeOverride(new(FontSize, FontSize));
+		_svgTexture.SetSizeOverride(new(IconSize, IconSize));
 		_svgTexture.EmitChanged();
 		base.EmitChanged();
 	}
