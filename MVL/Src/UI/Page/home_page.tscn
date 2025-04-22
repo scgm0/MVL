@@ -1,11 +1,10 @@
-[gd_scene load_steps=27 format=3 uid="uid://wtrk0xtd36kj"]
+[gd_scene load_steps=26 format=3 uid="uid://wtrk0xtd36kj"]
 
 [ext_resource type="Script" uid="uid://ukwbt00ugn6v" path="res://Src/UI/Page/HomePage.cs" id="1_j4kqc"]
 [ext_resource type="PackedScene" uid="uid://don6xai5trupe" path="res://Src/UI/Item/select_modpack_item.tscn" id="2_glb6t"]
 [ext_resource type="Script" uid="uid://bk3tot6c35bwu" path="res://Src/Utils/IconTexture2D.cs" id="3_1jowr"]
 [ext_resource type="Shader" uid="uid://bw4cstfk8udci" path="res://Assets/Shader/blur.gdshader" id="3_j4kqc"]
 [ext_resource type="FontFile" uid="uid://bmgx1vyg6bavd" path="res://Assets/Font/HarmonyOS_Sans_SC_Bold.ttf" id="4_k556s"]
-[ext_resource type="FontFile" uid="uid://dp7r8itfqvqca" path="res://Assets/Font/materialdesignicons-webfont.woff2" id="6_gi4mh"]
 [ext_resource type="Script" uid="uid://bgqglerkcylxx" path="res://addons/SmoothScroll/SmoothScrollContainer.gd" id="6_rwne7"]
 [ext_resource type="Script" uid="uid://b7h0k2h2qwlqv" path="res://addons/SmoothScroll/scroll_damper/expo_scroll_damper.gd" id="7_glb6t"]
 [ext_resource type="ButtonGroup" uid="uid://bcqmgl5krt5h5" path="res://Assets/Gui/select_modpack_button_group.tres" id="10_vb8vt"]
@@ -41,8 +40,7 @@ resource_local_to_scene = false
 resource_name = ""
 script = ExtResource("3_1jowr")
 IconName = "chevron-up"
-FontSize = 18
-FontFile = ExtResource("6_gi4mh")
+IconSize = 18
 metadata/_custom_type_script = "uid://bk3tot6c35bwu"
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_k556s"]
@@ -284,7 +282,7 @@ icon_alignment = 2
 visible = false
 top_level = true
 custom_minimum_size = Vector2(50, 50)
-layout_mode = 2
+layout_mode = 0
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2

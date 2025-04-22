@@ -1,19 +1,17 @@
-[gd_scene load_steps=9 format=3 uid="uid://dwckxgkp7j0oc"]
+[gd_scene load_steps=8 format=3 uid="uid://dwckxgkp7j0oc"]
 
 [ext_resource type="PackedScene" uid="uid://bu4hwijkbc8sm" path="res://Src/UI/Window/base_window.tscn" id="1_i8gr8"]
 [ext_resource type="Script" uid="uid://do20m8d4641ws" path="res://Src/UI/Window/LoginWindow.cs" id="2_l4pum"]
 [ext_resource type="FontFile" uid="uid://bmgx1vyg6bavd" path="res://Assets/Font/HarmonyOS_Sans_SC_Bold.ttf" id="2_ta73y"]
 [ext_resource type="Script" uid="uid://bk3tot6c35bwu" path="res://Src/Utils/IconTexture2D.cs" id="3_l4pum"]
 [ext_resource type="Material" uid="uid://b675ao2n7w53x" path="res://Assets/Material/loading.tres" id="5_c76y0"]
-[ext_resource type="FontFile" uid="uid://dp7r8itfqvqca" path="res://Assets/Font/materialdesignicons-webfont.woff2" id="5_tcmql"]
 
 [sub_resource type="Texture2D" id="Texture2D_c76y0"]
 resource_local_to_scene = false
 resource_name = ""
 script = ExtResource("3_l4pum")
 IconName = "alert-circle-outline"
-FontSize = 16
-FontFile = ExtResource("5_tcmql")
+IconSize = 16
 metadata/_custom_type_script = "uid://bk3tot6c35bwu"
 
 [sub_resource type="Texture2D" id="Texture2D_l4pum"]
@@ -21,8 +19,7 @@ resource_local_to_scene = false
 resource_name = ""
 script = ExtResource("3_l4pum")
 IconName = "eye-outline"
-FontSize = 24
-FontFile = ExtResource("5_tcmql")
+IconSize = 24
 metadata/_custom_type_script = "uid://bk3tot6c35bwu"
 
 [node name="LoginWindow" node_paths=PackedStringArray("_emailInput", "_loginContainer", "_passwordInput", "_eyeButton", "_accessCodeContainer", "_accessCodeInput", "_nameContainer", "_nameInput", "_tooltip", "_offlineCheckbox", "_loadingControl") instance=ExtResource("1_i8gr8")]

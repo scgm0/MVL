@@ -1,8 +1,7 @@
-[gd_scene load_steps=9 format=3 uid="uid://bp02so1m0q7m0"]
+[gd_scene load_steps=8 format=3 uid="uid://bp02so1m0q7m0"]
 
 [ext_resource type="Script" uid="uid://er6sd5rjfnp5" path="res://Src/UI/Page/SettingPage.cs" id="1_f2m4w"]
 [ext_resource type="Material" uid="uid://c0sb2bjy16ljf" path="res://Assets/Material/button_blur.tres" id="4_tr7nv"]
-[ext_resource type="FontFile" uid="uid://dp7r8itfqvqca" path="res://Assets/Font/materialdesignicons-webfont.woff2" id="4_yaaqs"]
 [ext_resource type="Script" uid="uid://bk3tot6c35bwu" path="res://Src/Utils/IconTexture2D.cs" id="8_axk81"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_yoik7"]
@@ -19,8 +18,7 @@ resource_local_to_scene = false
 resource_name = ""
 script = ExtResource("8_axk81")
 IconName = "file-settings-outline"
-FontSize = 18
-FontFile = ExtResource("4_yaaqs")
+IconSize = 18
 metadata/_custom_type_script = "uid://bk3tot6c35bwu"
 
 [node name="SettingPage" type="Control" node_paths=PackedStringArray("_displayLanguageOptionButton", "_displayScaleSpinbox", "_proxyAddressLineEdit", "_downloadThreadSpinbox", "_modpackFolderLineEdit", "_modpackFolderButton", "_releaseFolderLineEdit", "_releaseFolderButton", "Main")]

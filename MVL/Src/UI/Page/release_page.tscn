@@ -1,4 +1,4 @@
-[gd_scene load_steps=17 format=3 uid="uid://0qq618t18t61"]
+[gd_scene load_steps=16 format=3 uid="uid://0qq618t18t61"]
 
 [ext_resource type="Script" uid="uid://bx8dqa4avru7x" path="res://Src/UI/Page/ReleasePage.cs" id="1_wixp3"]
 [ext_resource type="PackedScene" uid="uid://bjgov53faujry" path="res://Src/UI/Item/release_item.tscn" id="2_fui6w"]
@@ -7,7 +7,6 @@
 [ext_resource type="Script" uid="uid://b7h0k2h2qwlqv" path="res://addons/SmoothScroll/scroll_damper/expo_scroll_damper.gd" id="4_h8roc"]
 [ext_resource type="Script" uid="uid://bk3tot6c35bwu" path="res://Src/Utils/IconTexture2D.cs" id="5_qiv2n"]
 [ext_resource type="Material" uid="uid://c0sb2bjy16ljf" path="res://Assets/Material/button_blur.tres" id="6_gqxwp"]
-[ext_resource type="FontFile" uid="uid://dp7r8itfqvqca" path="res://Assets/Font/materialdesignicons-webfont.woff2" id="7_h8roc"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ty1b0"]
 content_margin_left = 4.0
@@ -80,8 +79,7 @@ resource_local_to_scene = false
 resource_name = ""
 script = ExtResource("5_qiv2n")
 IconName = "plus"
-FontSize = 72
-FontFile = ExtResource("7_h8roc")
+IconSize = 72
 metadata/_custom_type_script = "uid://bk3tot6c35bwu"
 
 [node name="ReleasePage" type="Control" node_paths=PackedStringArray("_addReleaseButton", "_grid", "Main")]

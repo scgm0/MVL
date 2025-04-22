@@ -10,7 +10,7 @@ resource_local_to_scene = false
 resource_name = ""
 script = ExtResource("1_asgjk")
 IconName = "checkbox-marked"
-FontSize = 16
+IconSize = 16
 metadata/_custom_type_script = "uid://bk3tot6c35bwu"
 
 [sub_resource type="Texture2D" id="Texture2D_17a5b"]
@@ -18,7 +18,7 @@ resource_local_to_scene = false
 resource_name = ""
 script = ExtResource("1_asgjk")
 IconName = "radiobox-marked"
-FontSize = 16
+IconSize = 16
 metadata/_custom_type_script = "uid://bk3tot6c35bwu"
 
 [sub_resource type="Texture2D" id="Texture2D_pur85"]
@@ -26,7 +26,7 @@ resource_local_to_scene = false
 resource_name = ""
 script = ExtResource("1_asgjk")
 IconName = "radiobox-blank"
-FontSize = 16
+IconSize = 16
 metadata/_custom_type_script = "uid://bk3tot6c35bwu"
 
 [sub_resource type="Texture2D" id="Texture2D_vje8o"]
@@ -34,7 +34,7 @@ resource_local_to_scene = false
 resource_name = ""
 script = ExtResource("1_asgjk")
 IconName = "checkbox-blank-outline"
-FontSize = 16
+IconSize = 16
 metadata/_custom_type_script = "uid://bk3tot6c35bwu"
 
 [sub_resource type="Texture2D" id="Texture2D_bgbrj"]
@@ -42,7 +42,7 @@ resource_local_to_scene = false
 resource_name = ""
 script = ExtResource("1_asgjk")
 IconName = "toggle-switch"
-FontSize = 24
+IconSize = 24
 metadata/_custom_type_script = "uid://bk3tot6c35bwu"
 
 [sub_resource type="Texture2D" id="Texture2D_vg7xs"]
@@ -50,7 +50,7 @@ resource_local_to_scene = false
 resource_name = ""
 script = ExtResource("1_asgjk")
 IconName = "toggle-switch-off-outline"
-FontSize = 24
+IconSize = 24
 metadata/_custom_type_script = "uid://bk3tot6c35bwu"
 
 [sub_resource type="Texture2D" id="Texture2D_7hr8s"]
@@ -58,7 +58,7 @@ resource_local_to_scene = false
 resource_name = ""
 script = ExtResource("1_asgjk")
 IconName = "chevron-down"
-FontSize = 24
+IconSize = 24
 metadata/_custom_type_script = "uid://bk3tot6c35bwu"
 
 [sub_resource type="Texture2D" id="Texture2D_hypud"]
@@ -66,7 +66,7 @@ resource_local_to_scene = false
 resource_name = ""
 script = ExtResource("1_asgjk")
 IconName = "chevron-right"
-FontSize = 24
+IconSize = 24
 metadata/_custom_type_script = "uid://bk3tot6c35bwu"
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_vg7xs"]
@@ -127,7 +127,7 @@ resource_local_to_scene = false
 resource_name = ""
 script = ExtResource("1_asgjk")
 IconName = "close"
-FontSize = 18
+IconSize = 18
 metadata/_custom_type_script = "uid://bk3tot6c35bwu"
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_asgjk"]
@@ -161,7 +161,7 @@ resource_local_to_scene = false
 resource_name = ""
 script = ExtResource("1_asgjk")
 IconName = "chevron-down"
-FontSize = 24
+IconSize = 24
 metadata/_custom_type_script = "uid://bk3tot6c35bwu"
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_7eosv"]
@@ -220,7 +220,7 @@ resource_local_to_scene = false
 resource_name = ""
 script = ExtResource("1_asgjk")
 IconName = "chevron-down"
-FontSize = 18
+IconSize = 18
 metadata/_custom_type_script = "uid://bk3tot6c35bwu"
 
 [sub_resource type="Texture2D" id="Texture2D_belqv"]
@@ -228,7 +228,7 @@ resource_local_to_scene = false
 resource_name = ""
 script = ExtResource("1_asgjk")
 IconName = "chevron-up"
-FontSize = 18
+IconSize = 18
 metadata/_custom_type_script = "uid://bk3tot6c35bwu"
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_bgbrj"]

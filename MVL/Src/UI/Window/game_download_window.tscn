@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=3 uid="uid://dfsyvb8tdyef2"]
+[gd_scene load_steps=14 format=3 uid="uid://dfsyvb8tdyef2"]
 
 [ext_resource type="PackedScene" uid="uid://bu4hwijkbc8sm" path="res://Src/UI/Window/base_window.tscn" id="1_42u7i"]
 [ext_resource type="Script" uid="uid://baxitom4bklvu" path="res://Src/UI/Window/GameDownloadWindow.cs" id="2_x3qgb"]
@@ -8,7 +8,6 @@
 [ext_resource type="PackedScene" uid="uid://cpbcd3vre7ii8" path="res://Src/UI/Item/installed_game_item.tscn" id="4_puokc"]
 [ext_resource type="Script" uid="uid://b7h0k2h2qwlqv" path="res://addons/SmoothScroll/scroll_damper/expo_scroll_damper.gd" id="5_x3qgb"]
 [ext_resource type="Script" uid="uid://bk3tot6c35bwu" path="res://Src/Utils/IconTexture2D.cs" id="6_endwm"]
-[ext_resource type="FontFile" uid="uid://dp7r8itfqvqca" path="res://Assets/Font/materialdesignicons-webfont.woff2" id="8_lb40e"]
 [ext_resource type="FontFile" uid="uid://bmgx1vyg6bavd" path="res://Assets/Font/HarmonyOS_Sans_SC_Bold.ttf" id="10_lb40e"]
 
 [sub_resource type="Texture2D" id="Texture2D_0pqmy"]
@@ -16,8 +15,7 @@ resource_local_to_scene = false
 resource_name = ""
 script = ExtResource("6_endwm")
 IconName = "alert-circle-outline"
-FontSize = 16
-FontFile = ExtResource("8_lb40e")
+IconSize = 16
 metadata/_custom_type_script = "uid://bk3tot6c35bwu"
 
 [sub_resource type="Texture2D" id="Texture2D_w2kmj"]
@@ -25,8 +23,7 @@ resource_local_to_scene = false
 resource_name = ""
 script = ExtResource("6_endwm")
 IconName = "file-settings-outline"
-FontSize = 24
-FontFile = ExtResource("8_lb40e")
+IconSize = 24
 metadata/_custom_type_script = "uid://bk3tot6c35bwu"
 
 [sub_resource type="Resource" id="Resource_lb40e"]

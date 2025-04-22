@@ -1,12 +1,12 @@
-[gd_scene load_steps=16 format=3 uid="uid://d3yuqxh7olknc"]
+[gd_scene load_steps=21 format=3 uid="uid://d3yuqxh7olknc"]
 
 [ext_resource type="Material" uid="uid://c0sb2bjy16ljf" path="res://Assets/Material/button_blur.tres" id="1_00er1"]
 [ext_resource type="Script" uid="uid://cwh0mdeoogvqa" path="res://Src/UI/Item/ModpackItem.cs" id="1_j0hm1"]
 [ext_resource type="PackedScene" uid="uid://d21bm32gkwqcr" path="res://Src/UI/Window/installed_games_import.tscn" id="2_jptkp"]
 [ext_resource type="Texture2D" uid="uid://d3mq4tlr6rr01" path="res://Assets/Icon/VS/gameicon.png" id="2_x6kgn"]
 [ext_resource type="FontFile" uid="uid://bmgx1vyg6bavd" path="res://Assets/Font/HarmonyOS_Sans_SC_Bold.ttf" id="3_3qaia"]
+[ext_resource type="PackedScene" uid="uid://bf8v1y2ikmx0h" path="res://Src/UI/Window/modpack_mod_management_window.tscn" id="3_cfjm5"]
 [ext_resource type="Script" uid="uid://bk3tot6c35bwu" path="res://Src/Utils/IconTexture2D.cs" id="4_32kh6"]
-[ext_resource type="FontFile" uid="uid://dp7r8itfqvqca" path="res://Assets/Font/materialdesignicons-webfont.woff2" id="6_60yl2"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_jptkp"]
 
@@ -50,13 +50,28 @@ corner_radius_top_right = 8
 corner_radius_bottom_right = 8
 corner_radius_bottom_left = 8
 
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_60yl2"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_cfjm5"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_56p2o"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_gtwmp"]
+
+[sub_resource type="Texture2D" id="Texture2D_60yl2"]
+resource_local_to_scene = false
+resource_name = ""
+script = ExtResource("4_32kh6")
+IconName = "view-dashboard-edit"
+IconSize = 16
+metadata/_custom_type_script = "uid://bk3tot6c35bwu"
+
 [sub_resource type="Texture2D" id="Texture2D_5lwjt"]
 resource_local_to_scene = false
 resource_name = ""
 script = ExtResource("4_32kh6")
 IconName = "unfold-more-horizontal"
-FontSize = 24
-FontFile = ExtResource("6_60yl2")
+IconSize = 24
 metadata/_custom_type_script = "uid://bk3tot6c35bwu"
 
 [sub_resource type="Texture2D" id="Texture2D_364to"]
@@ -64,8 +79,7 @@ resource_local_to_scene = false
 resource_name = ""
 script = ExtResource("4_32kh6")
 IconName = "play"
-FontSize = 30
-FontFile = ExtResource("6_60yl2")
+IconSize = 30
 metadata/_custom_type_script = "uid://bk3tot6c35bwu"
 
 [node name="ModpackItem" type="PanelContainer" node_paths=PackedStringArray("_modpackName", "_modpackPath", "_modCount", "_versionButton", "_releaseButton", "_playButton")]
@@ -74,10 +88,11 @@ custom_minimum_size = Vector2(827, 64)
 theme = SubResource("Theme_bmwv3")
 theme_override_styles/panel = SubResource("StyleBoxFlat_30yt8")
 script = ExtResource("1_j0hm1")
+_listModScene = ExtResource("3_cfjm5")
 _listGameScene = ExtResource("2_jptkp")
 _modpackName = NodePath("HBoxContainer/VBoxContainer/Label")
 _modpackPath = NodePath("HBoxContainer/VBoxContainer/HBoxContainer/LinkButton")
-_modCount = NodePath("HBoxContainer/VBoxContainer/HBoxContainer/Label")
+_modCount = NodePath("HBoxContainer/VBoxContainer/HBoxContainer/Button")
 _versionButton = NodePath("HBoxContainer/Button")
 _releaseButton = NodePath("HBoxContainer/Button2")
 _playButton = NodePath("HBoxContainer/Button3")
@@ -111,19 +126,26 @@ size_flags_vertical = 8
 [node name="LinkButton" type="LinkButton" parent="HBoxContainer/VBoxContainer/HBoxContainer"]
 auto_translate_mode = 2
 layout_mode = 2
-size_flags_horizontal = 0
+size_flags_horizontal = 2
 theme_override_colors/font_color = Color(0.6, 0.6, 0.6, 1)
 theme_override_font_sizes/font_size = 12
 underline = 1
 
-[node name="Label" type="Label" parent="HBoxContainer/VBoxContainer/HBoxContainer"]
+[node name="Button" type="Button" parent="HBoxContainer/VBoxContainer/HBoxContainer"]
 custom_minimum_size = Vector2(100, 15)
 layout_mode = 2
-size_flags_horizontal = 3
+size_flags_horizontal = 8
+focus_mode = 0
+theme_override_colors/icon_normal_color = Color(0.601223, 0.601223, 0.601223, 1)
 theme_override_colors/font_color = Color(0.601223, 0.601223, 0.601223, 1)
 theme_override_font_sizes/font_size = 12
+theme_override_styles/hover_pressed = SubResource("StyleBoxEmpty_60yl2")
+theme_override_styles/hover = SubResource("StyleBoxEmpty_cfjm5")
+theme_override_styles/pressed = SubResource("StyleBoxEmpty_56p2o")
+theme_override_styles/normal = SubResource("StyleBoxEmpty_gtwmp")
 text = "模组数量: 0"
-horizontal_alignment = 2
+icon = SubResource("Texture2D_60yl2")
+icon_alignment = 2
 
 [node name="Button" type="Button" parent="HBoxContainer"]
 custom_minimum_size = Vector2(150, 40)

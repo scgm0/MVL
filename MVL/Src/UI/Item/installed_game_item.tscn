@@ -44,6 +44,7 @@ grow_horizontal = 2
 grow_vertical = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
+focus_behavior_recursive = 1
 theme_override_constants/separation = 1
 script = ExtResource("1_drgtp")
 _gameVersion = NodePath("GameVersion")

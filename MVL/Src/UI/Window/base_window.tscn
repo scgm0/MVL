@@ -7,7 +7,7 @@
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_v4xgt"]
 shader = ExtResource("2_wrq3t")
-shader_parameter/lod = 1.0
+shader_parameter/lod = 1.8
 shader_parameter/blend = 0.5
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_wrq3t"]
@@ -180,7 +180,6 @@ CancelButton = NodePath("PanelContainer/VBoxContainer/HBoxContainer3/Button")
 OkButton = NodePath("PanelContainer/VBoxContainer/HBoxContainer3/Button2")
 
 [node name="BackBufferCopy" type="BackBufferCopy" parent="."]
-copy_mode = 2
 
 [node name="ColorRect" type="ColorRect" parent="."]
 material = SubResource("ShaderMaterial_v4xgt")
