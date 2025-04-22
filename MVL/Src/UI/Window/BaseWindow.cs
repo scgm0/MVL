@@ -28,15 +28,10 @@ public partial class BaseWindow : Control {
 		TitleLabel.NotNull();
 		CancelButton.NotNull();
 		OkButton.NotNull();
-		_container.MinimumSizeChanged += ContainerOnMinimumSizeChanged;
-	}
-
-	private void ContainerOnMinimumSizeChanged() {
-		_container!.PivotOffset = _container.Size / 2.0f;
 	}
 
 	public new virtual async Task Show() {
-		_container!.PivotOffset = _container.Size / 2.0f;
+		_container!.PivotOffset = _container.GetCombinedMinimumSize() / 2.0f;
 		Modulate = Colors.Transparent;
 		_container.Scale = Vector2.Zero;
 		base.Show();
