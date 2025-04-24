@@ -78,9 +78,16 @@ public static class Program {
 			ClientSettings.Entitlements = account.Entitlements;
 
 			if (account.Offline) {
+				Console.WriteLine("VS Run: 离线模式");
 				Harmony.PatchCategory("Offline");
 			}
 		}
+
+		var harmonyAssembly = typeof(Harmony).Assembly;
+		var harmonySharedStateType = harmonyAssembly.GetType("HarmonyLib.HarmonySharedState");
+		var stateFieldInfo = harmonySharedStateType?.GetField("state", BindingFlags.Static | BindingFlags.NonPublic);
+		var stateInstance = stateFieldInfo?.GetValue(null) as Dictionary<MethodBase, byte[]>;
+		stateInstance?.Clear();
 
 		var assembly = Assembly.LoadFile(Path.Combine(Config.VintageStoryPath, Config.AssemblyPath));
 		var assemblyName = assembly.GetName().Name;
