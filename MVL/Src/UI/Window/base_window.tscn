@@ -180,6 +180,7 @@ CancelButton = NodePath("PanelContainer/VBoxContainer/HBoxContainer3/Button")
 OkButton = NodePath("PanelContainer/VBoxContainer/HBoxContainer3/Button2")
 
 [node name="BackBufferCopy" type="BackBufferCopy" parent="."]
+copy_mode = 2
 
 [node name="ColorRect" type="ColorRect" parent="."]
 material = SubResource("ShaderMaterial_v4xgt")
