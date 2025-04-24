@@ -11,6 +11,9 @@ namespace MVL.UI.Item;
 
 public partial class ModpackItem : PanelContainer {
 	[Export]
+	private PackedScene? _listModScene;
+
+	[Export]
 	private PackedScene? _listGameScene;
 
 	[Export]
@@ -20,7 +23,7 @@ public partial class ModpackItem : PanelContainer {
 	private LinkButton? _modpackPath;
 
 	[Export]
-	private Label? _modCount;
+	private Button? _modCount;
 
 	[Export]
 	private Button? _versionButton;
@@ -35,6 +38,8 @@ public partial class ModpackItem : PanelContainer {
 
 	public override void _Ready() {
 		NullExceptionHelper.NotNull(
+			_listModScene,
+			_listGameScene,
 			_modpackName,
 			_modpackPath,
 			_modCount,
@@ -43,6 +48,7 @@ public partial class ModpackItem : PanelContainer {
 			_playButton,
 			ModpackConfig
 		);
+
 		_modpackName.Text = ModpackConfig.Name;
 		_modpackPath.Text = ModpackConfig.Path;
 		_modpackPath.Uri = ModpackConfig.Path;
@@ -68,21 +74,28 @@ public partial class ModpackItem : PanelContainer {
 			Main.GameExitEvent += MainOnGameExitEvent;
 		}
 
-		var modsPath = Path.Combine(ModpackConfig.Path!, "Mods");
-		if (Directory.Exists(modsPath)) {
-			_modCount.Text = string.Format(Tr("模组数量: {0}"), Directory.GetFileSystemEntries(modsPath).Length);
-		}
+		_modCount.Text = string.Format(Tr("模组数量: {0}"), ModpackConfig.Mods.Count);
 
 		_versionButton.Pressed += VersionButtonOnPressed;
 		_playButton.Pressed += PlayButtonOnPressed;
+		_modCount.Pressed += ModCountOnPressed;
+	}
+
+	private void ModCountOnPressed() {
+		var list = _listModScene!.Instantiate<ModpackModManagementWindow>();
+		list.ModpackItem = this;
+		list.Hidden += list.QueueFree;
+		Main.Instance?.AddChild(list);
+		_ = list.Show();
 	}
 
 	private void MainOnGameExitEvent() {
 		Dispatcher.SynchronizationContext.Post(_ => {
-			var icon = (IconTexture2D)_playButton!.Icon;
-			icon.IconName = "play";
-			_playButton.Modulate = Colors.White;
-		}, null);
+				var icon = (IconTexture2D)_playButton!.Icon;
+				icon.IconName = "play";
+				_playButton.Modulate = Colors.White;
+			},
+			null);
 	}
 
 	public override void _ExitTree() {
@@ -135,9 +148,10 @@ public partial class ModpackItem : PanelContainer {
 	private void CurrentGameProcessOnExited() {
 		Main.GameExitEvent -= MainOnGameExitEvent;
 		Dispatcher.SynchronizationContext.Post(_ => {
-			var icon = (IconTexture2D)_playButton!.Icon;
-			icon.IconName = "play";
-			_playButton.Modulate = Colors.White;
-		}, null);
+				var icon = (IconTexture2D)_playButton!.Icon;
+				icon.IconName = "play";
+				_playButton.Modulate = Colors.White;
+			},
+			null);
 	}
 }
