@@ -64,6 +64,23 @@ public readonly record struct GameVersion {
 		return numArray;
 	}
 
+	public static bool IsLowerVersionThan(string version, string reference) {
+		return version != reference && !IsNewerVersionThan(version, reference);
+	}
+
+	public static bool IsNewerVersionThan(string version, string reference) {
+		var numArray1 = SplitVersionString(reference);
+		var numArray2 = SplitVersionString(version);
+		for (var index = 0;
+			index < numArray1.Length && index < numArray2.Length && numArray1[index] <= numArray2[index];
+			++index) {
+			if (numArray1[index] < numArray2[index])
+				return true;
+		}
+
+		return false;
+	}
+
 	public static int ComparerVersion(GameVersion version, GameVersion reference) {
 		var numArray1 = SplitVersionString(reference.ShortGameVersion);
 		var numArray2 = SplitVersionString(version.ShortGameVersion);
