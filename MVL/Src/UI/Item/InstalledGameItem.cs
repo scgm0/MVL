@@ -4,7 +4,7 @@ using MVL.Utils.Game;
 
 namespace MVL.UI.Item;
 
-public partial class InstalledGameItem : HBoxContainer {
+public partial class InstalledGameItem : MarginContainer {
 	[Export]
 	private Label? _gameVersion;
 

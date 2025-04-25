@@ -1,7 +1,8 @@
-[gd_scene load_steps=6 format=3 uid="uid://cpbcd3vre7ii8"]
+[gd_scene load_steps=10 format=3 uid="uid://cpbcd3vre7ii8"]
 
 [ext_resource type="Script" uid="uid://deaoh0r6l4aac" path="res://Src/UI/Item/InstalledGameItem.cs" id="1_drgtp"]
 [ext_resource type="ButtonGroup" uid="uid://2vw3esfrb4oc" path="res://Assets/Gui/game_item_check_group.tres" id="2_tdw5g"]
+[ext_resource type="Script" uid="uid://dhohtylbsnryj" path="res://Assets/Gds/collaboration_button.gd" id="3_jot5c"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_owfdn"]
 content_margin_left = 4.0
@@ -11,6 +12,12 @@ content_margin_bottom = 4.0
 bg_color = Color(0.20871, 0.20871, 0.20871, 1)
 corner_radius_top_left = 5
 corner_radius_bottom_left = 5
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_tdw5g"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_jot5c"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_50jqb"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_r111f"]
 content_margin_left = 4.0
@@ -28,7 +35,7 @@ bg_color = Color(0.20871, 0.20871, 0.20871, 1)
 corner_radius_top_right = 5
 corner_radius_bottom_right = 5
 
-[node name="InstalledGameItem" type="HBoxContainer" node_paths=PackedStringArray("_gameVersion", "_gamePath", "_checkBox")]
+[node name="InstalledGameItem" type="MarginContainer" node_paths=PackedStringArray("_gameVersion", "_gamePath", "_checkBox")]
 auto_translate_mode = 2
 custom_minimum_size = Vector2(0, 30)
 anchors_preset = 8
@@ -38,22 +45,25 @@ anchor_right = 0.5
 anchor_bottom = 0.5
 offset_left = -211.0
 offset_top = -15.0
-offset_right = 211.0
+offset_right = 212.0
 offset_bottom = 15.0
 grow_horizontal = 2
 grow_vertical = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
 focus_behavior_recursive = 1
-theme_override_constants/separation = 1
 script = ExtResource("1_drgtp")
-_gameVersion = NodePath("GameVersion")
-_gamePath = NodePath("GamePath")
-_checkBox = NodePath("CheckBox")
+_gameVersion = NodePath("HBoxContainer/GameVersion")
+_gamePath = NodePath("HBoxContainer/GamePath")
+_checkBox = NodePath("HBoxContainer/CheckBox")
 _stableColor = Color(0.687215, 0.687215, 0.687215, 1)
 _unStableColor = Color(0.475677, 0.475677, 1.92523e-07, 1)
 
-[node name="GameVersion" type="Label" parent="."]
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
+layout_mode = 2
+theme_override_constants/separation = 1
+
+[node name="GameVersion" type="Label" parent="HBoxContainer"]
 custom_minimum_size = Vector2(90, 30)
 layout_mode = 2
 size_flags_vertical = 1
@@ -64,7 +74,21 @@ text = "版本"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="GamePath" type="Label" parent="."]
+[node name="Button" type="Button" parent="HBoxContainer/GameVersion" node_paths=PackedStringArray("button")]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 1
+theme_override_styles/hover = SubResource("StyleBoxEmpty_tdw5g")
+theme_override_styles/pressed = SubResource("StyleBoxEmpty_jot5c")
+theme_override_styles/normal = SubResource("StyleBoxEmpty_50jqb")
+script = ExtResource("3_jot5c")
+button = NodePath("../../CheckBox")
+
+[node name="GamePath" type="Label" parent="HBoxContainer"]
 custom_minimum_size = Vector2(300, 30)
 layout_mode = 2
 size_flags_horizontal = 6
@@ -78,7 +102,21 @@ vertical_alignment = 1
 text_overrun_behavior = 3
 max_lines_visible = 1
 
-[node name="CheckBox" type="CheckBox" parent="."]
+[node name="Button" type="Button" parent="HBoxContainer/GamePath" node_paths=PackedStringArray("button")]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 1
+theme_override_styles/hover = SubResource("StyleBoxEmpty_tdw5g")
+theme_override_styles/pressed = SubResource("StyleBoxEmpty_jot5c")
+theme_override_styles/normal = SubResource("StyleBoxEmpty_50jqb")
+script = ExtResource("3_jot5c")
+button = NodePath("../../CheckBox")
+
+[node name="CheckBox" type="CheckBox" parent="HBoxContainer"]
 custom_minimum_size = Vector2(30, 30)
 layout_mode = 2
 focus_mode = 0

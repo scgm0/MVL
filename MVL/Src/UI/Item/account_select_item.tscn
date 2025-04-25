@@ -1,7 +1,8 @@
-[gd_scene load_steps=8 format=3 uid="uid://cns5w84qytq88"]
+[gd_scene load_steps=12 format=3 uid="uid://cns5w84qytq88"]
 
 [ext_resource type="Script" uid="uid://bnhdvndlmh364" path="res://Src/UI/Item/AccountSelectItem.cs" id="1_dlcfs"]
 [ext_resource type="Script" uid="uid://bk3tot6c35bwu" path="res://Src/Utils/IconTexture2D.cs" id="1_y6v4b"]
+[ext_resource type="Script" uid="uid://dhohtylbsnryj" path="res://Assets/Gds/collaboration_button.gd" id="2_76gv2"]
 [ext_resource type="ButtonGroup" uid="uid://dsh2cgven1h16" path="res://Assets/Gui/account_select_button_group.tres" id="2_87k83"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_364to"]
@@ -16,6 +17,12 @@ content_margin_left = 5.0
 content_margin_top = 5.0
 content_margin_right = 5.0
 content_margin_bottom = 5.0
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_dlcfs"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_76gv2"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_7wblk"]
 
 [sub_resource type="Texture2D" id="Texture2D_365jr"]
 resource_local_to_scene = false
@@ -55,10 +62,18 @@ mouse_filter = 1
 theme_override_styles/normal = SubResource("StyleBoxEmpty_o4ctv")
 text = "玩家名称"
 
-[node name="Control" type="Control" parent="HBoxContainer"]
-custom_minimum_size = Vector2(20, 0)
-layout_mode = 2
-mouse_filter = 1
+[node name="Button" type="Button" parent="HBoxContainer/Label" node_paths=PackedStringArray("button")]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/hover = SubResource("StyleBoxEmpty_dlcfs")
+theme_override_styles/pressed = SubResource("StyleBoxEmpty_76gv2")
+theme_override_styles/normal = SubResource("StyleBoxEmpty_7wblk")
+script = ExtResource("2_76gv2")
+button = NodePath("../../CheckBox")
 
 [node name="Button" type="Button" parent="HBoxContainer"]
 layout_mode = 2
