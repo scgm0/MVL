@@ -33,7 +33,7 @@ public partial class IconTexture2D : Texture2D {
 	public IconTexture2D() { EmitChanged(); }
 
 	public new void EmitChanged() {
-		_svgTexture.Source = Icons.TryGetValue(IconName, out var str) ? str : string.Empty;
+		_svgTexture.SetSource(Icons.TryGetValue(IconName, out var str) ? str : string.Empty);
 		_svgTexture.SetSizeOverride(new(IconSize, IconSize));
 		_svgTexture.EmitChanged();
 		base.EmitChanged();
