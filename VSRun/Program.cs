@@ -69,13 +69,33 @@ public static class Program {
 
 		if (Config.Account is not null) {
 			var account = Config.Account;
-			ClientSettings.UserEmail = account.Email;
-			ClientSettings.Sessionkey = account.SessionKey;
-			ClientSettings.SessionSignature = account.SessionSignature;
-			ClientSettings.HasGameServer = account.HasGameServer;
-			ClientSettings.PlayerUID = account.Uid;
-			ClientSettings.PlayerName = account.PlayerName;
-			ClientSettings.Entitlements = account.Entitlements;
+			if (!string.IsNullOrEmpty(account.Email)) {
+				ClientSettings.UserEmail = account.Email;
+			}
+
+			if (!string.IsNullOrEmpty(account.SessionKey)) {
+				ClientSettings.Sessionkey = account.SessionKey;
+			}
+
+			if (!string.IsNullOrEmpty(account.SessionSignature)) {
+				ClientSettings.SessionSignature = account.SessionSignature;
+			}
+
+			if (account.HasGameServer) {
+				ClientSettings.HasGameServer = account.HasGameServer;
+			}
+
+			if (string.IsNullOrEmpty(account.Uid)) {
+				ClientSettings.PlayerUID = account.Uid;
+			}
+
+			if (!string.IsNullOrEmpty(account.PlayerName)) {
+				ClientSettings.PlayerName = account.PlayerName;
+			}
+
+			if (!string.IsNullOrEmpty(account.Entitlements)) {
+				ClientSettings.Entitlements = account.Entitlements;
+			}
 
 			if (account.Offline) {
 				Console.WriteLine("VS Run: 离线模式");
