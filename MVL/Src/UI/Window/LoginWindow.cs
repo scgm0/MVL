@@ -223,7 +223,8 @@ public partial class LoginWindow : BaseWindow {
 				email,
 				password,
 				totpcode = accessCode,
-				prelogintoken = preLoginToken
+				prelogintoken = preLoginToken,
+				gameloginversion = await "https://api.vintagestory.at/latestunstable.txt".GetStringAsync()
 			});
 			if (!response.ResponseMessage.IsSuccessStatusCode) {
 				return null;
