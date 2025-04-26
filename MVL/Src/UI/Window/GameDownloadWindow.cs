@@ -191,7 +191,7 @@ public partial class GameDownloadWindow : BaseWindow {
 		OkButton!.Disabled = true;
 		_progressBar.Value = 0;
 
-		var item = _buttonGroup!.GetPressedButton().GetParent<InstalledGameItem>();
+		var item = _buttonGroup!.GetPressedButton().GetOwner<InstalledGameItem>();
 #if GODOT_WINDOWS
 		var downloadInfo = _releases![item.GameVersion].Windows;
 #elif GODOT_LINUXBSD
