@@ -184,7 +184,7 @@ public partial class Main : NativeWindowUtility {
 
 	private async void AccountSelectAddButtonOnPressed() {
 		var loginWindow = await OpenAccountSelectWindow();
-		loginWindow.Login += async _ => {
+		loginWindow.Login += _ => {
 			foreach (var child in _accountSelectListContainer!.GetChildren()) {
 				child.Free();
 			}
@@ -279,10 +279,17 @@ public partial class Main : NativeWindowUtility {
 	}
 
 	private async void AccountItemOnEdit(AccountSelectItem item) {
+		var editCurrent = item.Account?.PlayerName == BaseConfig.CurrentAccount;
+		GD.Print("editCurrent: " + editCurrent);
 		var loginWindow = await OpenAccountSelectWindow(item.Account);
-		loginWindow.Login += async _ => {
+		loginWindow.Login += _ => {
 			foreach (var child in _accountSelectListContainer!.GetChildren()) {
 				child.Free();
+			}
+
+			if (editCurrent) {
+				BaseConfig.CurrentAccount = item.Account!.PlayerName!;
+				CheckAccount();
 			}
 
 			AccountButtonOnPressed();
@@ -574,7 +581,7 @@ public partial class Main : NativeWindowUtility {
 			return;
 		}
 
-		StartGame(releaseInfo.Path, modpackConfig.Path!);
+		StartGame(releaseInfo.Path, modpackConfig.Path!, modpackConfig.Command, modpackConfig.GameAssembly);
 	}
 
 	public static void StartGame(
@@ -584,6 +591,11 @@ public partial class Main : NativeWindowUtility {
 		string assembleName = "Vintagestory.dll") {
 		try {
 			var tmp = CopyVsRun();
+			command = command.Replace("%game_path%", gamePath)
+				.Replace("%tmp_path%", tmp.GetCurrentDir())
+				.Replace("%data_path%", dataPath)
+				.Replace("%command%",
+				$"dotnet \"{Path.Combine(tmp.GetCurrentDir(), "VSRun.dll").NormalizePath()}\"");
 			var process = VsRun(new() {
 					VintageStoryPath = gamePath,
 					VintageStoryDataPath = dataPath,
@@ -591,7 +603,7 @@ public partial class Main : NativeWindowUtility {
 					ExecutableType = ExecutableTypeEnum.StartGame,
 					Account = string.IsNullOrEmpty(BaseConfig.CurrentAccount) ? null : Accounts[BaseConfig.CurrentAccount]
 				},
-				command.Replace("%command%", $"dotnet \"{Path.Combine(tmp.GetCurrentDir(), "VSRun.dll").NormalizePath()}\""));
+				command);
 			CurrentGameProcess = process;
 			process.Exited += (_, _) => {
 				GameExitEvent?.Invoke();
