@@ -100,7 +100,7 @@ public static class Program {
 			}
 
 			if (account.Offline) {
-				ClientSettings.PlayerUID = GenerateSha256Uid(account.PlayerName!);
+				ClientSettings.PlayerUID = account.PlayerName!;
 				Console.WriteLine("离线模式");
 				Harmony.PatchCategory("Offline");
 			}
