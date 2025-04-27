@@ -1,5 +1,7 @@
 ﻿using System.Reflection;
 using System.Runtime.CompilerServices;
+using System.Security.Cryptography;
+using System.Text;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using HarmonyLib;
@@ -85,7 +87,7 @@ public static class Program {
 				ClientSettings.HasGameServer = account.HasGameServer;
 			}
 
-			if (string.IsNullOrEmpty(account.Uid)) {
+			if (!string.IsNullOrEmpty(account.Uid)) {
 				ClientSettings.PlayerUID = account.Uid;
 			}
 
@@ -98,7 +100,8 @@ public static class Program {
 			}
 
 			if (account.Offline) {
-				Console.WriteLine("VS Run: 离线模式");
+				ClientSettings.PlayerUID = GenerateSha256Uid(account.PlayerName!);
+				Console.WriteLine("离线模式");
 				Harmony.PatchCategory("Offline");
 			}
 		}
@@ -139,5 +142,18 @@ public static class Program {
 		}
 
 		return null;
+	}
+
+	static private string GenerateSha256Uid(string input) {
+		var inputBytes = Encoding.UTF8.GetBytes(input);
+
+		var hashBytes = SHA256.HashData(inputBytes);
+
+		var sb = new StringBuilder(hashBytes.Length * 2);
+		foreach (var b in hashBytes) {
+			sb.Append(b.ToString("x2"));
+		}
+
+		return sb.ToString();
 	}
 }

@@ -139,10 +139,10 @@ public partial class LoginWindow : BaseWindow {
 		if (_offlineCheckbox!.ButtonPressed) {
 			Account!.PlayerName = _nameInput!.Text;
 			Account.Email = _emailInput!.Text;
-			Account.Uid ??= _nameInput!.Text;
-			Account.SessionKey ??= string.Empty;
-			Account.SessionSignature ??= string.Empty;
-			Account.Entitlements ??= string.Empty;
+			Account.Uid = _nameInput!.Text;
+			Account.SessionKey = string.Empty;
+			Account.SessionSignature = string.Empty;
+			Account.Entitlements = string.Empty;
 			Account!.Offline = true;
 			await Hide();
 			EmitSignalLogin(this);

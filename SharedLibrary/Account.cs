@@ -1,6 +1,6 @@
 namespace SharedLibrary;
 
-public class Account {
+public record Account {
 	public string? PlayerName { get; set; }
 	public string? Uid { get; set; }
 	public string? SessionKey { get; set; }
