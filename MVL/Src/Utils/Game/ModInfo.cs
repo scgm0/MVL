@@ -13,7 +13,7 @@ namespace MVL.Utils.Game;
 
 public record ModInfo : IComparable<ModInfo> {
 	public required string Name { get; set; }
-	public required string ModId { get; set; }
+	public string ModId { get; set; } = "";
 	public string ModPath { get; set; } = "";
 	public string Version { get; set; } = "";
 	public IReadOnlyList<string> Authors { get; set; } = [];
@@ -91,39 +91,49 @@ public record ModInfo : IComparable<ModInfo> {
 	}
 
 	public static ModInfo? FromZip(string zipPath) {
-		using var zipArchive = ZipFile.OpenRead(zipPath);
+		try {
+			using var zipArchive = ZipFile.OpenRead(zipPath);
 
-		var jsonEntry = zipArchive.GetEntry("modinfo.json");
-		if (jsonEntry == null) {
+			var jsonEntry = zipArchive.GetEntry("modinfo.json");
+			if (jsonEntry == null) {
+				return null;
+			}
+
+			using var stream = jsonEntry.Open();
+			using var reader = new StreamReader(stream, Encoding.UTF8);
+			var jsonContent = reader.ReadToEnd();
+
+			var modInfo = JsonSerializer.Deserialize(jsonContent, SourceGenerationContext.Default.ModInfo);
+			if (modInfo != null) {
+				modInfo.ModPath = zipPath;
+			}
+
+			return modInfo;
+		} catch (Exception e) {
+			GD.PrintErr($"无法加载模组信息 {zipPath}: {e.Message}");
 			return null;
 		}
-
-		using var stream = jsonEntry.Open();
-		using var reader = new StreamReader(stream, Encoding.UTF8);
-		var jsonContent = reader.ReadToEnd();
-
-		var modInfo = JsonSerializer.Deserialize(jsonContent, SourceGenerationContext.Default.ModInfo);
-		if (modInfo != null) {
-			modInfo.ModPath = zipPath;
-		}
-
-		return modInfo;
 	}
 
 	public static ModInfo? FromDirectory(string directoryPath) {
-		var jsonPath = Path.Combine(directoryPath, "modinfo.json");
-		if (!File.Exists(jsonPath)) {
+		try {
+			var jsonPath = Path.Combine(directoryPath, "modinfo.json");
+			if (!File.Exists(jsonPath)) {
+				return null;
+			}
+
+			var jsonContent = File.ReadAllText(jsonPath);
+
+			var modInfo = JsonSerializer.Deserialize(jsonContent, SourceGenerationContext.Default.ModInfo);
+			if (modInfo != null) {
+				modInfo.ModPath = directoryPath;
+			}
+
+			return modInfo;
+		} catch (Exception e) {
+			GD.PrintErr($"无法加载模组信息 {directoryPath}: {e.Message}");
 			return null;
 		}
-
-		var jsonContent = File.ReadAllText(jsonPath);
-
-		var modInfo = JsonSerializer.Deserialize(jsonContent, SourceGenerationContext.Default.ModInfo);
-		if (modInfo != null) {
-			modInfo.ModPath = directoryPath;
-		}
-
-		return modInfo;
 	}
 
 	static private string[] ParseStringArray(CustomAttributeArgument argument) {
@@ -133,38 +143,43 @@ public record ModInfo : IComparable<ModInfo> {
 	}
 
 	public static ModInfo? FromAssembly(string assemblyPath) {
-		using var assembly = AssemblyDefinition.ReadAssembly(assemblyPath);
+		try {
+			using var assembly = AssemblyDefinition.ReadAssembly(assemblyPath);
 
-		var modInfoAttribute = assembly.CustomAttributes
-			.FirstOrDefault(a => a.AttributeType.FullName == "Vintagestory.API.Common.ModInfoAttribute");
+			var modInfoAttribute = assembly.CustomAttributes
+				.FirstOrDefault(a => a.AttributeType.FullName == "Vintagestory.API.Common.ModInfoAttribute");
 
-		if (modInfoAttribute == null)
-			return null;
+			if (modInfoAttribute == null)
+				return null;
 
-		var modInfo = new ModInfo {
-			Name = modInfoAttribute.ConstructorArguments[0].Value?.ToString() ?? string.Empty,
-			ModId = string.Empty,
-			ModPath = assemblyPath
-		};
+			var modInfo = new ModInfo {
+				Name = modInfoAttribute.ConstructorArguments[0].Value?.ToString() ?? string.Empty,
+				ModId = string.Empty,
+				ModPath = assemblyPath
+			};
 
-		foreach (var property in modInfoAttribute.Properties) {
-			switch (property.Name) {
-				case "Name":
-					modInfo.Name = property.Argument.Value?.ToString() ?? modInfo.Name;
-					break;
-				case "Authors":
-					modInfo.Authors = ParseStringArray(property.Argument);
-					break;
-				case "ModID":
-					modInfo.ModId = property.Argument.Value?.ToString() ?? string.Empty;
-					break;
-				case "Version":
-					modInfo.Version = property.Argument.Value?.ToString() ?? string.Empty;
-					break;
+			foreach (var property in modInfoAttribute.Properties) {
+				switch (property.Name) {
+					case "Name":
+						modInfo.Name = property.Argument.Value?.ToString() ?? modInfo.Name;
+						break;
+					case "Authors":
+						modInfo.Authors = ParseStringArray(property.Argument);
+						break;
+					case "ModID":
+						modInfo.ModId = property.Argument.Value?.ToString() ?? string.Empty;
+						break;
+					case "Version":
+						modInfo.Version = property.Argument.Value?.ToString() ?? string.Empty;
+						break;
+				}
 			}
-		}
 
-		return modInfo;
+			return modInfo;
+		} catch (Exception e) {
+			GD.PrintErr($"无法加载模组信息 {assemblyPath}: {e.Message}");
+			return null;
+		}
 	}
 
 	public class DependenciesConverter : JsonConverter<IReadOnlyList<ModDependency>> {
