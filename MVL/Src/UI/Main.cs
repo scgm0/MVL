@@ -316,7 +316,7 @@ public partial class Main : NativeWindowUtility {
 
 	public void CheckAccount() {
 		Accounts.Clear();
-		var list = BaseConfig.Account.ToList();
+		var list = BaseConfig.Account.Distinct().ToList();
 		foreach (var account in list) {
 			var name = account.PlayerName!;
 			if (Accounts.TryAdd(name, account) || account == Accounts[name]) continue;
@@ -384,7 +384,7 @@ public partial class Main : NativeWindowUtility {
 	}
 
 	public static void CheckReleaseInfo() {
-		BaseConfig.Release = BaseConfig.Release.Distinct().ToList();
+		BaseConfig.Release = BaseConfig.Release.Select(p => p.NormalizePath()).Distinct().ToList();
 		var snapshotPaths = BaseConfig.Release.ToList();
 
 		foreach (var path in snapshotPaths.Select(lPath => lPath.NormalizePath())) {
@@ -415,7 +415,7 @@ public partial class Main : NativeWindowUtility {
 	}
 
 	public static void CheckModpackConfig() {
-		BaseConfig.Modpack = BaseConfig.Modpack.Distinct().ToList();
+		BaseConfig.Modpack = BaseConfig.Modpack.Select(p => p.NormalizePath()).Distinct().ToList();
 		var list = BaseConfig.Modpack.ToList();
 
 		var versionLookup = ReleaseInfos.Values
