@@ -302,7 +302,7 @@ public partial class GameDownloadWindow : BaseWindow {
 				foreach (var group in _releases.Where(kv => GameVersion.ComparerVersion(kv.Key, minVersion) > -1).GroupBy(r => r.Key.OverallVersion)) {
 					var container = new FoldableContainer();
 					container.Folded = true;
-					container.Text = group.Key;
+					container.Title = group.Key;
 					container.Modulate = Colors.Transparent;
 
 					var vbox = new VBoxContainer();
