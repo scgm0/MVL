@@ -1,8 +1,8 @@
-[gd_scene load_steps=5 format=3 uid="uid://ud2mx48036m8"]
+[gd_scene load_steps=6 format=3 uid="uid://ud2mx48036m8"]
 
 [ext_resource type="Script" uid="uid://ci3alcv0p5u32" path="res://Src/UI/Item/ModInfoItem.cs" id="1_51ssv"]
 [ext_resource type="Texture2D" uid="uid://dcoju08mvjqim" path="res://Assets/Icon/VS/modicon.png" id="1_uh6ep"]
-[ext_resource type="FontFile" uid="uid://bmgx1vyg6bavd" path="res://Assets/Font/HarmonyOS_Sans_SC_Bold.ttf" id="2_1rskd"]
+[ext_resource type="FontFile" uid="uid://d0e3mw7yvdf0v" path="res://Assets/Font/HarmonyOS_Sans_SC_Regular.ttf" id="3_51ssv"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_d71qf"]
 content_margin_left = 4.0
@@ -16,6 +16,10 @@ corner_radius_bottom_right = 5
 corner_radius_bottom_left = 5
 shadow_size = 1
 
+[sub_resource type="FontVariation" id="FontVariation_6yopn"]
+base_font = ExtResource("3_51ssv")
+variation_embolden = 0.8
+
 [node name="ModInfoItem" type="PanelContainer" node_paths=PackedStringArray("_icon", "_name", "_version", "_description")]
 anchors_preset = 10
 anchor_right = 1.0
@@ -25,9 +29,9 @@ mouse_filter = 1
 theme_override_styles/panel = SubResource("StyleBoxFlat_d71qf")
 script = ExtResource("1_51ssv")
 _icon = NodePath("HBoxContainer/TextureRect")
-_name = NodePath("HBoxContainer/Control/Label")
-_version = NodePath("HBoxContainer/Control/Label2")
-_description = NodePath("HBoxContainer/Control/Label3")
+_name = NodePath("HBoxContainer/VBoxContainer/Label")
+_version = NodePath("HBoxContainer/VBoxContainer/Control/Label2")
+_description = NodePath("HBoxContainer/VBoxContainer/Control/Label3")
 
 [node name="HBoxContainer" type="HBoxContainer" parent="."]
 layout_mode = 2
@@ -42,50 +46,32 @@ stretch_mode = 5
 
 [node name="VBoxContainer" type="VBoxContainer" parent="HBoxContainer"]
 layout_mode = 2
+size_flags_horizontal = 3
 
-[node name="Control" type="Control" parent="HBoxContainer"]
+[node name="Label" type="Label" parent="HBoxContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_fonts/font = SubResource("FontVariation_6yopn")
+text = "模组名称🙵"
+
+[node name="Control" type="HBoxContainer" parent="HBoxContainer/VBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 mouse_filter = 2
+theme_override_constants/separation = 20
 
-[node name="Label" type="Label" parent="HBoxContainer/Control"]
-layout_mode = 1
-offset_right = 56.0
-offset_bottom = 23.0
-size_flags_vertical = 3
-theme_override_fonts/font = ExtResource("2_1rskd")
-text = "模组名称"
-
-[node name="Label2" type="Label" parent="HBoxContainer/Control"]
-layout_mode = 1
-anchors_preset = 2
-anchor_top = 1.0
-anchor_bottom = 1.0
-offset_top = -50.0
-offset_right = 56.0
-grow_vertical = 0
+[node name="Label2" type="Label" parent="HBoxContainer/VBoxContainer/Control"]
+layout_mode = 2
 size_flags_vertical = 3
 theme_override_font_sizes/font_size = 14
 text = "模组版本"
 vertical_alignment = 2
 
-[node name="Label3" type="Label" parent="HBoxContainer/Control"]
-layout_mode = 1
-anchors_preset = 3
-anchor_left = 1.0
-anchor_top = 1.0
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = -1029.0
-offset_top = -50.0
-grow_horizontal = 0
-grow_vertical = 0
+[node name="Label3" type="Label" parent="HBoxContainer/VBoxContainer/Control"]
+layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 1
+theme_override_colors/font_color = Color(0.870588, 0.870588, 0.870588, 0.870588)
 theme_override_font_sizes/font_size = 12
 text = "模组介绍"
-horizontal_alignment = 2
-vertical_alignment = 2
-autowrap_mode = 3
-clip_text = true
-text_overrun_behavior = 1
+text_overrun_behavior = 4
