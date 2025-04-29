@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.IO.Compression;
 using System.Linq;
@@ -13,7 +14,13 @@ namespace MVL.Utils.Game;
 
 public record ModInfo : IComparable<ModInfo> {
 	public required string Name { get; set; }
-	public string ModId { get; set; } = "";
+
+	[field: AllowNull, MaybeNull]
+	public string ModId {
+		get => field ??= ToModId(Name) ?? string.Empty;
+		set;
+	}
+
 	public string ModPath { get; set; } = "";
 	public string Version { get; set; } = "";
 	public IReadOnlyList<string> Authors { get; set; } = [];
@@ -76,9 +83,34 @@ public record ModInfo : IComparable<ModInfo> {
 		return GameVersion.IsLowerVersionThan(Version, other.Version) ? 1 : 0;
 	}
 
-	public static bool IsValidModId(string str) {
-		if (string.IsNullOrEmpty(str))
+	public static string? ToModId(string? name) {
+		if (name == null) {
+			return null;
+		}
+		var stringBuilder = new StringBuilder(name.Length);
+		for (var index = 0; index < name.Length; ++index) {
+			var c = name[index];
+			var num1 = c is < 'a' or > 'z' ? (c < 'A' ? 0 : (c <= 'Z' ? 1 : 0)) : 1;
+			var flag = c is >= '0' and <= '9';
+			var num2 = flag ? 1 : 0;
+			if ((num1 | num2) != 0)
+				stringBuilder.Append(char.ToLower(c));
+			if (flag && index == 0)
+				throw new ArgumentException(
+					$"无法自动将“{name}”转换为模组ID，因其以数字开头，不符合命名规范",
+					nameof(name));
+		}
+
+		return stringBuilder.ToString();
+	}
+
+	public static bool IsValidModId([NotNull] string? str) {
+		if (string.IsNullOrEmpty(str)) {
+#pragma warning disable CS8777 // 退出时，参数必须具有非 null 值。
 			return false;
+#pragma warning restore CS8777 // 退出时，参数必须具有非 null 值。
+		}
+
 		for (var index = 0; index < str.Length; ++index) {
 			var ch = str[index];
 			var num = ch < 'a' ? 0 : (ch <= 'z' ? 1 : 0);
