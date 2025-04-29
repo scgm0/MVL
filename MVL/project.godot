@@ -85,5 +85,6 @@ locale/fallback="zh_CN"
 
 textures/canvas_textures/default_texture_filter=2
 rendering_device/driver.windows="d3d12"
+renderer/rendering_method="mobile"
 textures/lossless_compression/force_png=true
 viewport/transparent_background=true
