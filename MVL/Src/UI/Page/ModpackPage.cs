@@ -76,6 +76,10 @@ public partial class ModpackPage : MenuPage {
 		await Task.Run(UI.Main.CheckModpackConfig);
 		var i = 1;
 		foreach (var path in UI.Main.BaseConfig.Modpack) {
+			if (!Visible) {
+				break;
+			}
+
 			var modpack = UI.Main.ModpackConfigs[path];
 			var item = _modpackItemScene!.Instantiate<ModpackItem>();
 			item.ModpackConfig = modpack;

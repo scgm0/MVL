@@ -1,5 +1,6 @@
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 using Godot;
 using MVL.UI.Window;
 using MVL.Utils;
@@ -36,7 +37,7 @@ public partial class ModpackItem : PanelContainer {
 
 	public ModpackConfig? ModpackConfig { get; set; }
 
-	public override void _Ready() {
+	public override async void _Ready() {
 		NullExceptionHelper.NotNull(
 			_listModScene,
 			_listGameScene,
@@ -74,19 +75,28 @@ public partial class ModpackItem : PanelContainer {
 			Main.GameExitEvent += MainOnGameExitEvent;
 		}
 
-		_modCount.Text = string.Format(Tr("模组数量: {0}"), ModpackConfig.Mods.Count);
+		
 
 		_versionButton.Pressed += VersionButtonOnPressed;
 		_playButton.Pressed += PlayButtonOnPressed;
+
+		await UpdateMods();
 		_modCount.Pressed += ModCountOnPressed;
 	}
 
-	private void ModCountOnPressed() {
+	private async Task UpdateMods() {
+		await Task.Run(ModpackConfig!.UpdateMods);
+		_modCount!.Text = string.Format(Tr("模组数量: {0}"), ModpackConfig.Mods.Count);
+	}
+
+	private async void ModCountOnPressed() {
+		await UpdateMods();
 		var list = _listModScene!.Instantiate<ModpackModManagementWindow>();
 		list.ModpackItem = this;
 		list.Hidden += list.QueueFree;
 		Main.Instance?.AddChild(list);
-		_ = list.Show();
+		await list.Show();
+		list.ShowList();
 	}
 
 	private void MainOnGameExitEvent() {

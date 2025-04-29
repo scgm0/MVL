@@ -1,8 +1,10 @@
+using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.IO;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using Godot;
 using MVL.UI;
 using MVL.Utils.Game;
 using FileAccess = Godot.FileAccess;
@@ -22,7 +24,7 @@ public class ModpackConfig {
 		}
 	}
 
-	public string Command { get; set; }= "%command%";
+	public string Command { get; set; } = "%command%";
 
 	public string GameAssembly { get; set; } = "Vintagestory.dll";
 
@@ -30,47 +32,52 @@ public class ModpackConfig {
 	public string? Path {
 		get;
 		set {
-			if (field == value) {
+			if (value == field) {
 				return;
 			}
 
 			field = value;
-			if (value == null) {
-				return;
-			}
-
-			Mods = [];
-			_configPath = System.IO.Path.Combine(value, "modpack.json");
-			var modsPath = System.IO.Path.Combine(value, "Mods");
-			if (!Directory.Exists(modsPath)) {
-				return;
-			}
-
-			foreach (var entry in Directory.GetFiles(modsPath, "*.zip", SearchOption.TopDirectoryOnly)) {
-				var modInfo = ModInfo.FromZip(entry);
-				if (modInfo != null) {
-					Mods[entry] = modInfo;
-				}
-			}
-
-			foreach (var entry in Directory.GetFiles(modsPath, "*.dll", SearchOption.TopDirectoryOnly)) {
-				var modInfo = ModInfo.FromAssembly(entry);
-				if (modInfo != null) {
-					Mods[entry] = modInfo;
-				}
-			}
-
-			foreach (var directory in Directory.GetDirectories(modsPath)) {
-				var modInfo = ModInfo.FromDirectory(directory);
-				if (modInfo != null) {
-					Mods[directory] = modInfo;
-				}
+			if (field != null) {
+				_configPath = System.IO.Path.Combine(field, "modpack.json");
 			}
 		}
 	}
 
 	public ConcurrentDictionary<string, ModInfo> Mods = [];
 	public ReleaseInfo? ReleaseInfo;
+
+	public void UpdateMods() {
+		Mods.Clear();
+
+		if (string.IsNullOrEmpty(Path)) return;
+
+		var modsPath = System.IO.Path.Combine(Path, "Mods");
+		if (!Directory.Exists(modsPath)) return;
+
+		foreach (var entryPath in Directory.EnumerateFileSystemEntries(modsPath)) {
+			var modInfo = TryLoadMod(entryPath);
+			if (modInfo != null) {
+				Mods[entryPath] = modInfo;
+			}
+		}
+	}
+
+	static private ModInfo? TryLoadMod(string entryPath) {
+		try {
+			var attributes = File.GetAttributes(entryPath);
+
+			if ((attributes & FileAttributes.Directory) == FileAttributes.Directory) {
+				return ModInfo.FromDirectory(entryPath);
+			}
+
+			return System.IO.Path.GetExtension(entryPath).ToLowerInvariant() switch {
+				".zip" => ModInfo.FromZip(entryPath), ".dll" => ModInfo.FromAssembly(entryPath), _ => null
+			};
+		} catch (Exception ex) {
+			GD.PrintErr($"从 {entryPath} 加载 mod 时出错: {ex.Message}");
+			return null;
+		}
+	}
 
 	public static ModpackConfig Load(string modpackPath) {
 		var configPath = System.IO.Path.Combine(modpackPath, "modpack.json");

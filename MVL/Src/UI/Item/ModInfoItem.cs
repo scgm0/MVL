@@ -2,6 +2,7 @@ using Godot;
 using System;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using System.Threading.Tasks;
 using Flurl.Http;
 using MVL.Utils;
 using MVL.Utils.Game;
@@ -24,7 +25,7 @@ public partial class ModInfoItem : PanelContainer {
 
 	public ModInfo? Mod { get; set; }
 
-	public override async void _Ready() {
+	public override void _Ready() {
 		_icon.NotNull();
 		_name.NotNull();
 		_version.NotNull();
@@ -34,12 +35,19 @@ public partial class ModInfoItem : PanelContainer {
 		_version.Text = Mod?.Version;
 		_description.Text = Mod?.Description;
 
-		if (ModInfo.IsValidModId(Mod.ModId)) {
-			var url = $"https://mods.vintagestory.at/api/mod/{Mod.ModId}";
-			var result = await url.GetStringAsync();
-			var status = JsonSerializer.Deserialize(result, SourceGenerationContext.Default.ApiStatusModInfo);
-			GD.Print(status.Mod);
-		}
+		Task.Run(async () => {
+			if (ModInfo.IsValidModId(Mod?.ModId)) {
+				var url = $"https://mods.vintagestory.at/api/mod/{Mod.ModId}";
+				var result = await url.GetStringAsync();
+				var status = JsonSerializer.Deserialize(result, SourceGenerationContext.Default.ApiStatusModInfo);
+				if (status?.StatusCode == "200") {
+					_name.SetDeferred(Label.PropertyName.Text,
+						Mod.Name.Equals(status.Mod?.Name, StringComparison.Ordinal)
+							? Mod.Name
+							: $"{status.Mod?.Name} ({Mod.Name})");
+				}
+			}
+		});
 	}
 }
 
