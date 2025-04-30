@@ -52,7 +52,7 @@ size_flags_horizontal = 3
 layout_mode = 2
 size_flags_vertical = 3
 theme_override_fonts/font = SubResource("FontVariation_6yopn")
-text = "模组名称🙵"
+text = "模组名称"
 
 [node name="Control" type="HBoxContainer" parent="HBoxContainer/VBoxContainer"]
 layout_mode = 2
@@ -74,4 +74,5 @@ size_flags_vertical = 1
 theme_override_colors/font_color = Color(0.870588, 0.870588, 0.870588, 0.870588)
 theme_override_font_sizes/font_size = 12
 text = "模组介绍"
+vertical_alignment = 2
 text_overrun_behavior = 4
