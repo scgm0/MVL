@@ -1,5 +1,6 @@
 using Godot;
 using System;
+using System.Linq;
 using MVL.UI.Item;
 using MVL.Utils.Help;
 
@@ -25,13 +26,14 @@ public partial class ModpackModManagementWindow : BaseWindow {
 	public async void ShowList() {
 		if (ModpackItem!.ModpackConfig?.Mods == null) return;
 
-		foreach (var modpackConfigMod in ModpackItem.ModpackConfig.Mods) {
+		var list = ModpackItem.ModpackConfig.Mods.Values.OrderBy(m => m.Name);
+		foreach (var modpackConfigMod in list) {
 			if (!Visible) {
 				break;
 			}
 
 			var modInfoItem = _modInfoItemScene!.Instantiate<ModInfoItem>();
-			modInfoItem.Mod = modpackConfigMod.Value;
+			modInfoItem.Mod = modpackConfigMod;
 			modInfoItem.Modulate = Colors.Transparent;
 			_modInfoItemsContainer!.AddChild(modInfoItem);
 			var tween = modInfoItem.CreateTween();
