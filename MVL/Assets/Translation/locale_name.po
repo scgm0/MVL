@@ -21,3 +21,6 @@ msgstr "Español"
 
 msgid "French"
 msgstr "Francais"
+
+msgid "Russian"
+msgstr "русский язык"
