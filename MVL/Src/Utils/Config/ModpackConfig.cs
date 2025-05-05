@@ -56,8 +56,27 @@ public class ModpackConfig {
 
 		foreach (var entryPath in Directory.EnumerateFileSystemEntries(modsPath)) {
 			var modInfo = TryLoadMod(entryPath);
-			if (modInfo != null) {
-				Mods[entryPath] = modInfo;
+			if (modInfo == null) {
+				continue;
+			}
+
+			modInfo.ModpackConfig = this;
+
+			if (Mods.TryAdd(modInfo.ModId, modInfo)) {
+				continue;
+			}
+
+			try {
+				var oldModInfo = Mods[modInfo.ModId];
+				var version1 = SemVer.Parse(oldModInfo.Version);
+				var version2 = SemVer.Parse(modInfo.Version);
+				if (version1 > version2) {
+					Mods[modInfo.ModId] = oldModInfo;
+				} else {
+					Mods[modInfo.ModId] = modInfo;
+				}
+			} catch (Exception ex) {
+				GD.PrintErr($"从 {entryPath} 加载 mod 时出错: {ex.Message}");
 			}
 		}
 	}

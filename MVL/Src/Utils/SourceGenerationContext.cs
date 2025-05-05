@@ -24,6 +24,7 @@ namespace MVL.Utils;
 [JsonSerializable(typeof(ModDependency))]
 [JsonSerializable(typeof(ApiStatusModInfo))]
 [JsonSerializable(typeof(DateTimeOffset))]
+[JsonSerializable(typeof(ValidateResponse))]
 [JsonSourceGenerationOptions(JsonSerializerDefaults.Web,
 	AllowTrailingCommas = true,
 	UseStringEnumConverter = true,

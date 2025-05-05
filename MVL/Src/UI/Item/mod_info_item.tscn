@@ -1,14 +1,13 @@
-[gd_scene load_steps=6 format=3 uid="uid://ud2mx48036m8"]
+[gd_scene load_steps=10 format=3 uid="uid://ud2mx48036m8"]
 
 [ext_resource type="Script" uid="uid://ci3alcv0p5u32" path="res://Src/UI/Item/ModInfoItem.cs" id="1_51ssv"]
 [ext_resource type="Texture2D" uid="uid://dcoju08mvjqim" path="res://Assets/Icon/VS/modicon.png" id="1_uh6ep"]
-[ext_resource type="FontFile" uid="uid://d0e3mw7yvdf0v" path="res://Assets/Font/HarmonyOS_Sans_SC_Regular.ttf" id="3_51ssv"]
+[ext_resource type="PackedScene" uid="uid://cx30yvsu80t6f" path="res://Src/UI/Window/confirmation_window.tscn" id="2_6yopn"]
+[ext_resource type="Script" uid="uid://bk3tot6c35bwu" path="res://Src/Utils/IconTexture2D.cs" id="4_6yopn"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_d71qf"]
-content_margin_left = 4.0
-content_margin_top = 4.0
-content_margin_right = 4.0
-content_margin_bottom = 4.0
+content_margin_left = 2.0
+content_margin_right = 2.0
 bg_color = Color(1, 1, 1, 0.137255)
 corner_radius_top_left = 5
 corner_radius_top_right = 5
@@ -16,11 +15,39 @@ corner_radius_bottom_right = 5
 corner_radius_bottom_left = 5
 shadow_size = 1
 
-[sub_resource type="FontVariation" id="FontVariation_6yopn"]
-base_font = ExtResource("3_51ssv")
-variation_embolden = 0.8
+[sub_resource type="Texture2D" id="Texture2D_51ssv"]
+resource_local_to_scene = false
+resource_name = ""
+script = ExtResource("4_6yopn")
+IconName = "web"
+IconSize = 18
+metadata/_custom_type_script = "uid://bk3tot6c35bwu"
 
-[node name="ModInfoItem" type="PanelContainer" node_paths=PackedStringArray("_icon", "_name", "_version", "_description")]
+[sub_resource type="Texture2D" id="Texture2D_0y8tf"]
+resource_local_to_scene = false
+resource_name = ""
+script = ExtResource("4_6yopn")
+IconName = "arrow-up-circle-outline"
+IconSize = 18
+metadata/_custom_type_script = "uid://bk3tot6c35bwu"
+
+[sub_resource type="Texture2D" id="Texture2D_sas7r"]
+resource_local_to_scene = false
+resource_name = ""
+script = ExtResource("4_6yopn")
+IconName = "text-search"
+IconSize = 18
+metadata/_custom_type_script = "uid://bk3tot6c35bwu"
+
+[sub_resource type="Texture2D" id="Texture2D_6yopn"]
+resource_local_to_scene = false
+resource_name = ""
+script = ExtResource("4_6yopn")
+IconName = "trash-can-outline"
+IconSize = 18
+metadata/_custom_type_script = "uid://bk3tot6c35bwu"
+
+[node name="ModInfoItem" type="PanelContainer" node_paths=PackedStringArray("_icon", "_name", "_version", "_description", "_webButton", "_updateButton", "_deleteButton", "_progressBar")]
 anchors_preset = 10
 anchor_right = 1.0
 offset_bottom = 50.0
@@ -28,46 +55,75 @@ grow_horizontal = 2
 mouse_filter = 1
 theme_override_styles/panel = SubResource("StyleBoxFlat_d71qf")
 script = ExtResource("1_51ssv")
-_icon = NodePath("HBoxContainer/TextureRect")
-_name = NodePath("HBoxContainer/VBoxContainer/Label")
-_version = NodePath("HBoxContainer/VBoxContainer/Control/Label2")
-_description = NodePath("HBoxContainer/VBoxContainer/Control/Label3")
+_confirmationWindowScene = ExtResource("2_6yopn")
+_icon = NodePath("MarginContainer/HBoxContainer/TextureRect")
+_name = NodePath("MarginContainer/HBoxContainer/MarginContainer/VBoxContainer/RichTextLabel")
+_version = NodePath("MarginContainer/HBoxContainer/MarginContainer/VBoxContainer/Control/RichTextLabel")
+_description = NodePath("MarginContainer/HBoxContainer/MarginContainer/VBoxContainer/Control/Label3")
+_webButton = NodePath("MarginContainer/HBoxContainer/GridContainer/Button")
+_updateButton = NodePath("MarginContainer/HBoxContainer/GridContainer/Button2")
+_deleteButton = NodePath("MarginContainer/HBoxContainer/GridContainer/Button4")
+_progressBar = NodePath("ProgressBar")
 
-[node name="HBoxContainer" type="HBoxContainer" parent="."]
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 2
+theme_override_constants/margin_left = 2
+theme_override_constants/margin_top = 4
+theme_override_constants/margin_right = 2
+theme_override_constants/margin_bottom = 4
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer"]
 layout_mode = 2
 theme_override_constants/separation = 8
 
-[node name="TextureRect" type="TextureRect" parent="HBoxContainer"]
+[node name="TextureRect" type="TextureRect" parent="MarginContainer/HBoxContainer"]
 custom_minimum_size = Vector2(50, 50)
 layout_mode = 2
 texture = ExtResource("1_uh6ep")
 expand_mode = 1
 stretch_mode = 5
 
-[node name="VBoxContainer" type="VBoxContainer" parent="HBoxContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+mouse_filter = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/HBoxContainer/MarginContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="Label" type="Label" parent="HBoxContainer/VBoxContainer"]
+[node name="RichTextLabel" type="RichTextLabel" parent="MarginContainer/HBoxContainer/MarginContainer/VBoxContainer"]
 layout_mode = 2
+size_flags_horizontal = 0
 size_flags_vertical = 3
-theme_override_fonts/font = SubResource("FontVariation_6yopn")
+focus_mode = 2
 text = "模组名称"
+fit_content = true
+scroll_active = false
+autowrap_mode = 0
+context_menu_enabled = true
+selection_enabled = true
 
-[node name="Control" type="HBoxContainer" parent="HBoxContainer/VBoxContainer"]
+[node name="Control" type="HBoxContainer" parent="MarginContainer/HBoxContainer/MarginContainer/VBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 mouse_filter = 2
 theme_override_constants/separation = 20
 
-[node name="Label2" type="Label" parent="HBoxContainer/VBoxContainer/Control"]
+[node name="RichTextLabel" type="RichTextLabel" parent="MarginContainer/HBoxContainer/MarginContainer/VBoxContainer/Control"]
 layout_mode = 2
 size_flags_vertical = 3
-theme_override_font_sizes/font_size = 14
+focus_mode = 2
+theme_override_font_sizes/normal_font_size = 14
 text = "模组版本"
+fit_content = true
+scroll_active = false
+autowrap_mode = 0
+context_menu_enabled = true
 vertical_alignment = 2
+selection_enabled = true
 
-[node name="Label3" type="Label" parent="HBoxContainer/VBoxContainer/Control"]
+[node name="Label3" type="Label" parent="MarginContainer/HBoxContainer/MarginContainer/VBoxContainer/Control"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 1
@@ -76,3 +132,41 @@ theme_override_font_sizes/font_size = 12
 text = "模组介绍"
 vertical_alignment = 2
 text_overrun_behavior = 4
+
+[node name="GridContainer" type="GridContainer" parent="MarginContainer/HBoxContainer"]
+layout_mode = 2
+focus_behavior_recursive = 1
+theme_override_constants/h_separation = 0
+theme_override_constants/v_separation = 0
+columns = 2
+
+[node name="Button" type="Button" parent="MarginContainer/HBoxContainer/GridContainer"]
+layout_mode = 2
+disabled = true
+icon = SubResource("Texture2D_51ssv")
+flat = true
+
+[node name="Button2" type="Button" parent="MarginContainer/HBoxContainer/GridContainer"]
+layout_mode = 2
+size_flags_horizontal = 8
+disabled = true
+icon = SubResource("Texture2D_0y8tf")
+flat = true
+
+[node name="Button3" type="Button" parent="MarginContainer/HBoxContainer/GridContainer"]
+layout_mode = 2
+icon = SubResource("Texture2D_sas7r")
+flat = true
+
+[node name="Button4" type="Button" parent="MarginContainer/HBoxContainer/GridContainer"]
+modulate = Color(1, 0, 0, 1)
+layout_mode = 2
+icon = SubResource("Texture2D_6yopn")
+flat = true
+
+[node name="ProgressBar" type="ProgressBar" parent="."]
+visible = false
+clip_contents = true
+layout_mode = 2
+size_flags_vertical = 8
+show_percentage = false

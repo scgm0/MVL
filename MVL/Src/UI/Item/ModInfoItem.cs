@@ -1,53 +1,209 @@
-using Godot;
 using System;
+using System.IO;
+using System.Linq;
+using System.Net;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
+using Downloader;
 using Flurl.Http;
+using Godot;
+using MVL.UI.Window;
 using MVL.Utils;
 using MVL.Utils.Game;
 using MVL.Utils.Help;
+using Range = Godot.Range;
 
 namespace MVL.UI.Item;
 
 public partial class ModInfoItem : PanelContainer {
 	[Export]
+	private PackedScene? _confirmationWindowScene;
+
+	[Export]
 	private TextureRect? _icon;
 
 	[Export]
-	private Label? _name;
+	private RichTextLabel? _name;
 
 	[Export]
-	private Label? _version;
+	private RichTextLabel? _version;
 
 	[Export]
 	private Label? _description;
 
+	[Export]
+	private Button? _webButton;
+
+	[Export]
+	private Button? _updateButton;
+
+	[Export]
+	private Button? _deleteButton;
+
+	[Export]
+	private ProgressBar? _progressBar;
+
+	public ModpackModManagementWindow? Window { get; set; }
+
 	public ModInfo? Mod { get; set; }
+
+	public ApiModInfo? ApiModInfo { get; set; }
+
+
+	public ApiModRelease? ApiModRelease { get; set; }
+
+	public bool HasNewVersion { get; set; }
+
+	public bool CanUpdate { get; set; }
 
 	public override void _Ready() {
 		_icon.NotNull();
 		_name.NotNull();
 		_version.NotNull();
 		_description.NotNull();
-		_icon.Texture = Mod?.Icon;
-		_name.Text = Mod?.Name;
-		_version.Text = Mod?.Version;
-		_description.Text = Mod?.Description;
+		_updateButton.NotNull();
+		_progressBar.NotNull();
 
-		Task.Run(async () => {
+		_webButton!.Pressed += WebButtonOnPressed;
+		_updateButton.Pressed += UpdateButtonOnPressed;
+		_deleteButton!.Pressed += DeleteButtonOnPressed;
+	}
+
+	private void DeleteButtonOnPressed() {
+		var confirmationWindow = _confirmationWindowScene!.Instantiate<ConfirmationWindow>();
+		confirmationWindow!.Message = string.Format(Tr("确定要删除 [b]{0}[/b] 吗？"), Mod!.Name);
+		confirmationWindow.Modulate = Colors.Transparent;
+		confirmationWindow.Hidden += confirmationWindow.QueueFree;
+		confirmationWindow.Confirm += async () => {
+			File.Delete(Mod!.ModPath);
+			await Window!.ModpackItem!.UpdateMods();
+			Window?.ShowList();
+		};
+		AddChild(confirmationWindow);
+		_ = confirmationWindow.Show();
+	}
+
+	private void WebButtonOnPressed() { Tools.RichTextOpenUrl($"https://mods.vintagestory.at/show/mod/{ApiModInfo!.AssetId}"); }
+
+	private async void UpdateButtonOnPressed() {
+		_updateButton!.Disabled = true;
+		_progressBar!.Show();
+		GD.Print($"下载 {ApiModRelease!.FileName}...");
+
+		using var downloadTmp = DirAccess.CreateTemp("MVL_Download");
+		var downloadDir = downloadTmp.GetCurrentDir();
+		var download = DownloadBuilder.New()
+			.WithUrl(ApiModRelease!.MainFile)
+			.WithDirectory(downloadDir)
+			.WithFileName(ApiModRelease.FileName)
+			.WithConfiguration(new() {
+				ParallelDownload = true,
+				ChunkCount = Main.BaseConfig.DownloadThreads,
+				ParallelCount = Main.BaseConfig.DownloadThreads,
+				RequestConfiguration = new() {
+					Proxy = string.IsNullOrEmpty(Main.BaseConfig.ProxyAddress)
+						? null
+						: new WebProxy(Main.BaseConfig.ProxyAddress)
+				}
+			})
+			.Build();
+		download.DownloadProgressChanged += (_, args) => {
+			_progressBar.CallDeferred(Range.MethodName.SetValue, args.ProgressPercentage);
+		};
+		await download.StartAsync();
+		download.Dispose();
+
+		if (!IsInstanceValid(this)) {
+			return;
+		}
+
+		_progressBar.Hide();
+
+		var path = Path.Combine(Mod!.ModPath.GetBaseDir(), ApiModRelease.FileName);
+		File.Move(Path.Combine(downloadDir, ApiModRelease.FileName), path);
+		File.Delete(Mod!.ModPath);
+
+		var mod = ModInfo.FromZip(path);
+		if (mod != null) {
+			mod.ModpackConfig = Mod!.ModpackConfig;
+			mod.ModpackConfig!.Mods[mod.ModId] = mod;
+			Mod = mod;
+		}
+
+		await UpdateApiModInfo();
+	}
+
+	public async Task UpdateApiModInfo() {
+		_icon!.Texture = Mod?.Icon;
+		_name!.Text = Mod?.Name;
+		_version!.Text = $"{Mod?.ModId}-{Mod?.Version}";
+		_description!.Text = Mod?.Description;
+		_webButton!.Disabled = true;
+		_updateButton!.Disabled = true;
+		_updateButton!.Modulate = Colors.White;
+
+		await Task.Run(async () => {
 			if (ModInfo.IsValidModId(Mod?.ModId)) {
 				var url = $"https://mods.vintagestory.at/api/mod/{Mod.ModId}";
 				var result = await url.GetStringAsync();
 				var status = JsonSerializer.Deserialize(result, SourceGenerationContext.Default.ApiStatusModInfo);
-				if (status?.StatusCode == "200") {
-					_name.SetDeferred(Label.PropertyName.Text,
-						Mod.Name.Equals(status.Mod?.Name, StringComparison.Ordinal)
-							? Mod.Name
-							: $"{status.Mod?.Name} ({Mod.Name})");
+				if (status?.StatusCode != "200" || !IsInstanceValid(this)) {
+					return;
 				}
+
+				ApiModInfo = status.Mod!;
+				Dispatcher.SynchronizationContext.Post(_ => {
+						if (_name == null || !IsInstanceValid(this)) {
+							return;
+						}
+
+						_webButton.Disabled = false;
+						_name.Text = Mod!.Name.Equals(ApiModInfo.Name, StringComparison.Ordinal)
+							? Mod.Name
+							: $"{ApiModInfo.Name} ({Mod.Name})";
+					},
+					null);
+
+				UpdateApiModRelease();
 			}
 		});
+	}
+
+	public void UpdateApiModRelease() {
+		foreach (var modInfoRelease in ApiModInfo!.Releases) {
+			try {
+				if (!IsInstanceValid(this)) {
+					return;
+				}
+
+				var version1 = SemVer.Parse(Mod!.Version);
+				var version2 = SemVer.Parse(modInfoRelease.ModVersion);
+				if (version1 >= version2) {
+					return;
+				}
+
+				HasNewVersion = true;
+				ApiModRelease = modInfoRelease;
+				GD.Print(
+					$"找到 {ApiModInfo.Name} {modInfoRelease.ModVersion} ({Mod.Version}) ({modInfoRelease.Tags.Stringify()})");
+				if (!modInfoRelease.Tags.Any(gameVersion =>
+					GameVersion.ComparerVersion(Mod.ModpackConfig!.Version!.Value, new(gameVersion)) >= 0)) {
+					continue;
+				}
+
+				CanUpdate = true;
+				Dispatcher.SynchronizationContext.Post(_ => {
+						if (!IsInstanceValid(this)) return;
+						_updateButton!.Disabled = false;
+						_updateButton!.Modulate = Colors.GreenYellow;
+					},
+					null);
+				return;
+			} catch (Exception e) {
+				GD.PrintErr(e);
+			}
+		}
 	}
 }
 
@@ -84,13 +240,13 @@ public record ApiModInfo {
 
 public record ApiModRelease {
 	public int ReleaseId { get; init; }
-	public string Mainfile { get; init; }
-	public string Filename { get; init; }
+	public string MainFile { get; init; }
+	public string FileName { get; init; }
 	public int FileId { get; init; }
 	public int Downloads { get; init; }
 	public string[] Tags { get; init; }
-	public string Modidstr { get; init; }
-	public string Modversion { get; init; }
+	public string ModIdStr { get; init; }
+	public string ModVersion { get; init; }
 	public DateTimeOffset Created { get; init; }
 }
 

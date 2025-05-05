@@ -12,6 +12,10 @@ namespace MVL.Utils.Game;
 [JsonConverter(typeof(GameVersionJsonConverter))]
 public readonly record struct GameVersion {
 	public GameVersion(string ShortGameVersion) {
+		if (ShortGameVersion.StartsWith('v')) {
+			ShortGameVersion = ShortGameVersion[1..];
+		}
+
 		this.ShortGameVersion = ShortGameVersion;
 		OverallVersion = SplitVersionString(ShortGameVersion)[..2].Join(".");
 		ReleaseType = GetReleaseType(this.ShortGameVersion);

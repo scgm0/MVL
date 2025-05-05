@@ -17,6 +17,7 @@ using MVL.Utils;
 using MVL.Utils.Extensions;
 using MVL.Utils.Game;
 using MVL.Utils.Help;
+using FileAccess = System.IO.FileAccess;
 
 namespace MVL.UI.Window;
 
@@ -351,7 +352,7 @@ public partial class GameDownloadWindow : BaseWindow {
 
 	public static async Task ExtractTarGzAsync(string filePath, string outputDir, string name) {
 		await Task.Run(() => {
-			using FileStream fs = new(filePath, FileMode.Open, System.IO.FileAccess.Read);
+			using FileStream fs = new(filePath, FileMode.Open, FileAccess.Read);
 			using GZipStream gz = new(fs, CompressionMode.Decompress, leaveOpen: true);
 			using var reader = new TarReader(gz, leaveOpen: true);
 

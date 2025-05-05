@@ -8,6 +8,7 @@ using Godot;
 using MVL.UI.Item;
 using MVL.Utils.Extensions;
 using MVL.Utils.Game;
+using MVL.Utils.Help;
 
 namespace MVL.UI.Window;
 
@@ -26,7 +27,7 @@ public partial class InstalledGamesImport : BaseWindow {
 
 	public override void _Ready() {
 		base._Ready();
-		Utils.Help.NullExceptionHelper.NotNull(_installedGameItemScene,
+		NullExceptionHelper.NotNull(_installedGameItemScene,
 			_installedGameList,
 			CancelButton,
 			OkButton);

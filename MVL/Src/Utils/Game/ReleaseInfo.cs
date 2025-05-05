@@ -1,6 +1,7 @@
 using System;
 using System.IO;
 using System.Linq;
+using System.Runtime.Versioning;
 using Godot;
 using Mono.Cecil;
 
@@ -27,7 +28,7 @@ public record ReleaseInfo {
 
 	public static (string FrameworkName, Version? Version) GetTargetFramework(string assemblyPath) {
 		using var assembly = AssemblyDefinition.ReadAssembly(assemblyPath);
-		var targetFrameworkAttributeName = typeof(System.Runtime.Versioning.TargetFrameworkAttribute).FullName;
+		var targetFrameworkAttributeName = typeof(TargetFrameworkAttribute).FullName;
 
 		return (from attribute in assembly.CustomAttributes
 				where attribute.AttributeType.FullName == targetFrameworkAttributeName

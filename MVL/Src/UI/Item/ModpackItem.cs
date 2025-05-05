@@ -1,4 +1,3 @@
-using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Godot;
@@ -84,7 +83,7 @@ public partial class ModpackItem : PanelContainer {
 		_modCount.Pressed += ModCountOnPressed;
 	}
 
-	private async Task UpdateMods() {
+	public async Task UpdateMods() {
 		await Task.Run(ModpackConfig!.UpdateMods);
 		_modCount!.Text = string.Format(Tr("模组数量: {0}"), ModpackConfig.Mods.Count);
 	}

@@ -1,6 +1,7 @@
 using System;
 using Godot;
 using MVL.Utils.Game;
+using MVL.Utils.Help;
 
 namespace MVL.UI.Item;
 
@@ -53,7 +54,7 @@ public partial class InstalledGameItem : MarginContainer {
 	public bool SingleSelect { get; set; }
 
 	public override void _Ready() {
-		Utils.Help.NullExceptionHelper.NotNull(_gameVersion, _gamePath, _checkBox, GameVersion, GamePath, Check);
+		NullExceptionHelper.NotNull(_gameVersion, _gamePath, _checkBox, GameVersion, GamePath, Check);
 		_gameVersion.Text = GameVersion.ShortGameVersion;
 		switch (GameVersion.Branch) {
 			case EnumGameBranch.Stable:

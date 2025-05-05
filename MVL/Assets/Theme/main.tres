@@ -254,6 +254,9 @@ expand_margin_right = 2.0
 expand_margin_bottom = 2.0
 
 [resource]
+Button/colors/icon_hover_color = Color(1, 1, 1, 1)
+Button/colors/icon_normal_color = Color(0.882353, 0.882353, 0.882353, 1)
+Button/colors/icon_pressed_color = Color(0.784314, 0.784314, 0.784314, 1)
 Button/styles/focus = SubResource("StyleBoxEmpty_oarc7")
 CheckBox/colors/checkbox_unchecked_color = Color(0.880502, 0.880502, 0.880502, 1)
 CheckBox/icons/checked = SubResource("Texture2D_0rg2h")

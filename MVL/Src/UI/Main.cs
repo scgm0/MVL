@@ -334,6 +334,26 @@ public partial class Main : NativeWindowUtility {
 		BaseConfig.Save(BaseConfig);
 	}
 
+	public async Task<bool> ValidateSessionKeyWithServer(Account account) {
+		if (account.Offline) {
+			return true;
+		}
+
+		var response = await "https://auth3.vintagestory.at/clientvalidate".PostUrlEncodedAsync(new {
+			uid = account.Uid,
+			sessionkey = account.SessionKey,
+		});
+
+		if (!response.ResponseMessage.IsSuccessStatusCode) {
+			return false;
+		}
+
+		var token = await response.GetStringAsync();
+		GD.Print(token);
+		var validateResponse = JsonSerializer.Deserialize(token, SourceGenerationContext.Default.ValidateResponse);
+		return validateResponse.Valid == 1;
+	}
+
 	public async void Init() {
 		await Task.Run(() => {
 			CheckReleaseInfo();
@@ -483,49 +503,54 @@ public partial class Main : NativeWindowUtility {
 		return tmp;
 	}
 
-	public static Process VsRun(RunConfig runConfig, string command) {
+	public static Process? VsRun(RunConfig runConfig, string command) {
 		GD.PrintS("Execute:", command);
 		GD.Print(runConfig);
 
-		var startInfo = new ProcessStartInfo {
+		try {
+			var startInfo = new ProcessStartInfo {
 #if GODOT_WINDOWS
-			FileName = "cmd",
-			Arguments = $"/c \"{command}\"",
+				FileName = "cmd",
+				Arguments = $"/c \"{command}\"",
 #else
-			FileName = "bash",
-			Arguments = $"-c \"{command}\"",
+				FileName = "bash",
+				Arguments = $"-c \"{command}\"",
 #endif
 
-			RedirectStandardOutput = true,
-			RedirectStandardError = true,
-			UseShellExecute = false,
-			CreateNoWindow = true,
-			WorkingDirectory = runConfig.VintageStoryPath,
-			Environment = {
-				["VINTAGE_STORY"] = runConfig.VintageStoryPath,
-				["RUN_CONFIG"] = JsonSerializer.Serialize(runConfig, SourceGenerationContext.Default.RunConfig)
-			}
-		};
+				RedirectStandardOutput = true,
+				RedirectStandardError = true,
+				UseShellExecute = false,
+				CreateNoWindow = true,
+				WorkingDirectory = runConfig.VintageStoryPath,
+				Environment = {
+					["VINTAGE_STORY"] = runConfig.VintageStoryPath,
+					["RUN_CONFIG"] = JsonSerializer.Serialize(runConfig, SourceGenerationContext.Default.RunConfig)
+				}
+			};
 
-		var process = new Process {
-			StartInfo = startInfo,
-			EnableRaisingEvents = true
-		};
+			var process = new Process {
+				StartInfo = startInfo,
+				EnableRaisingEvents = true
+			};
 
-		process.ErrorDataReceived += (_, args) => { GD.PrintErr(args.Data); };
+			process.ErrorDataReceived += (_, args) => { GD.PrintErr(args.Data); };
 
-		process.OutputDataReceived += (_, args) => {
-			if (args.Data == null) return;
-			GD.PrintRich(args.Data.ConvertAnsiToBbCode());
-			if (args.Data.EndsWith("Client logger started.")) {
-				Dispatcher.SynchronizationContext.Post(_ => { SceneTree.Root.Minimize(); }, null);
-			}
-		};
+			process.OutputDataReceived += (_, args) => {
+				if (args.Data == null) return;
+				GD.PrintRich(args.Data.ConvertAnsiToBbCode());
+				if (args.Data.EndsWith("Client logger started.")) {
+					Dispatcher.SynchronizationContext.Post(_ => { SceneTree.Root.Minimize(); }, null);
+				}
+			};
 
-		process.Start();
-		process.BeginOutputReadLine();
-		process.BeginErrorReadLine();
-		return process;
+			process.Start();
+			process.BeginOutputReadLine();
+			process.BeginErrorReadLine();
+			return process;
+		} catch (Exception e) {
+			GD.PrintErr(e.Message);
+			return null;
+		}
 	}
 
 	public static async Task InitData(string gamePath, string dataPath) {
@@ -538,7 +563,9 @@ public partial class Main : NativeWindowUtility {
 				},
 				$"dotnet \"{Path.Combine(tmp.GetCurrentDir(), "VSRun.dll").NormalizePath()}\"");
 			CurrentGameProcess = process;
-			await process.WaitForExitAsync();
+			if (process != null) {
+				await process.WaitForExitAsync();
+			}
 		} catch (Exception e) {
 			GD.PrintErr(e);
 		}
@@ -563,7 +590,12 @@ public partial class Main : NativeWindowUtility {
 			confirmationWindow.Message =
 				string.Format(
 					Tr(
-						"[b]{0}[/b] 需要安装 [b].NET {1} 运行时[/b]\n请点击链接下载并安装：\n[color=#3c7fe1][url]https://dotnet.microsoft.com/download/dotnet/{2}[/url][/color]\n是否尝试强制启动游戏？"),
+						"""
+						[b]{0}[/b] 需要安装 [b].NET {1} 运行时[/b]
+						请点击链接下载并安装：
+						[color=#3c7fe1][url]https://dotnet.microsoft.com/download/dotnet/{2}[/url][/color]
+						是否尝试强制启动游戏？
+						"""),
 					releaseInfo.Version.ShortGameVersion,
 					releaseInfo.TargetFrameworkVersion,
 					releaseInfo.TargetFrameworkVersion);
@@ -581,6 +613,34 @@ public partial class Main : NativeWindowUtility {
 			return;
 		}
 
+		if (!string.IsNullOrEmpty(BaseConfig.CurrentAccount)) {
+			var validate = await ValidateSessionKeyWithServer(Accounts[BaseConfig.CurrentAccount]);
+			if (!validate) {
+				var confirmationWindow = _confirmationWindowScene!.Instantiate<ConfirmationWindow>();
+				confirmationWindow.Modulate = Colors.Transparent;
+				confirmationWindow.Message =
+					string.Format(
+						Tr(
+							"""
+							[b]{0}[/b] 的账号信息已失效，需要重新登录
+							是否尝试强制启动游戏？
+							"""),
+						BaseConfig.CurrentAccount);
+				confirmationWindow.Hidden += confirmationWindow.QueueFree;
+				confirmationWindow.Confirm += async () => {
+					await confirmationWindow.Hide();
+					StartGame(releaseInfo.Path, modpackConfig.Path!);
+				};
+				confirmationWindow.Cancel += () => {
+					GameExitEvent?.Invoke();
+					CurrentModpack = null;
+				};
+				AddChild(confirmationWindow);
+				await confirmationWindow.Show();
+				return;
+			}
+		}
+
 		StartGame(releaseInfo.Path, modpackConfig.Path!, modpackConfig.Command, modpackConfig.GameAssembly);
 	}
 
@@ -595,7 +655,7 @@ public partial class Main : NativeWindowUtility {
 				.Replace("%tmp_path%", tmp.GetCurrentDir())
 				.Replace("%data_path%", dataPath)
 				.Replace("%command%",
-				$"dotnet \"{Path.Combine(tmp.GetCurrentDir(), "VSRun.dll").NormalizePath()}\"");
+					$"dotnet \"{Path.Combine(tmp.GetCurrentDir(), "VSRun.dll").NormalizePath()}\"");
 			var process = VsRun(new() {
 					VintageStoryPath = gamePath,
 					VintageStoryDataPath = dataPath,
@@ -604,6 +664,10 @@ public partial class Main : NativeWindowUtility {
 					Account = string.IsNullOrEmpty(BaseConfig.CurrentAccount) ? null : Accounts[BaseConfig.CurrentAccount]
 				},
 				command);
+			if (process is null) {
+				return;
+			}
+
 			CurrentGameProcess = process;
 			process.Exited += (_, _) => {
 				GameExitEvent?.Invoke();

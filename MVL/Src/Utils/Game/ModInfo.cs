@@ -9,6 +9,7 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using Godot;
 using Mono.Cecil;
+using MVL.Utils.Config;
 
 namespace MVL.Utils.Game;
 
@@ -22,7 +23,7 @@ public record ModInfo : IComparable<ModInfo> {
 	}
 
 	public string ModPath { get; set; } = "";
-	public string Version { get; set; } = "";
+	public string Version { get; set; } = "0.0.1";
 	public IReadOnlyList<string> Authors { get; set; } = [];
 	public string Description { get; set; } = "";
 
@@ -66,21 +67,15 @@ public record ModInfo : IComparable<ModInfo> {
 		}
 	}
 
+	public ModpackConfig? ModpackConfig { get; set; }
+
 	public int CompareTo(ModInfo? other) {
 		if (other is null) {
 			return 1;
 		}
 
 		var num = string.CompareOrdinal(ModId, other.ModId);
-		if (num != 0) {
-			return num;
-		}
-
-		if (GameVersion.IsNewerVersionThan(Version, other.Version)) {
-			return -1;
-		}
-
-		return GameVersion.IsLowerVersionThan(Version, other.Version) ? 1 : 0;
+		return num != 0 ? num : SemVer.Parse(Version).CompareTo(SemVer.Parse(other.Version));
 	}
 
 	public static string? ToModId(string? name) {
@@ -202,7 +197,7 @@ public record ModInfo : IComparable<ModInfo> {
 						modInfo.ModId = property.Argument.Value?.ToString() ?? string.Empty;
 						break;
 					case "Version":
-						modInfo.Version = property.Argument.Value?.ToString() ?? string.Empty;
+						modInfo.Version = property.Argument.Value?.ToString() ?? "0.0.1";
 						break;
 				}
 			}
