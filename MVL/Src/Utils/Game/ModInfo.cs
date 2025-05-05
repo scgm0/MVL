@@ -121,7 +121,7 @@ public record ModInfo : IComparable<ModInfo> {
 		try {
 			using var zipArchive = ZipFile.OpenRead(zipPath);
 
-			var jsonEntry = zipArchive.GetEntry("modinfo.json");
+			var jsonEntry = zipArchive.Entries.FirstOrDefault(entry => string.Equals(entry.Name, "modinfo.json", StringComparison.OrdinalIgnoreCase));
 			if (jsonEntry == null) {
 				return null;
 			}
