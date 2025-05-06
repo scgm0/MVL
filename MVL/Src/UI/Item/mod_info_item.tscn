@@ -1,9 +1,11 @@
-[gd_scene load_steps=11 format=3 uid="uid://ud2mx48036m8"]
+[gd_scene load_steps=14 format=3 uid="uid://ud2mx48036m8"]
 
 [ext_resource type="Script" uid="uid://ci3alcv0p5u32" path="res://Src/UI/Item/ModInfoItem.cs" id="1_51ssv"]
 [ext_resource type="Texture2D" uid="uid://dcoju08mvjqim" path="res://Assets/Icon/VS/modicon.png" id="1_uh6ep"]
+[ext_resource type="PackedScene" uid="uid://8k1twti5t7jp" path="res://Src/UI/Window/api_mod_releases_window.tscn" id="2_0y8tf"]
 [ext_resource type="PackedScene" uid="uid://cx30yvsu80t6f" path="res://Src/UI/Window/confirmation_window.tscn" id="2_6yopn"]
 [ext_resource type="Script" uid="uid://bk3tot6c35bwu" path="res://Src/Utils/IconTexture2D.cs" id="4_6yopn"]
+[ext_resource type="FontFile" uid="uid://d0e3mw7yvdf0v" path="res://Assets/Font/HarmonyOS_Sans_SC_Regular.ttf" id="5_sas7r"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_d71qf"]
 content_margin_left = 2.0
@@ -25,6 +27,10 @@ corner_radius_top_left = 5
 corner_radius_top_right = 5
 corner_radius_bottom_right = 5
 corner_radius_bottom_left = 5
+
+[sub_resource type="FontVariation" id="FontVariation_q0fox"]
+base_font = ExtResource("5_sas7r")
+variation_embolden = 0.8
 
 [sub_resource type="Texture2D" id="Texture2D_51ssv"]
 resource_local_to_scene = false
@@ -58,7 +64,7 @@ IconName = "trash-can-outline"
 IconSize = 18
 metadata/_custom_type_script = "uid://bk3tot6c35bwu"
 
-[node name="ModInfoItem" type="PanelContainer" node_paths=PackedStringArray("_icon", "ModName", "_version", "_description", "_webButton", "_updateButton", "_deleteButton", "_progressBar")]
+[node name="ModInfoItem" type="PanelContainer" node_paths=PackedStringArray("_icon", "ModName", "_version", "_description", "_webButton", "_updateButton", "_releaseButton", "_deleteButton", "_progressBar")]
 anchors_preset = 10
 anchor_right = 1.0
 offset_bottom = 50.0
@@ -66,6 +72,7 @@ grow_horizontal = 2
 mouse_filter = 1
 theme_override_styles/panel = SubResource("StyleBoxFlat_d71qf")
 script = ExtResource("1_51ssv")
+_apiModReleasesWindowScene = ExtResource("2_0y8tf")
 _confirmationWindowScene = ExtResource("2_6yopn")
 _icon = NodePath("MarginContainer/HBoxContainer/PanelContainer/TextureRect")
 ModName = NodePath("MarginContainer/HBoxContainer/MarginContainer/VBoxContainer/RichTextLabel")
@@ -73,6 +80,7 @@ _version = NodePath("MarginContainer/HBoxContainer/MarginContainer/VBoxContainer
 _description = NodePath("MarginContainer/HBoxContainer/MarginContainer/VBoxContainer/Control/Label3")
 _webButton = NodePath("MarginContainer/HBoxContainer/GridContainer/Button")
 _updateButton = NodePath("MarginContainer/HBoxContainer/GridContainer/Button2")
+_releaseButton = NodePath("MarginContainer/HBoxContainer/GridContainer/Button3")
 _deleteButton = NodePath("MarginContainer/HBoxContainer/GridContainer/Button4")
 _progressBar = NodePath("ProgressBar")
 
@@ -113,8 +121,9 @@ size_flags_horizontal = 3
 [node name="RichTextLabel" type="RichTextLabel" parent="MarginContainer/HBoxContainer/MarginContainer/VBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 0
-size_flags_vertical = 3
+size_flags_vertical = 6
 focus_mode = 2
+theme_override_fonts/normal_font = SubResource("FontVariation_q0fox")
 text = "模组名称"
 fit_content = true
 scroll_active = false
@@ -173,6 +182,7 @@ flat = true
 
 [node name="Button3" type="Button" parent="MarginContainer/HBoxContainer/GridContainer"]
 layout_mode = 2
+disabled = true
 icon = SubResource("Texture2D_sas7r")
 flat = true
 

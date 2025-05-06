@@ -18,6 +18,9 @@ namespace MVL.UI.Item;
 
 public partial class ModInfoItem : PanelContainer {
 	[Export]
+	private PackedScene? _apiModReleasesWindowScene;
+
+	[Export]
 	private PackedScene? _confirmationWindowScene;
 
 	[Export]
@@ -37,6 +40,9 @@ public partial class ModInfoItem : PanelContainer {
 
 	[Export]
 	private Button? _updateButton;
+
+	[Export]
+	private Button? _releaseButton;
 
 	[Export]
 	private Button? _deleteButton;
@@ -75,7 +81,16 @@ public partial class ModInfoItem : PanelContainer {
 
 		_webButton!.Pressed += WebButtonOnPressed;
 		_updateButton.Pressed += UpdateButtonOnPressed;
+		_releaseButton!.Pressed += ReleaseButtonOnPressed;
 		_deleteButton!.Pressed += DeleteButtonOnPressed;
+	}
+
+	private async void ReleaseButtonOnPressed() {
+		var apiModReleasesWindow = _apiModReleasesWindowScene!.Instantiate<ApiModReleasesWindow>();
+		apiModReleasesWindow.ModInfoItem = this;
+		apiModReleasesWindow.Hidden += apiModReleasesWindow.QueueFree;
+		Main.Instance?.AddChild(apiModReleasesWindow);
+		await apiModReleasesWindow.Show();
 	}
 
 	private void DeleteButtonOnPressed() {
@@ -88,7 +103,7 @@ public partial class ModInfoItem : PanelContainer {
 			await Window!.ModpackItem!.UpdateMods();
 			Window?.ShowList();
 		};
-		AddChild(confirmationWindow);
+		Main.Instance?.AddChild(confirmationWindow);
 		_ = confirmationWindow.Show();
 	}
 
@@ -148,6 +163,7 @@ public partial class ModInfoItem : PanelContainer {
 		_version!.Text = $"{Mod?.ModId}-{Mod?.Version}";
 		_description!.Text = Mod?.Description;
 		_webButton!.Disabled = true;
+		_releaseButton!.Disabled = true;
 		_updateButton!.Disabled = true;
 		_updateButton!.Modulate = Colors.White;
 
@@ -167,6 +183,7 @@ public partial class ModInfoItem : PanelContainer {
 						}
 
 						_webButton.Disabled = false;
+						_releaseButton.Disabled = false;
 						ModName.Text = Mod!.Name.Equals(ApiModInfo.Name, StringComparison.Ordinal)
 							? Mod.Name
 							: $"{ApiModInfo.Name} ({Mod.Name})";
@@ -204,7 +221,7 @@ public partial class ModInfoItem : PanelContainer {
 				Dispatcher.SynchronizationContext.Post(_ => {
 						if (!IsInstanceValid(this)) return;
 						_updateButton!.Disabled = false;
-						_updateButton!.Modulate = Colors.GreenYellow;
+						_updateButton!.Modulate = Colors.Green;
 					},
 					null);
 				return;

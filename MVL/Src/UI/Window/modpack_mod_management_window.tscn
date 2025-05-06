@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=3 uid="uid://bf8v1y2ikmx0h"]
+[gd_scene load_steps=16 format=3 uid="uid://bf8v1y2ikmx0h"]
 
 [ext_resource type="PackedScene" uid="uid://bu4hwijkbc8sm" path="res://Src/UI/Window/base_window.tscn" id="1_s26qc"]
 [ext_resource type="Script" uid="uid://bgqglerkcylxx" path="res://addons/SmoothScroll/SmoothScrollContainer.gd" id="2_d71qf"]
@@ -17,11 +17,19 @@ IconName = "magnify"
 IconSize = 24
 metadata/_custom_type_script = "uid://bk3tot6c35bwu"
 
+[sub_resource type="Texture2D" id="Texture2D_uhhmm"]
+resource_local_to_scene = false
+resource_name = ""
+script = ExtResource("4_vsdyd")
+IconName = "download-multiple-outline"
+IconSize = 24
+metadata/_custom_type_script = "uid://bk3tot6c35bwu"
+
 [sub_resource type="Texture2D" id="Texture2D_o3mfg"]
 resource_local_to_scene = false
 resource_name = ""
 script = ExtResource("4_vsdyd")
-IconName = "update"
+IconName = "web-sync"
 IconSize = 24
 metadata/_custom_type_script = "uid://bk3tot6c35bwu"
 
@@ -97,12 +105,18 @@ icon = SubResource("Texture2D_vsdyd")
 
 [node name="HBoxContainer2" type="HBoxContainer" parent="PanelContainer/VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer" index="1"]
 layout_mode = 2
-size_flags_horizontal = 3
+size_flags_horizontal = 10
 size_flags_stretch_ratio = 2.0
 
-[node name="Button" type="Button" parent="PanelContainer/VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer/HBoxContainer2" index="0"]
+[node name="Button2" type="Button" parent="PanelContainer/VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer/HBoxContainer2" index="0"]
 layout_mode = 2
-size_flags_horizontal = 10
+size_flags_horizontal = 8
+disabled = true
+icon = SubResource("Texture2D_uhhmm")
+
+[node name="Button" type="Button" parent="PanelContainer/VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer/HBoxContainer2" index="1"]
+layout_mode = 2
+size_flags_horizontal = 8
 icon = SubResource("Texture2D_o3mfg")
 
 [node name="SmoothScrollContainer" type="ScrollContainer" parent="PanelContainer/VBoxContainer/MarginContainer/VBoxContainer" index="1"]
@@ -164,3 +178,9 @@ offset_bottom = 20.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 1
+
+[node name="Button" parent="PanelContainer/VBoxContainer/HBoxContainer3" index="0"]
+text = "关闭"
+
+[node name="Button2" parent="PanelContainer/VBoxContainer/HBoxContainer3" index="1"]
+visible = false
