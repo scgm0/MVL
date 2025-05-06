@@ -24,7 +24,7 @@ public partial class ModInfoItem : PanelContainer {
 	private TextureRect? _icon;
 
 	[Export]
-	private RichTextLabel? _name;
+	public RichTextLabel? ModName { get; set; }
 
 	[Export]
 	private RichTextLabel? _version;
@@ -59,11 +59,19 @@ public partial class ModInfoItem : PanelContainer {
 
 	public override void _Ready() {
 		_icon.NotNull();
-		_name.NotNull();
+		ModName.NotNull();
 		_version.NotNull();
 		_description.NotNull();
 		_updateButton.NotNull();
 		_progressBar.NotNull();
+
+		_icon!.Texture = Mod?.Icon;
+		ModName!.Text = Mod?.Name;
+		_version!.Text = $"{Mod?.ModId}-{Mod?.Version}";
+		_description!.Text = Mod?.Description;
+		_webButton!.Disabled = true;
+		_updateButton!.Disabled = true;
+		_updateButton!.Modulate = Colors.White;
 
 		_webButton!.Pressed += WebButtonOnPressed;
 		_updateButton.Pressed += UpdateButtonOnPressed;
@@ -136,7 +144,7 @@ public partial class ModInfoItem : PanelContainer {
 
 	public async Task UpdateApiModInfo() {
 		_icon!.Texture = Mod?.Icon;
-		_name!.Text = Mod?.Name;
+		ModName!.Text = Mod?.Name;
 		_version!.Text = $"{Mod?.ModId}-{Mod?.Version}";
 		_description!.Text = Mod?.Description;
 		_webButton!.Disabled = true;
@@ -154,12 +162,12 @@ public partial class ModInfoItem : PanelContainer {
 
 				ApiModInfo = status.Mod!;
 				Dispatcher.SynchronizationContext.Post(_ => {
-						if (_name == null || !IsInstanceValid(this)) {
+						if (ModName == null || !IsInstanceValid(this)) {
 							return;
 						}
 
 						_webButton.Disabled = false;
-						_name.Text = Mod!.Name.Equals(ApiModInfo.Name, StringComparison.Ordinal)
+						ModName.Text = Mod!.Name.Equals(ApiModInfo.Name, StringComparison.Ordinal)
 							? Mod.Name
 							: $"{ApiModInfo.Name} ({Mod.Name})";
 					},

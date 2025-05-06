@@ -1,14 +1,29 @@
-[gd_scene load_steps=13 format=3 uid="uid://bf8v1y2ikmx0h"]
+[gd_scene load_steps=15 format=3 uid="uid://bf8v1y2ikmx0h"]
 
 [ext_resource type="PackedScene" uid="uid://bu4hwijkbc8sm" path="res://Src/UI/Window/base_window.tscn" id="1_s26qc"]
 [ext_resource type="Script" uid="uid://bgqglerkcylxx" path="res://addons/SmoothScroll/SmoothScrollContainer.gd" id="2_d71qf"]
 [ext_resource type="Script" uid="uid://cpactxkkvxq3u" path="res://Src/UI/Window/ModpackModManagementWindow.cs" id="2_mbxli"]
 [ext_resource type="Script" uid="uid://b7h0k2h2qwlqv" path="res://addons/SmoothScroll/scroll_damper/expo_scroll_damper.gd" id="3_mbxli"]
+[ext_resource type="Script" uid="uid://bk3tot6c35bwu" path="res://Src/Utils/IconTexture2D.cs" id="4_vsdyd"]
 [ext_resource type="PackedScene" uid="uid://ud2mx48036m8" path="res://Src/UI/Item/mod_info_item.tscn" id="5_mbxli"]
 [ext_resource type="Shader" uid="uid://bw4cstfk8udci" path="res://Assets/Shader/blur.gdshader" id="6_0flki"]
 [ext_resource type="Material" uid="uid://b675ao2n7w53x" path="res://Assets/Material/loading.tres" id="7_o3v2t"]
 
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_o3v2t"]
+[sub_resource type="Texture2D" id="Texture2D_vsdyd"]
+resource_local_to_scene = false
+resource_name = ""
+script = ExtResource("4_vsdyd")
+IconName = "magnify"
+IconSize = 24
+metadata/_custom_type_script = "uid://bk3tot6c35bwu"
+
+[sub_resource type="Texture2D" id="Texture2D_o3mfg"]
+resource_local_to_scene = false
+resource_name = ""
+script = ExtResource("4_vsdyd")
+IconName = "update"
+IconSize = 24
+metadata/_custom_type_script = "uid://bk3tot6c35bwu"
 
 [sub_resource type="Resource" id="Resource_o3v2t"]
 script = ExtResource("3_mbxli")
@@ -33,16 +48,20 @@ corner_radius_top_left = 6
 corner_radius_top_right = 6
 corner_radius_bottom_right = 6
 corner_radius_bottom_left = 6
-expand_margin_left = 2.0
-expand_margin_top = 2.0
-expand_margin_right = 2.0
-expand_margin_bottom = 2.0
+expand_margin_left = 4.0
+expand_margin_top = 4.0
+expand_margin_right = 4.0
+expand_margin_bottom = 4.0
 
-[node name="ModpackModManagementWindow" node_paths=PackedStringArray("_modInfoItemsContainer", "_loadingContainer") instance=ExtResource("1_s26qc")]
+[node name="ModpackModManagementWindow" node_paths=PackedStringArray("_searchInput", "_searchButton", "_updateInfoButton", "_scrollContainer", "_modInfoItemsContainer", "_loadingContainer") instance=ExtResource("1_s26qc")]
 script = ExtResource("2_mbxli")
 _modInfoItemScene = ExtResource("5_mbxli")
-_modInfoItemsContainer = NodePath("PanelContainer/VBoxContainer/VBoxContainer/PanelContainer/SmoothScrollContainer/MarginContainer/VBoxContainer")
-_loadingContainer = NodePath("PanelContainer/VBoxContainer/VBoxContainer/PanelContainer/Control")
+_searchInput = NodePath("PanelContainer/VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer/HBoxContainer/LineEdit")
+_searchButton = NodePath("PanelContainer/VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer/HBoxContainer/Button")
+_updateInfoButton = NodePath("PanelContainer/VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer/HBoxContainer2/Button")
+_scrollContainer = NodePath("PanelContainer/VBoxContainer/MarginContainer/VBoxContainer/SmoothScrollContainer")
+_modInfoItemsContainer = NodePath("PanelContainer/VBoxContainer/MarginContainer/VBoxContainer/SmoothScrollContainer/MarginContainer/VBoxContainer")
+_loadingContainer = NodePath("PanelContainer/VBoxContainer/MarginContainer/Control")
 
 [node name="BackBufferCopy" parent="." index="0"]
 copy_mode = 0
@@ -50,15 +69,43 @@ copy_mode = 0
 [node name="Label" parent="PanelContainer/VBoxContainer" index="0"]
 text = "整合包模组管理"
 
-[node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer/VBoxContainer" index="2"]
-layout_mode = 2
-
-[node name="PanelContainer" type="PanelContainer" parent="PanelContainer/VBoxContainer/VBoxContainer" index="0"]
+[node name="MarginContainer" type="MarginContainer" parent="PanelContainer/VBoxContainer" index="2"]
 layout_mode = 2
 size_flags_vertical = 3
-theme_override_styles/panel = SubResource("StyleBoxEmpty_o3v2t")
 
-[node name="SmoothScrollContainer" type="ScrollContainer" parent="PanelContainer/VBoxContainer/VBoxContainer/PanelContainer" index="0"]
+[node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer/VBoxContainer/MarginContainer" index="0"]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="PanelContainer/VBoxContainer/MarginContainer/VBoxContainer" index="0"]
+layout_mode = 2
+size_flags_vertical = 0
+
+[node name="HBoxContainer" type="HBoxContainer" parent="PanelContainer/VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer" index="0"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="LineEdit" type="LineEdit" parent="PanelContainer/VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer/HBoxContainer" index="0"]
+layout_mode = 2
+size_flags_horizontal = 3
+placeholder_text = "输入模组名称"
+draw_control_chars = true
+caret_blink = true
+
+[node name="Button" type="Button" parent="PanelContainer/VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer/HBoxContainer" index="1"]
+layout_mode = 2
+icon = SubResource("Texture2D_vsdyd")
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="PanelContainer/VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer" index="1"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 2.0
+
+[node name="Button" type="Button" parent="PanelContainer/VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer/HBoxContainer2" index="0"]
+layout_mode = 2
+size_flags_horizontal = 10
+icon = SubResource("Texture2D_o3mfg")
+
+[node name="SmoothScrollContainer" type="ScrollContainer" parent="PanelContainer/VBoxContainer/MarginContainer/VBoxContainer" index="1"]
 custom_minimum_size = Vector2(800, 350)
 layout_mode = 2
 horizontal_scroll_mode = 0
@@ -68,7 +115,7 @@ dragging_scroll_damper = SubResource("Resource_vsdyd")
 allow_horizontal_scroll = false
 metadata/_custom_type_script = "uid://bgqglerkcylxx"
 
-[node name="MarginContainer" type="MarginContainer" parent="PanelContainer/VBoxContainer/VBoxContainer/PanelContainer/SmoothScrollContainer" index="0"]
+[node name="MarginContainer" type="MarginContainer" parent="PanelContainer/VBoxContainer/MarginContainer/VBoxContainer/SmoothScrollContainer" index="0"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
@@ -77,20 +124,20 @@ theme_override_constants/margin_top = 4
 theme_override_constants/margin_right = 4
 theme_override_constants/margin_bottom = 4
 
-[node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer/VBoxContainer/VBoxContainer/PanelContainer/SmoothScrollContainer/MarginContainer" index="0"]
+[node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer/VBoxContainer/MarginContainer/VBoxContainer/SmoothScrollContainer/MarginContainer" index="0"]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_constants/separation = 8
 
-[node name="Control" type="Control" parent="PanelContainer/VBoxContainer/VBoxContainer/PanelContainer" index="1"]
+[node name="Control" type="Control" parent="PanelContainer/VBoxContainer/MarginContainer" index="1"]
 visible = false
 layout_mode = 2
 mouse_filter = 1
 
-[node name="BackBufferCopy" type="BackBufferCopy" parent="PanelContainer/VBoxContainer/VBoxContainer/PanelContainer/Control" index="0"]
+[node name="BackBufferCopy" type="BackBufferCopy" parent="PanelContainer/VBoxContainer/MarginContainer/Control" index="0"]
 copy_mode = 2
 
-[node name="Panel" type="Panel" parent="PanelContainer/VBoxContainer/VBoxContainer/PanelContainer/Control" index="1"]
+[node name="Panel" type="Panel" parent="PanelContainer/VBoxContainer/MarginContainer/Control" index="1"]
 material = SubResource("ShaderMaterial_o3v2t")
 layout_mode = 1
 anchors_preset = 15
@@ -101,7 +148,7 @@ grow_vertical = 2
 mouse_filter = 1
 theme_override_styles/panel = SubResource("StyleBoxFlat_0flki")
 
-[node name="ColorRect" type="ColorRect" parent="PanelContainer/VBoxContainer/VBoxContainer/PanelContainer/Control" index="2"]
+[node name="ColorRect" type="ColorRect" parent="PanelContainer/VBoxContainer/MarginContainer/Control" index="2"]
 material = ExtResource("7_o3v2t")
 custom_minimum_size = Vector2(80, 80)
 layout_mode = 1

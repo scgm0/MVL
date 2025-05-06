@@ -1,7 +1,7 @@
 using System;
-using System.Diagnostics;
 using System.Threading.Tasks;
 using Godot;
+using Process = System.Diagnostics.Process;
 
 namespace MVL.Utils;
 

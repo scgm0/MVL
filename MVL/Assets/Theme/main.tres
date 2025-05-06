@@ -254,6 +254,7 @@ expand_margin_right = 2.0
 expand_margin_bottom = 2.0
 
 [resource]
+Button/colors/icon_focus_color = Color(0.882353, 0.882353, 0.882353, 1)
 Button/colors/icon_hover_color = Color(1, 1, 1, 1)
 Button/colors/icon_normal_color = Color(0.882353, 0.882353, 0.882353, 1)
 Button/colors/icon_pressed_color = Color(0.784314, 0.784314, 0.784314, 1)

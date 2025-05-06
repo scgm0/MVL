@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3 uid="uid://ud2mx48036m8"]
+[gd_scene load_steps=11 format=3 uid="uid://ud2mx48036m8"]
 
 [ext_resource type="Script" uid="uid://ci3alcv0p5u32" path="res://Src/UI/Item/ModInfoItem.cs" id="1_51ssv"]
 [ext_resource type="Texture2D" uid="uid://dcoju08mvjqim" path="res://Assets/Icon/VS/modicon.png" id="1_uh6ep"]
@@ -14,6 +14,17 @@ corner_radius_top_right = 5
 corner_radius_bottom_right = 5
 corner_radius_bottom_left = 5
 shadow_size = 1
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_6yopn"]
+content_margin_left = 0.0
+content_margin_top = 0.0
+content_margin_right = 0.0
+content_margin_bottom = 0.0
+bg_color = Color(1, 1, 1, 1)
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
 
 [sub_resource type="Texture2D" id="Texture2D_51ssv"]
 resource_local_to_scene = false
@@ -47,7 +58,7 @@ IconName = "trash-can-outline"
 IconSize = 18
 metadata/_custom_type_script = "uid://bk3tot6c35bwu"
 
-[node name="ModInfoItem" type="PanelContainer" node_paths=PackedStringArray("_icon", "_name", "_version", "_description", "_webButton", "_updateButton", "_deleteButton", "_progressBar")]
+[node name="ModInfoItem" type="PanelContainer" node_paths=PackedStringArray("_icon", "ModName", "_version", "_description", "_webButton", "_updateButton", "_deleteButton", "_progressBar")]
 anchors_preset = 10
 anchor_right = 1.0
 offset_bottom = 50.0
@@ -56,8 +67,8 @@ mouse_filter = 1
 theme_override_styles/panel = SubResource("StyleBoxFlat_d71qf")
 script = ExtResource("1_51ssv")
 _confirmationWindowScene = ExtResource("2_6yopn")
-_icon = NodePath("MarginContainer/HBoxContainer/TextureRect")
-_name = NodePath("MarginContainer/HBoxContainer/MarginContainer/VBoxContainer/RichTextLabel")
+_icon = NodePath("MarginContainer/HBoxContainer/PanelContainer/TextureRect")
+ModName = NodePath("MarginContainer/HBoxContainer/MarginContainer/VBoxContainer/RichTextLabel")
 _version = NodePath("MarginContainer/HBoxContainer/MarginContainer/VBoxContainer/Control/RichTextLabel")
 _description = NodePath("MarginContainer/HBoxContainer/MarginContainer/VBoxContainer/Control/Label3")
 _webButton = NodePath("MarginContainer/HBoxContainer/GridContainer/Button")
@@ -76,7 +87,14 @@ theme_override_constants/margin_bottom = 4
 layout_mode = 2
 theme_override_constants/separation = 8
 
-[node name="TextureRect" type="TextureRect" parent="MarginContainer/HBoxContainer"]
+[node name="PanelContainer" type="PanelContainer" parent="MarginContainer/HBoxContainer"]
+clip_children = 1
+layout_mode = 2
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_6yopn")
+
+[node name="TextureRect" type="TextureRect" parent="MarginContainer/HBoxContainer/PanelContainer"]
+texture_filter = 6
 custom_minimum_size = Vector2(50, 50)
 layout_mode = 2
 texture = ExtResource("1_uh6ep")
