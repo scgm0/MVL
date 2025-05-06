@@ -1,4 +1,4 @@
-[gd_resource type="Theme" load_steps=34 format=3 uid="uid://26j2wsw1c43m"]
+[gd_resource type="Theme" load_steps=35 format=3 uid="uid://26j2wsw1c43m"]
 
 [ext_resource type="Script" uid="uid://bk3tot6c35bwu" path="res://Src/Utils/IconTexture2D.cs" id="1_asgjk"]
 [ext_resource type="FontFile" uid="uid://bmgx1vyg6bavd" path="res://Assets/Font/HarmonyOS_Sans_SC_Bold.ttf" id="2_h252r"]
@@ -156,6 +156,17 @@ corner_radius_bottom_left = 3
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_0rg2h"]
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_bx4kv"]
+content_margin_left = 1.0
+content_margin_top = 1.0
+content_margin_right = 1.0
+content_margin_bottom = 1.0
+bg_color = Color(1, 1, 1, 0.207843)
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+
 [sub_resource type="Texture2D" id="Texture2D_b82ki"]
 resource_local_to_scene = false
 resource_name = ""
@@ -282,6 +293,9 @@ LineEdit/styles/focus = SubResource("StyleBoxEmpty_asgjk")
 LineEdit/styles/normal = SubResource("StyleBoxFlat_i7wln")
 LineEdit/styles/read_only = SubResource("StyleBoxFlat_asgjk")
 LinkButton/styles/focus = SubResource("StyleBoxEmpty_0rg2h")
+ModReleaseTag/base_type = &"Label"
+ModReleaseTag/font_sizes/font_size = 12
+ModReleaseTag/styles/normal = SubResource("StyleBoxFlat_bx4kv")
 OptionButton/icons/arrow = SubResource("Texture2D_b82ki")
 PopupMenu/icons/checked = SubResource("Texture2D_0rg2h")
 PopupMenu/icons/radio_checked = SubResource("Texture2D_17a5b")
