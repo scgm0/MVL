@@ -164,7 +164,7 @@ _data = {
 &"show": SubResource("Animation_mqeym")
 }
 
-[node name="BaseWindow" type="ColorRect" node_paths=PackedStringArray("_container", "_animationPlayer", "TitleLabel", "CancelButton", "OkButton")]
+[node name="BaseWindow" type="ColorRect" node_paths=PackedStringArray("_container", "_animationPlayer", "TitleLabel", "CancelButton", "OkButton", "BackBufferCopy")]
 top_level = true
 anchors_preset = 15
 anchor_right = 1.0
@@ -178,6 +178,7 @@ _animationPlayer = NodePath("AnimationPlayer")
 TitleLabel = NodePath("PanelContainer/VBoxContainer/Label")
 CancelButton = NodePath("PanelContainer/VBoxContainer/HBoxContainer3/Button")
 OkButton = NodePath("PanelContainer/VBoxContainer/HBoxContainer3/Button2")
+BackBufferCopy = NodePath("BackBufferCopy")
 
 [node name="BackBufferCopy" type="BackBufferCopy" parent="."]
 copy_mode = 2

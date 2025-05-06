@@ -19,6 +19,8 @@ public partial class BaseWindow : Control {
 
 	[Export] protected Button? OkButton;
 
+	[Export] protected BackBufferCopy? BackBufferCopy;
+
 	[Signal]
 	public delegate void CancelEventHandler();
 
