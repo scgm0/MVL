@@ -101,9 +101,9 @@ public partial class ModInfoItem : PanelContainer {
 		confirmationWindow.Modulate = Colors.Transparent;
 		confirmationWindow.Hidden += confirmationWindow.QueueFree;
 		confirmationWindow.Confirm += async () => {
+			await confirmationWindow.Hide();
 			File.Delete(Mod!.ModPath);
-			await Window!.ModpackItem!.UpdateMods();
-			Window?.ShowList();
+			QueueFree();
 		};
 		Main.Instance?.AddChild(confirmationWindow);
 		_ = confirmationWindow.Show();
