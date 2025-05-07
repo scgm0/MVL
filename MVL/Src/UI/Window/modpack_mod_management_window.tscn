@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=3 uid="uid://bf8v1y2ikmx0h"]
+[gd_scene load_steps=17 format=3 uid="uid://bf8v1y2ikmx0h"]
 
 [ext_resource type="PackedScene" uid="uid://bu4hwijkbc8sm" path="res://Src/UI/Window/base_window.tscn" id="1_s26qc"]
 [ext_resource type="Script" uid="uid://bgqglerkcylxx" path="res://addons/SmoothScroll/SmoothScrollContainer.gd" id="2_d71qf"]
@@ -17,11 +17,11 @@ IconName = "magnify"
 IconSize = 24
 metadata/_custom_type_script = "uid://bk3tot6c35bwu"
 
-[sub_resource type="Texture2D" id="Texture2D_uhhmm"]
+[sub_resource type="Texture2D" id="Texture2D_8pyuv"]
 resource_local_to_scene = false
 resource_name = ""
 script = ExtResource("4_vsdyd")
-IconName = "download-multiple-outline"
+IconName = "file-sync-outline"
 IconSize = 24
 metadata/_custom_type_script = "uid://bk3tot6c35bwu"
 
@@ -30,6 +30,14 @@ resource_local_to_scene = false
 resource_name = ""
 script = ExtResource("4_vsdyd")
 IconName = "web-sync"
+IconSize = 24
+metadata/_custom_type_script = "uid://bk3tot6c35bwu"
+
+[sub_resource type="Texture2D" id="Texture2D_uhhmm"]
+resource_local_to_scene = false
+resource_name = ""
+script = ExtResource("4_vsdyd")
+IconName = "download-multiple-outline"
 IconSize = 24
 metadata/_custom_type_script = "uid://bk3tot6c35bwu"
 
@@ -61,12 +69,13 @@ expand_margin_top = 4.0
 expand_margin_right = 4.0
 expand_margin_bottom = 4.0
 
-[node name="ModpackModManagementWindow" node_paths=PackedStringArray("_searchInput", "_searchButton", "_updateInfoButton", "_scrollContainer", "_modInfoItemsContainer", "_loadingContainer") instance=ExtResource("1_s26qc")]
+[node name="ModpackModManagementWindow" node_paths=PackedStringArray("_searchInput", "_searchButton", "_updateInfoButton", "_syncFileButton", "_scrollContainer", "_modInfoItemsContainer", "_loadingContainer") instance=ExtResource("1_s26qc")]
 script = ExtResource("2_mbxli")
 _modInfoItemScene = ExtResource("5_mbxli")
 _searchInput = NodePath("PanelContainer/VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer/HBoxContainer/LineEdit")
 _searchButton = NodePath("PanelContainer/VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer/HBoxContainer/Button")
-_updateInfoButton = NodePath("PanelContainer/VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer/HBoxContainer2/Button")
+_updateInfoButton = NodePath("PanelContainer/VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer/HBoxContainer2/Button2")
+_syncFileButton = NodePath("PanelContainer/VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer/HBoxContainer2/Button")
 _scrollContainer = NodePath("PanelContainer/VBoxContainer/MarginContainer/VBoxContainer/SmoothScrollContainer")
 _modInfoItemsContainer = NodePath("PanelContainer/VBoxContainer/MarginContainer/VBoxContainer/SmoothScrollContainer/MarginContainer/VBoxContainer")
 _loadingContainer = NodePath("PanelContainer/VBoxContainer/MarginContainer/Control")
@@ -105,19 +114,23 @@ icon = SubResource("Texture2D_vsdyd")
 
 [node name="HBoxContainer2" type="HBoxContainer" parent="PanelContainer/VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer" index="1"]
 layout_mode = 2
-size_flags_horizontal = 10
+size_flags_horizontal = 8
 size_flags_stretch_ratio = 2.0
 
-[node name="Button2" type="Button" parent="PanelContainer/VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer/HBoxContainer2" index="0"]
+[node name="Button" type="Button" parent="PanelContainer/VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer/HBoxContainer2" index="0"]
+layout_mode = 2
+icon = SubResource("Texture2D_8pyuv")
+
+[node name="Button2" type="Button" parent="PanelContainer/VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer/HBoxContainer2" index="1"]
+layout_mode = 2
+size_flags_horizontal = 8
+icon = SubResource("Texture2D_o3mfg")
+
+[node name="Button3" type="Button" parent="PanelContainer/VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer/HBoxContainer2" index="2"]
 layout_mode = 2
 size_flags_horizontal = 8
 disabled = true
 icon = SubResource("Texture2D_uhhmm")
-
-[node name="Button" type="Button" parent="PanelContainer/VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer/HBoxContainer2" index="1"]
-layout_mode = 2
-size_flags_horizontal = 8
-icon = SubResource("Texture2D_o3mfg")
 
 [node name="SmoothScrollContainer" type="ScrollContainer" parent="PanelContainer/VBoxContainer/MarginContainer/VBoxContainer" index="1"]
 custom_minimum_size = Vector2(800, 350)

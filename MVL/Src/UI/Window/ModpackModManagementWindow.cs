@@ -24,8 +24,11 @@ public partial class ModpackModManagementWindow : BaseWindow {
 	private Button? _updateInfoButton;
 
 	[Export]
+	private Button? _syncFileButton;
+
+	[Export]
 	private ScrollContainer? _scrollContainer;
-	
+
 	[Export]
 	private VBoxContainer? _modInfoItemsContainer;
 
@@ -46,10 +49,25 @@ public partial class ModpackModManagementWindow : BaseWindow {
 		CancelButton!.Pressed += CancelButtonOnPressed;
 		_searchButton.Pressed += SearchButtonOnPressed;
 		_updateInfoButton.Pressed += UpdateInfoButtonOnPressed;
+		_syncFileButton.Pressed += SyncFileButtonOnPressed;
 	}
 
-	private void UpdateInfoButtonOnPressed() {
-		ShowList(true);
+	private async void SyncFileButtonOnPressed() {
+		await ModpackItem!.UpdateMods();
+		ShowList();
+	}
+
+	private async void UpdateInfoButtonOnPressed() {
+		_loadingContainer!.Show();
+		List<Task> tasks = [];
+		tasks.AddRange(
+			from ModInfoItem? modInfoItem in _modInfoItemsContainer!.GetChildren()
+				.TakeWhile(child => Visible && IsInstanceValid(this))
+			select modInfoItem.UpdateApiModInfo());
+		await Task.WhenAll(tasks);
+		if (IsInstanceValid(this)) {
+			_loadingContainer.Hide();
+		}
 	}
 
 	private async void SearchButtonOnPressed() {
@@ -135,7 +153,8 @@ public partial class ModpackModManagementWindow : BaseWindow {
 		_loadingContainer!.Show();
 
 		List<Task> tasks = [];
-		tasks.AddRange(_modInfoItemsContainer!.GetChildren().TakeWhile(_ => Visible).OfType<ModInfoItem>().Select(modInfoItem => modInfoItem.UpdateApiModInfo()));
+		tasks.AddRange(_modInfoItemsContainer!.GetChildren().TakeWhile(_ => Visible).OfType<ModInfoItem>()
+			.Select(modInfoItem => modInfoItem.UpdateApiModInfo()));
 
 		await Task.WhenAll(tasks);
 

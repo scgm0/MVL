@@ -36,10 +36,10 @@ public partial class ApiModReleasesWindow : BaseWindow {
 		}
 	}
 
-	public void UpdateApiModInfo(ApiModReleaseItem apiModReleaseItem) {
+	public async void UpdateApiModInfo(ApiModReleaseItem apiModReleaseItem) {
 		if (ModInfoItem is not null) {
 			ModInfoItem.Mod = apiModReleaseItem.ModInfo;
-			_ = ModInfoItem.UpdateApiModInfo();
+			await ModInfoItem.UpdateApiModInfo();
 		}
 
 		UpdateApiModInfo();
