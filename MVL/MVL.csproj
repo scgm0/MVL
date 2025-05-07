@@ -70,23 +70,4 @@
         <Copy SourceFiles="@(FilesToCopy)"
               DestinationFolder="Misc/VSRun/%(RecursiveDir)" />
     </Target>
-
-    <PropertyGroup>
-        <UpxSemaphorePath>$(IntermediateOutputPath)upx.semaphore</UpxSemaphorePath>
-    </PropertyGroup>
-
-    <Target Name="UpxCompress"
-            Condition="'$(PublishAotCompressed)' != 'false'"
-            AfterTargets="LinkNative"
-            Inputs="$(NativeBinary)"
-            Outputs="$(UpxSemaphorePath)">
-
-        <Exec Command="upx -1 &quot;$(NativeBinary)&quot;" />
-
-        <Touch Files="$(UpxSemaphorePath)" AlwaysCreate="true" />
-    </Target>
-
-    <Target Name="Chmod" AfterTargets="LinkNative" BeforeTargets="UpxCompress" Condition="$(RuntimeIdentifier.Contains('linux')) and $([MSBuild]::IsOSPlatform('Linux'))" Inputs="$(NativeBinary)" Outputs="$(NativeBinary).chmod">
-        <Exec Command="chmod +x &quot;$(NativeBinary)&quot;" IgnoreExitCode="false" />
-    </Target>
 </Project>
