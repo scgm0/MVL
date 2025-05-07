@@ -1,0 +1,54 @@
+[gd_scene load_steps=8 format=3 uid="uid://8k1twti5t7jp"]
+
+[ext_resource type="PackedScene" uid="uid://bu4hwijkbc8sm" path="res://Src/UI/Window/base_window.tscn" id="1_f17ae"]
+[ext_resource type="Script" uid="uid://cl5eek362aegu" path="res://Src/UI/Window/ApiModReleasesWindow.cs" id="2_4m0nh"]
+[ext_resource type="Script" uid="uid://bgqglerkcylxx" path="res://addons/SmoothScroll/SmoothScrollContainer.gd" id="3_jb7f0"]
+[ext_resource type="Script" uid="uid://b7h0k2h2qwlqv" path="res://addons/SmoothScroll/scroll_damper/expo_scroll_damper.gd" id="4_xyogq"]
+[ext_resource type="PackedScene" uid="uid://bn4c1jkcya1ys" path="res://Src/UI/Item/api_mod_release_item.tscn" id="5_jb7f0"]
+
+[sub_resource type="Resource" id="Resource_711ho"]
+script = ExtResource("4_xyogq")
+friction = 4.0
+minimum_velocity = 0.4
+rebound_strength = 7.0
+
+[sub_resource type="Resource" id="Resource_fkd44"]
+script = ExtResource("4_xyogq")
+friction = 4.0
+minimum_velocity = 0.4
+rebound_strength = 7.0
+
+[node name="ApiModReleasesWindow" node_paths=PackedStringArray("_apiModReleaseItemsContainer") instance=ExtResource("1_f17ae")]
+script = ExtResource("2_4m0nh")
+_apiModReleaseItemScene = ExtResource("5_jb7f0")
+_apiModReleaseItemsContainer = NodePath("PanelContainer/VBoxContainer/MarginContainer/SmoothScrollContainer/MarginContainer/VBoxContainer")
+
+[node name="BackBufferCopy" parent="." index="0"]
+copy_mode = 0
+
+[node name="Label" parent="PanelContainer/VBoxContainer" index="0"]
+text = "选择要下载的模组版本"
+
+[node name="MarginContainer" type="MarginContainer" parent="PanelContainer/VBoxContainer" index="2"]
+layout_mode = 2
+
+[node name="SmoothScrollContainer" type="ScrollContainer" parent="PanelContainer/VBoxContainer/MarginContainer" index="0"]
+custom_minimum_size = Vector2(500, 350)
+layout_mode = 2
+horizontal_scroll_mode = 0
+script = ExtResource("3_jb7f0")
+wheel_scroll_damper = SubResource("Resource_711ho")
+dragging_scroll_damper = SubResource("Resource_fkd44")
+allow_horizontal_scroll = false
+metadata/_custom_type_script = "uid://bgqglerkcylxx"
+
+[node name="MarginContainer" type="MarginContainer" parent="PanelContainer/VBoxContainer/MarginContainer/SmoothScrollContainer" index="1"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/margin_right = 4
+
+[node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer/VBoxContainer/MarginContainer/SmoothScrollContainer/MarginContainer" index="0"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 12

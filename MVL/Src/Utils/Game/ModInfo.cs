@@ -108,8 +108,8 @@ public record ModInfo : IComparable<ModInfo> {
 
 		for (var index = 0; index < str.Length; ++index) {
 			var ch = str[index];
-			var num = ch < 'a' ? 0 : (ch <= 'z' ? 1 : 0);
-			var flag = ch >= '0' && ch <= '9';
+			var num = ch < 'a' ? 0 : ch <= 'z' ? 1 : 0;
+			var flag = ch is >= '0' and <= '9';
 			if (num == 0 && (!flag || index == 0))
 				return false;
 		}
