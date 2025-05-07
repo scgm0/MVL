@@ -1,9 +1,10 @@
-[gd_scene load_steps=17 format=3 uid="uid://bf8v1y2ikmx0h"]
+[gd_scene load_steps=18 format=3 uid="uid://bf8v1y2ikmx0h"]
 
 [ext_resource type="PackedScene" uid="uid://bu4hwijkbc8sm" path="res://Src/UI/Window/base_window.tscn" id="1_s26qc"]
 [ext_resource type="Script" uid="uid://bgqglerkcylxx" path="res://addons/SmoothScroll/SmoothScrollContainer.gd" id="2_d71qf"]
 [ext_resource type="Script" uid="uid://cpactxkkvxq3u" path="res://Src/UI/Window/ModpackModManagementWindow.cs" id="2_mbxli"]
 [ext_resource type="Script" uid="uid://b7h0k2h2qwlqv" path="res://addons/SmoothScroll/scroll_damper/expo_scroll_damper.gd" id="3_mbxli"]
+[ext_resource type="PackedScene" uid="uid://8k1twti5t7jp" path="res://Src/UI/Window/api_mod_releases_window.tscn" id="3_o3mfg"]
 [ext_resource type="Script" uid="uid://bk3tot6c35bwu" path="res://Src/Utils/IconTexture2D.cs" id="4_vsdyd"]
 [ext_resource type="PackedScene" uid="uid://ud2mx48036m8" path="res://Src/UI/Item/mod_info_item.tscn" id="5_mbxli"]
 [ext_resource type="Shader" uid="uid://bw4cstfk8udci" path="res://Assets/Shader/blur.gdshader" id="6_0flki"]
@@ -69,13 +70,15 @@ expand_margin_top = 4.0
 expand_margin_right = 4.0
 expand_margin_bottom = 4.0
 
-[node name="ModpackModManagementWindow" node_paths=PackedStringArray("_searchInput", "_searchButton", "_updateInfoButton", "_syncFileButton", "_scrollContainer", "_modInfoItemsContainer", "_loadingContainer") instance=ExtResource("1_s26qc")]
+[node name="ModpackModManagementWindow" node_paths=PackedStringArray("_searchInput", "_searchButton", "_updateInfoButton", "_syncFileButton", "_downloadButton", "_scrollContainer", "_modInfoItemsContainer", "_loadingContainer") instance=ExtResource("1_s26qc")]
 script = ExtResource("2_mbxli")
+_apiModReleasesWindowScene = ExtResource("3_o3mfg")
 _modInfoItemScene = ExtResource("5_mbxli")
 _searchInput = NodePath("PanelContainer/VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer/HBoxContainer/LineEdit")
 _searchButton = NodePath("PanelContainer/VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer/HBoxContainer/Button")
 _updateInfoButton = NodePath("PanelContainer/VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer/HBoxContainer2/Button2")
 _syncFileButton = NodePath("PanelContainer/VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer/HBoxContainer2/Button")
+_downloadButton = NodePath("PanelContainer/VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer/HBoxContainer2/Button3")
 _scrollContainer = NodePath("PanelContainer/VBoxContainer/MarginContainer/VBoxContainer/SmoothScrollContainer")
 _modInfoItemsContainer = NodePath("PanelContainer/VBoxContainer/MarginContainer/VBoxContainer/SmoothScrollContainer/MarginContainer/VBoxContainer")
 _loadingContainer = NodePath("PanelContainer/VBoxContainer/MarginContainer/Control")

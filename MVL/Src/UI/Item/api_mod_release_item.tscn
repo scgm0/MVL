@@ -27,7 +27,7 @@ IconName = "download-outline"
 IconSize = 24
 metadata/_custom_type_script = "uid://bk3tot6c35bwu"
 
-[node name="ApiModReleaseItem" type="PanelContainer" node_paths=PackedStringArray("_modName", "_version", "_downloadButton", "_tagsContainer", "_progressBar")]
+[node name="ApiModReleaseItem" type="PanelContainer" node_paths=PackedStringArray("_modName", "_version", "_downloadButton", "_checkBox", "_tagsContainer", "_progressBar")]
 anchors_preset = 10
 anchor_right = 1.0
 offset_bottom = 56.0
@@ -38,6 +38,7 @@ script = ExtResource("1_hdxw4")
 _modName = NodePath("HBoxContainer/VBoxContainer/HBoxContainer/Label")
 _version = NodePath("HBoxContainer/VBoxContainer/HBoxContainer/Label2")
 _downloadButton = NodePath("HBoxContainer/Button")
+_checkBox = NodePath("HBoxContainer/CheckBox")
 _tagsContainer = NodePath("HBoxContainer/VBoxContainer/HFlowContainer")
 _progressBar = NodePath("HBoxContainer/VBoxContainer/ProgressBar")
 
@@ -80,3 +81,7 @@ size_flags_horizontal = 4
 mouse_filter = 1
 icon = SubResource("Texture2D_yort3")
 flat = true
+
+[node name="CheckBox" type="CheckBox" parent="HBoxContainer"]
+visible = false
+layout_mode = 2

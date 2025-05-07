@@ -1,3 +1,6 @@
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 using Godot;
 using MVL.UI.Item;
 
@@ -12,14 +15,36 @@ public partial class ApiModReleasesWindow : BaseWindow {
 
 	public ModInfoItem? ModInfoItem { get; set; }
 
+	public IEnumerable<ModInfoItem>? AutoUpdateModInfoItems { get; set; }
+
 	public override void _Ready() {
 		base._Ready();
 
-		if (ModInfoItem?.ApiModInfo is not null) {
-			UpdateApiModInfo();
+		CancelButton!.Pressed += CancelButtonOnPressed;
+		OkButton!.Pressed += OkButtonOnPressed;
+		UpdateApiModInfo();
+	}
+
+	private async void OkButtonOnPressed() {
+		OkButton!.Disabled = true;
+		var tasks = new List<Task>();
+		foreach (var child in _apiModReleaseItemsContainer!.GetChildren()) {
+			if (!IsInstanceValid(this)) {
+				return;
+			}
+
+			if (child is ApiModReleaseItem { IsChecked: true } apiModReleaseItem) {
+				tasks.Add(apiModReleaseItem.Download());
+			}
 		}
 
-		CancelButton!.Pressed += CancelButtonOnPressed;
+		await Task.WhenAll(tasks);
+		if (!IsInstanceValid(this)) {
+			return;
+		}
+
+		OkButton!.Disabled = false;
+		UpdateApiModInfo();
 	}
 
 	public void UpdateApiModInfo() {
@@ -27,12 +52,27 @@ public partial class ApiModReleasesWindow : BaseWindow {
 			child.QueueFree();
 		}
 
-		foreach (var apiModRelease in ModInfoItem!.ApiModInfo!.Releases) {
-			var apiModReleaseItem = _apiModReleaseItemScene!.Instantiate<ApiModReleaseItem>();
-			apiModReleaseItem.Window = this;
-			apiModReleaseItem.ModInfo = ModInfoItem.Mod;
-			apiModReleaseItem.ApiModRelease = apiModRelease;
-			_apiModReleaseItemsContainer!.AddChild(apiModReleaseItem);
+		if (ModInfoItem != null) {
+			OkButton?.Hide();
+			foreach (var apiModRelease in ModInfoItem.ApiModInfo!.Releases) {
+				var apiModReleaseItem = _apiModReleaseItemScene!.Instantiate<ApiModReleaseItem>();
+				apiModReleaseItem.Window = this;
+				apiModReleaseItem.ModInfo = ModInfoItem.Mod;
+				apiModReleaseItem.ApiModRelease = apiModRelease;
+				_apiModReleaseItemsContainer!.AddChild(apiModReleaseItem);
+			}
+		}
+
+		if (AutoUpdateModInfoItems != null) {
+			OkButton?.Show();
+			foreach (var modInfoItem in AutoUpdateModInfoItems) {
+				var apiModReleaseItem = _apiModReleaseItemScene!.Instantiate<ApiModReleaseItem>();
+				apiModReleaseItem.Window = this;
+				apiModReleaseItem.ModInfo = modInfoItem.Mod;
+				apiModReleaseItem.ApiModRelease = modInfoItem.ApiModRelease;
+				apiModReleaseItem.IsChecked = true;
+				_apiModReleaseItemsContainer!.AddChild(apiModReleaseItem);
+			}
 		}
 	}
 
@@ -40,8 +80,13 @@ public partial class ApiModReleasesWindow : BaseWindow {
 		if (ModInfoItem is not null) {
 			ModInfoItem.Mod = apiModReleaseItem.ModInfo;
 			await ModInfoItem.UpdateApiModInfo();
+			UpdateApiModInfo();
 		}
 
-		UpdateApiModInfo();
+		if (AutoUpdateModInfoItems is not null) {
+			var modInfoItem = AutoUpdateModInfoItems.First(m => m.Mod?.ModId == apiModReleaseItem.ModInfo?.ModId);
+			modInfoItem.Mod = apiModReleaseItem.ModInfo;
+			await modInfoItem.UpdateApiModInfo();
+		}
 	}
 }

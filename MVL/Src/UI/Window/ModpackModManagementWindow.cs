@@ -12,6 +12,9 @@ namespace MVL.UI.Window;
 
 public partial class ModpackModManagementWindow : BaseWindow {
 	[Export]
+	private PackedScene? _apiModReleasesWindowScene;
+
+	[Export]
 	private PackedScene? _modInfoItemScene;
 
 	[Export]
@@ -27,6 +30,9 @@ public partial class ModpackModManagementWindow : BaseWindow {
 	private Button? _syncFileButton;
 
 	[Export]
+	private Button? _downloadButton;
+
+	[Export]
 	private ScrollContainer? _scrollContainer;
 
 	[Export]
@@ -37,12 +43,16 @@ public partial class ModpackModManagementWindow : BaseWindow {
 
 	public ModpackItem? ModpackItem { get; set; }
 
+	private readonly List<ModInfoItem> _autoModInfoItem = [];
+
 	public override void _Ready() {
 		base._Ready();
 		_modInfoItemScene.NotNull();
 		_searchInput.NotNull();
 		_searchButton.NotNull();
 		_updateInfoButton.NotNull();
+		_syncFileButton.NotNull();
+		_downloadButton.NotNull();
 		_modInfoItemsContainer.NotNull();
 		_loadingContainer.NotNull();
 
@@ -50,6 +60,15 @@ public partial class ModpackModManagementWindow : BaseWindow {
 		_searchButton.Pressed += SearchButtonOnPressed;
 		_updateInfoButton.Pressed += UpdateInfoButtonOnPressed;
 		_syncFileButton.Pressed += SyncFileButtonOnPressed;
+		_downloadButton.Pressed += DownloadButtonOnPressed;
+	}
+
+	private async void DownloadButtonOnPressed() {
+		var apiModReleasesWindow = _apiModReleasesWindowScene!.Instantiate<ApiModReleasesWindow>();
+		apiModReleasesWindow.AutoUpdateModInfoItems = _autoModInfoItem;
+		apiModReleasesWindow.Hidden += apiModReleasesWindow.QueueFree;
+		Main.Instance?.AddChild(apiModReleasesWindow);
+		await apiModReleasesWindow.Show();
 	}
 
 	private async void SyncFileButtonOnPressed() {
@@ -58,13 +77,16 @@ public partial class ModpackModManagementWindow : BaseWindow {
 	}
 
 	private async void UpdateInfoButtonOnPressed() {
+		_downloadButton!.Disabled = true;
 		_loadingContainer!.Show();
 		List<Task> tasks = [];
-		tasks.AddRange(
-			from ModInfoItem? modInfoItem in _modInfoItemsContainer!.GetChildren()
-				.TakeWhile(child => Visible && IsInstanceValid(this))
-			select modInfoItem.UpdateApiModInfo());
+		tasks.AddRange(_modInfoItemsContainer!.GetChildren()
+			.Cast<ModInfoItem>()
+			.TakeWhile(modInfoItem => modInfoItem.Visible && IsInstanceValid(this))
+			.Select(modInfoItem => modInfoItem.UpdateApiModInfo()));
+
 		await Task.WhenAll(tasks);
+
 		if (IsInstanceValid(this)) {
 			_loadingContainer.Hide();
 		}
@@ -106,6 +128,8 @@ public partial class ModpackModManagementWindow : BaseWindow {
 	}
 
 	public async void ShowList(bool updateApiModInfo = false) {
+		_downloadButton!.Disabled = true;
+
 		foreach (var child in _modInfoItemsContainer!.GetChildren()) {
 			child.QueueFree();
 		}
@@ -129,6 +153,7 @@ public partial class ModpackModManagementWindow : BaseWindow {
 			modInfoItem.Window = this;
 			modInfoItem.Mod = modpackConfigMod;
 			modInfoItem.Modulate = Colors.Transparent;
+			modInfoItem.HasAutoUpdate += ModInfoItemOnHasAutoUpdate;
 
 			_modInfoItemsContainer!.AddChild(modInfoItem);
 			var tween = modInfoItem.CreateTween();
@@ -147,6 +172,15 @@ public partial class ModpackModManagementWindow : BaseWindow {
 		if (IsInstanceValid(this)) {
 			_loadingContainer.Hide();
 		}
+	}
+
+	private void ModInfoItemOnHasAutoUpdate(ModInfoItem modInfoItem) {
+		switch (modInfoItem.CanUpdate) {
+			case true when !_autoModInfoItem.Contains(modInfoItem): _autoModInfoItem.Add(modInfoItem); break;
+			case false: _autoModInfoItem.Remove(modInfoItem); break;
+		}
+
+		_downloadButton!.Disabled = _autoModInfoItem.Count == 0;
 	}
 
 	public async void UpdateApiModInfo() {

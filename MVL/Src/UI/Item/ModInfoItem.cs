@@ -63,6 +63,8 @@ public partial class ModInfoItem : PanelContainer {
 
 	public bool CanUpdate { get; set; }
 
+	public event Action<ModInfoItem>? HasAutoUpdate;
+
 	public override void _Ready() {
 		_icon.NotNull();
 		ModName.NotNull();
@@ -170,6 +172,9 @@ public partial class ModInfoItem : PanelContainer {
 		_releaseButton!.Disabled = true;
 		_updateButton!.Disabled = true;
 		_updateButton!.Modulate = Colors.White;
+		HasNewVersion = false;
+		CanUpdate = false;
+		HasAutoUpdate?.Invoke(this);
 
 		await Task.Run(async () => {
 			if (!string.IsNullOrWhiteSpace(Mod?.ModId)) {
@@ -230,6 +235,7 @@ public partial class ModInfoItem : PanelContainer {
 						if (!IsInstanceValid(this)) return;
 						_updateButton!.Disabled = false;
 						_updateButton!.Modulate = Colors.Green;
+						HasAutoUpdate?.Invoke(this);
 					},
 					null);
 				return;
