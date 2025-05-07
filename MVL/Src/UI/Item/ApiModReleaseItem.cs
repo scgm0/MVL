@@ -55,7 +55,7 @@ public partial class ApiModReleaseItem : PanelContainer {
 		}
 
 		_downloadButton!.Modulate = Colors.DarkRed;
-		_downloadButton.TooltipText = "高于整合包的游戏版本，不应下载";
+		_downloadButton.TooltipText = "兼容的游戏版本高于整合包游戏版本，不应下载";
 
 		foreach (var child in _tagsContainer!.GetChildren()) {
 			child.QueueFree();
@@ -69,7 +69,7 @@ public partial class ApiModReleaseItem : PanelContainer {
 
 			if (GameVersion.ComparerVersion(ModInfo.ModpackConfig!.Version!.Value, new(tag)) == 0) {
 				_downloadButton.Modulate = Colors.Green;
-				_downloadButton.TooltipText = "适配整合包的游戏版本，可以使用";
+				_downloadButton.TooltipText = "兼容的游戏版本包含整合包游戏版本，可以使用";
 				label.Modulate = Colors.Green;
 			} else if (GameVersion.ComparerVersion(ModInfo.ModpackConfig!.Version!.Value, new(tag)) > 0) {
 				label.Modulate = Colors.DarkSeaGreen;
@@ -78,7 +78,7 @@ public partial class ApiModReleaseItem : PanelContainer {
 				}
 
 				_downloadButton.Modulate = Colors.DarkSeaGreen;
-				_downloadButton.TooltipText = "低于整合包的游戏版本，谨慎下载";
+				_downloadButton.TooltipText = "兼容的游戏版本低于整合包游戏版本，可能过时";
 			}
 		}
 	}
