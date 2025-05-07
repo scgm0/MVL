@@ -76,7 +76,7 @@ public partial class ApiModReleaseItem : PanelContainer {
 
 	public void UpdateInfo() {
 		_modName!.Text = ModInfo!.Name;
-		_version!.Text = ApiModRelease!.ModVersion;
+		_version!.Text = _isChecked ? $"{ModInfo.Version} > {ApiModRelease!.ModVersion}" : ApiModRelease!.ModVersion;
 
 		try {
 			_downloadButton!.Disabled = SemVer.Parse(ApiModRelease.ModVersion) == SemVer.Parse(ModInfo.Version);
