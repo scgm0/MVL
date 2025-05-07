@@ -102,8 +102,17 @@ public partial class ModInfoItem : PanelContainer {
 		confirmationWindow.Hidden += confirmationWindow.QueueFree;
 		confirmationWindow.Confirm += async () => {
 			await confirmationWindow.Hide();
+			CanUpdate = false;
+			HasAutoUpdate?.Invoke(this);
 			File.Delete(Mod!.ModPath);
-			QueueFree();
+			await Window!.ModpackItem!.UpdateMods();
+			var newMod = Window!.ModpackItem!.ModpackConfig!.Mods.Values.FirstOrDefault(x => x.ModId == Mod.ModId);
+			if (newMod is not null) {
+				Mod = newMod;
+				await UpdateApiModInfo();
+			} else {
+				QueueFree();
+			}
 		};
 		Main.Instance?.AddChild(confirmationWindow);
 		_ = confirmationWindow.Show();
@@ -172,6 +181,8 @@ public partial class ModInfoItem : PanelContainer {
 		_releaseButton!.Disabled = true;
 		_updateButton!.Disabled = true;
 		_updateButton!.Modulate = Colors.White;
+		ApiModInfo = null;
+		ApiModRelease = null;
 		HasNewVersion = false;
 		CanUpdate = false;
 		HasAutoUpdate?.Invoke(this);

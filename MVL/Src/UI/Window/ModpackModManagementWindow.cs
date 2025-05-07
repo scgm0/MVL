@@ -95,7 +95,7 @@ public partial class ModpackModManagementWindow : BaseWindow {
 	private async void SearchButtonOnPressed() {
 		var searchString = _searchInput!.Text;
 		var newList =
-			SortNodesByNameSimilarityWithPrefixPriority(_modInfoItemsContainer!.GetChildren().Select(n => (ModInfoItem)n),
+			SortNodesByNameSimilarityWithPrefixPriority(_modInfoItemsContainer!.GetChildren().Cast<ModInfoItem>(),
 				searchString);
 
 		foreach (var child in _modInfoItemsContainer!.GetChildren()) {
@@ -192,28 +192,23 @@ public partial class ModpackModManagementWindow : BaseWindow {
 		IEnumerable<ModInfoItem> nodesToSort,
 		string searchString) {
 		if (string.IsNullOrEmpty(searchString)) {
-			return nodesToSort.Select(item => {
+			return nodesToSort.OrderBy(item => {
 				item.Show();
-				return item;
-			}).OrderBy(m => m.Mod!.ModId);
+				return item.Mod!.ModId;
+			});
 		}
 
-		var searchLower = searchString.ToLowerInvariant();
-
 		var sortedNodes = nodesToSort
-			.OrderBy(item => !item.ModName!.Text.StartsWith(searchLower, StringComparison.InvariantCultureIgnoreCase))
-			.Select(item => {
-				var ratio = Fuzz.PartialRatio(item.ModName!.Text.ToLowerInvariant(), searchLower);
+			.OrderByDescending(item => {
+				var ratio = Fuzz.PartialRatio(item.ModName!.Text, searchString);
 				if (ratio <= 0) {
 					item.Hide();
 				} else {
 					item.Show();
 				}
 
-				return (item, ratio);
-			})
-			.OrderByDescending(v => v.ratio)
-			.Select(v => v.item);
+				return ratio;
+			});
 
 		return sortedNodes;
 	}
