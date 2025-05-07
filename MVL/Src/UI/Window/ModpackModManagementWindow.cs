@@ -127,7 +127,7 @@ public partial class ModpackModManagementWindow : BaseWindow {
 		}
 	}
 
-	public async void ShowList(bool updateApiModInfo = false) {
+	public async void ShowList() {
 		_downloadButton!.Disabled = true;
 
 		foreach (var child in _modInfoItemsContainer!.GetChildren()) {
@@ -142,7 +142,6 @@ public partial class ModpackModManagementWindow : BaseWindow {
 		_loadingContainer!.Show();
 
 		var list = ModpackItem.ModpackConfig.Mods.Values.OrderBy(m => m.ModId);
-		List<Task> tasks = [];
 
 		foreach (var modpackConfigMod in list) {
 			if (!Visible) {
@@ -159,14 +158,6 @@ public partial class ModpackModManagementWindow : BaseWindow {
 			var tween = modInfoItem.CreateTween();
 			tween.TweenProperty(modInfoItem, "modulate:a", 1, 0.025f);
 			await ToSignal(tween, Tween.SignalName.Finished);
-
-			if (updateApiModInfo) {
-				tasks.Add(modInfoItem.UpdateApiModInfo());
-			}
-		}
-
-		if (updateApiModInfo) {
-			await Task.WhenAll(tasks);
 		}
 
 		if (IsInstanceValid(this)) {
