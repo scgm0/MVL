@@ -33,9 +33,12 @@ public partial class ApiModReleasesWindow : BaseWindow {
 				return;
 			}
 
-			if (child is ApiModReleaseItem { IsChecked: true } apiModReleaseItem) {
-				tasks.Add(apiModReleaseItem.Download());
+			if (child is not ApiModReleaseItem { IsChecked: true } apiModReleaseItem) {
+				continue;
 			}
+
+			apiModReleaseItem.Disable();
+			tasks.Add(apiModReleaseItem.Download());
 		}
 
 		await Task.WhenAll(tasks);

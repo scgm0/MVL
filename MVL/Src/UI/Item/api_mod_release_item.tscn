@@ -5,10 +5,8 @@
 [ext_resource type="FontFile" uid="uid://d0e3mw7yvdf0v" path="res://Assets/Font/HarmonyOS_Sans_SC_Regular.ttf" id="2_jxyip"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_iy5mg"]
-content_margin_left = 8.0
-content_margin_top = 8.0
-content_margin_right = 8.0
-content_margin_bottom = 8.0
+content_margin_left = 4.0
+content_margin_right = 4.0
 bg_color = Color(0.1, 0.1, 0.1, 0.6)
 corner_radius_top_left = 6
 corner_radius_top_right = 6
@@ -35,53 +33,60 @@ grow_horizontal = 2
 mouse_filter = 1
 theme_override_styles/panel = SubResource("StyleBoxFlat_iy5mg")
 script = ExtResource("1_hdxw4")
-_modName = NodePath("HBoxContainer/VBoxContainer/HBoxContainer/Label")
-_version = NodePath("HBoxContainer/VBoxContainer/HBoxContainer/Label2")
-_downloadButton = NodePath("HBoxContainer/Button")
-_checkBox = NodePath("HBoxContainer/CheckBox")
-_tagsContainer = NodePath("HBoxContainer/VBoxContainer/HFlowContainer")
-_progressBar = NodePath("HBoxContainer/VBoxContainer/ProgressBar")
+_modName = NodePath("MarginContainer/HBoxContainer/VBoxContainer/HBoxContainer/Label")
+_version = NodePath("MarginContainer/HBoxContainer/VBoxContainer/HBoxContainer/Label2")
+_downloadButton = NodePath("MarginContainer/HBoxContainer/Button")
+_checkBox = NodePath("MarginContainer/HBoxContainer/CheckBox")
+_tagsContainer = NodePath("MarginContainer/HBoxContainer/VBoxContainer/HFlowContainer")
+_progressBar = NodePath("ProgressBar")
 
-[node name="HBoxContainer" type="HBoxContainer" parent="."]
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 2
+theme_override_constants/margin_left = 4
+theme_override_constants/margin_top = 8
+theme_override_constants/margin_right = 4
+theme_override_constants/margin_bottom = 8
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer"]
 layout_mode = 2
 
-[node name="VBoxContainer" type="VBoxContainer" parent="HBoxContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="HBoxContainer" type="HBoxContainer" parent="HBoxContainer/VBoxContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/HBoxContainer/VBoxContainer"]
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="Label" type="Label" parent="HBoxContainer/VBoxContainer/HBoxContainer"]
+[node name="Label" type="Label" parent="MarginContainer/HBoxContainer/VBoxContainer/HBoxContainer"]
 layout_mode = 2
 mouse_filter = 1
 theme_override_fonts/font = SubResource("FontVariation_k8tgn")
 text = "模组名称"
 
-[node name="Label2" type="Label" parent="HBoxContainer/VBoxContainer/HBoxContainer"]
+[node name="Label2" type="Label" parent="MarginContainer/HBoxContainer/VBoxContainer/HBoxContainer"]
 layout_mode = 2
 mouse_filter = 1
 theme_override_font_sizes/font_size = 12
 text = "模组版本"
 
-[node name="HFlowContainer" type="HFlowContainer" parent="HBoxContainer/VBoxContainer"]
+[node name="HFlowContainer" type="HFlowContainer" parent="MarginContainer/HBoxContainer/VBoxContainer"]
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="ProgressBar" type="ProgressBar" parent="HBoxContainer/VBoxContainer"]
-visible = false
-layout_mode = 2
-size_flags_vertical = 8
-show_percentage = false
-
-[node name="Button" type="Button" parent="HBoxContainer"]
+[node name="Button" type="Button" parent="MarginContainer/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 4
 mouse_filter = 1
 icon = SubResource("Texture2D_yort3")
 flat = true
 
-[node name="CheckBox" type="CheckBox" parent="HBoxContainer"]
+[node name="CheckBox" type="CheckBox" parent="MarginContainer/HBoxContainer"]
 visible = false
 layout_mode = 2
+
+[node name="ProgressBar" type="ProgressBar" parent="."]
+visible = false
+layout_mode = 2
+size_flags_vertical = 8
+show_percentage = false

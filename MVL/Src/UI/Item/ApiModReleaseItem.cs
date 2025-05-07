@@ -32,6 +32,7 @@ public partial class ApiModReleaseItem : PanelContainer {
 	private ProgressBar? _progressBar;
 
 	private bool _isChecked;
+	private IDownload? _download;
 
 	public ModInfo? ModInfo { get; set; }
 	public ApiModRelease? ApiModRelease { get; set; }
@@ -70,9 +71,14 @@ public partial class ApiModReleaseItem : PanelContainer {
 		UpdateInfo();
 	}
 
-	private async void DownloadButtonOnPressed() {
-		await Download();
+	public void Disable() {
+		_downloadButton!.Disabled = true;
+		_checkBox!.Disabled = true;
 	}
+
+	public override void _ExitTree() { _download?.Stop(); }
+
+	private async void DownloadButtonOnPressed() { await Download(); }
 
 	public void UpdateInfo() {
 		_modName!.Text = ModInfo!.Name;
@@ -121,14 +127,18 @@ public partial class ApiModReleaseItem : PanelContainer {
 	}
 
 	public async Task Download() {
-		_downloadButton!.Disabled = true;
+		foreach (var child in GetParent().GetChildren()) {
+			var item = child as ApiModReleaseItem;
+			item?.Disable();
+		}
+
 		_checkBox!.Disabled = _downloadButton!.Disabled;
 		_progressBar!.Show();
 		GD.Print($"下载 {ApiModRelease!.FileName}...");
 
 		using var downloadTmp = DirAccess.CreateTemp("MVL_Download");
 		var downloadDir = downloadTmp.GetCurrentDir();
-		var download = DownloadBuilder.New()
+		_download = DownloadBuilder.New()
 			.WithUrl(ApiModRelease!.MainFile)
 			.WithDirectory(downloadDir)
 			.WithFileName(ApiModRelease.FileName)
@@ -143,11 +153,16 @@ public partial class ApiModReleaseItem : PanelContainer {
 				}
 			})
 			.Build();
-		download.DownloadProgressChanged += (_, args) => {
+		_download.DownloadProgressChanged += (_, args) => {
+			if (!IsInstanceValid(this)) {
+				return;
+			}
+
 			_progressBar.CallDeferred(Range.MethodName.SetValue, args.ProgressPercentage);
 		};
-		await download.StartAsync();
-		download.Dispose();
+		await _download.StartAsync();
+		_download.Dispose();
+		_download = null;
 
 		if (!IsInstanceValid(this)) {
 			return;
@@ -160,7 +175,6 @@ public partial class ApiModReleaseItem : PanelContainer {
 		var mod = ModInfo.FromZip(path);
 		if (mod == null) {
 			_progressBar.Hide();
-			_downloadButton.Disabled = false;
 			return;
 		}
 
