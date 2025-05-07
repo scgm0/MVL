@@ -53,10 +53,6 @@ public partial class ModpackModManagementWindow : BaseWindow {
 	}
 
 	private async void SearchButtonOnPressed() {
-		if (string.IsNullOrEmpty(_searchInput!.Text)) {
-			ShowList();
-		}
-
 		var searchString = _searchInput!.Text;
 		var newList =
 			SortNodesByNameSimilarityWithPrefixPriority(_modInfoItemsContainer!.GetChildren().Select(n => (ModInfoItem)n),
@@ -152,7 +148,10 @@ public partial class ModpackModManagementWindow : BaseWindow {
 		IEnumerable<ModInfoItem> nodesToSort,
 		string searchString) {
 		if (string.IsNullOrEmpty(searchString)) {
-			return nodesToSort;
+			return nodesToSort.Select(item => {
+				item.Show();
+				return item;
+			}).OrderBy(m => m.Mod!.ModId);
 		}
 
 		var searchLower = searchString.ToLowerInvariant();

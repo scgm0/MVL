@@ -107,7 +107,11 @@ public partial class ModInfoItem : PanelContainer {
 		_ = confirmationWindow.Show();
 	}
 
-	private void WebButtonOnPressed() { Tools.RichTextOpenUrl($"https://mods.vintagestory.at/show/mod/{ApiModInfo!.AssetId}"); }
+	private void WebButtonOnPressed() {
+		Tools.RichTextOpenUrl(ApiModInfo!.UrlAlias is null
+			? $"https://mods.vintagestory.at/show/mod/{ApiModInfo!.AssetId}"
+			: $"https://mods.vintagestory.at/{ApiModInfo.UrlAlias}");
+	}
 
 	private async void UpdateButtonOnPressed() {
 		_updateButton!.Disabled = true;
@@ -168,29 +172,33 @@ public partial class ModInfoItem : PanelContainer {
 		_updateButton!.Modulate = Colors.White;
 
 		await Task.Run(async () => {
-			if (ModInfo.IsValidModId(Mod?.ModId)) {
-				var url = $"https://mods.vintagestory.at/api/mod/{Mod.ModId}";
-				var result = await url.GetStringAsync();
-				var status = JsonSerializer.Deserialize(result, SourceGenerationContext.Default.ApiStatusModInfo);
-				if (status?.StatusCode != "200" || !IsInstanceValid(this)) {
-					return;
+			if (!string.IsNullOrWhiteSpace(Mod?.ModId)) {
+				try {
+					var url = $"https://mods.vintagestory.at/api/mod/{Mod.ModId}";
+					var result = await url.GetStringAsync();
+					var status = JsonSerializer.Deserialize(result, SourceGenerationContext.Default.ApiStatusModInfo);
+					if (status?.StatusCode != "200" || !IsInstanceValid(this)) {
+						return;
+					}
+
+					ApiModInfo = status.Mod!;
+					Dispatcher.SynchronizationContext.Post(_ => {
+							if (ModName == null || !IsInstanceValid(this)) {
+								return;
+							}
+
+							_webButton.Disabled = false;
+							_releaseButton.Disabled = false;
+							ModName.Text = Mod!.Name.Equals(ApiModInfo.Name, StringComparison.Ordinal)
+								? Mod.Name
+								: $"{ApiModInfo.Name} ({Mod.Name})";
+						},
+						null);
+
+					UpdateApiModRelease();
+				} catch (Exception e) {
+					GD.PrintErr(e);
 				}
-
-				ApiModInfo = status.Mod!;
-				Dispatcher.SynchronizationContext.Post(_ => {
-						if (ModName == null || !IsInstanceValid(this)) {
-							return;
-						}
-
-						_webButton.Disabled = false;
-						_releaseButton.Disabled = false;
-						ModName.Text = Mod!.Name.Equals(ApiModInfo.Name, StringComparison.Ordinal)
-							? Mod.Name
-							: $"{ApiModInfo.Name} ({Mod.Name})";
-					},
-					null);
-
-				UpdateApiModRelease();
 			}
 		});
 	}
@@ -226,7 +234,7 @@ public partial class ModInfoItem : PanelContainer {
 					null);
 				return;
 			} catch (Exception e) {
-				GD.PrintErr(e);
+				GD.PrintErr(e.Message);
 			}
 		}
 	}
@@ -240,17 +248,17 @@ public class ApiStatusModInfo {
 public record ApiModInfo {
 	public int ModId { get; init; }
 	public int AssetId { get; init; }
-	public string Name { get; init; }
-	public string Text { get; init; }
-	public string Author { get; init; }
-	public string UrlAlias { get; init; }
-	public string LogoFileName { get; init; }
-	public string LogoFile { get; init; }
-	public string HomePageUrl { get; init; }
-	public string Sourcecodeurl { get; init; }
-	public string TrailerVideoUrl { get; init; }
-	public string IssueTrackerUrl { get; init; }
-	public string WikiUrl { get; init; }
+	public string Name { get; init; } = "";
+	public string Text { get; init; } = "";
+	public string Author { get; init; } = "";
+	public string? UrlAlias { get; init; }
+	public string? LogoFileName { get; init; }
+	public string? LogoFile { get; init; }
+	public string? HomePageUrl { get; init; }
+	public string? Sourcecodeurl { get; init; }
+	public string? TrailerVideoUrl { get; init; }
+	public string? IssueTrackerUrl { get; init; }
+	public string? WikiUrl { get; init; }
 	public int Downloads { get; init; }
 	public int Follows { get; init; }
 	public int TrendingPoints { get; init; }
@@ -259,8 +267,8 @@ public record ApiModInfo {
 	public string Type { get; init; }
 	public DateTimeOffset Created { get; init; }
 	public DateTimeOffset LastModified { get; init; }
-	public string[] Tags { get; init; }
-	public ApiModRelease[] Releases { get; init; }
+	public string[] Tags { get; init; } = [];
+	public ApiModRelease[] Releases { get; init; } = [];
 }
 
 public record ApiModRelease {
