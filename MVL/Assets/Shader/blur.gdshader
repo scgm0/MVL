@@ -27,18 +27,16 @@ const vec2 offsets[9] = vec2[](
 	vec2(-1.0,  1.0), vec2(0.0,  1.0), vec2(1.0,  1.0)
 );
 
-const float scale = 1.0;
-
 float dither(ivec2 pos) {
 	int index = (pos.x & 7) + ((pos.y & 7) << 3);
 	return float(dither_matrix[index]) / 64.0 - 0.5;
 }
 
-vec4 gaussian_mip_blur(sampler2D tex, vec2 uv, vec2 pixel_size, float mip_level) {
+vec4 gaussian_mip_blur(sampler2D tex, vec2 uv, vec2 pixel_size, float target_mip_level, float blur_spread_factor) {
 	vec4 sum = vec4(0.0);
 	for (int i = 0; i < 9; i++) {
-		vec2 sample_uv = uv + offsets[i] * pixel_size * scale;
-		sum += textureLod(tex, sample_uv, mip_level) * weights[i];
+		vec2 sample_uv = uv + offsets[i] * pixel_size * blur_spread_factor;
+		sum += textureLod(tex, sample_uv, target_mip_level) * weights[i];
 	}
 	return sum;
 }
@@ -46,12 +44,18 @@ vec4 gaussian_mip_blur(sampler2D tex, vec2 uv, vec2 pixel_size, float mip_level)
 
 void fragment() {
 	if (lod > 0.0001) {
-		vec4 blurred_color = gaussian_mip_blur(screen_texture, SCREEN_UV, SCREEN_PIXEL_SIZE, lod);
-		vec3 blended_color = mix(COLOR.rgb, blurred_color.rgb, blend);
+		float actual_mip_level = lod * 0.75;
+		float gaussian_kernel_spread = lod / 0.75;
+
+		vec4 blurred_color = gaussian_mip_blur(screen_texture, SCREEN_UV, SCREEN_PIXEL_SIZE, actual_mip_level, gaussian_kernel_spread);
+
+		vec3 blended_color_rgb = mix(COLOR.rgb, blurred_color.rgb, blend);
+
 		ivec2 pos = ivec2(FRAGCOORD.xy);
 		float dither_amount = dither(pos) * 0.00425 * lod;
-		blended_color += dither_amount;
-		COLOR.rgb = blended_color;
+		blended_color_rgb += dither_amount;
+		
+		COLOR.rgb = blended_color_rgb;
 	} else {
 		COLOR = texture(screen_texture, SCREEN_UV);
 	}
