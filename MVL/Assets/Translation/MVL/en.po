@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: 神麤詭末的复古物语启动器\n"
-"PO-Revision-Date: 2025-05-08 11:55+0000\n"
+"PO-Revision-Date: 2025-05-08 12:27+0000\n"
 "Last-Translator: 神麤詭末 <2682963017@qq.com>\n"
 "Language-Team: English <https://hosted.weblate.org/projects/mvl/mvl/en/>\n"
 "Language: en\n"
@@ -309,49 +309,55 @@ msgid "无法登录？检查您的游戏账号"
 msgstr "Can't log in? Check your game account"
 
 msgid "整合包模组管理"
-msgstr ""
+msgstr "Modpack Mod Management"
 
 msgid "输入模组名称"
-msgstr ""
+msgstr "Enter mod name"
 
 msgid "搜索模组"
-msgstr ""
+msgstr "Search mods"
 
 msgid "同步本地模组信息"
-msgstr ""
+msgstr "Synchronize local mod information"
 
 msgid "同步模组在线信息"
-msgstr ""
+msgstr "Synchronized Mod Online Information"
 
 msgid "模组批量更新"
-msgstr ""
+msgstr "Mods batch update"
 
 msgid "关闭"
-msgstr ""
+msgstr "Close"
 
 msgid "选择要下载的模组版本"
-msgstr ""
+msgstr "Select the mod version to download"
 
 msgid "跳转到ModDB网页"
-msgstr ""
+msgstr "Jump to ModDB page"
 
 msgid "更新到最新可用版本"
-msgstr ""
+msgstr "Update to the latest available version"
 
 msgid "查看所有发布版本"
-msgstr ""
+msgstr "View all released versions"
 
 msgid "删除本地模组"
-msgstr ""
+msgstr "Delete the local mod"
 
 msgid "确定要删除 [b]{0}[/b] 吗？"
-msgstr ""
+msgstr "Are you sure you want to delete [b]{0}[/b]?"
 
 msgid "兼容的游戏版本高于整合包游戏版本，游戏不会加载"
 msgstr ""
+"The compatible game version is higher than the modpack's game version, and "
+"the game will not load"
 
 msgid "兼容的游戏版本包含整合包游戏版本，能够安全使用"
 msgstr ""
+"The compatible game versions include modpack's game versions, ensuring safe "
+"usage"
 
 msgid "兼容的游戏版本低于整合包游戏版本，可能已经过时"
 msgstr ""
+"The compatible game version is lower than the modpack's game version and may "
+"be outdated"
