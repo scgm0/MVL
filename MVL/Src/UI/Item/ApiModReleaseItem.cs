@@ -96,6 +96,7 @@ public partial class ApiModReleaseItem : PanelContainer {
 			? $"https://mods.vintagestory.at/show/mod/{ApiModInfo!.AssetId}"
 			: $"https://mods.vintagestory.at/{ApiModInfo.UrlAlias}";
 		_modName!.Text = $"[url={url}]{ApiModInfo!.Name}[/url]";
+		_modName.TooltipText = ApiModRelease!.FileName;
 		_version!.Text = _isChecked ? $"{ModInfo!.Version} > {ApiModRelease!.ModVersion}" : ApiModRelease!.ModVersion;
 		_dateLabel!.Text = ApiModRelease!.Created.ToString("yyyy-MM-dd");
 		_downloadCountLabel!.Text = ApiModRelease!.Downloads.ToString();

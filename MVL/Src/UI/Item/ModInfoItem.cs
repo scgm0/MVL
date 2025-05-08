@@ -75,6 +75,7 @@ public partial class ModInfoItem : PanelContainer {
 
 		_icon!.Texture = Mod?.Icon;
 		ModName!.Text = Mod?.Name;
+		ModName.TooltipText = Mod!.ModPath;
 		_version!.Text = $"{Mod?.ModId}-{Mod?.Version}";
 		_description!.Text = Mod?.Description;
 		_webButton!.Disabled = true;
@@ -173,8 +174,9 @@ public partial class ModInfoItem : PanelContainer {
 	}
 
 	public async Task UpdateApiModInfo() {
-		_icon!.Texture = Mod?.Icon;
-		ModName!.Text = Mod?.Name;
+		_icon!.Texture = Mod!.Icon;
+		ModName!.Text = Mod!.Name;
+		ModName.TooltipText = Mod!.ModPath;
 		_version!.Text = $"{Mod?.ModId}-{Mod?.Version}";
 		_description!.Text = Mod?.Description;
 		_webButton!.Disabled = true;

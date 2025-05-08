@@ -300,3 +300,48 @@ msgstr ""
 
 msgid "整合包模组管理"
 msgstr ""
+
+msgid "输入模组名称"
+msgstr ""
+
+msgid "搜索模组"
+msgstr ""
+
+msgid "同步本地模组信息"
+msgstr ""
+
+msgid "同步模组在线信息"
+msgstr ""
+
+msgid "模组批量更新"
+msgstr ""
+
+msgid "关闭"
+msgstr ""
+
+msgid "选择要下载的模组版本"
+msgstr ""
+
+msgid "跳转到ModDB网页"
+msgstr ""
+
+msgid "更新到最新可用版本"
+msgstr ""
+
+msgid "查看所有发布版本"
+msgstr ""
+
+msgid "删除本地模组"
+msgstr ""
+
+msgid "确定要删除 [b]{0}[/b] 吗？"
+msgstr ""
+
+msgid "兼容的游戏版本高于整合包游戏版本，游戏不会加载"
+msgstr ""
+
+msgid "兼容的游戏版本包含整合包游戏版本，能够安全使用"
+msgstr ""
+
+msgid "兼容的游戏版本低于整合包游戏版本，可能已经过时"
+msgstr ""

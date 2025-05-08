@@ -36,7 +36,7 @@ variation_embolden = 0.8
 resource_local_to_scene = false
 resource_name = ""
 script = ExtResource("4_6yopn")
-IconName = "web"
+IconName = "open-in-new"
 IconSize = 18
 metadata/_custom_type_script = "uid://bk3tot6c35bwu"
 
@@ -169,6 +169,7 @@ columns = 2
 
 [node name="Button" type="Button" parent="MarginContainer/HBoxContainer/GridContainer"]
 layout_mode = 2
+tooltip_text = "跳转到ModDB网页"
 disabled = true
 icon = SubResource("Texture2D_51ssv")
 flat = true
@@ -176,12 +177,14 @@ flat = true
 [node name="Button2" type="Button" parent="MarginContainer/HBoxContainer/GridContainer"]
 layout_mode = 2
 size_flags_horizontal = 8
+tooltip_text = "更新到最新可用版本"
 disabled = true
 icon = SubResource("Texture2D_0y8tf")
 flat = true
 
 [node name="Button3" type="Button" parent="MarginContainer/HBoxContainer/GridContainer"]
 layout_mode = 2
+tooltip_text = "查看所有发布版本"
 disabled = true
 icon = SubResource("Texture2D_sas7r")
 flat = true
@@ -189,6 +192,7 @@ flat = true
 [node name="Button4" type="Button" parent="MarginContainer/HBoxContainer/GridContainer"]
 modulate = Color(1, 0, 0, 1)
 layout_mode = 2
+tooltip_text = "删除本地模组"
 icon = SubResource("Texture2D_6yopn")
 flat = true
 
