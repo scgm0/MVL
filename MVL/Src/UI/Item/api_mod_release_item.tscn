@@ -13,7 +13,7 @@ corner_radius_top_right = 6
 corner_radius_bottom_right = 6
 corner_radius_bottom_left = 6
 
-[sub_resource type="FontVariation" id="FontVariation_k8tgn"]
+[sub_resource type="FontVariation" id="FontVariation_jxyip"]
 base_font = ExtResource("2_jxyip")
 variation_embolden = 0.8
 
@@ -33,7 +33,7 @@ grow_horizontal = 2
 mouse_filter = 1
 theme_override_styles/panel = SubResource("StyleBoxFlat_iy5mg")
 script = ExtResource("1_hdxw4")
-_modName = NodePath("MarginContainer/HBoxContainer/VBoxContainer/HBoxContainer/Label")
+_modName = NodePath("MarginContainer/HBoxContainer/VBoxContainer/HBoxContainer/RichTextLabel")
 _version = NodePath("MarginContainer/HBoxContainer/VBoxContainer/HBoxContainer/Label2")
 _downloadButton = NodePath("MarginContainer/HBoxContainer/Button")
 _checkBox = NodePath("MarginContainer/HBoxContainer/CheckBox")
@@ -58,11 +58,16 @@ size_flags_horizontal = 3
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="Label" type="Label" parent="MarginContainer/HBoxContainer/VBoxContainer/HBoxContainer"]
+[node name="RichTextLabel" type="RichTextLabel" parent="MarginContainer/HBoxContainer/VBoxContainer/HBoxContainer"]
 layout_mode = 2
-mouse_filter = 1
-theme_override_fonts/font = SubResource("FontVariation_k8tgn")
+focus_mode = 2
+theme_override_fonts/normal_font = SubResource("FontVariation_jxyip")
+bbcode_enabled = true
 text = "模组名称"
+fit_content = true
+scroll_active = false
+autowrap_mode = 0
+selection_enabled = true
 
 [node name="Label2" type="Label" parent="MarginContainer/HBoxContainer/VBoxContainer/HBoxContainer"]
 layout_mode = 2

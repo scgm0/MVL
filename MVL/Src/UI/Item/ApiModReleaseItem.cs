@@ -5,6 +5,7 @@ using System.Net;
 using System.Threading.Tasks;
 using Downloader;
 using MVL.UI.Window;
+using MVL.Utils;
 using MVL.Utils.Game;
 using MVL.Utils.Help;
 using Range = Godot.Range;
@@ -14,7 +15,7 @@ namespace MVL.UI.Item;
 public partial class ApiModReleaseItem : PanelContainer {
 
 	[Export]
-	private Label? _modName;
+	private RichTextLabel? _modName;
 
 	[Export]
 	private Label? _version;
@@ -35,6 +36,7 @@ public partial class ApiModReleaseItem : PanelContainer {
 	private IDownload? _download;
 
 	public ModInfo? ModInfo { get; set; }
+	public ApiModInfo? ApiModInfo { get; set; }
 	public ApiModRelease? ApiModRelease { get; set; }
 	public ApiModReleasesWindow? Window { get; set; }
 
@@ -68,6 +70,7 @@ public partial class ApiModReleaseItem : PanelContainer {
 		}
 
 		_downloadButton.Pressed += DownloadButtonOnPressed;
+		_modName.MetaClicked += Tools.RichTextOpenUrl;
 		UpdateInfo();
 	}
 
@@ -81,7 +84,10 @@ public partial class ApiModReleaseItem : PanelContainer {
 	private async void DownloadButtonOnPressed() { await Download(); }
 
 	public void UpdateInfo() {
-		_modName!.Text = ModInfo!.Name;
+		var url = ApiModInfo!.UrlAlias is null
+			? $"https://mods.vintagestory.at/show/mod/{ApiModInfo!.AssetId}"
+			: $"https://mods.vintagestory.at/{ApiModInfo.UrlAlias}";
+		_modName!.Text = $"[url={url}]{ModInfo!.Name}[/url]";
 		_version!.Text = _isChecked ? $"{ModInfo.Version} > {ApiModRelease!.ModVersion}" : ApiModRelease!.ModVersion;
 
 		try {

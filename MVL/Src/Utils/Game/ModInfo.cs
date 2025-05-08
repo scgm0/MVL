@@ -23,7 +23,7 @@ public record ModInfo : IComparable<ModInfo> {
 	}
 
 	public string ModPath { get; set; } = "";
-	public string Version { get; set; } = "0.0.1";
+	public string Version { get; set; } = "1.0.0";
 	public IReadOnlyList<string> Authors { get; set; } = [];
 	public string Description { get; set; } = "";
 
@@ -197,7 +197,7 @@ public record ModInfo : IComparable<ModInfo> {
 						modInfo.ModId = property.Argument.Value?.ToString() ?? string.Empty;
 						break;
 					case "Version":
-						modInfo.Version = property.Argument.Value?.ToString() ?? "0.0.1";
+						modInfo.Version = property.Argument.Value?.ToString() ?? "1.0.0";
 						break;
 				}
 			}

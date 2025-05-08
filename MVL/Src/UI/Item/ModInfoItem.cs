@@ -272,7 +272,7 @@ public record ApiModInfo {
 	public string? LogoFileName { get; init; }
 	public string? LogoFile { get; init; }
 	public string? HomePageUrl { get; init; }
-	public string? Sourcecodeurl { get; init; }
+	public string? SourceCodeUrl { get; init; }
 	public string? TrailerVideoUrl { get; init; }
 	public string? IssueTrackerUrl { get; init; }
 	public string? WikiUrl { get; init; }
@@ -280,8 +280,8 @@ public record ApiModInfo {
 	public int Follows { get; init; }
 	public int TrendingPoints { get; init; }
 	public int Comments { get; init; }
-	public string Side { get; init; }
-	public string Type { get; init; }
+	public string Side { get; init; } = "";
+	public string Type { get; init; } = "";
 	public DateTimeOffset Created { get; init; }
 	public DateTimeOffset LastModified { get; init; }
 	public string[] Tags { get; init; } = [];
@@ -290,13 +290,13 @@ public record ApiModInfo {
 
 public record ApiModRelease {
 	public int ReleaseId { get; init; }
-	public string MainFile { get; init; }
-	public string FileName { get; init; }
+	public string MainFile { get; init; } = "";
+	public string FileName { get; init; } = "";
 	public int FileId { get; init; }
 	public int Downloads { get; init; }
-	public string[] Tags { get; init; }
-	public string ModIdStr { get; init; }
-	public string ModVersion { get; init; }
+	public string[] Tags { get; init; } = [];
+	public string ModIdStr { get; init; } = "";
+	public string ModVersion { get; init; } = "1.0.0";
 	public DateTimeOffset Created { get; init; }
 }
 

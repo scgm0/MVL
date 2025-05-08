@@ -61,6 +61,7 @@ public partial class ApiModReleasesWindow : BaseWindow {
 				var apiModReleaseItem = _apiModReleaseItemScene!.Instantiate<ApiModReleaseItem>();
 				apiModReleaseItem.Window = this;
 				apiModReleaseItem.ModInfo = ModInfoItem.Mod;
+				apiModReleaseItem.ApiModInfo = ModInfoItem.ApiModInfo;
 				apiModReleaseItem.ApiModRelease = apiModRelease;
 				_apiModReleaseItemsContainer!.AddChild(apiModReleaseItem);
 			}
@@ -72,6 +73,7 @@ public partial class ApiModReleasesWindow : BaseWindow {
 				var apiModReleaseItem = _apiModReleaseItemScene!.Instantiate<ApiModReleaseItem>();
 				apiModReleaseItem.Window = this;
 				apiModReleaseItem.ModInfo = modInfoItem.Mod;
+				apiModReleaseItem.ApiModInfo = modInfoItem.ApiModInfo;
 				apiModReleaseItem.ApiModRelease = modInfoItem.ApiModRelease;
 				apiModReleaseItem.IsChecked = true;
 				_apiModReleaseItemsContainer!.AddChild(apiModReleaseItem);
