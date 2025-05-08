@@ -38,7 +38,7 @@ metadata/_custom_type_script = "uid://bk3tot6c35bwu"
 resource_local_to_scene = false
 resource_name = ""
 script = ExtResource("4_vsdyd")
-IconName = "download-multiple-outline"
+IconName = "database-arrow-up-outline"
 IconSize = 24
 metadata/_custom_type_script = "uid://bk3tot6c35bwu"
 
@@ -57,10 +57,10 @@ rebound_strength = 7.0
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_o3v2t"]
 shader = ExtResource("6_0flki")
 shader_parameter/lod = 1.5
-shader_parameter/blend = 0.85
+shader_parameter/blend = 1.0
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_0flki"]
-bg_color = Color(0.137255, 0.137255, 0.137255, 1)
+bg_color = Color(0, 0, 0, 1)
 corner_radius_top_left = 6
 corner_radius_top_right = 6
 corner_radius_bottom_right = 6

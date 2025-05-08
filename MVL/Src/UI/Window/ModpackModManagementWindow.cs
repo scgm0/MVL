@@ -107,8 +107,8 @@ public partial class ModpackModManagementWindow : BaseWindow {
 		_loadingContainer!.Show();
 
 		foreach (var modInfoItem in newList) {
-			if (!Visible) {
-				break;
+			if (!IsInstanceValid(this)) {
+				return;
 			}
 
 			modInfoItem.Modulate = Colors.Transparent;
@@ -144,8 +144,8 @@ public partial class ModpackModManagementWindow : BaseWindow {
 		var list = ModpackItem.ModpackConfig.Mods.Values.OrderBy(m => m.ModId);
 
 		foreach (var modpackConfigMod in list) {
-			if (!Visible) {
-				break;
+			if (!IsInstanceValid(this)) {
+				return;
 			}
 
 			var modInfoItem = _modInfoItemScene!.Instantiate<ModInfoItem>();

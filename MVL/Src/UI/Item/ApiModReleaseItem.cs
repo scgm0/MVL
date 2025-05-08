@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Downloader;
 using MVL.UI.Window;
 using MVL.Utils;
+using MVL.Utils.Config;
 using MVL.Utils.Game;
 using MVL.Utils.Help;
 using Range = Godot.Range;
@@ -21,13 +22,19 @@ public partial class ApiModReleaseItem : PanelContainer {
 	private Label? _version;
 
 	[Export]
+	private Button? _dateLabel;
+
+	[Export]
+	private Button? _downloadCountLabel;
+
+	[Export]
 	private Button? _downloadButton;
 
 	[Export]
 	private CheckBox? _checkBox;
 
 	[Export]
-	private HFlowContainer? _tagsContainer;
+	private HBoxContainer? _tagsContainer;
 
 	[Export]
 	private ProgressBar? _progressBar;
@@ -36,6 +43,7 @@ public partial class ApiModReleaseItem : PanelContainer {
 	private IDownload? _download;
 
 	public ModInfo? ModInfo { get; set; }
+	public ModpackConfig? ModpackConfig { get; set; }
 	public ApiModInfo? ApiModInfo { get; set; }
 	public ApiModRelease? ApiModRelease { get; set; }
 	public ApiModReleasesWindow? Window { get; set; }
@@ -87,11 +95,16 @@ public partial class ApiModReleaseItem : PanelContainer {
 		var url = ApiModInfo!.UrlAlias is null
 			? $"https://mods.vintagestory.at/show/mod/{ApiModInfo!.AssetId}"
 			: $"https://mods.vintagestory.at/{ApiModInfo.UrlAlias}";
-		_modName!.Text = $"[url={url}]{ModInfo!.Name}[/url]";
-		_version!.Text = _isChecked ? $"{ModInfo.Version} > {ApiModRelease!.ModVersion}" : ApiModRelease!.ModVersion;
+		_modName!.Text = $"[url={url}]{ApiModInfo!.Name}[/url]";
+		_version!.Text = _isChecked ? $"{ModInfo!.Version} > {ApiModRelease!.ModVersion}" : ApiModRelease!.ModVersion;
+		_dateLabel!.Text = ApiModRelease!.Created.ToString("yyyy-MM-dd");
+		_downloadCountLabel!.Text = ApiModRelease!.Downloads.ToString();
 
 		try {
-			_downloadButton!.Disabled = SemVer.Parse(ApiModRelease.ModVersion) == SemVer.Parse(ModInfo.Version);
+			if (ModInfo != null) {
+				_downloadButton!.Disabled = SemVer.Parse(ApiModRelease.ModVersion) == SemVer.Parse(ModInfo.Version);
+			}
+
 			_checkBox!.Disabled = _downloadButton!.Disabled;
 		} catch (Exception e) {
 			GD.PrintErr(e);
@@ -112,13 +125,13 @@ public partial class ApiModReleaseItem : PanelContainer {
 			label.ThemeTypeVariation = "ModReleaseTag";
 			_tagsContainer!.AddChild(label);
 
-			if (GameVersion.ComparerVersion(ModInfo.ModpackConfig!.Version!.Value, new(tag)) == 0) {
+			if (GameVersion.ComparerVersion(ModpackConfig!.Version!.Value, new(tag)) == 0) {
 				_downloadButton.Modulate = Colors.Green;
 				_downloadButton.TooltipText = "兼容的游戏版本包含整合包游戏版本，能够安全使用";
 				_checkBox!.Modulate = Colors.Green;
 				_checkBox.TooltipText = "兼容的游戏版本包含整合包游戏版本，能够安全使用";
 				label.Modulate = Colors.Green;
-			} else if (GameVersion.ComparerVersion(ModInfo.ModpackConfig!.Version!.Value, new(tag)) > 0) {
+			} else if (GameVersion.ComparerVersion(ModpackConfig!.Version!.Value, new(tag)) > 0) {
 				label.Modulate = Colors.DarkSeaGreen;
 				if (_downloadButton.Modulate != Colors.DarkRed) {
 					continue;
@@ -138,6 +151,7 @@ public partial class ApiModReleaseItem : PanelContainer {
 			item?.Disable();
 		}
 
+		_downloadButton!.Disabled = true;
 		_checkBox!.Disabled = _downloadButton!.Disabled;
 		_progressBar!.Show();
 		GD.Print($"下载 {ApiModRelease!.FileName}...");
@@ -174,9 +188,11 @@ public partial class ApiModReleaseItem : PanelContainer {
 			return;
 		}
 
-		var path = Path.Combine(ModInfo!.ModPath.GetBaseDir(), ApiModRelease.FileName);
+		var path = Path.Combine(ModpackConfig!.Path!, "Mods", ApiModRelease.FileName);
 		File.Move(Path.Combine(downloadDir, ApiModRelease.FileName), path);
-		File.Delete(ModInfo!.ModPath);
+		if (ModInfo != null) {
+			File.Delete(ModInfo.ModPath);
+		}
 
 		var mod = ModInfo.FromZip(path);
 		if (mod == null) {
@@ -184,12 +200,12 @@ public partial class ApiModReleaseItem : PanelContainer {
 			return;
 		}
 
-		mod.ModpackConfig = ModInfo!.ModpackConfig;
+		mod.ModpackConfig = ModpackConfig;
 		mod.ModpackConfig!.Mods[mod.ModId] = mod;
 		ModInfo = mod;
+
 		Window!.UpdateApiModInfo(this);
 
 		_progressBar.Hide();
-		_downloadButton.Disabled = false;
 	}
 }

@@ -13,6 +13,9 @@ public partial class ApiModReleasesWindow : BaseWindow {
 	[Export]
 	private VBoxContainer? _apiModReleaseItemsContainer;
 
+	[Export]
+	private Control? _loadingContainer;
+
 	public ModInfoItem? ModInfoItem { get; set; }
 
 	public IEnumerable<ModInfoItem>? AutoUpdateModInfoItems { get; set; }
@@ -50,7 +53,8 @@ public partial class ApiModReleasesWindow : BaseWindow {
 		UpdateApiModInfo();
 	}
 
-	public void UpdateApiModInfo() {
+	public async void UpdateApiModInfo() {
+		_loadingContainer!.Show();
 		foreach (var child in _apiModReleaseItemsContainer!.GetChildren()) {
 			child.QueueFree();
 		}
@@ -58,26 +62,48 @@ public partial class ApiModReleasesWindow : BaseWindow {
 		if (ModInfoItem != null) {
 			OkButton?.Hide();
 			foreach (var apiModRelease in ModInfoItem.ApiModInfo!.Releases) {
+				if (!IsInstanceValid(this)) {
+					return;
+				}
+
 				var apiModReleaseItem = _apiModReleaseItemScene!.Instantiate<ApiModReleaseItem>();
 				apiModReleaseItem.Window = this;
 				apiModReleaseItem.ModInfo = ModInfoItem.Mod;
+				apiModReleaseItem.ModpackConfig = ModInfoItem.Mod?.ModpackConfig;
 				apiModReleaseItem.ApiModInfo = ModInfoItem.ApiModInfo;
 				apiModReleaseItem.ApiModRelease = apiModRelease;
 				_apiModReleaseItemsContainer!.AddChild(apiModReleaseItem);
+
+				var tween = apiModReleaseItem.CreateTween();
+				tween.TweenProperty(apiModReleaseItem, "modulate:a", 1, 0.025f);
+				await ToSignal(tween, Tween.SignalName.Finished);
 			}
 		}
 
 		if (AutoUpdateModInfoItems != null) {
 			OkButton?.Show();
 			foreach (var modInfoItem in AutoUpdateModInfoItems) {
+				if (!IsInstanceValid(this)) {
+					return;
+				}
+
 				var apiModReleaseItem = _apiModReleaseItemScene!.Instantiate<ApiModReleaseItem>();
 				apiModReleaseItem.Window = this;
 				apiModReleaseItem.ModInfo = modInfoItem.Mod;
+				apiModReleaseItem.ModpackConfig = modInfoItem.Mod?.ModpackConfig;
 				apiModReleaseItem.ApiModInfo = modInfoItem.ApiModInfo;
 				apiModReleaseItem.ApiModRelease = modInfoItem.ApiModRelease;
 				apiModReleaseItem.IsChecked = true;
 				_apiModReleaseItemsContainer!.AddChild(apiModReleaseItem);
+
+				var tween = apiModReleaseItem.CreateTween();
+				tween.TweenProperty(apiModReleaseItem, "modulate:a", 1, 0.025f);
+				await ToSignal(tween, Tween.SignalName.Finished);
 			}
+		}
+
+		if (IsInstanceValid(this)) {
+			_loadingContainer.Hide();
 		}
 	}
 
