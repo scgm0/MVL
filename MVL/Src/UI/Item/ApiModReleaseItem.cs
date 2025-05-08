@@ -196,16 +196,13 @@ public partial class ApiModReleaseItem : PanelContainer {
 		}
 
 		var mod = ModInfo.FromZip(path);
-		if (mod == null) {
-			_progressBar.Hide();
-			return;
+		if (mod != null) {
+			mod.ModpackConfig = ModpackConfig;
+			mod.ModpackConfig!.Mods[mod.ModId] = mod;
+			ModInfo = mod;
+
+			Window!.UpdateApiModInfo(this);
 		}
-
-		mod.ModpackConfig = ModpackConfig;
-		mod.ModpackConfig!.Mods[mod.ModId] = mod;
-		ModInfo = mod;
-
-		Window!.UpdateApiModInfo(this);
 
 		_progressBar.Hide();
 	}
