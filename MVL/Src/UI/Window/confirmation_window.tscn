@@ -34,4 +34,3 @@ scroll_active = false
 autowrap_mode = 0
 shortcut_keys_enabled = false
 horizontal_alignment = 1
-threaded = true
