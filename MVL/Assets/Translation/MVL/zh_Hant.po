@@ -5,10 +5,16 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: 神麤詭末的复古物语启动器\n"
+"PO-Revision-Date: 2025-05-08 11:55+0000\n"
+"Last-Translator: 神麤詭末 <2682963017@qq.com>\n"
+"Language-Team: Chinese (Traditional Han script) <https://hosted.weblate.org/"
+"projects/mvl/mvl/zh_Hant/>\n"
 "Language: zh_Hant\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8-bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"X-Generator: Weblate 5.12-dev\n"
 
 msgid "神麤詭末的复古物语启动器"
 msgstr ""
@@ -290,4 +296,7 @@ msgid "[b]{0}[/b] 需要安装 [b].NET {1} 运行时[/b]\n请点击链接下载�
 msgstr ""
 
 msgid "无法登录？检查您的游戏账号"
+msgstr ""
+
+msgid "整合包模组管理"
 msgstr ""
