@@ -361,3 +361,9 @@ msgid "兼容的游戏版本低于整合包游戏版本，可能已经过时"
 msgstr ""
 "The compatible game version is lower than the modpack's game version and may "
 "be outdated"
+
+msgid "缺少以下依赖模组，是否尝试从ModDB获取？\n{0}"
+msgstr ""
+
+msgid "正在从ModDB获取模组信息..."
+msgstr ""
