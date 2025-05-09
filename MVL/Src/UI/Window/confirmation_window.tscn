@@ -32,5 +32,6 @@ text = "确定吗？"
 fit_content = true
 scroll_active = false
 autowrap_mode = 0
-shortcut_keys_enabled = false
+context_menu_enabled = true
 horizontal_alignment = 1
+selection_enabled = true

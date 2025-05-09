@@ -36,7 +36,17 @@ public partial class ConfirmationWindow : BaseWindow {
 	}
 
 	public override async Task Show() {
-		_messageLabel!.Size = _messageLabel.GetCombinedMinimumSize();
+		_messageLabel!.FitContent = true;
+		_messageLabel.ScrollActive = false;
+		_messageLabel.CustomMinimumSize = Vector2.Zero;
+		_messageLabel.Size = _messageLabel.GetCombinedMinimumSize();
+
+		if (_messageLabel.Size.Y > 450) {
+			_messageLabel.FitContent = false;
+			_messageLabel.ScrollActive = true;
+			_messageLabel.CustomMinimumSize = _messageLabel.Size with { X = _messageLabel!.Size.X + 20, Y = 450 };
+		}
+
 		await base.Show();
 	}
 }
