@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -26,7 +27,7 @@ public partial class ModInfoItem : PanelContainer {
 	private TextureRect? _icon;
 
 	[Export]
-	public RichTextLabel? ModName { get; set; }
+	private RichTextLabel? _modName;
 
 	[Export]
 	private RichTextLabel? _version;
@@ -64,17 +65,26 @@ public partial class ModInfoItem : PanelContainer {
 
 	public event Action<ModInfoItem>? HasAutoUpdate;
 
+	public event Action<ModDependency>? NeedToDepend;
+
+	static private readonly HashSet<string> SystemModIds = new(StringComparer.OrdinalIgnoreCase) {
+		"game",
+		"survival",
+		"essentials",
+		"creative"
+	};
+
 	public override void _Ready() {
 		_icon.NotNull();
-		ModName.NotNull();
+		_modName.NotNull();
 		_version.NotNull();
 		_description.NotNull();
 		_updateButton.NotNull();
 		_progressBar.NotNull();
 
 		_icon!.Texture = Mod?.Icon;
-		ModName!.Text = Mod?.Name;
-		ModName.TooltipText = Mod!.ModPath;
+		_modName!.Text = Mod?.Name;
+		_modName.TooltipText = Mod!.ModPath;
 		_version!.Text = $"{Mod?.ModId}-{Mod?.Version}";
 		_description!.Text = Mod?.Description;
 		_webButton!.Disabled = true;
@@ -85,6 +95,8 @@ public partial class ModInfoItem : PanelContainer {
 		_updateButton.Pressed += UpdateButtonOnPressed;
 		_releaseButton!.Pressed += ReleaseButtonOnPressed;
 		_deleteButton!.Pressed += DeleteButtonOnPressed;
+
+		DependencyDetection();
 	}
 
 	private async void ReleaseButtonOnPressed() {
@@ -172,10 +184,34 @@ public partial class ModInfoItem : PanelContainer {
 		await UpdateApiModInfo();
 	}
 
+	public void DependencyDetection() {
+		foreach (var modDependency in Mod!.Dependencies) {
+			var modId = modDependency.ModId;
+
+			if (SystemModIds.Contains(modId)) {
+				continue;
+			}
+
+			if (!SemVer.TryParse(modDependency.Version.Replace('*', '0'), out var version)) {
+				version = SemVer.Zero;
+			}
+
+			var hasDependency = Mod.ModpackConfig!.Mods.Any(kv => {
+				var mod = kv.Value;
+				return mod.ModId.Equals(modId, StringComparison.OrdinalIgnoreCase) &&
+					SemVer.TryParse(mod.Version, out var ver) && ver >= version;
+			});
+
+			if (!hasDependency) {
+				NeedToDepend?.Invoke(modDependency);
+			}
+		}
+	}
+
 	public async Task UpdateApiModInfo() {
 		_icon!.Texture = Mod!.Icon;
-		ModName!.Text = Mod!.Name;
-		ModName.TooltipText = Mod!.ModPath;
+		_modName!.Text = Mod!.Name;
+		_modName.TooltipText = Mod!.ModPath;
 		_version!.Text = $"{Mod?.ModId}-{Mod?.Version}";
 		_description!.Text = Mod?.Description;
 		_webButton!.Disabled = true;
@@ -189,7 +225,7 @@ public partial class ModInfoItem : PanelContainer {
 		HasAutoUpdate?.Invoke(this);
 
 		await Task.Run(async () => {
-			if (!string.IsNullOrWhiteSpace(Mod?.ModId)) {
+			if (!string.IsNullOrWhiteSpace(Mod!.ModId)) {
 				try {
 					var url = $"https://mods.vintagestory.at/api/mod/{Mod.ModId}";
 					var result = await url.GetStringAsync();
@@ -200,13 +236,13 @@ public partial class ModInfoItem : PanelContainer {
 
 					ApiModInfo = status.Mod!;
 					Dispatcher.SynchronizationContext.Post(_ => {
-							if (ModName == null || !IsInstanceValid(this)) {
+							if (_modName == null || !IsInstanceValid(this)) {
 								return;
 							}
 
 							_webButton.Disabled = false;
 							_releaseButton.Disabled = false;
-							ModName.Text = Mod!.Name.Equals(ApiModInfo.Name, StringComparison.Ordinal)
+							_modName.Text = Mod!.Name.Equals(ApiModInfo.Name, StringComparison.Ordinal)
 								? Mod.Name
 								: $"{ApiModInfo.Name} ({Mod.Name})";
 						},

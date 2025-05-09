@@ -13,11 +13,11 @@ public partial class BaseWindow : Control {
 	[Export]
 	private AnimationPlayer? _animationPlayer;
 
-	[Export] protected Label? TitleLabel;
+	[Export] public Label? TitleLabel;
 
-	[Export] protected Button? CancelButton;
+	[Export] public Button? CancelButton;
 
-	[Export] protected Button? OkButton;
+	[Export] public Button? OkButton;
 
 	[Export] protected BackBufferCopy? BackBufferCopy;
 

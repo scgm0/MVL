@@ -3,6 +3,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using Godot;
 using MVL.UI.Item;
+using MVL.Utils.Config;
+using MVL.Utils.Game;
 
 namespace MVL.UI.Window;
 
@@ -19,6 +21,8 @@ public partial class ApiModReleasesWindow : BaseWindow {
 	public ModInfoItem? ModInfoItem { get; set; }
 
 	public IEnumerable<ModInfoItem>? AutoUpdateModInfoItems { get; set; }
+
+	public IEnumerable<(ApiModInfo, ApiModRelease, ModpackConfig)>? ModDependencies { get; set; }
 
 	public override void _Ready() {
 		base._Ready();
@@ -102,6 +106,28 @@ public partial class ApiModReleasesWindow : BaseWindow {
 			}
 		}
 
+		if (ModDependencies != null) {
+			OkButton?.Show();
+			foreach (var (apiModInfo, apiModRelease, modpackConfig) in ModDependencies) {
+				if (!IsInstanceValid(this)) {
+					return;
+				}
+
+				var apiModReleaseItem = _apiModReleaseItemScene!.Instantiate<ApiModReleaseItem>();
+				apiModReleaseItem.Window = this;
+				apiModReleaseItem.ModInfo = null;
+				apiModReleaseItem.ModpackConfig = modpackConfig;
+				apiModReleaseItem.ApiModInfo = apiModInfo;
+				apiModReleaseItem.ApiModRelease = apiModRelease;
+				apiModReleaseItem.IsChecked = true;
+				_apiModReleaseItemsContainer!.AddChild(apiModReleaseItem);
+
+				var tween = apiModReleaseItem.CreateTween();
+				tween.TweenProperty(apiModReleaseItem, "modulate:a", 1, 0.025f);
+				await ToSignal(tween, Tween.SignalName.Finished);
+			}
+		}
+
 		if (IsInstanceValid(this)) {
 			_loadingContainer.Hide();
 		}
@@ -118,6 +144,12 @@ public partial class ApiModReleasesWindow : BaseWindow {
 			var modInfoItem = AutoUpdateModInfoItems.First(m => m.Mod?.ModId == apiModReleaseItem.ModInfo?.ModId);
 			modInfoItem.Mod = apiModReleaseItem.ModInfo;
 			await modInfoItem.UpdateApiModInfo();
+		}
+
+		if (ModDependencies is not null) {
+			var list = ModDependencies.ToList();
+			list.Remove((apiModReleaseItem.ApiModInfo!, apiModReleaseItem.ApiModRelease!, apiModReleaseItem.ModpackConfig!));
+			ModDependencies = list;
 		}
 	}
 }

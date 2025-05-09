@@ -64,7 +64,7 @@ IconName = "trash-can-outline"
 IconSize = 18
 metadata/_custom_type_script = "uid://bk3tot6c35bwu"
 
-[node name="ModInfoItem" type="PanelContainer" node_paths=PackedStringArray("_icon", "ModName", "_version", "_description", "_webButton", "_updateButton", "_releaseButton", "_deleteButton", "_progressBar")]
+[node name="ModInfoItem" type="PanelContainer" node_paths=PackedStringArray("_icon", "_modName", "_version", "_description", "_webButton", "_updateButton", "_releaseButton", "_deleteButton", "_progressBar")]
 anchors_preset = 10
 anchor_right = 1.0
 offset_bottom = 50.0
@@ -75,7 +75,7 @@ script = ExtResource("1_51ssv")
 _apiModReleasesWindowScene = ExtResource("2_0y8tf")
 _confirmationWindowScene = ExtResource("2_6yopn")
 _icon = NodePath("MarginContainer/HBoxContainer/PanelContainer/TextureRect")
-ModName = NodePath("MarginContainer/HBoxContainer/MarginContainer/VBoxContainer/RichTextLabel")
+_modName = NodePath("MarginContainer/HBoxContainer/MarginContainer/VBoxContainer/RichTextLabel")
 _version = NodePath("MarginContainer/HBoxContainer/MarginContainer/VBoxContainer/Control/RichTextLabel")
 _description = NodePath("MarginContainer/HBoxContainer/MarginContainer/VBoxContainer/Control/Label3")
 _webButton = NodePath("MarginContainer/HBoxContainer/GridContainer/Button")

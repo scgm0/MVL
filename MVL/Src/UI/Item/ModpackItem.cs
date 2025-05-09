@@ -89,7 +89,6 @@ public partial class ModpackItem : PanelContainer {
 	}
 
 	private async void ModCountOnPressed() {
-		await UpdateMods();
 		var list = _listModScene!.Instantiate<ModpackModManagementWindow>();
 		list.ModpackItem = this;
 		list.Hidden += list.QueueFree;
