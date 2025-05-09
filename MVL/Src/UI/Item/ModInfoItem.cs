@@ -3,7 +3,6 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Text.Json;
-using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using Downloader;
 using Flurl.Http;
@@ -256,58 +255,5 @@ public partial class ModInfoItem : PanelContainer {
 				GD.PrintErr(e.Message);
 			}
 		}
-	}
-}
-
-public class ApiStatusModInfo {
-	public required string StatusCode { get; init; }
-	public ApiModInfo? Mod { get; init; }
-}
-
-public record ApiModInfo {
-	public int ModId { get; init; }
-	public int AssetId { get; init; }
-	public string Name { get; init; } = "";
-	public string Text { get; init; } = "";
-	public string Author { get; init; } = "";
-	public string? UrlAlias { get; init; }
-	public string? LogoFileName { get; init; }
-	public string? LogoFile { get; init; }
-	public string? HomePageUrl { get; init; }
-	public string? SourceCodeUrl { get; init; }
-	public string? TrailerVideoUrl { get; init; }
-	public string? IssueTrackerUrl { get; init; }
-	public string? WikiUrl { get; init; }
-	public int Downloads { get; init; }
-	public int Follows { get; init; }
-	public int TrendingPoints { get; init; }
-	public int Comments { get; init; }
-	public string Side { get; init; } = "";
-	public string Type { get; init; } = "";
-	public DateTimeOffset Created { get; init; }
-	public DateTimeOffset LastModified { get; init; }
-	public string[] Tags { get; init; } = [];
-	public ApiModRelease[] Releases { get; init; } = [];
-}
-
-public record ApiModRelease {
-	public int ReleaseId { get; init; }
-	public string MainFile { get; init; } = "";
-	public string FileName { get; init; } = "";
-	public int FileId { get; init; }
-	public int Downloads { get; init; }
-	public string[] Tags { get; init; } = [];
-	public string ModIdStr { get; init; } = "";
-	public string ModVersion { get; init; } = "1.0.0";
-	public DateTimeOffset Created { get; init; }
-}
-
-public class DateTimeOffsetConverter : JsonConverter<DateTimeOffset> {
-	public override DateTimeOffset Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options) {
-		return DateTimeOffset.Parse(reader.GetString() ?? string.Empty);
-	}
-
-	public override void Write(Utf8JsonWriter writer, DateTimeOffset value, JsonSerializerOptions options) {
-		writer.WriteStringValue(value.ToString());
 	}
 }
