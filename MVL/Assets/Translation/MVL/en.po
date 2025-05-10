@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: 神麤詭末的复古物语启动器\n"
-"PO-Revision-Date: 2025-05-09 20:27+0000\n"
+"PO-Revision-Date: 2025-05-10 14:23+0000\n"
 "Last-Translator: 神麤詭末 <2682963017@qq.com>\n"
 "Language-Team: English <https://hosted.weblate.org/projects/mvl/mvl/en/>\n"
 "Language: en\n"
@@ -253,7 +253,7 @@ msgid "法语翻译"
 msgstr "French Translation"
 
 msgid "俄语翻译"
-msgstr ""
+msgstr "Russian Translation"
 
 msgid "界面"
 msgstr "Interface"
