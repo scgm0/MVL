@@ -32,3 +32,7 @@
 ## 法语翻译
 
     LorIlcs <https://github.com/LorIlcs>
+
+## 俄语翻译
+
+    Xapitonov <https://github.com/Xapitonov>
