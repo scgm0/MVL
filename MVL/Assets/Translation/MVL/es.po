@@ -5,8 +5,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: 神麤詭末的复古物语启动器\n"
-"PO-Revision-Date: 2025-05-08 11:55+0000\n"
-"Last-Translator: 神麤詭末 <2682963017@qq.com>\n"
+"PO-Revision-Date: 2025-05-10 21:19+0000\n"
+"Last-Translator: Xurxo Martínez Ferreira <xurxolaxe@gmail.com>\n"
 "Language-Team: Spanish <https://hosted.weblate.org/projects/mvl/mvl/es/>\n"
 "Language: es\n"
 "MIME-Version: 1.0\n"
@@ -130,7 +130,7 @@ msgid "名称包含非法字符"
 msgstr "El nombre contiene caracteres no permitidos"
 
 msgid "路径不存在"
-msgstr "La carpeta no existe"
+msgstr "La ruta no existe"
 
 msgid "请选择版本"
 msgstr "Por favor, selecciona una versión"
@@ -254,7 +254,7 @@ msgid "法语翻译"
 msgstr "Traducción al francés"
 
 msgid "俄语翻译"
-msgstr ""
+msgstr "Traducción al ruso"
 
 msgid "界面"
 msgstr "Interfaz"
@@ -316,55 +316,64 @@ msgid "无法登录？检查您的游戏账号"
 msgstr "¿No puedes iniciar sesión? Comprueba tu cuenta de juego"
 
 msgid "整合包模组管理"
-msgstr ""
+msgstr "Gestionar Mods del Modpack"
 
 msgid "输入模组名称"
-msgstr ""
+msgstr "Introduce el nombre del mod"
 
 msgid "搜索模组"
-msgstr ""
+msgstr "Buscar mods"
 
 msgid "同步本地模组信息"
-msgstr ""
+msgstr "Sincronizar información local de los mods"
 
 msgid "同步模组在线信息"
-msgstr ""
+msgstr "Sincronizar información online de los mods"
 
 msgid "模组批量更新"
-msgstr ""
+msgstr "Actualizar mods en masa"
 
 msgid "关闭"
-msgstr ""
+msgstr "Cerrar"
 
 msgid "选择要下载的模组版本"
-msgstr ""
+msgstr "Selecciona la versión del mod para descargar"
 
 msgid "跳转到ModDB网页"
-msgstr ""
+msgstr "Ir a la página de la ModDB"
 
 msgid "更新到最新可用版本"
-msgstr ""
+msgstr "Actualizar a la última versión"
 
 msgid "查看所有发布版本"
-msgstr ""
+msgstr "Ver todas las versiones publicadas"
 
 msgid "删除本地模组"
-msgstr ""
+msgstr "Eliminar el mod local"
 
 msgid "确定要删除 [b]{0}[/b] 吗？"
-msgstr ""
+msgstr "Estás seguro de que quieres eliminar [b]{0}[/b]?"
 
 msgid "兼容的游戏版本高于整合包游戏版本，游戏不会加载"
 msgstr ""
+"La versión compatible del juego es mayor a la versión del juego del modpack "
+"y el juego no cargará"
 
 msgid "兼容的游戏版本包含整合包游戏版本，能够安全使用"
 msgstr ""
+"Las versiones compatibles del juego incluyen la versióndel juego del "
+"modpack, es seguro usarlo"
 
 msgid "兼容的游戏版本低于整合包游戏版本，可能已经过时"
 msgstr ""
+"La versión compatible del juego es menor a la versión de juego del modpack y "
+"puede que esté desactualizado"
 
 msgid "缺少以下依赖模组，是否尝试从ModDB获取？\n{0}"
 msgstr ""
+"Los sigueintes mods son dependencias de otros pero no están instalados, "
+"quieres intentar descargarlos desde la ModDB?\n"
+"{0}"
 
 msgid "正在从ModDB获取模组信息..."
-msgstr ""
+msgstr "Obteniendo información de los mods desde la ModDB..."
