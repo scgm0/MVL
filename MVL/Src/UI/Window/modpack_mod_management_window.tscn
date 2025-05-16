@@ -110,6 +110,7 @@ size_flags_horizontal = 3
 layout_mode = 2
 size_flags_horizontal = 3
 placeholder_text = "输入模组名称"
+clear_button_enabled = true
 draw_control_chars = true
 caret_blink = true
 
