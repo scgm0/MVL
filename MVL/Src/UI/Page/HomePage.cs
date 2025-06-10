@@ -80,7 +80,7 @@ public partial class HomePage : MenuPage {
 			var modpackConfig = UI.Main.ModpackConfigs[UI.Main.BaseConfig.CurrentModpack];
 			_ = UI.Main.Instance?.StartGame(modpackConfig);
 		} else {
-			UI.Main.CurrentGameProcess?.Kill();
+			UI.Main.CurrentGameProcess?.Kill(true);
 		}
 
 		await UpdateInfo();

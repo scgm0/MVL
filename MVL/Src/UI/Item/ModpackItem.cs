@@ -149,7 +149,7 @@ public partial class ModpackItem : PanelContainer {
 			Main.GameExitEvent += MainOnGameExitEvent;
 			Main.Instance?.StartGame(ModpackConfig!);
 		} else {
-			Main.CurrentGameProcess?.Kill();
+			Main.CurrentGameProcess?.Kill(true);
 		}
 	}
 
