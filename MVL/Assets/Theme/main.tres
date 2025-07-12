@@ -42,7 +42,6 @@ resource_local_to_scene = false
 resource_name = ""
 script = ExtResource("1_asgjk")
 IconName = "toggle-switch"
-IconSize = 24
 metadata/_custom_type_script = "uid://bk3tot6c35bwu"
 
 [sub_resource type="Texture2D" id="Texture2D_vg7xs"]
@@ -50,7 +49,6 @@ resource_local_to_scene = false
 resource_name = ""
 script = ExtResource("1_asgjk")
 IconName = "toggle-switch-off-outline"
-IconSize = 24
 metadata/_custom_type_script = "uid://bk3tot6c35bwu"
 
 [sub_resource type="Texture2D" id="Texture2D_7hr8s"]
@@ -58,7 +56,6 @@ resource_local_to_scene = false
 resource_name = ""
 script = ExtResource("1_asgjk")
 IconName = "chevron-down"
-IconSize = 24
 metadata/_custom_type_script = "uid://bk3tot6c35bwu"
 
 [sub_resource type="Texture2D" id="Texture2D_hypud"]
@@ -66,7 +63,6 @@ resource_local_to_scene = false
 resource_name = ""
 script = ExtResource("1_asgjk")
 IconName = "chevron-right"
-IconSize = 24
 metadata/_custom_type_script = "uid://bk3tot6c35bwu"
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_vg7xs"]
@@ -172,7 +168,6 @@ resource_local_to_scene = false
 resource_name = ""
 script = ExtResource("1_asgjk")
 IconName = "chevron-down"
-IconSize = 24
 metadata/_custom_type_script = "uid://bk3tot6c35bwu"
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_7eosv"]
