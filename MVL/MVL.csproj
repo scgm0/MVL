@@ -1,4 +1,4 @@
-<Project Sdk="Godot.NET.Sdk/4.5.0-dev">
+<Project Sdk="Godot.NET.Sdk/4.5.0-beta">
     <PropertyGroup>
         <TargetFramework>net9.0</TargetFramework>
         <Nullable>enable</Nullable>
@@ -67,7 +67,6 @@
             <FilesToCopy Include="../VSRun/bin/Release/net*.0/*.pdb" />
         </ItemGroup>
 
-        <Copy SourceFiles="@(FilesToCopy)"
-              DestinationFolder="Misc/VSRun/%(RecursiveDir)" />
+        <Copy SourceFiles="@(FilesToCopy)" DestinationFolder="Misc/VSRun/%(RecursiveDir)" />
     </Target>
 </Project>
