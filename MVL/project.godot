@@ -8,6 +8,10 @@
 
 config_version=5
 
+[accessibility]
+
+general/accessibility_support=2
+
 [application]
 
 config/name="神麤詭末的复古物语启动器"
@@ -84,7 +88,6 @@ locale/fallback="zh_CN"
 [rendering]
 
 textures/canvas_textures/default_texture_filter=2
-renderer/rendering_method="gl_compatibility"
-renderer/rendering_method.mobile="gl_compatibility"
+rendering_device/driver.windows="d3d12"
 textures/lossless_compression/force_png=true
 viewport/transparent_background=true
