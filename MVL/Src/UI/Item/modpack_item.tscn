@@ -50,13 +50,13 @@ corner_radius_top_right = 8
 corner_radius_bottom_right = 8
 corner_radius_bottom_left = 8
 
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_60yl2"]
-
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_cfjm5"]
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_gtwmp"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_56p2o"]
 
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_gtwmp"]
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_cfjm5"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_60yl2"]
 
 [sub_resource type="Texture2D" id="Texture2D_60yl2"]
 resource_local_to_scene = false
@@ -71,7 +71,6 @@ resource_local_to_scene = false
 resource_name = ""
 script = ExtResource("4_32kh6")
 IconName = "unfold-more-horizontal"
-IconSize = 24
 metadata/_custom_type_script = "uid://bk3tot6c35bwu"
 
 [sub_resource type="Texture2D" id="Texture2D_364to"]
@@ -136,13 +135,13 @@ custom_minimum_size = Vector2(100, 15)
 layout_mode = 2
 size_flags_horizontal = 8
 focus_mode = 0
-theme_override_colors/icon_normal_color = Color(0.601223, 0.601223, 0.601223, 1)
 theme_override_colors/font_color = Color(0.601223, 0.601223, 0.601223, 1)
+theme_override_colors/icon_normal_color = Color(0.601223, 0.601223, 0.601223, 1)
 theme_override_font_sizes/font_size = 12
-theme_override_styles/hover_pressed = SubResource("StyleBoxEmpty_60yl2")
-theme_override_styles/hover = SubResource("StyleBoxEmpty_cfjm5")
-theme_override_styles/pressed = SubResource("StyleBoxEmpty_56p2o")
 theme_override_styles/normal = SubResource("StyleBoxEmpty_gtwmp")
+theme_override_styles/pressed = SubResource("StyleBoxEmpty_56p2o")
+theme_override_styles/hover = SubResource("StyleBoxEmpty_cfjm5")
+theme_override_styles/hover_pressed = SubResource("StyleBoxEmpty_60yl2")
 text = "模组数量: 0"
 icon = SubResource("Texture2D_60yl2")
 icon_alignment = 2
