@@ -46,11 +46,8 @@ public partial class ReleasePage : MenuPage {
 			return;
 		}
 
-		if (_installedGamesImport is null) {
-			_installedGamesImport = await UI.Main.Instance!.ImportInstalledGames(list);
-		} else {
-			await _installedGamesImport.ShowInstalledGames(list);
-		}
+		_installedGamesImport ??= UI.Main.Instance!.InstantiateInstalledGamesImport();
+		await _installedGamesImport.ShowInstalledGames(list);
 
 		_installedGamesImport.Import -= UpdateList;
 		_installedGamesImport.Import += UpdateList;
@@ -58,7 +55,10 @@ public partial class ReleasePage : MenuPage {
 
 	private void UpdateList(string[] gamePaths) {
 		_installedGamesImport!.Import -= UpdateList;
-		if (gamePaths.Length <= 0) return;
+		if (gamePaths.Length <= 0) {
+			return;
+		}
+
 		UpdateList();
 	}
 
@@ -72,7 +72,10 @@ public partial class ReleasePage : MenuPage {
 	}
 
 	private void OnVisibilityChanged() {
-		if (!Visible) return;
+		if (!Visible) {
+			return;
+		}
+
 		UpdateList();
 	}
 

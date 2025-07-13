@@ -361,9 +361,12 @@ public partial class Main : NativeWindowUtility {
 		});
 		CheckAccount();
 
-		if (BaseConfig.Release.Count == 0 && InstalledGamesImport.InstalledGamePaths.Length > 0) {
-			_ = ImportInstalledGames();
+		if (BaseConfig.Release.Count != 0 || InstalledGamesImport.InstalledGamePaths.Length <= 0) {
+			return;
 		}
+
+		_ = InstantiateInstalledGamesImport();
+		await _installedGamesImport!.ShowInstalledGames();
 	}
 
 	public void RootOnSizeChanged() {
@@ -380,25 +383,21 @@ public partial class Main : NativeWindowUtility {
 			Mathf.CeilToInt((SceneTree.Root.Size.Y - ShadowSize * 2) / BaseConfig.DisplayScale));
 	}
 
-	public async Task<InstalledGamesImport> ImportInstalledGames(IEnumerable<string>? gamePaths = null) {
-		if (_installedGamesImport is null) {
-			_installedGamesImport = _installedGamesImportScene!.Instantiate<InstalledGamesImport>();
-			AddChild(_installedGamesImport);
-			_installedGamesImport.Import += paths => {
-				if (paths.Length == 0) {
-					return;
-				}
-
-				BaseConfig.Release.AddRange(paths);
-				CheckReleaseInfo();
-			};
+	public InstalledGamesImport InstantiateInstalledGamesImport() {
+		if (_installedGamesImport is not null) {
+			return _installedGamesImport;
 		}
 
-		if (gamePaths != null) {
-			await _installedGamesImport.ShowInstalledGames(gamePaths);
-		} else {
-			await _installedGamesImport.ShowInstalledGames();
-		}
+		_installedGamesImport = _installedGamesImportScene!.Instantiate<InstalledGamesImport>();
+		AddChild(_installedGamesImport);
+		_installedGamesImport.Import += paths => {
+			if (paths.Length == 0) {
+				return;
+			}
+
+			BaseConfig.Release.AddRange(paths);
+			CheckReleaseInfo();
+		};
 
 		return _installedGamesImport;
 	}

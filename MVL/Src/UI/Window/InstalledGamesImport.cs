@@ -57,10 +57,13 @@ public partial class InstalledGamesImport : BaseWindow {
 
 	public async Task ShowInstalledGames() { await ShowInstalledGames(InstalledGamePaths); }
 
-	public async Task ShowInstalledGames(IEnumerable<string> gamePaths) {
+	public async Task<bool> ShowInstalledGames(IEnumerable<string> gamePaths) {
 		var list = new List<ReleaseInfo>();
 		foreach (var installedGamePath in gamePaths) {
-			if (!GameVersion.TryFromGamePath(installedGamePath, out var gameVersion)) continue;
+			if (!GameVersion.TryFromGamePath(installedGamePath, out var gameVersion)) {
+				continue;
+			}
+
 			list.Add(new() {
 				Path = installedGamePath,
 				Version = gameVersion,
@@ -68,8 +71,12 @@ public partial class InstalledGamesImport : BaseWindow {
 			});
 		}
 
-		if (list.Count <= 0) return;
+		if (list.Count <= 0) {
+			return false;
+		}
+
 		await ShowInstalledGames(list);
+		return true;
 	}
 
 	public async Task ShowInstalledGames(IEnumerable<ReleaseInfo> games) {
