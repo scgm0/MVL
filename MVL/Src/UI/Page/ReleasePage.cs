@@ -35,10 +35,6 @@ public partial class ReleasePage : MenuPage {
 
 	private void ImportGame(string gamePath) { ImportGame([gamePath]); }
 	private async void ImportGame(string[] files) {
-		if (!Visible) {
-			return;
-		}
-
 		var list = new List<string>();
 		foreach (var path in files) {
 			if (DirAccess.DirExistsAbsolute(path)) {
@@ -46,7 +42,10 @@ public partial class ReleasePage : MenuPage {
 			} else if (FileAccess.FileExists(path)) { }
 		}
 
-		if (list.Count <= 0) return;
+		if (list.Count <= 0) {
+			return;
+		}
+
 		if (_installedGamesImport is null) {
 			_installedGamesImport = await UI.Main.Instance!.ImportInstalledGames(list);
 		} else {
