@@ -55,6 +55,9 @@ public partial class GameDownloadWindow : BaseWindow {
 	[Export]
 	private ProgressBar? _progressBar;
 
+	[Export]
+	private Button? _importButton;
+
 	[Signal]
 	public delegate void InstallGameEventHandler(string gamePath);
 
@@ -77,7 +80,8 @@ public partial class GameDownloadWindow : BaseWindow {
 			_contentContainer,
 			_downloadListContainer,
 			_loadingControl,
-			_progressBar);
+			_progressBar,
+			_importButton);
 
 		_loadingControl.Show();
 		_contentContainer.Hide();
@@ -94,8 +98,30 @@ public partial class GameDownloadWindow : BaseWindow {
 		_buttonGroup.Pressed += ButtonGroupOnPressed;
 		CancelButton!.Pressed += CancelButtonOnPressed;
 		OkButton!.Pressed += OkButtonOnPressed;
+		_importButton.Pressed += ImportButtonOnPressed;
 
 		ValidateInputs();
+	}
+
+	private void ImportButtonOnPressed() {
+		var fileWindow = new FileDialog {
+			Access = FileDialog.AccessEnum.Filesystem,
+			CurrentPath = Main.BaseConfig.ReleaseFolder,
+			CurrentDir = Main.BaseConfig.ReleaseFolder,
+			FileMode = FileDialog.FileModeEnum.OpenDir,
+			ShowHiddenFiles = true,
+			UseNativeDialog = true
+		};
+		fileWindow.Canceled += fileWindow.QueueFree;
+		fileWindow.DirSelected += async dir => {
+			fileWindow.QueueFree();
+			var installedGamesImport = Main.Instance!.InstantiateInstalledGamesImport();
+			if (await installedGamesImport.ShowInstalledGames([dir])) {
+				CancelButtonOnPressed();
+			}
+		};
+		AddChild(fileWindow);
+		fileWindow.Show();
 	}
 
 	private void ReleaseNameOnTextChanged(string text) { ValidateInputs(); }

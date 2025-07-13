@@ -23,22 +23,15 @@ resource_local_to_scene = false
 resource_name = ""
 script = ExtResource("6_endwm")
 IconName = "file-settings-outline"
-IconSize = 24
 metadata/_custom_type_script = "uid://bk3tot6c35bwu"
 
 [sub_resource type="Resource" id="Resource_lb40e"]
 script = ExtResource("5_x3qgb")
-friction = 4.0
-minimum_velocity = 0.4
-rebound_strength = 7.0
 
 [sub_resource type="Resource" id="Resource_asvws"]
 script = ExtResource("5_x3qgb")
-friction = 4.0
-minimum_velocity = 0.4
-rebound_strength = 7.0
 
-[node name="GameDownloadWindow" node_paths=PackedStringArray("_releaseName", "_releasePath", "_folderButton", "_tooltip", "_fileDialog", "_contentContainer", "_downloadListContainer", "_loadingControl", "_progressBar") instance=ExtResource("1_42u7i")]
+[node name="GameDownloadWindow" node_paths=PackedStringArray("_releaseName", "_releasePath", "_folderButton", "_tooltip", "_fileDialog", "_contentContainer", "_downloadListContainer", "_loadingControl", "_progressBar", "_importButton") instance=ExtResource("1_42u7i")]
 script = ExtResource("2_x3qgb")
 _buttonGroup = ExtResource("3_x3qgb")
 _releaseName = NodePath("PanelContainer/VBoxContainer/MarginContainer/VBoxContainer/VBoxContainer/LineEdit")
@@ -51,6 +44,7 @@ _contentContainer = NodePath("PanelContainer/VBoxContainer/MarginContainer/VBoxC
 _downloadListContainer = NodePath("PanelContainer/VBoxContainer/MarginContainer/VBoxContainer/SmoothScrollContainer/VBoxContainer")
 _loadingControl = NodePath("PanelContainer/VBoxContainer/MarginContainer/ColorRect")
 _progressBar = NodePath("PanelContainer/VBoxContainer/MarginContainer/ProgressBar")
+_importButton = NodePath("PanelContainer/VBoxContainer/HBoxContainer3/Button3")
 
 [node name="FileDialog" type="FileDialog" parent="." index="3"]
 auto_translate_mode = 1
@@ -170,5 +164,9 @@ theme_override_font_sizes/font_size = 12
 horizontal_alignment = 2
 vertical_alignment = 1
 
-[node name="Button2" parent="PanelContainer/VBoxContainer/HBoxContainer3" index="1"]
+[node name="Button3" type="Button" parent="PanelContainer/VBoxContainer/HBoxContainer3" index="1"]
+layout_mode = 2
+text = "导入已安装游戏"
+
+[node name="Button2" parent="PanelContainer/VBoxContainer/HBoxContainer3" index="2"]
 disabled = true
