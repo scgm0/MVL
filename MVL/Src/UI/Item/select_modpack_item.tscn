@@ -19,7 +19,7 @@ corner_radius_bottom_left = 5
 
 [node name="SelectModpackItem" type="PanelContainer" node_paths=PackedStringArray("_modpackIconTexture", "_modpackNameLabel", "_releaseNameLabel", "_releaseVersionLabel", "_selectButton")]
 material = ExtResource("1_y147p")
-anchors_preset = 10
+anchors_preset = -1
 anchor_right = 1.0
 offset_bottom = 44.0
 grow_horizontal = 2
@@ -67,7 +67,7 @@ layout_mode = 2
 mouse_filter = 1
 theme_override_colors/font_color = Color(0.60933, 0.60933, 0.60933, 1)
 theme_override_font_sizes/font_size = 12
-text = "版本名"
+text = "?"
 horizontal_alignment = 1
 vertical_alignment = 1
 clip_text = true
@@ -79,7 +79,7 @@ layout_mode = 2
 mouse_filter = 1
 theme_override_colors/font_color = Color(0.60933, 0.60933, 0.60933, 1)
 theme_override_font_sizes/font_size = 12
-text = "版本号"
+text = "?"
 horizontal_alignment = 1
 vertical_alignment = 1
 clip_text = true
