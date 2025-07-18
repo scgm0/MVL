@@ -1,0 +1,53 @@
+[gd_scene load_steps=6 format=3 uid="uid://buymc11h2tiu6"]
+
+[ext_resource type="Script" uid="uid://bgqglerkcylxx" path="res://addons/SmoothScroll/SmoothScrollContainer.gd" id="1_h1lgt"]
+[ext_resource type="Script" uid="uid://b8ajofry37b0t" path="res://Src/UI/Other/AuthorsLineEdit.cs" id="1_whbpg"]
+[ext_resource type="Script" uid="uid://b7h0k2h2qwlqv" path="res://addons/SmoothScroll/scroll_damper/expo_scroll_damper.gd" id="2_whbpg"]
+
+[sub_resource type="Resource" id="Resource_u5j2m"]
+script = ExtResource("2_whbpg")
+
+[sub_resource type="Resource" id="Resource_ceq8m"]
+script = ExtResource("2_whbpg")
+
+[node name="AuthorsLineEdit" type="LineEdit" node_paths=PackedStringArray("_button", "_panelContainer", "_scrollContainer", "_vboxContainer")]
+size_flags_horizontal = 3
+script = ExtResource("1_whbpg")
+_button = NodePath("Button")
+_panelContainer = NodePath("Button/PanelContainer")
+_scrollContainer = NodePath("Button/PanelContainer/SmoothScrollContainer")
+_vboxContainer = NodePath("Button/PanelContainer/SmoothScrollContainer/VBoxContainer")
+
+[node name="Button" type="Button" parent="."]
+visible = false
+top_level = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+flat = true
+
+[node name="PanelContainer" type="PanelContainer" parent="Button"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -581.0
+offset_right = -581.0
+grow_horizontal = 2
+
+[node name="SmoothScrollContainer" type="ScrollContainer" parent="Button/PanelContainer"]
+layout_mode = 2
+horizontal_scroll_mode = 3
+script = ExtResource("1_h1lgt")
+wheel_scroll_damper = SubResource("Resource_u5j2m")
+dragging_scroll_damper = SubResource("Resource_ceq8m")
+metadata/_custom_type_script = "uid://bgqglerkcylxx"
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Button/PanelContainer/SmoothScrollContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/separation = 0
