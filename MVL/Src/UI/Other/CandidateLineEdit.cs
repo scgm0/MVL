@@ -6,8 +6,7 @@ using MVL.Utils.Help;
 namespace MVL.UI.Other;
 
 public abstract partial class CandidateLineEdit<T> : LineEdit {
-	[Export]
-	private Button? _button;
+	[Export] protected Button? Bg;
 
 	[Export]
 	private PanelContainer? _panelContainer;
@@ -18,6 +17,9 @@ public abstract partial class CandidateLineEdit<T> : LineEdit {
 	[Export]
 	private VBoxContainer? _vboxContainer;
 
+	[Export]
+	private Timer? _timer;
+
 	public IEnumerable<T> Candidates { get; set; } = [];
 
 	public T? Selected { get; set; }
@@ -27,30 +29,32 @@ public abstract partial class CandidateLineEdit<T> : LineEdit {
 	public int MaxShow { get; set; } = 5;
 
 	public override void _Ready() {
-		_button.NotNull();
+		Bg.NotNull();
 		_scrollContainer.NotNull();
 		_vboxContainer.NotNull();
+		_timer.NotNull();
 
-		_button.MouseFilter = MouseFilterEnum.Stop;
-		_button.Pressed += _button.Hide;
+		Bg.MouseFilter = MouseFilterEnum.Stop;
+		Bg.Pressed += Bg.Hide;
 
-		TextChanged += _ => { UpdateCandidates(); };
+		TextChanged += _ => { _timer.Start(0.1); };
+
+		_timer.Timeout += UpdateCandidates;
 	}
 
-	public abstract IEnumerable<(T data, string candidate, int ratio)> GetCandidate();
+	public abstract IEnumerable<(T data, int ratio)> GetCandidate();
+
+	public abstract Button GetItemContainer((T data, int ratio) candidate);
 
 	public void UpdateCandidates() {
-		if (!Candidates.Any()) {
-			return;
-		}
+		Selected = default;
 
-		if (!_button!.Visible) {
-			_button.Show();
-			var rect = GetGlobalRect();
-			rect.Position = rect.Position with { Y = rect.Position.Y + rect.Size.Y };
-			_panelContainer!.Size = _panelContainer!.Size with { X = rect.Size.X };
-			_panelContainer.GlobalPosition = rect.Position;
-		}
+		Bg!.Show();
+
+		var rect = GetGlobalRect();
+		rect.Position = rect.Position with { Y = rect.Position.Y + rect.Size.Y };
+		_panelContainer!.Size = _panelContainer!.Size with { X = rect.Size.X };
+		_panelContainer.GlobalPosition = rect.Position;
 
 		foreach (var child in _vboxContainer!.GetChildren()) {
 			child.Free();
@@ -60,24 +64,12 @@ public abstract partial class CandidateLineEdit<T> : LineEdit {
 
 		var i = 0;
 		var maxHeight = 0f;
-		foreach (var (data, candidate, ratio) in list) {
-			if (ratio <= 0) {
+		foreach (var item in list) {
+			if (item.ratio <= 0) {
 				continue;
 			}
 
-			var button = new Button {
-				Text = candidate,
-				ClipText = true,
-				TextOverrunBehavior = TextServer.OverrunBehavior.TrimEllipsis,
-				TooltipText = candidate,
-			};
-
-			button.Pressed += () => {
-				Text = candidate;
-				Selected = data;
-				_button.Hide();
-			};
-
+			var button = GetItemContainer(item);
 			_vboxContainer!.AddChild(button);
 
 			i++;
@@ -86,6 +78,15 @@ public abstract partial class CandidateLineEdit<T> : LineEdit {
 			}
 		}
 
-		_panelContainer!.Size = _panelContainer!.Size with { Y = maxHeight };
+		var maxWidth = _vboxContainer!.GetCombinedMinimumSize().X;
+		if (maxWidth > _panelContainer!.Size.X) {
+			_panelContainer!.GlobalPosition = _panelContainer.GlobalPosition with {
+				X = _panelContainer.GlobalPosition.X - (maxWidth - _panelContainer!.Size.X) / 2
+			};
+		} else {
+			maxWidth = _panelContainer!.Size.X;
+		}
+
+		_panelContainer!.Size = _panelContainer!.Size with { Y = maxHeight, X = maxWidth };
 	}
 }
