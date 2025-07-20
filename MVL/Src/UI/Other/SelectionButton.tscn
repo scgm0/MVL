@@ -1,0 +1,83 @@
+[gd_scene load_steps=10 format=3 uid="uid://bh6diaqd7d326"]
+
+[ext_resource type="Script" uid="uid://cp5ming0vipvb" path="res://Src/UI/Other/SelectionButton.cs" id="1_jewhb"]
+[ext_resource type="Material" uid="uid://c0sb2bjy16ljf" path="res://Assets/Material/button_blur.tres" id="2_p6n26"]
+[ext_resource type="Script" uid="uid://bgqglerkcylxx" path="res://addons/SmoothScroll/SmoothScrollContainer.gd" id="3_sggsl"]
+[ext_resource type="Script" uid="uid://b7h0k2h2qwlqv" path="res://addons/SmoothScroll/scroll_damper/expo_scroll_damper.gd" id="4_y2a4n"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_8jxxl"]
+content_margin_left = 0.0
+content_margin_top = 0.0
+content_margin_right = 0.0
+content_margin_bottom = 0.0
+bg_color = Color(0, 0, 0, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(1, 1, 1, 0.49019608)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+
+[sub_resource type="Resource" id="Resource_t5n6m"]
+script = ExtResource("4_y2a4n")
+
+[sub_resource type="Resource" id="Resource_srd6e"]
+script = ExtResource("4_y2a4n")
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_srd6e"]
+content_margin_left = 10.0
+content_margin_top = 4.0
+content_margin_right = 10.0
+content_margin_bottom = 4.0
+
+[sub_resource type="Theme" id="Theme_sggsl"]
+CheckBox/styles/focus = SubResource("StyleBoxEmpty_srd6e")
+CheckBox/styles/hover = SubResource("StyleBoxEmpty_srd6e")
+CheckBox/styles/hover_pressed = SubResource("StyleBoxEmpty_srd6e")
+CheckBox/styles/normal = SubResource("StyleBoxEmpty_srd6e")
+CheckBox/styles/pressed = SubResource("StyleBoxEmpty_srd6e")
+
+[node name="SelectionButton" type="Button" node_paths=PackedStringArray("Bg", "_panelContainer", "_scrollContainer", "_vboxContainer")]
+script = ExtResource("1_jewhb")
+Bg = NodePath("Button")
+_panelContainer = NodePath("Button/PanelContainer")
+_scrollContainer = NodePath("Button/PanelContainer/SmoothScrollContainer")
+_vboxContainer = NodePath("Button/PanelContainer/SmoothScrollContainer/VBoxContainer")
+
+[node name="Button" type="Button" parent="."]
+visible = false
+top_level = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+flat = true
+
+[node name="BackBufferCopy" type="BackBufferCopy" parent="Button"]
+copy_mode = 2
+
+[node name="PanelContainer" type="PanelContainer" parent="Button"]
+material = ExtResource("2_p6n26")
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+grow_horizontal = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_8jxxl")
+
+[node name="SmoothScrollContainer" type="ScrollContainer" parent="Button/PanelContainer"]
+layout_mode = 2
+script = ExtResource("3_sggsl")
+wheel_scroll_damper = SubResource("Resource_t5n6m")
+dragging_scroll_damper = SubResource("Resource_srd6e")
+metadata/_custom_type_script = "uid://bgqglerkcylxx"
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Button/PanelContainer/SmoothScrollContainer"]
+layout_mode = 2
+theme = SubResource("Theme_sggsl")
+theme_override_constants/separation = 0
