@@ -26,6 +26,7 @@ namespace MVL.Utils;
 [JsonSerializable(typeof(DateTimeOffset))]
 [JsonSerializable(typeof(ValidateResponse))]
 [JsonSerializable(typeof(ApiStatusAuthors))]
+[JsonSerializable(typeof(ApiStatusGameVersions))]
 [JsonSourceGenerationOptions(JsonSerializerDefaults.Web,
 	AllowTrailingCommas = true,
 	UseStringEnumConverter = true,
