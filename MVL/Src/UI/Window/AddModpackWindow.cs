@@ -54,6 +54,8 @@ public partial class AddModpackWindow : BaseWindow {
 			OkButton);
 		Main.CheckReleaseInfo();
 
+		_gameVersion.GetPopup().MaxSize = _gameVersion.GetPopup().MaxSize with { Y = 130 };
+		_releasePath.GetPopup().MaxSize = _releasePath.GetPopup().MaxSize with { Y = 130 };
 		_gameVersion.ItemSelected += GameVersionOnItemSelected;
 
 		var list = Main.ReleaseInfos.Values.OrderByDescending(info => info.Version, GameVersion.Comparer);
