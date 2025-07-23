@@ -27,6 +27,8 @@ namespace MVL.Utils;
 [JsonSerializable(typeof(ValidateResponse))]
 [JsonSerializable(typeof(ApiStatusAuthors))]
 [JsonSerializable(typeof(ApiStatusGameVersions))]
+[JsonSerializable(typeof(ApiStatusModTags))]
+[JsonSerializable(typeof(ApiStatusModsList))]
 [JsonSourceGenerationOptions(JsonSerializerDefaults.Web,
 	AllowTrailingCommas = true,
 	UseStringEnumConverter = true,
