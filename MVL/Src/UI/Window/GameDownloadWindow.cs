@@ -267,6 +267,7 @@ public partial class GameDownloadWindow : BaseWindow {
 	private async void ExtractGame(string filePath, string outputDir, string name) {
 		TitleLabel!.Text = "提取中...";
 		CancelButton!.Disabled = true;
+		_importButton!.Disabled = true;
 		_progressBar!.Hide();
 
 		var assetDir = Path.Combine(outputDir, name, "assets");
@@ -283,6 +284,7 @@ public partial class GameDownloadWindow : BaseWindow {
 #endif
 
 		CancelButton.Disabled = false;
+		_importButton.Disabled = false;
 		await Hide();
 		EmitSignalInstallGame(Path.Combine(outputDir, name));
 	}
