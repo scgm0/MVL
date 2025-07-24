@@ -1,7 +1,7 @@
 using Godot;
-using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using MVL.Utils.Help;
 
 namespace MVL.UI.Other;
@@ -24,13 +24,7 @@ public partial class SelectionButton : Button {
 	private ButtonGroup _buttonGroup = new();
 	private float _maxHeight;
 
-	public IEnumerable<string> SelectionList {
-		get;
-		set {
-			field = value;
-			UpdateList();
-		}
-	} = [];
+	public IList<string> SelectionList { get; set; } = [];
 
 	public int MaxShow { get; set; } = 5;
 
@@ -54,7 +48,8 @@ public partial class SelectionButton : Button {
 		Bg.Pressed += Bg.Hide;
 	}
 
-	public void UpdateList() {
+	public async Task UpdateList(IList<string> list) {
+		SelectionList = list;
 		Selected.Clear();
 
 		foreach (var child in _vboxContainer!.GetChildren()) {
@@ -89,6 +84,7 @@ public partial class SelectionButton : Button {
 			};
 
 			_vboxContainer!.AddChild(button);
+			await ToSignal(Main.SceneTree, SceneTree.SignalName.PhysicsFrame);
 			i++;
 			if (i <= MaxShow) {
 				_maxHeight = _vboxContainer!.GetCombinedMinimumSize().Y;

@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Text.Encodings.Web;
 using System.Text.Json;
 using System.Text.Json.Serialization;
-using MVL.UI.Item;
 using MVL.Utils.Config;
 using MVL.Utils.Game;
 using SharedLibrary;

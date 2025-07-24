@@ -86,12 +86,7 @@ public static class StringExtensions {
 
 			var digitEndIndex = checkIndex;
 			var bracketEndIndex = checkIndex;
-			if (bracketEndIndex >= source.Length) {
-				end++;
-				continue;
-			}
-
-			if (source[bracketEndIndex] != 'm') {
+			if (bracketEndIndex >= source.Length || source[bracketEndIndex] != 'm') {
 				end++;
 				continue;
 			}
