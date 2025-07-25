@@ -122,7 +122,7 @@ public partial class ModpackModManagementWindow : BaseWindow {
 				continue;
 			}
 
-			var tween = modInfoItem.CreateTween();
+			using var tween = modInfoItem.CreateTween();
 			tween.TweenProperty(modInfoItem, "modulate:a", 1, 0.025f);
 			await ToSignal(tween, Tween.SignalName.Finished);
 		}
@@ -164,7 +164,7 @@ public partial class ModpackModManagementWindow : BaseWindow {
 			modInfoItem.NeedToDepend += ModInfoItemOnNeedToDepend;
 
 			_modInfoItemsContainer!.AddChild(modInfoItem);
-			var tween = modInfoItem.CreateTween();
+			using var tween = modInfoItem.CreateTween();
 			tween.TweenProperty(modInfoItem, "modulate:a", 1, 0.025f);
 			await ToSignal(tween, Tween.SignalName.Finished);
 		}

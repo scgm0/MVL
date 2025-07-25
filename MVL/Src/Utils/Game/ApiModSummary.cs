@@ -10,6 +10,7 @@ public record ApiModSummary {
 	public int TrendingPoints { get; init; }
 	public int Comments { get; init; }
 	public required string Name { get; init; }
+	public required string Summary { get; init; }
 	public required string[] ModIdStrs { get; init; }
 	public required string Author { get; init; }
 	public string? UrlAlias { get; init; }

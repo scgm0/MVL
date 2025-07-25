@@ -93,7 +93,7 @@ public partial class InstalledGamesImport : BaseWindow {
 			installedGameItem.SingleSelect = SingleSelect;
 			installedGameItem.Modulate = Colors.Transparent;
 			_installedGameList!.AddChild(installedGameItem);
-			var tween = installedGameItem.CreateTween();
+			using var tween = installedGameItem.CreateTween();
 			tween.TweenProperty(installedGameItem, "modulate:a", 1f, 0.2f).SetDelay(i * 0.1);
 			tween.Parallel().TweenProperty(installedGameItem, "scale:x", 1f, 0.2f).From(0f).SetDelay(i * 0.1);
 			i++;

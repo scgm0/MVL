@@ -78,7 +78,7 @@ public partial class ApiModReleasesWindow : BaseWindow {
 				apiModReleaseItem.ApiModRelease = apiModRelease;
 				_apiModReleaseItemsContainer!.AddChild(apiModReleaseItem);
 
-				var tween = apiModReleaseItem.CreateTween();
+				using var tween = apiModReleaseItem.CreateTween();
 				tween.TweenProperty(apiModReleaseItem, "modulate:a", 1, 0.025f);
 				await ToSignal(tween, Tween.SignalName.Finished);
 			}
@@ -100,7 +100,7 @@ public partial class ApiModReleasesWindow : BaseWindow {
 				apiModReleaseItem.IsChecked = true;
 				_apiModReleaseItemsContainer!.AddChild(apiModReleaseItem);
 
-				var tween = apiModReleaseItem.CreateTween();
+				using var tween = apiModReleaseItem.CreateTween();
 				tween.TweenProperty(apiModReleaseItem, "modulate:a", 1, 0.025f);
 				await ToSignal(tween, Tween.SignalName.Finished);
 			}
@@ -122,7 +122,7 @@ public partial class ApiModReleasesWindow : BaseWindow {
 				apiModReleaseItem.IsChecked = true;
 				_apiModReleaseItemsContainer!.AddChild(apiModReleaseItem);
 
-				var tween = apiModReleaseItem.CreateTween();
+				using var tween = apiModReleaseItem.CreateTween();
 				tween.TweenProperty(apiModReleaseItem, "modulate:a", 1, 0.025f);
 				await ToSignal(tween, Tween.SignalName.Finished);
 			}

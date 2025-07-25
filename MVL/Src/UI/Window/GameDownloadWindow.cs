@@ -352,7 +352,7 @@ public partial class GameDownloadWindow : BaseWindow {
 					}
 
 					container.AddChild(vbox);
-					var tween = container.CreateTween();
+					using var tween = container.CreateTween();
 					tween.TweenProperty(container, "modulate:a", 1f, 0.2f).SetDelay(i * 0.1);
 					tween.Parallel().TweenProperty(container, "scale:x", 1f, 0.2f).From(0f).SetDelay(i * 0.1);
 					i++;

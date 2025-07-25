@@ -138,6 +138,7 @@ public partial class Main : NativeWindowUtility {
 		});
 		SceneTree.Root.FocusEntered += () => {
 			shadowTween?.Stop();
+			shadowTween?.Dispose();
 			shadowTween = CreateTween();
 			shadowTween.TweenMethod(
 				shadowCallable,
@@ -148,6 +149,7 @@ public partial class Main : NativeWindowUtility {
 		};
 		SceneTree.Root.FocusExited += () => {
 			shadowTween?.Stop();
+			shadowTween?.Dispose();
 			shadowTween = CreateTween();
 			shadowTween.TweenMethod(
 				shadowCallable,

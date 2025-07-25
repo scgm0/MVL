@@ -97,7 +97,7 @@ public partial class ReleasePage : MenuPage {
 			item.ReleaseInfo = info;
 			item.Modulate = item.Modulate with { A = 0 };
 			_grid!.AddChild(item);
-			var tween = item.CreateTween();
+			using var tween = item.CreateTween();
 			tween.TweenProperty(item, "modulate:a", 1, 0.4f).SetDelay(i * 0.1);
 			i++;
 		}
