@@ -86,9 +86,42 @@ public static class Tools {
 		}
 	}
 
-	public static Texture2D CreateTextureFromBytes(byte[] iconBytes) {
+	public static ImageTexture CreateTextureFromBytes(byte[] iconBytes, ImageFormat format = ImageFormat.Png) {
 		using var image = new Image();
-		image.LoadPngFromBuffer(iconBytes);
+		switch (format) {
+			case ImageFormat.Png:
+				image.LoadPngFromBuffer(iconBytes);
+				break;
+			case ImageFormat.Jpg:
+				image.LoadJpgFromBuffer(iconBytes);
+				break;
+			case ImageFormat.Bmp:
+				image.LoadBmpFromBuffer(iconBytes);
+				break;
+			case ImageFormat.Webp:
+				image.LoadWebpFromBuffer(iconBytes);
+				break;
+			case ImageFormat.Unknown:
+			default:
+				throw new NotSupportedException($"Unsupported image format: {format}");
+		}
+
 		return ImageTexture.CreateFromImage(image);
+	}
+
+	static private readonly byte[] Bmp = "BM"u8.ToArray();
+	static private readonly byte[] Webp = "RIFF"u8.ToArray();
+	static private readonly byte[] Png = [0x89, 0x50, 0x4E, 0x47];
+	static private readonly byte[] Jpeg = [0xFF, 0xD8];
+	static private readonly byte[] Jpeg2 = [0xFF, 0xD9];
+
+	public static ImageFormat GetImageFormatWithSwitch(ReadOnlySpan<byte> fileHeader) {
+		return fileHeader switch {
+			_ when fileHeader.StartsWith(Bmp) => ImageFormat.Bmp,
+			_ when fileHeader.StartsWith(Png) => ImageFormat.Png,
+			_ when fileHeader.StartsWith(Jpeg) && fileHeader.EndsWith(Jpeg2) => ImageFormat.Jpg,
+			_ when fileHeader.StartsWith(Webp) => ImageFormat.Webp,
+			_ => ImageFormat.Unknown,
+		};
 	}
 }
