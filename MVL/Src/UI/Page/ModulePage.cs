@@ -78,7 +78,10 @@ public partial class ModulePage : MenuPage {
 			}
 
 			field = value;
-			_pageNumberLineEdit?.Text = value.ToString();
+			if (_pageNumberLineEdit != null) {
+				_pageNumberLineEdit.Text = value.ToString();
+			}
+
 			_ = UpdateList();
 		}
 	} = 1;
@@ -91,7 +94,9 @@ public partial class ModulePage : MenuPage {
 			}
 
 			field = value;
-			_pageNumberButton?.Text = $"/{value}";
+			if (_pageNumberButton != null) {
+				_pageNumberButton.Text = $"/{value}";
+			}
 		}
 	} = 1;
 
@@ -99,7 +104,7 @@ public partial class ModulePage : MenuPage {
 		get;
 		set {
 			field = value;
-			UpdatePage();
+			_ = UpdatePage();
 		}
 	} = 4;
 
@@ -225,14 +230,14 @@ public partial class ModulePage : MenuPage {
 				}
 
 				_modSummaryList = list.ToArray();
-				Dispatcher.SynchronizationContext.Send(async void (_) => { UpdatePage(); }, null);
+				Dispatcher.SynchronizationContext.Send(async void (_) => { await UpdatePage(); }, null);
 			}
 		});
 
 		_loadingControl?.Hide();
 	}
 
-	private async void UpdatePage() {
+	private async Task UpdatePage() {
 		_modSummaryPageList = _modSummaryList.Chunk(ItemCount).ToArray();
 		MaxPage = _modSummaryPageList.Length > 0 ? _modSummaryPageList.Length : 1;
 		CurrentPage = 1;
@@ -318,7 +323,9 @@ public partial class ModulePage : MenuPage {
 			var apiAuthors = JsonSerializer.Deserialize(apiAuthorsText,
 				SourceGenerationContext.Default.ApiStatusAuthors);
 			if (apiAuthors?.StatusCode is "200") {
-				_modAuthorLineEdit?.Candidates = apiAuthors.Authors ?? [];
+				if (_modAuthorLineEdit != null) {
+					_modAuthorLineEdit.Candidates = apiAuthors.Authors ?? [];
+				}
 			}
 
 			var apiGameVersions = JsonSerializer.Deserialize(apiGameVersionsText,
@@ -344,7 +351,9 @@ public partial class ModulePage : MenuPage {
 
 	private void PageNumberButtonOnButtonDown() {
 		_pageNumberLineEdit?.GrabFocus();
-		_pageNumberLineEdit?.CaretColumn = _pageNumberLineEdit.Text.Length;
+		if (_pageNumberLineEdit != null) {
+			_pageNumberLineEdit.CaretColumn = _pageNumberLineEdit.Text.Length;
+		}
 	}
 
 	private void PageNumberLineEditOnEditingToggled(bool toggledOn) {

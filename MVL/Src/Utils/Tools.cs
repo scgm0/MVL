@@ -65,6 +65,7 @@ public static class Tools {
 			}
 
 			while (await process.StandardOutput.ReadLineAsync() is { } line) {
+				GD.Print(line);
 				if (!line.Contains(targetFrameworkName, StringComparison.OrdinalIgnoreCase)) {
 					continue;
 				}
@@ -81,7 +82,8 @@ public static class Tools {
 			}
 
 			return false;
-		} catch (Exception) {
+		} catch (Exception e) {
+			GD.PrintErr(e);
 			return false;
 		}
 	}
