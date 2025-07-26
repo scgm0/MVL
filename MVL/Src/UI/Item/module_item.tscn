@@ -1,0 +1,229 @@
+[gd_scene load_steps=17 format=3 uid="uid://by3fewq1gv8si"]
+
+[ext_resource type="Texture2D" uid="uid://dcoju08mvjqim" path="res://Assets/Icon/VS/modicon.png" id="1_72o6q"]
+[ext_resource type="Script" uid="uid://bejxli2tpo7q5" path="res://Src/UI/Item/ModuleItem.cs" id="1_d27ek"]
+[ext_resource type="FontFile" uid="uid://bmgx1vyg6bavd" path="res://Assets/Font/HarmonyOS_Sans_SC_Bold.ttf" id="2_d27ek"]
+[ext_resource type="Script" uid="uid://bk3tot6c35bwu" path="res://Src/Utils/IconTexture2D.cs" id="3_ii6d5"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_1j2tx"]
+bg_color = Color(0.8156863, 0.8156863, 0.8156863, 0.05882353)
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+shadow_size = 2
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_u5j2m"]
+bg_color = Color(0, 0, 0, 0.6)
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ceq8m"]
+bg_color = Color(0.225, 0.225, 0.225, 0.6)
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+shadow_size = 2
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_blyna"]
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+
+[sub_resource type="StyleBoxLine" id="StyleBoxLine_u5j2m"]
+content_margin_left = 4.0
+content_margin_top = 0.0
+content_margin_right = 4.0
+content_margin_bottom = 0.0
+color = Color(0.5, 0.5, 0.5, 1)
+grow_begin = 0.0
+grow_end = 0.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_1cmpl"]
+content_margin_left = 5.0
+content_margin_top = 4.0
+content_margin_right = 5.0
+content_margin_bottom = 4.0
+draw_center = false
+border_color = Color(1, 1, 1, 0.6)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_wrfr1"]
+content_margin_left = 5.0
+content_margin_top = 4.0
+content_margin_right = 5.0
+draw_center = false
+border_color = Color(1, 1, 1, 0.6)
+
+[sub_resource type="StyleBoxLine" id="StyleBoxLine_ceq8m"]
+content_margin_left = 4.0
+content_margin_top = 0.0
+content_margin_right = 4.0
+content_margin_bottom = 0.0
+color = Color(0.5, 0.5, 0.5, 1)
+grow_begin = 0.0
+grow_end = 0.0
+
+[sub_resource type="Texture2D" id="Texture2D_ceq8m"]
+resource_local_to_scene = false
+resource_name = ""
+script = ExtResource("3_ii6d5")
+IconName = "account-circle-outline"
+IconSize = 18
+metadata/_custom_type_script = "uid://bk3tot6c35bwu"
+
+[sub_resource type="Texture2D" id="Texture2D_wrfr1"]
+resource_local_to_scene = false
+resource_name = ""
+script = ExtResource("3_ii6d5")
+IconName = "tray-arrow-down"
+IconSize = 18
+metadata/_custom_type_script = "uid://bk3tot6c35bwu"
+
+[sub_resource type="Texture2D" id="Texture2D_u5j2m"]
+resource_local_to_scene = false
+resource_name = ""
+script = ExtResource("3_ii6d5")
+IconName = "star-outline"
+IconSize = 18
+metadata/_custom_type_script = "uid://bk3tot6c35bwu"
+
+[sub_resource type="Texture2D" id="Texture2D_1cmpl"]
+resource_local_to_scene = false
+resource_name = ""
+script = ExtResource("3_ii6d5")
+IconName = "message-reply-text-outline"
+IconSize = 18
+metadata/_custom_type_script = "uid://bk3tot6c35bwu"
+
+[node name="ModuleItem" type="Button" node_paths=PackedStringArray("_modIconTextureRect", "_modNameLabel", "_modDescriptionLabel", "_modAuthorButton", "_modDownloadsButton", "_modFollowsButton", "_modCommentsButton")]
+custom_minimum_size = Vector2(250, 350)
+size_flags_horizontal = 4
+mouse_filter = 1
+theme_override_styles/normal = SubResource("StyleBoxFlat_1j2tx")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_u5j2m")
+theme_override_styles/hover = SubResource("StyleBoxFlat_ceq8m")
+script = ExtResource("1_d27ek")
+_modIconTextureRect = NodePath("VBoxContainer/PanelContainer/TextureRect")
+_modNameLabel = NodePath("VBoxContainer/Label")
+_modDescriptionLabel = NodePath("VBoxContainer/Label2")
+_modAuthorButton = NodePath("VBoxContainer/HBoxContainer/Button")
+_modDownloadsButton = NodePath("VBoxContainer/HBoxContainer/Button2")
+_modFollowsButton = NodePath("VBoxContainer/HBoxContainer/Button3")
+_modCommentsButton = NodePath("VBoxContainer/HBoxContainer/Button5")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 0
+
+[node name="PanelContainer" type="PanelContainer" parent="VBoxContainer"]
+clip_children = 1
+layout_mode = 2
+size_flags_vertical = 3
+mouse_filter = 1
+theme_override_styles/panel = SubResource("StyleBoxFlat_blyna")
+
+[node name="TextureRect" type="TextureRect" parent="VBoxContainer/PanelContainer"]
+custom_minimum_size = Vector2(250, 167)
+layout_mode = 2
+texture = ExtResource("1_72o6q")
+expand_mode = 1
+stretch_mode = 6
+
+[node name="HSeparator2" type="HSeparator" parent="VBoxContainer"]
+layout_mode = 2
+mouse_filter = 1
+theme_override_constants/separation = 0
+theme_override_styles/separator = SubResource("StyleBoxLine_u5j2m")
+
+[node name="Label" type="Label" parent="VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+mouse_filter = 1
+theme_override_fonts/font = ExtResource("2_d27ek")
+theme_override_styles/normal = SubResource("StyleBoxFlat_1cmpl")
+text = "Nightvision helmets by Kanahaku"
+horizontal_alignment = 1
+autowrap_mode = 1
+clip_text = true
+text_overrun_behavior = 3
+
+[node name="Label2" type="Label" parent="VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+size_flags_stretch_ratio = 2.0
+mouse_filter = 1
+theme_override_colors/font_color = Color(1, 1, 1, 0.6745098)
+theme_override_font_sizes/font_size = 14
+theme_override_styles/normal = SubResource("StyleBoxFlat_wrfr1")
+text = "That mod adds some actually protective nightvision helmets for use!"
+autowrap_mode = 1
+clip_text = true
+text_overrun_behavior = 3
+
+[node name="HSeparator" type="HSeparator" parent="VBoxContainer"]
+layout_mode = 2
+mouse_filter = 1
+theme_override_constants/separation = 0
+theme_override_styles/separator = SubResource("StyleBoxLine_ceq8m")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 0
+mouse_default_cursor_shape = 2
+theme_override_constants/separation = 0
+
+[node name="Button" type="Button" parent="VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+focus_mode = 0
+mouse_filter = 1
+theme_override_colors/font_color = Color(1, 1, 1, 0.5019608)
+theme_override_colors/icon_normal_color = Color(1, 1, 1, 0.5019608)
+theme_override_font_sizes/font_size = 12
+text = "Faeldray"
+icon = SubResource("Texture2D_ceq8m")
+flat = true
+alignment = 0
+text_overrun_behavior = 1
+clip_text = true
+
+[node name="Button2" type="Button" parent="VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+focus_mode = 0
+mouse_filter = 1
+theme_override_colors/font_color = Color(1, 1, 1, 0.5019608)
+theme_override_colors/icon_normal_color = Color(0.9993611, 0.9993611, 0.999361, 0.5019608)
+theme_override_font_sizes/font_size = 12
+text = "622K"
+icon = SubResource("Texture2D_wrfr1")
+flat = true
+
+[node name="Button3" type="Button" parent="VBoxContainer/HBoxContainer"]
+layout_mode = 2
+focus_mode = 0
+mouse_filter = 1
+theme_override_colors/font_color = Color(1, 1, 1, 0.5019608)
+theme_override_colors/icon_normal_color = Color(1, 1, 1, 0.5019608)
+theme_override_font_sizes/font_size = 12
+text = "100"
+icon = SubResource("Texture2D_u5j2m")
+flat = true
+
+[node name="Button5" type="Button" parent="VBoxContainer/HBoxContainer"]
+layout_mode = 2
+focus_mode = 0
+mouse_filter = 1
+theme_override_colors/font_color = Color(1, 1, 1, 0.5019608)
+theme_override_colors/icon_normal_color = Color(1, 1, 1, 0.5019608)
+theme_override_font_sizes/font_size = 12
+text = "204"
+icon = SubResource("Texture2D_1cmpl")
+flat = true

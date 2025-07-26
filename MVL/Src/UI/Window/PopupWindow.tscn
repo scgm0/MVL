@@ -1,0 +1,23 @@
+[gd_scene load_steps=2 format=3 uid="uid://dhit0qun1fpb0"]
+
+[ext_resource type="Script" uid="uid://1yirwwht3kx7" path="res://Src/UI/Window/PopupWindow.cs" id="1_02ei0"]
+
+[node name="PopupWindow" type="Control" node_paths=PackedStringArray("_closeButton")]
+top_level = true
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_02ei0")
+_closeButton = NodePath("Button")
+
+[node name="Button" type="Button" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+flat = true

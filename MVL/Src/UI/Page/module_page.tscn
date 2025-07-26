@@ -1,8 +1,72 @@
-[gd_scene load_steps=2 format=3 uid="uid://dri1d4mt1w68c"]
+[gd_scene load_steps=24 format=3 uid="uid://dri1d4mt1w68c"]
 
-[ext_resource type="Script" uid="uid://diqldycl8cgn2" path="res://Src/UI/Page/MenuPage.cs" id="1_a61tx"]
+[ext_resource type="Script" uid="uid://g2x8e85gx8ct" path="res://Src/UI/Page/ModulePage.cs" id="1_yrgrc"]
+[ext_resource type="Texture2D" uid="uid://d3mq4tlr6rr01" path="res://Assets/Icon/VS/gameicon.png" id="2_j8eel"]
+[ext_resource type="PackedScene" uid="uid://by3fewq1gv8si" path="res://Src/UI/Item/module_item.tscn" id="2_wrfr1"]
+[ext_resource type="Material" uid="uid://c0sb2bjy16ljf" path="res://Assets/Material/button_blur.tres" id="2_yrgrc"]
+[ext_resource type="Script" uid="uid://bgqglerkcylxx" path="res://addons/SmoothScroll/SmoothScrollContainer.gd" id="3_5qr6m"]
+[ext_resource type="PackedScene" uid="uid://cx30yvsu80t6f" path="res://Src/UI/Window/confirmation_window.tscn" id="3_blyna"]
+[ext_resource type="Script" uid="uid://bk3tot6c35bwu" path="res://Src/Utils/IconTexture2D.cs" id="3_ceq8m"]
+[ext_resource type="PackedScene" uid="uid://buymc11h2tiu6" path="res://Src/UI/Other/authors_line_edit.tscn" id="4_1j2tx"]
+[ext_resource type="PackedScene" uid="uid://8k1twti5t7jp" path="res://Src/UI/Window/api_mod_releases_window.tscn" id="4_spol5"]
+[ext_resource type="Script" uid="uid://b7h0k2h2qwlqv" path="res://addons/SmoothScroll/scroll_damper/expo_scroll_damper.gd" id="4_yrgrc"]
+[ext_resource type="PackedScene" uid="uid://bh6diaqd7d326" path="res://Src/UI/Other/SelectionButton.tscn" id="5_u5j2m"]
+[ext_resource type="Material" uid="uid://b675ao2n7w53x" path="res://Assets/Material/loading.tres" id="9_ceq8m"]
 
-[node name="ModulePage" type="Control"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_dvdbd"]
+content_margin_left = 10.0
+content_margin_top = 10.0
+content_margin_right = 10.0
+content_margin_bottom = 10.0
+bg_color = Color(0.10196078, 0.10196078, 0.10196078, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.8, 0.8, 0.8, 0.49019608)
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
+
+[sub_resource type="Texture2D" id="Texture2D_wrfr1"]
+resource_local_to_scene = false
+resource_name = ""
+script = ExtResource("3_ceq8m")
+IconName = "magnify"
+metadata/_custom_type_script = "uid://bk3tot6c35bwu"
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_u5j2m"]
+content_margin_left = 4.0
+content_margin_top = 4.0
+content_margin_right = 4.0
+content_margin_bottom = 4.0
+bg_color = Color(0.1, 0.1, 0.1, 0.6)
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+corner_detail = 5
+
+[sub_resource type="Resource" id="Resource_dvdbd"]
+script = ExtResource("4_yrgrc")
+
+[sub_resource type="Resource" id="Resource_1j2tx"]
+script = ExtResource("4_yrgrc")
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_j8eel"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_yrgrc"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_dvdbd"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_1j2tx"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_u5j2m"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_ceq8m"]
+
+[node name="ModulePage" type="Control" node_paths=PackedStringArray("_modNameLineEdit", "_searchButton", "_modAuthorLineEdit", "_modVersionsButton", "_modTagsButton", "_modSideButton", "_modOrderByButton", "_modInstallStatusButton", "_moduleListContainer", "_pageNumberLineEdit", "_pageNumberButton", "_previousPageButton", "_nextPageButton", "_loadingControl", "Main")]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -10,5 +74,262 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
-script = ExtResource("1_a61tx")
+script = ExtResource("1_yrgrc")
+_moduleItemScene = ExtResource("2_wrfr1")
+_confirmationWindowScene = ExtResource("3_blyna")
+_apiModReleasesWindowScene = ExtResource("4_spol5")
+_modNameLineEdit = NodePath("MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer2/LineEdit")
+_searchButton = NodePath("MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer2/Button")
+_modAuthorLineEdit = NodePath("MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer/MarginContainer/VBoxContainer/HBoxContainer/AuthorsLineEdit")
+_modVersionsButton = NodePath("MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer/MarginContainer/VBoxContainer/HBoxContainer/SelectionButton")
+_modTagsButton = NodePath("MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer/MarginContainer/VBoxContainer/HBoxContainer/SelectionButton2")
+_modSideButton = NodePath("MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer/MarginContainer/VBoxContainer/HBoxContainer2/SelectionButton")
+_modOrderByButton = NodePath("MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer/MarginContainer/VBoxContainer/HBoxContainer2/SelectionButton2")
+_modInstallStatusButton = NodePath("MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer/MarginContainer/VBoxContainer/HBoxContainer2/SelectionButton3")
+_moduleListContainer = NodePath("MarginContainer/VBoxContainer/PanelContainer2/ScrollContainer/MarginContainer/HFlowContainer")
+_pageNumberLineEdit = NodePath("MarginContainer/VBoxContainer/PanelContainer3/HBoxContainer2/HBoxContainer/LineEdit")
+_pageNumberButton = NodePath("MarginContainer/VBoxContainer/PanelContainer3/HBoxContainer2/HBoxContainer/Button")
+_previousPageButton = NodePath("MarginContainer/VBoxContainer/PanelContainer3/HBoxContainer2/Button")
+_nextPageButton = NodePath("MarginContainer/VBoxContainer/PanelContainer3/HBoxContainer2/Button2")
+_loadingControl = NodePath("Control")
+Main = NodePath("MarginContainer")
 metadata/_tab_index = 4
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="PanelContainer" type="PanelContainer" parent="MarginContainer/VBoxContainer"]
+material = ExtResource("2_yrgrc")
+layout_mode = 2
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_dvdbd")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/PanelContainer"]
+layout_mode = 2
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer/VBoxContainer/PanelContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="LineEdit" type="LineEdit" parent="MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer2"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 0
+theme_override_font_sizes/font_size = 18
+placeholder_text = "搜索模组"
+clear_button_enabled = true
+
+[node name="Button" type="Button" parent="MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer2"]
+layout_mode = 2
+icon = SubResource("Texture2D_wrfr1")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/PanelContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="PanelContainer" type="PanelContainer" parent="MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer/PanelContainer"]
+layout_mode = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer/PanelContainer/HBoxContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 5
+theme_override_constants/margin_top = 5
+theme_override_constants/margin_right = 5
+theme_override_constants/margin_bottom = 5
+
+[node name="TextureRect" type="TextureRect" parent="MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer/PanelContainer/HBoxContainer/MarginContainer"]
+custom_minimum_size = Vector2(50, 50)
+layout_mode = 2
+texture = ExtResource("2_j8eel")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer/PanelContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer/PanelContainer/HBoxContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 6
+text = "整合包"
+horizontal_alignment = 1
+
+[node name="Label2" type="Label" parent="MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer/PanelContainer/HBoxContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 6
+text = "版本"
+horizontal_alignment = 1
+
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer/MarginContainer"]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="AuthorsLineEdit" parent="MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer/MarginContainer/VBoxContainer/HBoxContainer" instance=ExtResource("4_1j2tx")]
+layout_mode = 2
+theme_override_font_sizes/font_size = 16
+theme_override_styles/normal = SubResource("StyleBoxFlat_u5j2m")
+placeholder_text = "模组作者"
+alignment = 1
+
+[node name="SelectionButton" parent="MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer/MarginContainer/VBoxContainer/HBoxContainer" instance=ExtResource("5_u5j2m")]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "游戏版本"
+
+[node name="SelectionButton2" parent="MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer/MarginContainer/VBoxContainer/HBoxContainer" instance=ExtResource("5_u5j2m")]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "模组标签"
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="SelectionButton" parent="MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer/MarginContainer/VBoxContainer/HBoxContainer2" instance=ExtResource("5_u5j2m")]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "运行位置"
+Radio = true
+
+[node name="SelectionButton2" parent="MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer/MarginContainer/VBoxContainer/HBoxContainer2" instance=ExtResource("5_u5j2m")]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "排序依据"
+Radio = true
+
+[node name="SelectionButton3" parent="MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer/MarginContainer/VBoxContainer/HBoxContainer2" instance=ExtResource("5_u5j2m")]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "安装状态"
+Radio = true
+
+[node name="PanelContainer2" type="PanelContainer" parent="MarginContainer/VBoxContainer"]
+material = ExtResource("2_yrgrc")
+layout_mode = 2
+size_flags_vertical = 3
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_dvdbd")
+
+[node name="ScrollContainer" type="ScrollContainer" parent="MarginContainer/VBoxContainer/PanelContainer2"]
+layout_mode = 2
+size_flags_vertical = 3
+script = ExtResource("3_5qr6m")
+wheel_scroll_damper = SubResource("Resource_dvdbd")
+dragging_scroll_damper = SubResource("Resource_1j2tx")
+metadata/_custom_type_script = "uid://bgqglerkcylxx"
+
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/VBoxContainer/PanelContainer2/ScrollContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/margin_left = 2
+theme_override_constants/margin_top = 2
+theme_override_constants/margin_right = 2
+theme_override_constants/margin_bottom = 2
+
+[node name="HFlowContainer" type="HFlowContainer" parent="MarginContainer/VBoxContainer/PanelContainer2/ScrollContainer/MarginContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 6
+theme_override_constants/h_separation = 10
+theme_override_constants/v_separation = 10
+alignment = 1
+last_wrap_alignment = 1
+
+[node name="PanelContainer3" type="PanelContainer" parent="MarginContainer/VBoxContainer"]
+material = ExtResource("2_yrgrc")
+layout_mode = 2
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_dvdbd")
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer/VBoxContainer/PanelContainer3"]
+layout_mode = 2
+alignment = 1
+
+[node name="Button" type="Button" parent="MarginContainer/VBoxContainer/PanelContainer3/HBoxContainer2"]
+layout_mode = 2
+size_flags_horizontal = 3
+mouse_default_cursor_shape = 2
+text = "上一页"
+flat = true
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/PanelContainer3/HBoxContainer2"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 0
+alignment = 1
+
+[node name="LineEdit" type="LineEdit" parent="MarginContainer/VBoxContainer/PanelContainer3/HBoxContainer2/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 16
+theme_override_styles/normal = SubResource("StyleBoxEmpty_j8eel")
+text = "1"
+alignment = 2
+virtual_keyboard_type = 2
+caret_blink = true
+structured_text_bidi_override = 3
+
+[node name="Button" type="Button" parent="MarginContainer/VBoxContainer/PanelContainer3/HBoxContainer2/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+mouse_default_cursor_shape = 1
+theme_override_styles/normal = SubResource("StyleBoxEmpty_yrgrc")
+theme_override_styles/pressed = SubResource("StyleBoxEmpty_dvdbd")
+theme_override_styles/hover = SubResource("StyleBoxEmpty_1j2tx")
+theme_override_styles/hover_pressed = SubResource("StyleBoxEmpty_u5j2m")
+theme_override_styles/disabled = SubResource("StyleBoxEmpty_ceq8m")
+text = "/1"
+alignment = 0
+
+[node name="Button2" type="Button" parent="MarginContainer/VBoxContainer/PanelContainer3/HBoxContainer2"]
+layout_mode = 2
+size_flags_horizontal = 3
+mouse_default_cursor_shape = 2
+text = "下一页"
+flat = true
+
+[node name="Control" type="Control" parent="."]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="ColorRect" type="ColorRect" parent="Control"]
+material = ExtResource("9_ceq8m")
+custom_minimum_size = Vector2(75, 75)
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -37.5
+offset_top = -37.5
+offset_right = 37.5
+offset_bottom = 37.5
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4

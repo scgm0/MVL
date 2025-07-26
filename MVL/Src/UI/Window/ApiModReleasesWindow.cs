@@ -24,6 +24,8 @@ public partial class ApiModReleasesWindow : BaseWindow {
 
 	public IEnumerable<(ApiModInfo, ApiModRelease, ModpackConfig)>? ModDependencies { get; set; }
 
+	public (ModInfo? modInfo, ApiModInfo apiModInfo, ModpackConfig modpackConfig)? DownloadModInfo { get; set; }
+
 	public override void _Ready() {
 		base._Ready();
 
@@ -128,6 +130,27 @@ public partial class ApiModReleasesWindow : BaseWindow {
 			}
 		}
 
+		if (DownloadModInfo != null) {
+			OkButton?.Hide();
+			foreach (var apiModRelease in DownloadModInfo.Value.apiModInfo!.Releases) {
+				if (!IsInstanceValid(this)) {
+					return;
+				}
+
+				var apiModReleaseItem = _apiModReleaseItemScene!.Instantiate<ApiModReleaseItem>();
+				apiModReleaseItem.Window = this;
+				apiModReleaseItem.ModInfo = DownloadModInfo.Value.modInfo;
+				apiModReleaseItem.ModpackConfig = DownloadModInfo.Value.modpackConfig;
+				apiModReleaseItem.ApiModInfo = DownloadModInfo.Value.apiModInfo;
+				apiModReleaseItem.ApiModRelease = apiModRelease;
+				_apiModReleaseItemsContainer!.AddChild(apiModReleaseItem);
+
+				using var tween = apiModReleaseItem.CreateTween();
+				tween.TweenProperty(apiModReleaseItem, "modulate:a", 1, 0.025f);
+				await ToSignal(tween, Tween.SignalName.Finished);
+			}
+		}
+
 		if (IsInstanceValid(this)) {
 			_loadingContainer.Hide();
 		}
@@ -150,6 +173,11 @@ public partial class ApiModReleasesWindow : BaseWindow {
 			var list = ModDependencies.ToList();
 			list.Remove((apiModReleaseItem.ApiModInfo!, apiModReleaseItem.ApiModRelease!, apiModReleaseItem.ModpackConfig!));
 			ModDependencies = list;
+		}
+
+		if (DownloadModInfo is not null) {
+			DownloadModInfo = DownloadModInfo.Value with { modInfo = apiModReleaseItem.ModInfo! };
+			UpdateApiModInfo();
 		}
 	}
 }
