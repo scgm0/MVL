@@ -25,9 +25,7 @@ public partial class InstalledGameItem : MarginContainer {
 		get;
 		set {
 			field = value;
-			if (_gameVersion != null) {
-				_gameVersion.Text = value.ShortGameVersion;
-			}
+			_gameVersion?.Text = value.ShortGameVersion;
 		}
 	}
 
@@ -35,9 +33,7 @@ public partial class InstalledGameItem : MarginContainer {
 		get;
 		set {
 			field = value;
-			if (_gamePath != null) {
-				_gamePath.Text = value;
-			}
+			_gamePath?.Text = value;
 		}
 	}
 
@@ -45,9 +41,7 @@ public partial class InstalledGameItem : MarginContainer {
 		get => _checkBox?.ButtonPressed ?? field;
 		set {
 			field = value;
-			if (_checkBox != null) {
-				_checkBox.ButtonPressed = value;
-			}
+			_checkBox?.ButtonPressed = value;
 		}
 	}
 

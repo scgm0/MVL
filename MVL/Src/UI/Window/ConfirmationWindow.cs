@@ -16,9 +16,7 @@ public partial class ConfirmationWindow : BaseWindow {
 		get => _messageLabel?.Text ?? field;
 		set {
 			field = value;
-			if (_messageLabel != null) {
-				_messageLabel.Text = value;
-			}
+			_messageLabel?.Text = value;
 		}
 	} = "确定吗？";
 

@@ -11,9 +11,7 @@ public partial class MenuItem : Button {
 	public override void _Ready() {
 		TooltipText = Text;
 		Toggled += OnToggled;
-		if (Page != null) {
-			Page.Visible = ButtonPressed;
-		}
+		Page?.Visible = ButtonPressed;
 	}
 
 	private void OnToggled(bool toggledon) {

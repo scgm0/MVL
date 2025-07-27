@@ -15,9 +15,7 @@ public partial class InfoItem : Control {
 		get;
 		set {
 			field = value;
-			if (_title != null) {
-				_title.Text = value;
-			}
+			_title?.Text = value;
 		}
 	} = "";
 
@@ -25,9 +23,7 @@ public partial class InfoItem : Control {
 		get;
 		set {
 			field = value;
-			if (_content != null) {
-				_content.Text = value;
-			}
+			_content?.Text = value;
 		}
 	} = "";
 

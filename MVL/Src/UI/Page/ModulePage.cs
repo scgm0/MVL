@@ -78,9 +78,7 @@ public partial class ModulePage : MenuPage {
 			}
 
 			field = value;
-			if (_pageNumberLineEdit != null) {
-				_pageNumberLineEdit.Text = value.ToString();
-			}
+			_pageNumberLineEdit?.Text = value.ToString();
 
 			_ = UpdateList();
 		}
@@ -94,9 +92,7 @@ public partial class ModulePage : MenuPage {
 			}
 
 			field = value;
-			if (_pageNumberButton != null) {
-				_pageNumberButton.Text = $"/{value}";
-			}
+			_pageNumberButton?.Text = $"/{value}";
 		}
 	} = 1;
 
@@ -323,9 +319,7 @@ public partial class ModulePage : MenuPage {
 			var apiAuthors = JsonSerializer.Deserialize(apiAuthorsText,
 				SourceGenerationContext.Default.ApiStatusAuthors);
 			if (apiAuthors?.StatusCode is "200") {
-				if (_modAuthorLineEdit != null) {
-					_modAuthorLineEdit.Candidates = apiAuthors.Authors ?? [];
-				}
+				_modAuthorLineEdit?.Candidates = apiAuthors.Authors ?? [];
 			}
 
 			var apiGameVersions = JsonSerializer.Deserialize(apiGameVersionsText,
@@ -352,9 +346,7 @@ public partial class ModulePage : MenuPage {
 
 	private void PageNumberButtonOnButtonDown() {
 		_pageNumberLineEdit?.GrabFocus();
-		if (_pageNumberLineEdit != null) {
-			_pageNumberLineEdit.CaretColumn = _pageNumberLineEdit.Text.Length;
-		}
+		_pageNumberLineEdit?.CaretColumn = _pageNumberLineEdit.Text.Length;
 	}
 
 	private void PageNumberLineEditOnEditingToggled(bool toggledOn) {

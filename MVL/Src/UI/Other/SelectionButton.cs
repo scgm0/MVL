@@ -34,9 +34,7 @@ public partial class SelectionButton : Button {
 			field = value.OrderBy(i => i).ToList();
 			foreach (var i in field) {
 				var child = _vboxContainer?.GetChild<Button?>(i);
-				if (child != null) {
-					child.ButtonPressed = true;
-				}
+				child?.ButtonPressed = true;
 			}
 		}
 	} = [];

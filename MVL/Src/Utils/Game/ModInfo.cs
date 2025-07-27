@@ -131,9 +131,7 @@ public record ModInfo : IComparable<ModInfo> {
 			var jsonContent = reader.ReadToEnd();
 
 			var modInfo = JsonSerializer.Deserialize(jsonContent, SourceGenerationContext.Default.ModInfo);
-			if (modInfo != null) {
-				modInfo.ModPath = zipPath;
-			}
+			modInfo?.ModPath = zipPath;
 
 			return modInfo;
 		} catch (Exception e) {
@@ -152,9 +150,7 @@ public record ModInfo : IComparable<ModInfo> {
 			var jsonContent = File.ReadAllText(jsonPath);
 
 			var modInfo = JsonSerializer.Deserialize(jsonContent, SourceGenerationContext.Default.ModInfo);
-			if (modInfo != null) {
-				modInfo.ModPath = directoryPath;
-			}
+			modInfo?.ModPath = directoryPath;
 
 			return modInfo;
 		} catch (Exception e) {
