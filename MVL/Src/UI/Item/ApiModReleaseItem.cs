@@ -120,6 +120,7 @@ public partial class ApiModReleaseItem : PanelContainer {
 			child.QueueFree();
 		}
 
+		ApiModRelease.Tags.Reverse();
 		foreach (var tag in ApiModRelease.Tags) {
 			var label = new Label { Text = tag };
 			label.Modulate = Colors.DarkRed;

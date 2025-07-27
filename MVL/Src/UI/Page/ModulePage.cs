@@ -331,8 +331,9 @@ public partial class ModulePage : MenuPage {
 			var apiGameVersions = JsonSerializer.Deserialize(apiGameVersionsText,
 				SourceGenerationContext.Default.ApiStatusGameVersions);
 			if (apiGameVersions?.StatusCode is "200") {
+				apiGameVersions.GameVersions.Reverse();
 				_gameVersionIds = (apiGameVersions.GameVersions ?? []).Select(g => g.TagId).ToArray();
-				var list = (apiGameVersions.GameVersions ?? []).Select(g => g.Name).Reverse().ToList();
+				var list = (apiGameVersions.GameVersions ?? []).Select(g => g.Name).ToList();
 				await _modVersionsButton!.UpdateList(list);
 			}
 
