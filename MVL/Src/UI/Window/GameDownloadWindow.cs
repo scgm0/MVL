@@ -189,6 +189,7 @@ public partial class GameDownloadWindow : BaseWindow {
 		_tooltip!.Text = Directory.Exists(Path.Combine(path, name)) ? string.Format(Tr("'{0}'已存在，确定覆盖它吗？"), name) : "将自动创建文件夹";
 		_tooltip.Modulate = Directory.Exists(Path.Combine(path, name)) ? Colors.Yellow : Colors.White;
 		OkButton!.Disabled = false;
+		_importButton!.Disabled = false;
 	}
 
 	override protected async void CancelButtonOnPressed() {
@@ -216,6 +217,7 @@ public partial class GameDownloadWindow : BaseWindow {
 
 		TitleLabel!.Text = "下载中...";
 		OkButton!.Disabled = true;
+		_importButton!.Disabled = true;
 		_progressBar.Value = 0;
 
 		var item = _buttonGroup!.GetPressedButton().GetOwner<InstalledGameItem>();
@@ -267,7 +269,6 @@ public partial class GameDownloadWindow : BaseWindow {
 	private async void ExtractGame(string filePath, string outputDir, string name) {
 		TitleLabel!.Text = "提取中...";
 		CancelButton!.Disabled = true;
-		_importButton!.Disabled = true;
 		_progressBar!.Hide();
 
 		var assetDir = Path.Combine(outputDir, name, "assets");
@@ -284,7 +285,6 @@ public partial class GameDownloadWindow : BaseWindow {
 #endif
 
 		CancelButton.Disabled = false;
-		_importButton.Disabled = false;
 		await Hide();
 		EmitSignalInstallGame(Path.Combine(outputDir, name));
 	}
@@ -299,6 +299,7 @@ public partial class GameDownloadWindow : BaseWindow {
 
 	public async void UpdateDownloadList(string releaseUrl) {
 		OkButton!.Disabled = true;
+		_importButton!.Disabled = true;
 		foreach (var child in _downloadListContainer!.GetChildren()) {
 			child.QueueFree();
 		}
