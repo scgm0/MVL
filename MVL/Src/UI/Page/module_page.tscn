@@ -1,4 +1,4 @@
-[gd_scene load_steps=24 format=3 uid="uid://dri1d4mt1w68c"]
+[gd_scene load_steps=27 format=3 uid="uid://dri1d4mt1w68c"]
 
 [ext_resource type="Script" uid="uid://g2x8e85gx8ct" path="res://Src/UI/Page/ModulePage.cs" id="1_yrgrc"]
 [ext_resource type="Texture2D" uid="uid://d3mq4tlr6rr01" path="res://Assets/Icon/VS/gameicon.png" id="2_j8eel"]
@@ -36,6 +36,25 @@ script = ExtResource("3_ceq8m")
 IconName = "magnify"
 metadata/_custom_type_script = "uid://bk3tot6c35bwu"
 
+[sub_resource type="Texture2D" id="Texture2D_blyna"]
+resource_local_to_scene = false
+resource_name = ""
+script = ExtResource("3_ceq8m")
+IconName = "swap-vertical"
+metadata/_custom_type_script = "uid://bk3tot6c35bwu"
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_blyna"]
+bg_color = Color(0.1, 0.1, 0.1, 0.6)
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+
+[sub_resource type="Theme" id="Theme_blyna"]
+SpinBoxInnerLineEdit/base_type = &"LineEdit"
+SpinBoxInnerLineEdit/constants/minimum_character_width = 2
+SpinBoxInnerLineEdit/font_sizes/font_size = 16
+
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_u5j2m"]
 content_margin_left = 4.0
 content_margin_top = 4.0
@@ -66,7 +85,7 @@ script = ExtResource("4_yrgrc")
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_ceq8m"]
 
-[node name="ModulePage" type="Control" node_paths=PackedStringArray("_modNameLineEdit", "_searchButton", "_modAuthorLineEdit", "_modVersionsButton", "_modTagsButton", "_modSideButton", "_modOrderByButton", "_modInstallStatusButton", "_moduleListContainer", "_pageNumberLineEdit", "_pageNumberButton", "_previousPageButton", "_nextPageButton", "_loadingControl", "Main")]
+[node name="ModulePage" type="Control" node_paths=PackedStringArray("_modNameLineEdit", "_searchButton", "_swapButton", "_modCountSpinBox", "_modAuthorLineEdit", "_modVersionsButton", "_modTagsButton", "_modSideButton", "_modOrderByButton", "_modInstallStatusButton", "_moduleListContainer", "_pageNumberLineEdit", "_pageNumberButton", "_previousPageButton", "_nextPageButton", "_loadingControl", "Main")]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -80,6 +99,8 @@ _confirmationWindowScene = ExtResource("3_blyna")
 _apiModReleasesWindowScene = ExtResource("4_spol5")
 _modNameLineEdit = NodePath("MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer2/LineEdit")
 _searchButton = NodePath("MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer2/Button")
+_swapButton = NodePath("MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer2/Button2")
+_modCountSpinBox = NodePath("MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer2/PanelContainer/SpinBox")
 _modAuthorLineEdit = NodePath("MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer/MarginContainer/VBoxContainer/HBoxContainer/AuthorsLineEdit")
 _modVersionsButton = NodePath("MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer/MarginContainer/VBoxContainer/HBoxContainer/SelectionButton")
 _modTagsButton = NodePath("MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer/MarginContainer/VBoxContainer/HBoxContainer/SelectionButton2")
@@ -130,6 +151,23 @@ clear_button_enabled = true
 [node name="Button" type="Button" parent="MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer2"]
 layout_mode = 2
 icon = SubResource("Texture2D_wrfr1")
+
+[node name="Button2" type="Button" parent="MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer2"]
+layout_mode = 2
+toggle_mode = true
+icon = SubResource("Texture2D_blyna")
+
+[node name="PanelContainer" type="PanelContainer" parent="MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer2"]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_blyna")
+
+[node name="SpinBox" type="SpinBox" parent="MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer2/PanelContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+theme = SubResource("Theme_blyna")
+min_value = 1.0
+value = 4.0
+alignment = 2
 
 [node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/PanelContainer/VBoxContainer"]
 layout_mode = 2
@@ -249,10 +287,9 @@ theme_override_constants/margin_bottom = 2
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 6
-theme_override_constants/h_separation = 10
-theme_override_constants/v_separation = 10
+theme_override_constants/h_separation = 8
+theme_override_constants/v_separation = 8
 alignment = 1
-last_wrap_alignment = 1
 
 [node name="PanelContainer3" type="PanelContainer" parent="MarginContainer/VBoxContainer"]
 material = ExtResource("2_yrgrc")

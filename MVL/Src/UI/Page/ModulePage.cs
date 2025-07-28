@@ -33,6 +33,12 @@ public partial class ModulePage : MenuPage {
 	private Button? _searchButton;
 
 	[Export]
+	private Button? _swapButton;
+
+	[Export]
+	private SpinBox? _modCountSpinBox;
+
+	[Export]
 	private AuthorsLineEdit? _modAuthorLineEdit;
 
 	[Export]
@@ -96,14 +102,6 @@ public partial class ModulePage : MenuPage {
 		}
 	} = 1;
 
-	private int ItemCount {
-		get;
-		set {
-			field = value;
-			_ = UpdatePage();
-		}
-	} = 4;
-
 	static private long[] _gameVersionIds = [];
 	static private int[] _tagIds = [];
 	static private readonly string[] OrderBys = ["asset.created", "lastreleased", "downloads", "follows", "trendingpoints"];
@@ -116,6 +114,8 @@ public partial class ModulePage : MenuPage {
 		_moduleListContainer.NotNull();
 		_modNameLineEdit.NotNull();
 		_searchButton.NotNull();
+		_swapButton.NotNull();
+		_modCountSpinBox.NotNull();
 		_modAuthorLineEdit.NotNull();
 		_modVersionsButton.NotNull();
 		_modTagsButton.NotNull();
@@ -138,11 +138,21 @@ public partial class ModulePage : MenuPage {
 		_modInstallStatusButton.Selected = [0];
 
 		_searchButton.Pressed += SearchButtonOnPressed;
+		_swapButton.Toggled += SwapButtonOnToggled;
+		_modCountSpinBox.ValueChanged += ModCountSpinBoxOnValueChanged;
 		_pageNumberLineEdit.EditingToggled += PageNumberLineEditOnEditingToggled;
 		_pageNumberButton.ButtonDown += PageNumberButtonOnButtonDown;
 		_previousPageButton.ButtonDown += PreviousPageButtonOnButtonDown;
 		_nextPageButton.ButtonDown += NextPageButtonOnButtonDown;
 		VisibilityChanged += OnVisibilityChanged;
+	}
+
+	private void ModCountSpinBoxOnValueChanged(double value) {
+		_ = UpdatePage();
+	}
+
+	private void SwapButtonOnToggled(bool toggledOn) {
+		_ = UpdatePage();
 	}
 
 	private void NextPageButtonOnButtonDown() {
@@ -234,7 +244,11 @@ public partial class ModulePage : MenuPage {
 	}
 
 	private async Task UpdatePage() {
-		_modSummaryPageList = _modSummaryList.Chunk(ItemCount).ToArray();
+		var list = _modSummaryList.ToList();
+		if (_swapButton!.ButtonPressed) {
+			list.Reverse();
+		}
+		_modSummaryPageList = list.Chunk((int)_modCountSpinBox!.Value).ToArray();
 		MaxPage = _modSummaryPageList.Length > 0 ? _modSummaryPageList.Length : 1;
 		CurrentPage = 1;
 		await UpdateList();
@@ -292,11 +306,11 @@ public partial class ModulePage : MenuPage {
 			};
 			_moduleListContainer!.AddChild(moduleItem);
 			var tween = moduleItem.CreateTween();
-			tween.TweenProperty(moduleItem, "modulate:a", 0.5, 0.2f).From(0);
+			tween.TweenProperty(moduleItem, "modulate:a", 0.5, 0.1f).From(0);
 			await ToSignal(tween, Tween.SignalName.Finished);
 			tween.Dispose();
 			tween = moduleItem.CreateTween();
-			tween.TweenProperty(moduleItem, "modulate:a", 1, 0.3f);
+			tween.TweenProperty(moduleItem, "modulate:a", 1, 0.2f);
 			tween.Dispose();
 		}
 	}
