@@ -1,0 +1,19 @@
+Copyrights and licensing
+
+© 2004-2019 QuickeneR, 2009-2020 Ariman, 2020 - 2025 J. Rathlev
+This program is licensed under the terms of the GNU General Public License (GPL)[http://www.gnu.org/copyleft/gpl.html]. A copy of the license is included with the source files.
+If you distribute innounp on the WWW, please put a link to its home page, http://innounp.sourceforge.net
+
+Converted to Delphi 10 (Unicode), J. Rathlev 2022 - Versions 1.xx / 2.xx  (Web site)[https://www.rathlev-home.de/index-e.html?home-e.html#unpack]
+
+Over 90% of code is ripped from Inno Setup which is Copyright © 1997-2025 Jordan Russell. All rights reserved.
+Portions © 2000-2025 Martijn Laan. All rights reserved.
+See http://www.jrsoftware.org for details.
+
+Contains zlib code, © 1995-2005 Jean-loup Gailly and Mark Adler.
+
+Contains bzip2 code, © 1996-2009 Julian R Seward. All rights reserved.
+
+Contains LZMA code, © 1999-2009 Igor Pavlov.
+
+Compiled with Embarcadero Delphi 10 Seattle[https://www.embarcadero.com/products/delphi] ®.

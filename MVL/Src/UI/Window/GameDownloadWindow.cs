@@ -404,14 +404,14 @@ public partial class GameDownloadWindow : BaseWindow {
 		await Task.Run(async () => {
 			using var tmp = DirAccess.CreateTemp("InnoExtract");
 			var tmpRunPath = tmp.GetCurrentDir();
-			const string innoExtractPath = "res://Misc/InnoExtract/innoextract.exe";
-			var innoExtract = tmpRunPath.PathJoin("innoextract.exe");
+			const string innoExtractPath = "res://Misc/InnoUnp-2/innounp.exe";
+			var innoExtract = tmpRunPath.PathJoin("innounp.exe");
 			tmp.Copy(innoExtractPath, innoExtract.NormalizePath());
 			using var process = new Process();
 			process.EnableRaisingEvents = true;
 			process.StartInfo.FileName = $"{innoExtract}";
 			process.StartInfo.Arguments =
-				$"--include app -d \"{filePath.GetBaseDir().NormalizePath()}\" \"{filePath.NormalizePath()}\"";
+				$"\"{filePath.NormalizePath()}\" -x -c{{app}} -d\"{filePath.GetBaseDir().PathJoin("app").NormalizePath()}\"";
 			process.StartInfo.UseShellExecute = false;
 			process.StartInfo.RedirectStandardOutput = true;
 			process.StartInfo.RedirectStandardError = true;
