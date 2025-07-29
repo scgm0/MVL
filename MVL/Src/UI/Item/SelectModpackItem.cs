@@ -23,8 +23,8 @@ public partial class SelectModpackItem : PanelContainer {
 
 	public ButtonGroup? ButtonGroup { get; set; }
 	public ModpackConfig? ModpackConfig { get; set; }
-
 	public event Action? ButtonPressed;
+	public bool Selected;
 
 	public override void _Ready() {
 		_modpackIconTexture.NotNull();
@@ -41,11 +41,9 @@ public partial class SelectModpackItem : PanelContainer {
 		}
 
 		_selectButton.ButtonGroup = ButtonGroup;
-		_selectButton.ButtonPressed = ModpackConfig.Path == Main.BaseConfig.CurrentModpack;
+		_selectButton.ButtonPressed = Selected;
 		_selectButton.Pressed += SelectButtonOnPressed;
 	}
 
-	private void SelectButtonOnPressed() {
-		ButtonPressed?.Invoke();
-	}
+	private void SelectButtonOnPressed() { ButtonPressed?.Invoke(); }
 }

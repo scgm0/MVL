@@ -41,11 +41,10 @@ public partial class HomePage : MenuPage {
 	[Export]
 	private AnimationPlayer? _animationPlayer;
 
-	private ButtonGroup _buttonGroup = new();
+	private readonly ButtonGroup _buttonGroup = new();
 
 	public override async void _Ready() {
 		_selectModpackItemScene.NotNull();
-		_buttonGroup.NotNull();
 		_playButton.NotNull();
 		_modPackNameLabel.NotNull();
 		_gameVersionLabel.NotNull();
@@ -104,11 +103,12 @@ public partial class HomePage : MenuPage {
 				BaseConfig.Save(UI.Main.BaseConfig);
 			};
 
-			_modpackInfoVBoxContainer!.AddChild(item);
-
 			if (path == UI.Main.BaseConfig.CurrentModpack) {
 				selectedItem = item;
+				item.Selected = true;
 			}
+
+			_modpackInfoVBoxContainer!.AddChild(item);
 
 			if (index == 4) {
 				maxHeight = _modpackInfoPanel!.GetCombinedMinimumSize().Y;
@@ -139,19 +139,25 @@ public partial class HomePage : MenuPage {
 		animation.Length = Mathf.Min(_modpackInfoVBoxContainer!.GetChildCount(), 5) * 0.05f;
 		animation.TrackSetKeyTime(0, 1, animation.Length);
 		_animationPlayer.Play(StringNames.Show);
+
 		if (selectedItem != null) {
 			_modpackInfoScrollContainer!.Call(StringNames.EnsureControlVisible, selectedItem);
 		}
 	}
 
 	private async void HideSelectModpackPanel() {
+		_modpackInfoControl!.Disabled = true;
 		_animationPlayer!.PlayBackwards(StringNames.Show);
 		await ToSignal(_animationPlayer, AnimationMixer.SignalName.AnimationFinished);
+
 		_selectModpackButton!.ButtonPressed = false;
 		_modpackInfoControl!.Hide();
+
 		foreach (var child in _modpackInfoVBoxContainer!.GetChildren()) {
 			child.QueueFree();
 		}
+
+		_modpackInfoControl.Disabled = false;
 	}
 
 	private async Task UpdateInfo() {
