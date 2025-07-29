@@ -1,3 +1,4 @@
+using System;
 using Godot;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,7 +24,7 @@ public partial class SelectionButton : Button {
 
 	private ButtonGroup _buttonGroup = new();
 	private float _maxHeight;
-
+	private Tween? _tween;
 	public IList<string> SelectionList { get; set; } = [];
 
 	public int MaxShow { get; set; } = 5;
@@ -32,12 +33,13 @@ public partial class SelectionButton : Button {
 		get;
 		set {
 			field = value.OrderBy(i => i).ToList();
-			foreach (var i in field) {
-				var child = _vboxContainer?.GetChild<Button?>(i);
+			foreach (var child in field.Select(i => _vboxContainer?.GetChild<Button?>(i))) {
 				child?.ButtonPressed = true;
 			}
 		}
 	} = [];
+
+	public event Action? SelectionChanged;
 
 	public override void _Ready() {
 		Bg.NotNull();
@@ -46,7 +48,21 @@ public partial class SelectionButton : Button {
 		_vboxContainer.NotNull();
 
 		Pressed += ShowList;
-		Bg.Pressed += Bg.Hide;
+		Bg.Pressed += BgOnPressed;
+	}
+
+	private async void BgOnPressed() {
+		Bg!.Disabled = true;
+		_tween?.Kill();
+		_tween?.Dispose();
+		_tween = CreateTween();
+		_tween.TweenProperty(_panelContainer, "size:y", 0, Mathf.Min(_vboxContainer!.GetChildCount(), 5) * 0.02f);
+		await ToSignal(_tween, Tween.SignalName.Finished);
+
+		_tween.Dispose();
+		_tween = null;
+		Bg!.Hide();
+		Bg.Disabled = false;
 	}
 
 	public async Task UpdateList(IList<string> list) {
@@ -59,6 +75,7 @@ public partial class SelectionButton : Button {
 
 		var i = 0;
 		_maxHeight = 0f;
+		_scrollContainer!.VerticalScrollMode = ScrollContainer.ScrollMode.Disabled;
 		foreach (var item in SelectionList) {
 			var button = new CheckBox {
 				Text = item,
@@ -75,13 +92,17 @@ public partial class SelectionButton : Button {
 					if (Selected.Contains(button.GetIndex())) {
 						return;
 					}
+
 					Selected.Add(button.GetIndex());
 				} else {
 					if (!Selected.Contains(button.GetIndex())) {
 						return;
 					}
+
 					Selected.Remove(button.GetIndex());
 				}
+
+				SelectionChanged?.Invoke();
 			};
 
 			_vboxContainer!.AddChild(button);
@@ -91,9 +112,12 @@ public partial class SelectionButton : Button {
 				_maxHeight = _vboxContainer!.GetCombinedMinimumSize().Y;
 			}
 		}
+
+		_scrollContainer!.VerticalScrollMode = i > MaxShow ? ScrollContainer.ScrollMode.Auto : ScrollContainer.ScrollMode.ShowNever;
 	}
 
 	public void ShowList() {
+		Bg!.Modulate = Colors.Transparent;
 		Bg!.Show();
 
 		var rect = GetGlobalRect();
@@ -110,6 +134,9 @@ public partial class SelectionButton : Button {
 			maxWidth = _panelContainer!.Size.X;
 		}
 
-		_panelContainer!.Size = _panelContainer!.Size with { Y = _maxHeight, X = maxWidth };
+		_panelContainer!.Size = _panelContainer!.Size with { Y = 0, X = maxWidth };
+		Bg.Modulate = Colors.White;
+		_tween = CreateTween();
+		_tween.TweenProperty(_panelContainer, "size:y", _maxHeight, Mathf.Min(_vboxContainer!.GetChildCount(), 5) * 0.02f);
 	}
 }
