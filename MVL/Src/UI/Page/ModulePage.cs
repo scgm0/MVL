@@ -10,7 +10,6 @@ using MVL.UI.Item;
 using MVL.UI.Other;
 using MVL.UI.Window;
 using MVL.Utils;
-using MVL.Utils.Config;
 using MVL.Utils.Game;
 using MVL.Utils.Help;
 
@@ -37,6 +36,9 @@ public partial class ModulePage : MenuPage {
 
 	[Export]
 	private SpinBox? _modCountSpinBox;
+
+	[Export]
+	private SelectModpackButton? _selectModpackButton;
 
 	[Export]
 	private AuthorsLineEdit? _modAuthorLineEdit;
@@ -73,8 +75,6 @@ public partial class ModulePage : MenuPage {
 
 	[Export]
 	private Control? _loadingControl;
-
-	private ModpackConfig? _modpackConfig;
 
 	private int CurrentPage {
 		get;
@@ -116,6 +116,7 @@ public partial class ModulePage : MenuPage {
 		_searchButton.NotNull();
 		_swapButton.NotNull();
 		_modCountSpinBox.NotNull();
+		_selectModpackButton.NotNull();
 		_modAuthorLineEdit.NotNull();
 		_modVersionsButton.NotNull();
 		_modTagsButton.NotNull();
@@ -145,6 +146,10 @@ public partial class ModulePage : MenuPage {
 		_previousPageButton.ButtonDown += PreviousPageButtonOnButtonDown;
 		_nextPageButton.ButtonDown += NextPageButtonOnButtonDown;
 		VisibilityChanged += OnVisibilityChanged;
+
+		_modSideButton.SelectionChanged += () => _ = UpdatePage();
+		_modInstallStatusButton.SelectionChanged += () => _ = UpdatePage();
+		_selectModpackButton.SelectionChanged += () => _ = UpdatePage();
 	}
 
 	private void ModCountSpinBoxOnValueChanged(double value) { _ = UpdatePage(); }
@@ -167,23 +172,42 @@ public partial class ModulePage : MenuPage {
 		CurrentPage--;
 	}
 
-	private void SearchButtonOnPressed() { GetModsList(); }
+	private void SearchButtonOnPressed() {
+		if (_gameVersionIds.Length != 0 && _tagIds.Length != 0) {
+			GetModsList();
+			return;
+		}
+		GetOnlineInfo();
+	}
 
-	private void OnVisibilityChanged() {
+	private async void OnVisibilityChanged() {
 		if (!Visible) {
 			return;
 		}
 
-		_modpackConfig ??= UI.Main.ModpackConfigs[UI.Main.BaseConfig.CurrentModpack];
-
-		if (_gameVersionIds.Length == 0 || _tagIds.Length == 0) {
-			GetOnlineInfo();
+		if (_gameVersionIds.Length != 0 && _tagIds.Length != 0) {
+			return;
 		}
+
+		await ToSignal(_selectModpackButton!, CanvasItem.SignalName.VisibilityChanged);
+		GetOnlineInfo();
 	}
 
 	private async void GetModsList() {
 		foreach (var child in _moduleListContainer!.GetChildren()) {
 			child.Free();
+		}
+
+		if (_selectModpackButton!.ModpackConfig is null) {
+			var label = new Label {
+				Text = "请先创建模组包",
+				Modulate = Colors.Yellow,
+				LabelSettings = new() {
+					FontSize = 20
+				}
+			};
+			_moduleListContainer!.AddChild(label);
+			return;
 		}
 
 		_loadingControl?.Show();
@@ -192,9 +216,7 @@ public partial class ModulePage : MenuPage {
 		var modAuthor = _modAuthorLineEdit!.Selected;
 		var modVersion = _modVersionsButton!.Selected;
 		var modTags = _modTagsButton!.Selected;
-		var modSide = _modSideButton!.Selected;
 		var modOrderBy = _modOrderByButton!.Selected;
-		var modInstallStatus = _modInstallStatusButton!.Selected;
 
 		if (!string.IsNullOrWhiteSpace(modName)) {
 			url = url.AppendQueryParam("text", modName);
@@ -215,26 +237,6 @@ public partial class ModulePage : MenuPage {
 				var modList = JsonSerializer.Deserialize(modListText, SourceGenerationContext.Default.ApiStatusModsList);
 				if (modList?.StatusCode is "200") {
 					var list = modList.Mods!.Where(m => m.Type == "mod");
-					if (modSide[0] != 0) {
-						list = list.Where(summary => {
-							return modSide[0] switch {
-								1 => summary.Side == "client",
-								2 => summary.Side == "server",
-								3 => summary.Side == "both",
-								_ => false
-							};
-						});
-					}
-
-					if (modInstallStatus[0] != 0) {
-						_modpackConfig!.UpdateMods();
-						list = list.Where(summary => {
-							var isInstalled = _modpackConfig!.Mods.Values.Any(m =>
-								summary.ModIdStrs.Any(s => s.Equals(m.ModId, StringComparison.OrdinalIgnoreCase)));
-							return modInstallStatus[0] switch { 1 => isInstalled, 2 => !isInstalled, _ => false };
-						});
-					}
-
 					_modSummaryList = list.ToArray();
 					Dispatcher.SynchronizationContext.Send(async void (_) => { await UpdatePage(); }, null);
 				} else {
@@ -264,7 +266,26 @@ public partial class ModulePage : MenuPage {
 	}
 
 	private async Task UpdatePage() {
+		var modSide = _modSideButton!.Selected;
+		var modInstallStatus = _modInstallStatusButton!.Selected;
 		var list = _modSummaryList.ToList();
+		if (modSide[0] != 0) {
+			list = list.Where(summary => {
+				return modSide[0] switch {
+					1 => summary.Side == "client", 2 => summary.Side == "server", 3 => summary.Side == "both", _ => false
+				};
+			}).ToList();
+		}
+
+		if (modInstallStatus[0] != 0) {
+			_selectModpackButton!.ModpackConfig!.UpdateMods();
+			list = list.Where(summary => {
+				var isInstalled = _selectModpackButton!.ModpackConfig!.Mods.Values.Any(m =>
+					summary.ModIdStrs.Any(s => s.Equals(m.ModId, StringComparison.OrdinalIgnoreCase)));
+				return modInstallStatus[0] switch { 1 => isInstalled, 2 => !isInstalled, _ => false };
+			}).ToList();
+		}
+
 		if (_swapButton!.ButtonPressed) {
 			list.Reverse();
 		}
@@ -280,10 +301,22 @@ public partial class ModulePage : MenuPage {
 			child.Free();
 		}
 
+		if (_selectModpackButton!.ModpackConfig is null) {
+			var label = new Label {
+				Text = "请先创建模组包",
+				Modulate = Colors.Yellow,
+				LabelSettings = new() {
+					FontSize = 20
+				}
+			};
+			_moduleListContainer!.AddChild(label);
+			return;
+		}
+
 		if (_modSummaryPageList.Length == 0) {
 			var label = new Label {
 				Text = "没有找到符合条件的模组",
-				Modulate = Colors.Red,
+				Modulate = Colors.Yellow,
 				LabelSettings = new() {
 					FontSize = 20
 				}
@@ -307,29 +340,28 @@ public partial class ModulePage : MenuPage {
 				UI.Main.Instance?.AddChild(confirmationWindow);
 				await confirmationWindow.Show();
 				try {
-					_modpackConfig!.UpdateMods();
+					_selectModpackButton!.ModpackConfig!.UpdateMods();
 					var url = $"https://mods.vintagestory.at/api/mod/{apiModSummary.ModId}";
 					var result = await url.GetStringAsync();
+					GD.Print(result);
 					var status = JsonSerializer.Deserialize(result, SourceGenerationContext.Default.ApiStatusModInfo);
 					if (status?.StatusCode != "200") {
 						confirmationWindow.Message = "获取模组信息失败";
-						confirmationWindow.OkButton!.Disabled = false;
 						confirmationWindow.CancelButton!.Disabled = false;
 						return;
 					}
 
 					await confirmationWindow.Hide();
-					var modInfo = _modpackConfig!.Mods.Values.FirstOrDefault(m =>
+					var modInfo = _selectModpackButton!.ModpackConfig!.Mods.Values.FirstOrDefault(m =>
 						apiModSummary.ModIdStrs.Any(s => s.Equals(m.ModId, StringComparison.OrdinalIgnoreCase)));
 					var apiModReleasesWindow = _apiModReleasesWindowScene!.Instantiate<ApiModReleasesWindow>();
-					apiModReleasesWindow.DownloadModInfo = (modInfo, status.Mod!, _modpackConfig);
+					apiModReleasesWindow.DownloadModInfo = (modInfo, status.Mod!, _selectModpackButton!.ModpackConfig);
 					apiModReleasesWindow.Hidden += () => { apiModReleasesWindow.QueueFree(); };
 					UI.Main.Instance?.AddChild(apiModReleasesWindow);
 					await apiModReleasesWindow.Show();
 				} catch (Exception ex) {
 					GD.Print($"获取模组信息时发生错误: {ex.Message}");
 					confirmationWindow.Message = "获取模组信息失败";
-					confirmationWindow.OkButton!.Disabled = false;
 					confirmationWindow.CancelButton!.Disabled = false;
 				}
 			};
@@ -348,6 +380,18 @@ public partial class ModulePage : MenuPage {
 		try {
 			foreach (var child in _moduleListContainer!.GetChildren()) {
 				child.Free();
+			}
+
+			if (_selectModpackButton!.ModpackConfig is null) {
+				var label = new Label {
+					Text = "请先创建模组包",
+					Modulate = Colors.Yellow,
+					LabelSettings = new() {
+						FontSize = 20
+					}
+				};
+				_moduleListContainer!.AddChild(label);
+				return;
 			}
 
 			_loadingControl?.Show();
@@ -396,6 +440,7 @@ public partial class ModulePage : MenuPage {
 				}
 			};
 			_moduleListContainer!.AddChild(label);
+			_loadingControl?.Hide();
 		}
 	}
 
@@ -412,7 +457,6 @@ public partial class ModulePage : MenuPage {
 		var inputText = _pageNumberLineEdit?.Text ?? string.Empty;
 
 		var pageText = NumRegex().Replace(inputText, "");
-
 
 		if (int.TryParse(pageText, out var parsedPage)) {
 			CurrentPage = Math.Clamp(parsedPage, 1, MaxPage);

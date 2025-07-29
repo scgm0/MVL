@@ -1,4 +1,4 @@
-[gd_scene load_steps=27 format=3 uid="uid://dri1d4mt1w68c"]
+[gd_scene load_steps=33 format=3 uid="uid://dri1d4mt1w68c"]
 
 [ext_resource type="Script" uid="uid://g2x8e85gx8ct" path="res://Src/UI/Page/ModulePage.cs" id="1_yrgrc"]
 [ext_resource type="Texture2D" uid="uid://d3mq4tlr6rr01" path="res://Assets/Icon/VS/gameicon.png" id="2_j8eel"]
@@ -11,7 +11,9 @@
 [ext_resource type="PackedScene" uid="uid://8k1twti5t7jp" path="res://Src/UI/Window/api_mod_releases_window.tscn" id="4_spol5"]
 [ext_resource type="Script" uid="uid://b7h0k2h2qwlqv" path="res://addons/SmoothScroll/scroll_damper/expo_scroll_damper.gd" id="4_yrgrc"]
 [ext_resource type="PackedScene" uid="uid://bh6diaqd7d326" path="res://Src/UI/Other/SelectionButton.tscn" id="5_u5j2m"]
+[ext_resource type="Script" uid="uid://bbv088hy4ilpa" path="res://Src/UI/Other/SelectModpackButton.cs" id="7_spol5"]
 [ext_resource type="Material" uid="uid://b675ao2n7w53x" path="res://Assets/Material/loading.tres" id="9_ceq8m"]
+[ext_resource type="PackedScene" uid="uid://don6xai5trupe" path="res://Src/UI/Item/select_modpack_item.tscn" id="10_spol5"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_dvdbd"]
 content_margin_left = 10.0
@@ -55,6 +57,30 @@ SpinBoxInnerLineEdit/base_type = &"LineEdit"
 SpinBoxInnerLineEdit/constants/minimum_character_width = 2
 SpinBoxInnerLineEdit/font_sizes/font_size = 16
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_gioba"]
+content_margin_top = 4.0
+content_margin_bottom = 4.0
+bg_color = Color(0, 0, 0, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(1, 1, 1, 0.49019608)
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_gioba"]
+content_margin_left = 4.0
+content_margin_right = 4.0
+
+[sub_resource type="Resource" id="Resource_gioba"]
+script = ExtResource("4_yrgrc")
+
+[sub_resource type="Resource" id="Resource_jfbpu"]
+script = ExtResource("4_yrgrc")
+
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_u5j2m"]
 content_margin_left = 4.0
 content_margin_top = 4.0
@@ -85,7 +111,7 @@ script = ExtResource("4_yrgrc")
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_ceq8m"]
 
-[node name="ModulePage" type="Control" node_paths=PackedStringArray("_modNameLineEdit", "_searchButton", "_swapButton", "_modCountSpinBox", "_modAuthorLineEdit", "_modVersionsButton", "_modTagsButton", "_modSideButton", "_modOrderByButton", "_modInstallStatusButton", "_moduleListContainer", "_pageNumberLineEdit", "_pageNumberButton", "_previousPageButton", "_nextPageButton", "_loadingControl", "Main")]
+[node name="ModulePage" type="Control" node_paths=PackedStringArray("_modNameLineEdit", "_searchButton", "_swapButton", "_modCountSpinBox", "_selectModpackButton", "_modAuthorLineEdit", "_modVersionsButton", "_modTagsButton", "_modSideButton", "_modOrderByButton", "_modInstallStatusButton", "_moduleListContainer", "_pageNumberLineEdit", "_pageNumberButton", "_previousPageButton", "_nextPageButton", "_loadingControl", "Main")]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -101,6 +127,7 @@ _modNameLineEdit = NodePath("MarginContainer/VBoxContainer/PanelContainer/VBoxCo
 _searchButton = NodePath("MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer2/Button")
 _swapButton = NodePath("MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer2/Button2")
 _modCountSpinBox = NodePath("MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer2/PanelContainer/SpinBox")
+_selectModpackButton = NodePath("MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer/SelectModpackButton")
 _modAuthorLineEdit = NodePath("MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer/MarginContainer/VBoxContainer/HBoxContainer/AuthorsLineEdit")
 _modVersionsButton = NodePath("MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer/MarginContainer/VBoxContainer/HBoxContainer/SelectionButton")
 _modTagsButton = NodePath("MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer/MarginContainer/VBoxContainer/HBoxContainer/SelectionButton2")
@@ -172,42 +199,95 @@ alignment = 2
 [node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/PanelContainer/VBoxContainer"]
 layout_mode = 2
 
-[node name="PanelContainer" type="PanelContainer" parent="MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer"]
+[node name="SelectModpackButton" type="Button" parent="MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer" node_paths=PackedStringArray("_hBoxContainer", "_name", "_version", "_bg", "_panelContainer", "_scrollContainer", "_vboxContainer")]
 layout_mode = 2
 size_flags_horizontal = 3
+script = ExtResource("7_spol5")
+_selectModpackItemScene = ExtResource("10_spol5")
+_hBoxContainer = NodePath("HBoxContainer")
+_name = NodePath("HBoxContainer/VBoxContainer/Label")
+_version = NodePath("HBoxContainer/VBoxContainer/Label2")
+_bg = NodePath("Button")
+_panelContainer = NodePath("Button/PanelContainer")
+_scrollContainer = NodePath("Button/PanelContainer/SmoothScrollContainer")
+_vboxContainer = NodePath("Button/PanelContainer/SmoothScrollContainer/VBoxContainer")
 
-[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer/PanelContainer"]
-layout_mode = 2
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer/SelectModpackButton"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 
-[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer/PanelContainer/HBoxContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer/SelectModpackButton/HBoxContainer"]
 layout_mode = 2
 theme_override_constants/margin_left = 5
 theme_override_constants/margin_top = 5
 theme_override_constants/margin_right = 5
 theme_override_constants/margin_bottom = 5
 
-[node name="TextureRect" type="TextureRect" parent="MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer/PanelContainer/HBoxContainer/MarginContainer"]
+[node name="TextureRect" type="TextureRect" parent="MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer/SelectModpackButton/HBoxContainer/MarginContainer"]
 custom_minimum_size = Vector2(50, 50)
 layout_mode = 2
 texture = ExtResource("2_j8eel")
 expand_mode = 1
 stretch_mode = 5
 
-[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer/PanelContainer/HBoxContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer/SelectModpackButton/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer/PanelContainer/HBoxContainer/VBoxContainer"]
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer/SelectModpackButton/HBoxContainer/VBoxContainer"]
 layout_mode = 2
-size_flags_vertical = 6
+size_flags_vertical = 3
+theme_override_font_sizes/font_size = 18
 text = "整合包"
 horizontal_alignment = 1
+vertical_alignment = 1
 
-[node name="Label2" type="Label" parent="MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer/PanelContainer/HBoxContainer/VBoxContainer"]
+[node name="Label2" type="Label" parent="MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer/SelectModpackButton/HBoxContainer/VBoxContainer"]
 layout_mode = 2
-size_flags_vertical = 6
+size_flags_vertical = 3
+theme_override_font_sizes/font_size = 14
 text = "版本"
 horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Button" type="Button" parent="MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer/SelectModpackButton"]
+visible = false
+top_level = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+flat = true
+
+[node name="PanelContainer" type="PanelContainer" parent="MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer/SelectModpackButton/Button"]
+material = ExtResource("2_yrgrc")
+layout_mode = 1
+anchors_preset = -1
+offset_right = 10.0
+offset_bottom = 8.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_gioba")
+
+[node name="SmoothScrollContainer" type="ScrollContainer" parent="MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer/SelectModpackButton/Button/PanelContainer"]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxEmpty_gioba")
+scroll_horizontal = -4
+horizontal_scroll_mode = 0
+vertical_scroll_mode = 0
+script = ExtResource("3_5qr6m")
+wheel_scroll_damper = SubResource("Resource_gioba")
+dragging_scroll_damper = SubResource("Resource_jfbpu")
+metadata/_custom_type_script = "uid://bgqglerkcylxx"
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer/SelectModpackButton/Button/PanelContainer/SmoothScrollContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 6
 
 [node name="MarginContainer" type="MarginContainer" parent="MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer"]
 layout_mode = 2
