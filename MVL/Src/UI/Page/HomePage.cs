@@ -12,9 +12,6 @@ public partial class HomePage : MenuPage {
 	private PackedScene? _selectModpackItemScene;
 
 	[Export]
-	private ButtonGroup? _buttonGroup;
-
-	[Export]
 	private Button? _playButton;
 
 	[Export]
@@ -43,6 +40,8 @@ public partial class HomePage : MenuPage {
 
 	[Export]
 	private AnimationPlayer? _animationPlayer;
+
+	private ButtonGroup _buttonGroup = new();
 
 	public override async void _Ready() {
 		_selectModpackItemScene.NotNull();
@@ -98,8 +97,15 @@ public partial class HomePage : MenuPage {
 			var path = UI.Main.BaseConfig.Modpack[index];
 			var modpackConfig = UI.Main.ModpackConfigs[path];
 			var item = _selectModpackItemScene!.Instantiate<SelectModpackItem>();
+			item.ButtonGroup = _buttonGroup;
 			item.ModpackConfig = modpackConfig;
+			item.ButtonPressed += () => {
+				UI.Main.BaseConfig.CurrentModpack = modpackConfig.Path!;
+				BaseConfig.Save(UI.Main.BaseConfig);
+			};
+
 			_modpackInfoVBoxContainer!.AddChild(item);
+
 			if (path == UI.Main.BaseConfig.CurrentModpack) {
 				selectedItem = item;
 			}

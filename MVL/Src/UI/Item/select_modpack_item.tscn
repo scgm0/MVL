@@ -1,9 +1,8 @@
-[gd_scene load_steps=7 format=3 uid="uid://don6xai5trupe"]
+[gd_scene load_steps=6 format=3 uid="uid://don6xai5trupe"]
 
 [ext_resource type="Material" uid="uid://c0sb2bjy16ljf" path="res://Assets/Material/button_blur.tres" id="1_y147p"]
 [ext_resource type="Script" uid="uid://dbh7uve1ltyh" path="res://Src/UI/Item/SelectModpackItem.cs" id="2_6bxys"]
 [ext_resource type="Texture2D" uid="uid://d3mq4tlr6rr01" path="res://Assets/Icon/VS/gameicon.png" id="2_oaq7y"]
-[ext_resource type="ButtonGroup" uid="uid://bcqmgl5krt5h5" path="res://Assets/Gui/select_modpack_button_group.tres" id="4_hwrtc"]
 [ext_resource type="Script" uid="uid://dhohtylbsnryj" path="res://Assets/Gds/collaboration_button.gd" id="5_oaq7y"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_yinwn"]
@@ -89,10 +88,10 @@ text_overrun_behavior = 3
 layout_mode = 2
 size_flags_horizontal = 8
 mouse_filter = 1
-button_group = ExtResource("4_hwrtc")
 
 [node name="Button" type="Button" parent="." node_paths=PackedStringArray("button")]
 modulate = Color(1, 1, 1, 0)
 layout_mode = 2
+mouse_filter = 1
 script = ExtResource("5_oaq7y")
 button = NodePath("../HBoxContainer/CheckBox")

@@ -56,6 +56,10 @@ public partial class ModpackPage : MenuPage {
 		ModpackConfig.Save(modpack);
 		UI.Main.ModpackConfigs[modpackPath] = modpack;
 		UI.Main.BaseConfig.Modpack.Insert(0, modpackPath);
+		if (UI.Main.BaseConfig.Modpack.Count == 1) {
+			UI.Main.BaseConfig.CurrentModpack = modpackPath;
+		}
+
 		UpdateList();
 	}
 

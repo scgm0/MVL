@@ -1,3 +1,4 @@
+using System;
 using Godot;
 using MVL.Utils.Config;
 using MVL.Utils.Help;
@@ -20,7 +21,10 @@ public partial class SelectModpackItem : PanelContainer {
 	[Export]
 	private Button? _selectButton;
 
+	public ButtonGroup? ButtonGroup { get; set; }
 	public ModpackConfig? ModpackConfig { get; set; }
+
+	public event Action? ButtonPressed;
 
 	public override void _Ready() {
 		_modpackIconTexture.NotNull();
@@ -36,12 +40,12 @@ public partial class SelectModpackItem : PanelContainer {
 			_releaseVersionLabel.Text = releaseInfo.Version.ShortGameVersion;
 		}
 
+		_selectButton.ButtonGroup = ButtonGroup;
 		_selectButton.ButtonPressed = ModpackConfig.Path == Main.BaseConfig.CurrentModpack;
 		_selectButton.Pressed += SelectButtonOnPressed;
 	}
 
 	private void SelectButtonOnPressed() {
-		Main.BaseConfig.CurrentModpack = ModpackConfig!.Path!;
-		BaseConfig.Save(Main.BaseConfig);
+		ButtonPressed?.Invoke();
 	}
 }

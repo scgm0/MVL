@@ -1,4 +1,4 @@
-[gd_scene load_steps=26 format=3 uid="uid://wtrk0xtd36kj"]
+[gd_scene load_steps=25 format=3 uid="uid://wtrk0xtd36kj"]
 
 [ext_resource type="Script" uid="uid://ukwbt00ugn6v" path="res://Src/UI/Page/HomePage.cs" id="1_j4kqc"]
 [ext_resource type="PackedScene" uid="uid://don6xai5trupe" path="res://Src/UI/Item/select_modpack_item.tscn" id="2_glb6t"]
@@ -7,7 +7,6 @@
 [ext_resource type="FontFile" uid="uid://bmgx1vyg6bavd" path="res://Assets/Font/HarmonyOS_Sans_SC_Bold.ttf" id="4_k556s"]
 [ext_resource type="Script" uid="uid://bgqglerkcylxx" path="res://addons/SmoothScroll/SmoothScrollContainer.gd" id="6_rwne7"]
 [ext_resource type="Script" uid="uid://b7h0k2h2qwlqv" path="res://addons/SmoothScroll/scroll_damper/expo_scroll_damper.gd" id="7_glb6t"]
-[ext_resource type="ButtonGroup" uid="uid://bcqmgl5krt5h5" path="res://Assets/Gui/select_modpack_button_group.tres" id="10_vb8vt"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_glb6t"]
 bg_color = Color(0.6, 0.6, 0.6, 0)
@@ -43,25 +42,25 @@ IconName = "chevron-up"
 IconSize = 18
 metadata/_custom_type_script = "uid://bk3tot6c35bwu"
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_k556s"]
-bg_color = Color(0.882353, 0.882353, 0.882353, 0.117647)
-corner_radius_top_left = 8
-corner_radius_top_right = 8
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_xq365"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_xq365"]
 bg_color = Color(0.862745, 0.862745, 0.862745, 0.0588235)
 corner_radius_top_left = 8
 corner_radius_top_right = 8
 
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_xq365"]
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_gi4mh"]
-bg_color = Color(0.25098, 0.25098, 0.25098, 0.784314)
-corner_radius_bottom_right = 8
-corner_radius_bottom_left = 8
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_k556s"]
+bg_color = Color(0.882353, 0.882353, 0.882353, 0.117647)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_j4kqc"]
 bg_color = Color(0.25098, 0.435294, 0, 0.784314)
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_gi4mh"]
+bg_color = Color(0.25098, 0.25098, 0.25098, 0.784314)
 corner_radius_bottom_right = 8
 corner_radius_bottom_left = 8
 
@@ -85,15 +84,9 @@ shadow_offset = Vector2(1, 1)
 
 [sub_resource type="Resource" id="Resource_gi4mh"]
 script = ExtResource("7_glb6t")
-friction = 4.0
-minimum_velocity = 0.4
-rebound_strength = 7.0
 
 [sub_resource type="Resource" id="Resource_vb8vt"]
 script = ExtResource("7_glb6t")
-friction = 4.0
-minimum_velocity = 0.4
-rebound_strength = 7.0
 
 [sub_resource type="Animation" id="Animation_gi4mh"]
 length = 0.001
@@ -142,7 +135,6 @@ grow_vertical = 2
 mouse_filter = 2
 script = ExtResource("1_j4kqc")
 _selectModpackItemScene = ExtResource("2_glb6t")
-_buttonGroup = ExtResource("10_vb8vt")
 _playButton = NodePath("Control/MarginContainer/PanelContainer/VBoxContainer/Button")
 _modPackNameLabel = NodePath("Control/MarginContainer/PanelContainer/VBoxContainer/PanelContainer/MarginContainer/HBoxContainer/Label")
 _gameVersionLabel = NodePath("Control/MarginContainer/PanelContainer/VBoxContainer/PanelContainer/MarginContainer/HBoxContainer/VBoxContainer/Label2")
@@ -167,7 +159,7 @@ mouse_filter = 2
 
 [node name="MarginContainer" type="MarginContainer" parent="Control"]
 layout_mode = 1
-anchors_preset = 3
+anchors_preset = -1
 anchor_left = 1.0
 anchor_top = 1.0
 anchor_right = 1.0
@@ -257,24 +249,24 @@ stretch_mode = 3
 [node name="Button" type="Button" parent="Control/MarginContainer/PanelContainer/VBoxContainer/PanelContainer"]
 layout_mode = 2
 theme_override_colors/font_disabled_color = Color(1, 1, 1, 1)
-theme_override_styles/hover = SubResource("StyleBoxFlat_k556s")
-theme_override_styles/pressed = SubResource("StyleBoxFlat_xq365")
 theme_override_styles/normal = SubResource("StyleBoxEmpty_xq365")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_xq365")
+theme_override_styles/hover = SubResource("StyleBoxFlat_k556s")
 toggle_mode = true
 
 [node name="Button" type="Button" parent="Control/MarginContainer/PanelContainer/VBoxContainer"]
 custom_minimum_size = Vector2(0, 50)
 layout_mode = 2
 mouse_default_cursor_shape = 2
-theme_override_colors/font_hover_color = Color(0.882353, 0.882353, 0.882353, 1)
 theme_override_colors/font_color = Color(0.882353, 0.882353, 0.882353, 0.882353)
 theme_override_colors/font_focus_color = Color(0.882353, 0.882353, 0.882353, 0.882353)
 theme_override_colors/font_pressed_color = Color(1, 1, 1, 1)
+theme_override_colors/font_hover_color = Color(0.882353, 0.882353, 0.882353, 1)
 theme_override_font_sizes/font_size = 24
-theme_override_styles/disabled = SubResource("StyleBoxFlat_gi4mh")
-theme_override_styles/hover = SubResource("StyleBoxFlat_j4kqc")
-theme_override_styles/pressed = SubResource("StyleBoxFlat_j4kqc")
 theme_override_styles/normal = SubResource("StyleBoxFlat_j4kqc")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_j4kqc")
+theme_override_styles/hover = SubResource("StyleBoxFlat_j4kqc")
+theme_override_styles/disabled = SubResource("StyleBoxFlat_gi4mh")
 text = "启动游戏"
 icon_alignment = 2
 
