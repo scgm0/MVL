@@ -131,8 +131,8 @@ _selectModpackButton = NodePath("MarginContainer/VBoxContainer/PanelContainer/VB
 _modAuthorLineEdit = NodePath("MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer/MarginContainer/VBoxContainer/HBoxContainer/AuthorsLineEdit")
 _modVersionsButton = NodePath("MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer/MarginContainer/VBoxContainer/HBoxContainer/SelectionButton")
 _modTagsButton = NodePath("MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer/MarginContainer/VBoxContainer/HBoxContainer/SelectionButton2")
-_modSideButton = NodePath("MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer/MarginContainer/VBoxContainer/HBoxContainer2/SelectionButton")
-_modOrderByButton = NodePath("MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer/MarginContainer/VBoxContainer/HBoxContainer2/SelectionButton2")
+_modSideButton = NodePath("MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer/MarginContainer/VBoxContainer/HBoxContainer2/SelectionButton2")
+_modOrderByButton = NodePath("MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer/MarginContainer/VBoxContainer/HBoxContainer2/SelectionButton")
 _modInstallStatusButton = NodePath("MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer/MarginContainer/VBoxContainer/HBoxContainer2/SelectionButton3")
 _moduleListContainer = NodePath("MarginContainer/VBoxContainer/PanelContainer2/ScrollContainer/MarginContainer/HFlowContainer")
 _pageNumberLineEdit = NodePath("MarginContainer/VBoxContainer/PanelContainer3/HBoxContainer2/HBoxContainer/LineEdit")
@@ -276,7 +276,6 @@ theme_override_styles/panel = SubResource("StyleBoxFlat_gioba")
 [node name="SmoothScrollContainer" type="ScrollContainer" parent="MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer/SelectModpackButton/Button/PanelContainer"]
 layout_mode = 2
 theme_override_styles/panel = SubResource("StyleBoxEmpty_gioba")
-scroll_horizontal = -4
 horizontal_scroll_mode = 0
 vertical_scroll_mode = 0
 script = ExtResource("3_5qr6m")
@@ -324,13 +323,13 @@ size_flags_vertical = 3
 [node name="SelectionButton" parent="MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer/MarginContainer/VBoxContainer/HBoxContainer2" instance=ExtResource("5_u5j2m")]
 layout_mode = 2
 size_flags_horizontal = 3
-text = "运行位置"
+text = "排序依据"
 Radio = true
 
 [node name="SelectionButton2" parent="MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer/MarginContainer/VBoxContainer/HBoxContainer2" instance=ExtResource("5_u5j2m")]
 layout_mode = 2
 size_flags_horizontal = 3
-text = "排序依据"
+text = "运行位置"
 Radio = true
 
 [node name="SelectionButton3" parent="MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer/MarginContainer/VBoxContainer/HBoxContainer2" instance=ExtResource("5_u5j2m")]
