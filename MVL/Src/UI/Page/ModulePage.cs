@@ -147,13 +147,9 @@ public partial class ModulePage : MenuPage {
 		VisibilityChanged += OnVisibilityChanged;
 	}
 
-	private void ModCountSpinBoxOnValueChanged(double value) {
-		_ = UpdatePage();
-	}
+	private void ModCountSpinBoxOnValueChanged(double value) { _ = UpdatePage(); }
 
-	private void SwapButtonOnToggled(bool toggledOn) {
-		_ = UpdatePage();
-	}
+	private void SwapButtonOnToggled(bool toggledOn) { _ = UpdatePage(); }
 
 	private void NextPageButtonOnButtonDown() {
 		if (CurrentPage >= MaxPage) {
@@ -174,12 +170,15 @@ public partial class ModulePage : MenuPage {
 	private void SearchButtonOnPressed() { GetModsList(); }
 
 	private void OnVisibilityChanged() {
-		if (!Visible || _modpackConfig is not null) {
+		if (!Visible) {
 			return;
 		}
 
-		_modpackConfig = UI.Main.ModpackConfigs[UI.Main.BaseConfig.CurrentModpack];
-		GetOnlineInfo();
+		_modpackConfig ??= UI.Main.ModpackConfigs[UI.Main.BaseConfig.CurrentModpack];
+
+		if (_gameVersionIds.Length == 0 || _tagIds.Length == 0) {
+			GetOnlineInfo();
+		}
 	}
 
 	private async void GetModsList() {
@@ -211,32 +210,53 @@ public partial class ModulePage : MenuPage {
 		url = modOrderBy.Aggregate(url, (current, o) => current.AppendQueryParam("orderby", OrderBys[o].ToString()));
 
 		await Task.Run(async () => {
-			var modListText = await url.GetStringAsync();
-			var modList = JsonSerializer.Deserialize(modListText, SourceGenerationContext.Default.ApiStatusModsList);
-			if (modList?.StatusCode is "200") {
-				var list = modList.Mods!.Where(m => m.Type == "mod");
-				if (modSide[0] != 0) {
-					list = list.Where(summary => {
-						return modSide[0] switch {
-							1 => summary.Side == "client",
-							2 => summary.Side == "server",
-							3 => summary.Side == "both",
-							_ => false
-						};
-					});
-				}
+			try {
+				var modListText = await url.GetStringAsync();
+				var modList = JsonSerializer.Deserialize(modListText, SourceGenerationContext.Default.ApiStatusModsList);
+				if (modList?.StatusCode is "200") {
+					var list = modList.Mods!.Where(m => m.Type == "mod");
+					if (modSide[0] != 0) {
+						list = list.Where(summary => {
+							return modSide[0] switch {
+								1 => summary.Side == "client",
+								2 => summary.Side == "server",
+								3 => summary.Side == "both",
+								_ => false
+							};
+						});
+					}
 
-				if (modInstallStatus[0] != 0) {
-					_modpackConfig!.UpdateMods();
-					list = list.Where(summary => {
-						var isInstalled = _modpackConfig!.Mods.Values.Any(m =>
-							summary.ModIdStrs.Any(s => s.Equals(m.ModId, StringComparison.OrdinalIgnoreCase)));
-						return modInstallStatus[0] switch { 1 => isInstalled, 2 => !isInstalled, _ => false };
-					});
-				}
+					if (modInstallStatus[0] != 0) {
+						_modpackConfig!.UpdateMods();
+						list = list.Where(summary => {
+							var isInstalled = _modpackConfig!.Mods.Values.Any(m =>
+								summary.ModIdStrs.Any(s => s.Equals(m.ModId, StringComparison.OrdinalIgnoreCase)));
+							return modInstallStatus[0] switch { 1 => isInstalled, 2 => !isInstalled, _ => false };
+						});
+					}
 
-				_modSummaryList = list.ToArray();
-				Dispatcher.SynchronizationContext.Send(async void (_) => { await UpdatePage(); }, null);
+					_modSummaryList = list.ToArray();
+					Dispatcher.SynchronizationContext.Send(async void (_) => { await UpdatePage(); }, null);
+				} else {
+					var label = new Label {
+						Text = "获取在线信息时发生错误，请检查网络连接",
+						Modulate = Colors.Red,
+						LabelSettings = new() {
+							FontSize = 20
+						}
+					};
+					_moduleListContainer!.AddChild(label);
+				}
+			} catch (Exception e) {
+				GD.PrintErr($"获取在线信息时发生错误: {e.Message}");
+				var label = new Label {
+					Text = "获取在线信息时发生错误，请检查网络连接",
+					Modulate = Colors.Red,
+					LabelSettings = new() {
+						FontSize = 20
+					}
+				};
+				_moduleListContainer!.AddChild(label);
 			}
 		});
 
@@ -248,6 +268,7 @@ public partial class ModulePage : MenuPage {
 		if (_swapButton!.ButtonPressed) {
 			list.Reverse();
 		}
+
 		_modSummaryPageList = list.Chunk((int)_modCountSpinBox!.Value).ToArray();
 		MaxPage = _modSummaryPageList.Length > 0 ? _modSummaryPageList.Length : 1;
 		CurrentPage = 1;
@@ -260,6 +281,14 @@ public partial class ModulePage : MenuPage {
 		}
 
 		if (_modSummaryPageList.Length == 0) {
+			var label = new Label {
+				Text = "没有找到符合条件的模组",
+				Modulate = Colors.Red,
+				LabelSettings = new() {
+					FontSize = 20
+				}
+			};
+			_moduleListContainer!.AddChild(label);
 			return;
 		}
 
@@ -317,6 +346,10 @@ public partial class ModulePage : MenuPage {
 
 	private async void GetOnlineInfo() {
 		try {
+			foreach (var child in _moduleListContainer!.GetChildren()) {
+				child.Free();
+			}
+
 			_loadingControl?.Show();
 			using var authorsTask = "https://mods.vintagestory.at/api/authors".GetStringAsync();
 			using var gameVersionsTask = "https://mods.vintagestory.at/api/gameversions".GetStringAsync();
@@ -355,6 +388,14 @@ public partial class ModulePage : MenuPage {
 			GetModsList();
 		} catch (Exception ex) {
 			GD.PrintErr($"获取在线信息时发生错误: {ex.Message}");
+			var label = new Label {
+				Text = "获取在线信息时发生错误，请检查网络连接",
+				Modulate = Colors.Red,
+				LabelSettings = new() {
+					FontSize = 20
+				}
+			};
+			_moduleListContainer!.AddChild(label);
 		}
 	}
 
