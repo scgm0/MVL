@@ -269,6 +269,10 @@ public partial class ModInfoItem : PanelContainer {
 					return;
 				}
 
+				if (string.IsNullOrWhiteSpace(modInfoRelease.MainFile)) {
+					continue;
+				}
+
 				HasNewVersion = true;
 				ApiModRelease = modInfoRelease;
 				GD.Print(

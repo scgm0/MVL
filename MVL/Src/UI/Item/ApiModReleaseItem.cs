@@ -93,13 +93,31 @@ public partial class ApiModReleaseItem : PanelContainer {
 
 	public void UpdateInfo() {
 		var url = ApiModInfo!.UrlAlias is null
-			? $"https://mods.vintagestory.at/show/mod/{ApiModInfo!.AssetId}"
-			: $"https://mods.vintagestory.at/{ApiModInfo.UrlAlias}";
+			? $"https://mods.vintagestory.at/show/mod/{ApiModInfo!.AssetId}#tab-files"
+			: $"https://mods.vintagestory.at/{ApiModInfo.UrlAlias}#tab-files";
 		_modName!.Text = $"[url={url}]{ApiModInfo!.Name}[/url]";
 		_modName.TooltipText = ApiModRelease!.FileName;
-		_version!.Text = _isChecked && ModInfo is not null ? $"{ModInfo.Version} > {ApiModRelease!.ModVersion}" : ApiModRelease!.ModVersion;
+		_version!.Text = _isChecked && ModInfo is not null
+			? $"{ModInfo.Version} > {ApiModRelease!.ModVersion}"
+			: ApiModRelease!.ModVersion;
 		_dateLabel!.Text = ApiModRelease!.Created.ToString("yyyy-MM-dd");
 		_downloadCountLabel!.Text = ApiModRelease!.Downloads.ToString();
+
+		if (string.IsNullOrEmpty(ApiModRelease!.MainFile)) {
+			_downloadButton!.Disabled = true;
+			_checkBox!.Disabled = true;
+			_downloadButton.TooltipText = "无可下载文件";
+			_checkBox.TooltipText = "无可下载文件";
+			_checkBox!.ButtonPressed = false;
+			_downloadButton.Modulate = Colors.DarkRed;
+			_checkBox.Modulate = Colors.DarkRed;
+
+			var label = new Label { Text = "无可下载文件" };
+			label.Modulate = Colors.DarkRed;
+			label.ThemeTypeVariation = "ModReleaseTag";
+			_tagsContainer!.AddChild(label);
+			return;
+		}
 
 		try {
 			if (ModInfo != null) {
