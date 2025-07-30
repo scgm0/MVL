@@ -15,7 +15,7 @@ using MVL.Utils.Help;
 
 namespace MVL.UI.Page;
 
-public partial class ModulePage : MenuPage {
+public partial class BrowsePage : MenuPage {
 	[Export]
 	private PackedScene? _moduleItemScene;
 
@@ -327,7 +327,7 @@ public partial class ModulePage : MenuPage {
 
 		var list = _modSummaryPageList[CurrentPage - 1];
 		foreach (var apiModSummary in list) {
-			var moduleItem = _moduleItemScene!.Instantiate<ModuleItem>();
+			var moduleItem = _moduleItemScene!.Instantiate<BrowseItem>();
 			moduleItem.ModSummary = apiModSummary;
 			moduleItem.Pressed += async () => {
 				GD.Print(apiModSummary);

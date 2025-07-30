@@ -11,7 +11,7 @@ using MVL.Utils.Help;
 
 namespace MVL.UI.Item;
 
-public partial class ModuleItem : Button {
+public partial class BrowseItem : Button {
 	[Export]
 	private TextureRect? _modIconTextureRect;
 

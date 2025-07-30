@@ -1,7 +1,7 @@
 [gd_scene load_steps=17 format=3 uid="uid://by3fewq1gv8si"]
 
 [ext_resource type="Texture2D" uid="uid://dcoju08mvjqim" path="res://Assets/Icon/VS/modicon.png" id="1_72o6q"]
-[ext_resource type="Script" uid="uid://bejxli2tpo7q5" path="res://Src/UI/Item/ModuleItem.cs" id="1_d27ek"]
+[ext_resource type="Script" uid="uid://bejxli2tpo7q5" path="res://Src/UI/Item/BrowseItem.cs" id="1_d27ek"]
 [ext_resource type="FontFile" uid="uid://bmgx1vyg6bavd" path="res://Assets/Font/HarmonyOS_Sans_SC_Bold.ttf" id="2_d27ek"]
 [ext_resource type="Script" uid="uid://bk3tot6c35bwu" path="res://Src/Utils/IconTexture2D.cs" id="3_ii6d5"]
 

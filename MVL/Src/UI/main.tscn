@@ -19,7 +19,7 @@
 [ext_resource type="PackedScene" uid="uid://wtrk0xtd36kj" path="res://Src/UI/Page/home_page.tscn" id="14_oarc7"]
 [ext_resource type="PackedScene" uid="uid://colclcegjal1y" path="res://Src/UI/Page/modpack_page.tscn" id="16_bmwv3"]
 [ext_resource type="PackedScene" uid="uid://0qq618t18t61" path="res://Src/UI/Page/release_page.tscn" id="17_o4ctv"]
-[ext_resource type="PackedScene" uid="uid://dri1d4mt1w68c" path="res://Src/UI/Page/module_page.tscn" id="18_365jr"]
+[ext_resource type="PackedScene" uid="uid://dri1d4mt1w68c" path="res://Src/UI/Page/browse_page.tscn" id="18_365jr"]
 [ext_resource type="PackedScene" uid="uid://bp02so1m0q7m0" path="res://Src/UI/Page/setting_page.tscn" id="19_a6wm3"]
 [ext_resource type="PackedScene" uid="uid://d0bdto738ug2l" path="res://Src/UI/Page/info_page.tscn" id="20_53u4p"]
 [ext_resource type="FontFile" uid="uid://bmgx1vyg6bavd" path="res://Assets/Font/HarmonyOS_Sans_SC_Bold.ttf" id="24_365jr"]
@@ -37,7 +37,6 @@ resource_local_to_scene = false
 resource_name = ""
 script = ExtResource("13_7nt4r")
 IconName = "menu-close"
-IconSize = 24
 metadata/_custom_type_script = "uid://bk3tot6c35bwu"
 
 [sub_resource type="Texture2D" id="Texture2D_bmwv3"]
@@ -45,7 +44,6 @@ resource_local_to_scene = false
 resource_name = ""
 script = ExtResource("13_7nt4r")
 IconName = "home"
-IconSize = 24
 metadata/_custom_type_script = "uid://bk3tot6c35bwu"
 
 [sub_resource type="Texture2D" id="Texture2D_a6wm3"]
@@ -53,7 +51,6 @@ resource_local_to_scene = false
 resource_name = ""
 script = ExtResource("13_7nt4r")
 IconName = "package-variant-closed"
-IconSize = 24
 metadata/_custom_type_script = "uid://bk3tot6c35bwu"
 
 [sub_resource type="Texture2D" id="Texture2D_53u4p"]
@@ -61,7 +58,6 @@ resource_local_to_scene = false
 resource_name = ""
 script = ExtResource("13_7nt4r")
 IconName = "inbox-full"
-IconSize = 24
 metadata/_custom_type_script = "uid://bk3tot6c35bwu"
 
 [sub_resource type="Texture2D" id="Texture2D_08ol6"]
@@ -69,7 +65,6 @@ resource_local_to_scene = false
 resource_name = ""
 script = ExtResource("13_7nt4r")
 IconName = "widgets"
-IconSize = 24
 metadata/_custom_type_script = "uid://bk3tot6c35bwu"
 
 [sub_resource type="Texture2D" id="Texture2D_30yt8"]
@@ -77,7 +72,6 @@ resource_local_to_scene = false
 resource_name = ""
 script = ExtResource("13_7nt4r")
 IconName = "cog"
-IconSize = 24
 metadata/_custom_type_script = "uid://bk3tot6c35bwu"
 
 [sub_resource type="Texture2D" id="Texture2D_5lwjt"]
@@ -85,7 +79,6 @@ resource_local_to_scene = false
 resource_name = ""
 script = ExtResource("13_7nt4r")
 IconName = "information"
-IconSize = 24
 metadata/_custom_type_script = "uid://bk3tot6c35bwu"
 
 [sub_resource type="Animation" id="Animation_syw1k"]
@@ -170,18 +163,11 @@ corner_radius_bottom_right = 20
 corner_radius_bottom_left = 20
 corner_detail = 20
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_oarc7"]
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_oarc7"]
 content_margin_left = 10.0
 content_margin_top = 10.0
 content_margin_right = 10.0
 content_margin_bottom = 10.0
-bg_color = Color(0.206914, 0.206914, 0.206914, 0.137255)
-corner_radius_top_left = 5
-corner_radius_top_right = 5
-corner_radius_bottom_right = 5
-corner_radius_bottom_left = 5
-shadow_color = Color(0, 0, 0, 0.172549)
-shadow_size = 1
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_gblyu"]
 content_margin_left = 10.0
@@ -196,27 +182,25 @@ corner_radius_bottom_left = 5
 shadow_color = Color(0, 0, 0, 0.392157)
 shadow_size = 2
 
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_oarc7"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_oarc7"]
 content_margin_left = 10.0
 content_margin_top = 10.0
 content_margin_right = 10.0
 content_margin_bottom = 10.0
+bg_color = Color(0.206914, 0.206914, 0.206914, 0.137255)
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
+shadow_color = Color(0, 0, 0, 0.172549)
+shadow_size = 1
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_gblyu"]
 shader = ExtResource("14_gblyu")
 shader_parameter/lod = 2.0
 shader_parameter/blend = 1.0
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_bmwv3"]
-content_margin_left = 10.0
-content_margin_top = 10.0
-content_margin_right = 10.0
-content_margin_bottom = 10.0
-bg_color = Color(0.207843, 0.207843, 0.207843, 1)
-corner_radius_top_left = 5
-corner_radius_top_right = 5
-corner_radius_bottom_right = 5
-corner_radius_bottom_left = 5
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_gblyu"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_7nt4r"]
 content_margin_left = 10.0
@@ -229,7 +213,16 @@ corner_radius_top_right = 5
 corner_radius_bottom_right = 5
 corner_radius_bottom_left = 5
 
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_gblyu"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_bmwv3"]
+content_margin_left = 10.0
+content_margin_top = 10.0
+content_margin_right = 10.0
+content_margin_bottom = 10.0
+bg_color = Color(0.207843, 0.207843, 0.207843, 1)
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
 
 [sub_resource type="GDScript" id="GDScript_o4ctv"]
 script/source = "extends Button
@@ -262,7 +255,6 @@ resource_local_to_scene = false
 resource_name = ""
 script = ExtResource("13_7nt4r")
 IconName = "plus"
-IconSize = 24
 metadata/_custom_type_script = "uid://bk3tot6c35bwu"
 
 [sub_resource type="Animation" id="Animation_bmwv3"]
@@ -306,13 +298,13 @@ _data = {
 
 [sub_resource type="ButtonGroup" id="ButtonGroup_08ol6"]
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_53u4p"]
-bg_color = Color(1, 1, 1, 0.282353)
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_08ol6"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_365jr"]
 bg_color = Color(1, 1, 1, 0.352941)
 
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_08ol6"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_53u4p"]
+bg_color = Color(1, 1, 1, 0.282353)
 
 [sub_resource type="Texture2D" id="Texture2D_7nt4r"]
 resource_local_to_scene = false
@@ -322,13 +314,13 @@ IconName = "window-minimize"
 IconSize = 14
 metadata/_custom_type_script = "uid://bk3tot6c35bwu"
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_o4ctv"]
-bg_color = Color(0.764706, 0, 0, 1)
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_365jr"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_a6wm3"]
 bg_color = Color(0.666667, 0, 0, 1)
 
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_365jr"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_o4ctv"]
+bg_color = Color(0.764706, 0, 0, 1)
 
 [sub_resource type="Texture2D" id="Texture2D_7eosv"]
 resource_local_to_scene = false
@@ -450,15 +442,15 @@ script = ExtResource("7_bl4fu")
 Page = NodePath("../../../ColorRect/VBoxContainer/MarginContainer/PageContainer/ReleasePage")
 metadata/_custom_type_script = "uid://dvjtigpqee0jw"
 
-[node name="ModuleButton" type="Button" parent="HBoxContainer/MenuPanel/VBoxContainer" node_paths=PackedStringArray("Page")]
+[node name="BrowseButton" type="Button" parent="HBoxContainer/MenuPanel/VBoxContainer" node_paths=PackedStringArray("Page")]
 layout_mode = 2
 toggle_mode = true
 button_group = ExtResource("4_megpf")
-text = "模组"
+text = "浏览"
 icon = SubResource("Texture2D_08ol6")
 clip_text = true
 script = ExtResource("7_bl4fu")
-Page = NodePath("../../../ColorRect/VBoxContainer/MarginContainer/PageContainer/ModulePage")
+Page = NodePath("../../../ColorRect/VBoxContainer/MarginContainer/PageContainer/BrowsePage")
 metadata/_custom_type_script = "uid://dvjtigpqee0jw"
 
 [node name="Control" type="Control" parent="HBoxContainer/MenuPanel/VBoxContainer"]
@@ -566,9 +558,9 @@ mouse_default_cursor_shape = 2
 theme_override_constants/outline_size = 5
 theme_override_fonts/font = ExtResource("24_365jr")
 theme_override_font_sizes/font_size = 18
-theme_override_styles/hover = SubResource("StyleBoxFlat_oarc7")
-theme_override_styles/pressed = SubResource("StyleBoxFlat_gblyu")
 theme_override_styles/normal = SubResource("StyleBoxEmpty_oarc7")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_gblyu")
+theme_override_styles/hover = SubResource("StyleBoxFlat_oarc7")
 toggle_mode = true
 
 [node name="Button" type="Button" parent="HBoxContainer/ColorRect/VBoxContainer/MarginContainer2/HBoxContainer/Button"]
@@ -582,9 +574,9 @@ grow_horizontal = 2
 grow_vertical = 2
 size_flags_vertical = 4
 mouse_filter = 1
-theme_override_styles/hover = SubResource("StyleBoxFlat_bmwv3")
-theme_override_styles/pressed = SubResource("StyleBoxFlat_7nt4r")
 theme_override_styles/normal = SubResource("StyleBoxEmpty_gblyu")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_7nt4r")
+theme_override_styles/hover = SubResource("StyleBoxFlat_bmwv3")
 toggle_mode = true
 script = SubResource("GDScript_o4ctv")
 
@@ -607,6 +599,7 @@ copy_mode = 2
 [node name="PanelContainer" type="PanelContainer" parent="HBoxContainer/ColorRect/VBoxContainer/MarginContainer2/HBoxContainer/Button/Button2"]
 material = SubResource("ShaderMaterial_o4ctv")
 layout_mode = 1
+anchors_preset = -1
 offset_right = 162.0
 offset_bottom = 80.0
 theme_override_styles/panel = SubResource("StyleBoxFlat_7eosv")
@@ -668,7 +661,7 @@ visible = false
 layout_mode = 2
 metadata/_tab_index = 2
 
-[node name="ModulePage" parent="HBoxContainer/ColorRect/VBoxContainer/MarginContainer/PageContainer" instance=ExtResource("18_365jr")]
+[node name="BrowsePage" parent="HBoxContainer/ColorRect/VBoxContainer/MarginContainer/PageContainer" instance=ExtResource("18_365jr")]
 visible = false
 layout_mode = 2
 metadata/_tab_index = 3
@@ -687,7 +680,7 @@ metadata/_tab_index = 5
 
 [node name="HBoxContainer2" type="HBoxContainer" parent="."]
 layout_mode = 1
-anchors_preset = 1
+anchors_preset = -1
 anchor_left = 1.0
 anchor_right = 1.0
 offset_left = -70.0
@@ -705,9 +698,9 @@ size_flags_vertical = 0
 focus_mode = 0
 theme_override_colors/icon_normal_color = Color(0.678944, 0.678944, 0.678944, 1)
 theme_override_constants/icon_max_width = 14
-theme_override_styles/hover = SubResource("StyleBoxFlat_53u4p")
-theme_override_styles/pressed = SubResource("StyleBoxFlat_365jr")
 theme_override_styles/normal = SubResource("StyleBoxEmpty_08ol6")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_365jr")
+theme_override_styles/hover = SubResource("StyleBoxFlat_53u4p")
 icon = SubResource("Texture2D_7nt4r")
 icon_alignment = 1
 
@@ -719,9 +712,9 @@ size_flags_vertical = 0
 focus_mode = 0
 theme_override_colors/icon_normal_color = Color(0.678431, 0.678431, 0.678431, 1)
 theme_override_constants/icon_max_width = 14
-theme_override_styles/hover = SubResource("StyleBoxFlat_o4ctv")
-theme_override_styles/pressed = SubResource("StyleBoxFlat_a6wm3")
 theme_override_styles/normal = SubResource("StyleBoxEmpty_365jr")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_a6wm3")
+theme_override_styles/hover = SubResource("StyleBoxFlat_o4ctv")
 icon = SubResource("Texture2D_7eosv")
 icon_alignment = 1
 expand_icon = true

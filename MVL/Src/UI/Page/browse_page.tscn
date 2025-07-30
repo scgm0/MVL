@@ -1,19 +1,19 @@
 [gd_scene load_steps=33 format=3 uid="uid://dri1d4mt1w68c"]
 
-[ext_resource type="Script" uid="uid://g2x8e85gx8ct" path="res://Src/UI/Page/ModulePage.cs" id="1_yrgrc"]
-[ext_resource type="Texture2D" uid="uid://d3mq4tlr6rr01" path="res://Assets/Icon/VS/gameicon.png" id="2_j8eel"]
-[ext_resource type="PackedScene" uid="uid://by3fewq1gv8si" path="res://Src/UI/Item/module_item.tscn" id="2_wrfr1"]
-[ext_resource type="Material" uid="uid://c0sb2bjy16ljf" path="res://Assets/Material/button_blur.tres" id="2_yrgrc"]
-[ext_resource type="Script" uid="uid://bgqglerkcylxx" path="res://addons/SmoothScroll/SmoothScrollContainer.gd" id="3_5qr6m"]
-[ext_resource type="PackedScene" uid="uid://cx30yvsu80t6f" path="res://Src/UI/Window/confirmation_window.tscn" id="3_blyna"]
-[ext_resource type="Script" uid="uid://bk3tot6c35bwu" path="res://Src/Utils/IconTexture2D.cs" id="3_ceq8m"]
-[ext_resource type="PackedScene" uid="uid://buymc11h2tiu6" path="res://Src/UI/Other/authors_line_edit.tscn" id="4_1j2tx"]
-[ext_resource type="PackedScene" uid="uid://8k1twti5t7jp" path="res://Src/UI/Window/api_mod_releases_window.tscn" id="4_spol5"]
-[ext_resource type="Script" uid="uid://b7h0k2h2qwlqv" path="res://addons/SmoothScroll/scroll_damper/expo_scroll_damper.gd" id="4_yrgrc"]
-[ext_resource type="PackedScene" uid="uid://bh6diaqd7d326" path="res://Src/UI/Other/SelectionButton.tscn" id="5_u5j2m"]
-[ext_resource type="Script" uid="uid://bbv088hy4ilpa" path="res://Src/UI/Other/SelectModpackButton.cs" id="7_spol5"]
-[ext_resource type="Material" uid="uid://b675ao2n7w53x" path="res://Assets/Material/loading.tres" id="9_ceq8m"]
-[ext_resource type="PackedScene" uid="uid://don6xai5trupe" path="res://Src/UI/Item/select_modpack_item.tscn" id="10_spol5"]
+[ext_resource type="Script" uid="uid://g2x8e85gx8ct" path="res://Src/UI/Page/BrowsePage.cs" id="1_vnkfo"]
+[ext_resource type="PackedScene" uid="uid://by3fewq1gv8si" path="res://Src/UI/Item/browse_item.tscn" id="2_b5fxa"]
+[ext_resource type="PackedScene" uid="uid://cx30yvsu80t6f" path="res://Src/UI/Window/confirmation_window.tscn" id="3_2b3vt"]
+[ext_resource type="PackedScene" uid="uid://8k1twti5t7jp" path="res://Src/UI/Window/api_mod_releases_window.tscn" id="4_b7jyc"]
+[ext_resource type="Material" uid="uid://c0sb2bjy16ljf" path="res://Assets/Material/button_blur.tres" id="5_k83tl"]
+[ext_resource type="Script" uid="uid://bk3tot6c35bwu" path="res://Src/Utils/IconTexture2D.cs" id="6_d4kmo"]
+[ext_resource type="Script" uid="uid://bbv088hy4ilpa" path="res://Src/UI/Other/SelectModpackButton.cs" id="7_s2qbl"]
+[ext_resource type="PackedScene" uid="uid://don6xai5trupe" path="res://Src/UI/Item/select_modpack_item.tscn" id="8_salu6"]
+[ext_resource type="Texture2D" uid="uid://d3mq4tlr6rr01" path="res://Assets/Icon/VS/gameicon.png" id="9_erb6i"]
+[ext_resource type="Script" uid="uid://bgqglerkcylxx" path="res://addons/SmoothScroll/SmoothScrollContainer.gd" id="10_d3orq"]
+[ext_resource type="Script" uid="uid://b7h0k2h2qwlqv" path="res://addons/SmoothScroll/scroll_damper/expo_scroll_damper.gd" id="11_l2ewu"]
+[ext_resource type="PackedScene" uid="uid://buymc11h2tiu6" path="res://Src/UI/Other/authors_line_edit.tscn" id="12_v2jk5"]
+[ext_resource type="PackedScene" uid="uid://bh6diaqd7d326" path="res://Src/UI/Other/SelectionButton.tscn" id="13_mqq6l"]
+[ext_resource type="Material" uid="uid://b675ao2n7w53x" path="res://Assets/Material/loading.tres" id="14_wixqv"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_dvdbd"]
 content_margin_left = 10.0
@@ -34,14 +34,14 @@ corner_radius_bottom_left = 6
 [sub_resource type="Texture2D" id="Texture2D_wrfr1"]
 resource_local_to_scene = false
 resource_name = ""
-script = ExtResource("3_ceq8m")
+script = ExtResource("6_d4kmo")
 IconName = "magnify"
 metadata/_custom_type_script = "uid://bk3tot6c35bwu"
 
 [sub_resource type="Texture2D" id="Texture2D_blyna"]
 resource_local_to_scene = false
 resource_name = ""
-script = ExtResource("3_ceq8m")
+script = ExtResource("6_d4kmo")
 IconName = "swap-vertical"
 metadata/_custom_type_script = "uid://bk3tot6c35bwu"
 
@@ -76,10 +76,10 @@ content_margin_left = 4.0
 content_margin_right = 4.0
 
 [sub_resource type="Resource" id="Resource_gioba"]
-script = ExtResource("4_yrgrc")
+script = ExtResource("11_l2ewu")
 
 [sub_resource type="Resource" id="Resource_jfbpu"]
-script = ExtResource("4_yrgrc")
+script = ExtResource("11_l2ewu")
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_u5j2m"]
 content_margin_left = 4.0
@@ -94,10 +94,10 @@ corner_radius_bottom_left = 3
 corner_detail = 5
 
 [sub_resource type="Resource" id="Resource_dvdbd"]
-script = ExtResource("4_yrgrc")
+script = ExtResource("11_l2ewu")
 
 [sub_resource type="Resource" id="Resource_1j2tx"]
-script = ExtResource("4_yrgrc")
+script = ExtResource("11_l2ewu")
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_j8eel"]
 
@@ -111,7 +111,7 @@ script = ExtResource("4_yrgrc")
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_ceq8m"]
 
-[node name="ModulePage" type="Control" node_paths=PackedStringArray("_modNameLineEdit", "_searchButton", "_swapButton", "_modCountSpinBox", "_selectModpackButton", "_modAuthorLineEdit", "_modVersionsButton", "_modTagsButton", "_modSideButton", "_modOrderByButton", "_modInstallStatusButton", "_moduleListContainer", "_pageNumberLineEdit", "_pageNumberButton", "_previousPageButton", "_nextPageButton", "_loadingControl", "Main")]
+[node name="BrowsePage" type="Control" node_paths=PackedStringArray("_modNameLineEdit", "_searchButton", "_swapButton", "_modCountSpinBox", "_selectModpackButton", "_modAuthorLineEdit", "_modVersionsButton", "_modTagsButton", "_modSideButton", "_modOrderByButton", "_modInstallStatusButton", "_moduleListContainer", "_pageNumberLineEdit", "_pageNumberButton", "_previousPageButton", "_nextPageButton", "_loadingControl", "Main")]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -119,10 +119,10 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
-script = ExtResource("1_yrgrc")
-_moduleItemScene = ExtResource("2_wrfr1")
-_confirmationWindowScene = ExtResource("3_blyna")
-_apiModReleasesWindowScene = ExtResource("4_spol5")
+script = ExtResource("1_vnkfo")
+_moduleItemScene = ExtResource("2_b5fxa")
+_confirmationWindowScene = ExtResource("3_2b3vt")
+_apiModReleasesWindowScene = ExtResource("4_b7jyc")
 _modNameLineEdit = NodePath("MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer2/LineEdit")
 _searchButton = NodePath("MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer2/Button")
 _swapButton = NodePath("MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer2/Button2")
@@ -156,7 +156,7 @@ layout_mode = 2
 theme_override_constants/separation = 10
 
 [node name="PanelContainer" type="PanelContainer" parent="MarginContainer/VBoxContainer"]
-material = ExtResource("2_yrgrc")
+material = ExtResource("5_k83tl")
 layout_mode = 2
 mouse_filter = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_dvdbd")
@@ -202,8 +202,8 @@ layout_mode = 2
 [node name="SelectModpackButton" type="Button" parent="MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer" node_paths=PackedStringArray("_hBoxContainer", "_name", "_version", "_bg", "_panelContainer", "_scrollContainer", "_vboxContainer")]
 layout_mode = 2
 size_flags_horizontal = 3
-script = ExtResource("7_spol5")
-_selectModpackItemScene = ExtResource("10_spol5")
+script = ExtResource("7_s2qbl")
+_selectModpackItemScene = ExtResource("8_salu6")
 _hBoxContainer = NodePath("HBoxContainer")
 _name = NodePath("HBoxContainer/VBoxContainer/Label")
 _version = NodePath("HBoxContainer/VBoxContainer/Label2")
@@ -230,7 +230,7 @@ theme_override_constants/margin_bottom = 5
 [node name="TextureRect" type="TextureRect" parent="MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer/SelectModpackButton/HBoxContainer/MarginContainer"]
 custom_minimum_size = Vector2(50, 50)
 layout_mode = 2
-texture = ExtResource("2_j8eel")
+texture = ExtResource("9_erb6i")
 expand_mode = 1
 stretch_mode = 5
 
@@ -266,7 +266,7 @@ grow_vertical = 2
 flat = true
 
 [node name="PanelContainer" type="PanelContainer" parent="MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer/SelectModpackButton/Button"]
-material = ExtResource("2_yrgrc")
+material = ExtResource("5_k83tl")
 layout_mode = 1
 anchors_preset = -1
 offset_right = 10.0
@@ -278,7 +278,7 @@ layout_mode = 2
 theme_override_styles/panel = SubResource("StyleBoxEmpty_gioba")
 horizontal_scroll_mode = 0
 vertical_scroll_mode = 0
-script = ExtResource("3_5qr6m")
+script = ExtResource("10_d3orq")
 wheel_scroll_damper = SubResource("Resource_gioba")
 dragging_scroll_damper = SubResource("Resource_jfbpu")
 metadata/_custom_type_script = "uid://bgqglerkcylxx"
@@ -299,19 +299,19 @@ layout_mode = 2
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="AuthorsLineEdit" parent="MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer/MarginContainer/VBoxContainer/HBoxContainer" instance=ExtResource("4_1j2tx")]
+[node name="AuthorsLineEdit" parent="MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer/MarginContainer/VBoxContainer/HBoxContainer" instance=ExtResource("12_v2jk5")]
 layout_mode = 2
 theme_override_font_sizes/font_size = 16
 theme_override_styles/normal = SubResource("StyleBoxFlat_u5j2m")
 placeholder_text = "模组作者"
 alignment = 1
 
-[node name="SelectionButton" parent="MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer/MarginContainer/VBoxContainer/HBoxContainer" instance=ExtResource("5_u5j2m")]
+[node name="SelectionButton" parent="MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer/MarginContainer/VBoxContainer/HBoxContainer" instance=ExtResource("13_mqq6l")]
 layout_mode = 2
 size_flags_horizontal = 3
 text = "游戏版本"
 
-[node name="SelectionButton2" parent="MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer/MarginContainer/VBoxContainer/HBoxContainer" instance=ExtResource("5_u5j2m")]
+[node name="SelectionButton2" parent="MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer/MarginContainer/VBoxContainer/HBoxContainer" instance=ExtResource("13_mqq6l")]
 layout_mode = 2
 size_flags_horizontal = 3
 text = "模组标签"
@@ -320,26 +320,26 @@ text = "模组标签"
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="SelectionButton" parent="MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer/MarginContainer/VBoxContainer/HBoxContainer2" instance=ExtResource("5_u5j2m")]
+[node name="SelectionButton" parent="MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer/MarginContainer/VBoxContainer/HBoxContainer2" instance=ExtResource("13_mqq6l")]
 layout_mode = 2
 size_flags_horizontal = 3
 text = "排序依据"
 Radio = true
 
-[node name="SelectionButton2" parent="MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer/MarginContainer/VBoxContainer/HBoxContainer2" instance=ExtResource("5_u5j2m")]
+[node name="SelectionButton2" parent="MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer/MarginContainer/VBoxContainer/HBoxContainer2" instance=ExtResource("13_mqq6l")]
 layout_mode = 2
 size_flags_horizontal = 3
 text = "运行位置"
 Radio = true
 
-[node name="SelectionButton3" parent="MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer/MarginContainer/VBoxContainer/HBoxContainer2" instance=ExtResource("5_u5j2m")]
+[node name="SelectionButton3" parent="MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer/MarginContainer/VBoxContainer/HBoxContainer2" instance=ExtResource("13_mqq6l")]
 layout_mode = 2
 size_flags_horizontal = 3
 text = "安装状态"
 Radio = true
 
 [node name="PanelContainer2" type="PanelContainer" parent="MarginContainer/VBoxContainer"]
-material = ExtResource("2_yrgrc")
+material = ExtResource("5_k83tl")
 layout_mode = 2
 size_flags_vertical = 3
 mouse_filter = 2
@@ -348,7 +348,7 @@ theme_override_styles/panel = SubResource("StyleBoxFlat_dvdbd")
 [node name="ScrollContainer" type="ScrollContainer" parent="MarginContainer/VBoxContainer/PanelContainer2"]
 layout_mode = 2
 size_flags_vertical = 3
-script = ExtResource("3_5qr6m")
+script = ExtResource("10_d3orq")
 wheel_scroll_damper = SubResource("Resource_dvdbd")
 dragging_scroll_damper = SubResource("Resource_1j2tx")
 metadata/_custom_type_script = "uid://bgqglerkcylxx"
@@ -371,7 +371,7 @@ theme_override_constants/v_separation = 8
 alignment = 1
 
 [node name="PanelContainer3" type="PanelContainer" parent="MarginContainer/VBoxContainer"]
-material = ExtResource("2_yrgrc")
+material = ExtResource("5_k83tl")
 layout_mode = 2
 mouse_filter = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_dvdbd")
@@ -433,7 +433,7 @@ grow_horizontal = 2
 grow_vertical = 2
 
 [node name="ColorRect" type="ColorRect" parent="Control"]
-material = ExtResource("9_ceq8m")
+material = ExtResource("14_wixqv")
 custom_minimum_size = Vector2(75, 75)
 layout_mode = 1
 anchors_preset = -1
