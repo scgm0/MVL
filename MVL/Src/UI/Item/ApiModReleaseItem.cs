@@ -40,6 +40,9 @@ public partial class ApiModReleaseItem : PanelContainer {
 	[Export]
 	private ProgressBar? _progressBar;
 
+	[Export]
+	private Label? _progressLabel;
+
 	private bool _isChecked;
 	private IDownload? _download;
 
@@ -174,6 +177,9 @@ public partial class ApiModReleaseItem : PanelContainer {
 
 		_downloadButton!.Disabled = true;
 		_checkBox!.Disabled = _downloadButton!.Disabled;
+		_downloadButton.Hide();
+		_checkBox!.Hide();
+		_progressLabel!.Show();
 		_progressBar!.Show();
 		GD.Print($"下载 {ApiModRelease!.FileName}...");
 
@@ -200,7 +206,9 @@ public partial class ApiModReleaseItem : PanelContainer {
 			}
 
 			_progressBar.CallDeferred(Range.MethodName.SetValue, args.ProgressPercentage);
+			_progressLabel.CallDeferred(Label.MethodName.SetText, $"{args.ProgressPercentage:F1}%");
 		};
+
 		await _download.StartAsync();
 		_download.Dispose();
 		_download = null;

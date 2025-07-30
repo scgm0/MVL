@@ -29,15 +29,9 @@ metadata/_custom_type_script = "uid://bk3tot6c35bwu"
 
 [sub_resource type="Resource" id="Resource_8273f"]
 script = ExtResource("4_mgo4i")
-friction = 4.0
-minimum_velocity = 0.4
-rebound_strength = 7.0
 
 [sub_resource type="Resource" id="Resource_47be0"]
 script = ExtResource("4_mgo4i")
-friction = 4.0
-minimum_velocity = 0.4
-rebound_strength = 7.0
 
 [sub_resource type="Texture2D" id="Texture2D_mgo4i"]
 resource_local_to_scene = false
@@ -52,11 +46,10 @@ resource_local_to_scene = false
 resource_name = ""
 script = ExtResource("1_gmw30")
 IconName = "file-download-outline"
-IconSize = 24
 metadata/_custom_type_script = "uid://bk3tot6c35bwu"
 
-[node name="ApiModReleaseItem" type="PanelContainer" node_paths=PackedStringArray("_modName", "_version", "_dateLabel", "_downloadCountLabel", "_downloadButton", "_checkBox", "_tagsContainer", "_progressBar")]
-anchors_preset = 10
+[node name="ApiModReleaseItem" type="PanelContainer" node_paths=PackedStringArray("_modName", "_version", "_dateLabel", "_downloadCountLabel", "_downloadButton", "_checkBox", "_tagsContainer", "_progressBar", "_progressLabel")]
+anchors_preset = -1
 anchor_right = 1.0
 offset_bottom = 56.0
 grow_horizontal = 2
@@ -67,10 +60,11 @@ _modName = NodePath("MarginContainer/HBoxContainer/VBoxContainer/HBoxContainer/R
 _version = NodePath("MarginContainer/HBoxContainer/VBoxContainer/HBoxContainer/Label")
 _dateLabel = NodePath("MarginContainer/HBoxContainer/VBoxContainer/HBoxContainer2/Button")
 _downloadCountLabel = NodePath("MarginContainer/HBoxContainer/VBoxContainer/HBoxContainer/Button")
-_downloadButton = NodePath("MarginContainer/HBoxContainer/Button")
-_checkBox = NodePath("MarginContainer/HBoxContainer/CheckBox")
+_downloadButton = NodePath("MarginContainer/HBoxContainer/MarginContainer/Button")
+_checkBox = NodePath("MarginContainer/HBoxContainer/MarginContainer/CheckBox")
 _tagsContainer = NodePath("MarginContainer/HBoxContainer/VBoxContainer/HBoxContainer2/SmoothScrollContainer/HBoxContainer")
 _progressBar = NodePath("ProgressBar")
+_progressLabel = NodePath("MarginContainer/HBoxContainer/MarginContainer/Label")
 
 [node name="MarginContainer" type="MarginContainer" parent="."]
 layout_mode = 2
@@ -151,16 +145,31 @@ icon = SubResource("Texture2D_mgo4i")
 flat = true
 icon_alignment = 2
 
-[node name="Button" type="Button" parent="MarginContainer/HBoxContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/HBoxContainer"]
+custom_minimum_size = Vector2(32, 0)
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="Button" type="Button" parent="MarginContainer/HBoxContainer/MarginContainer"]
 layout_mode = 2
 size_flags_horizontal = 4
 mouse_filter = 1
 icon = SubResource("Texture2D_yort3")
 flat = true
 
-[node name="CheckBox" type="CheckBox" parent="MarginContainer/HBoxContainer"]
+[node name="CheckBox" type="CheckBox" parent="MarginContainer/HBoxContainer/MarginContainer"]
 visible = false
 layout_mode = 2
+size_flags_horizontal = 4
+
+[node name="Label" type="Label" parent="MarginContainer/HBoxContainer/MarginContainer"]
+visible = false
+layout_mode = 2
+size_flags_vertical = 1
+theme_override_font_sizes/font_size = 12
+text = "0%"
+horizontal_alignment = 1
+vertical_alignment = 1
 
 [node name="ProgressBar" type="ProgressBar" parent="."]
 visible = false
