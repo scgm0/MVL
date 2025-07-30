@@ -177,6 +177,7 @@ public partial class BrowsePage : MenuPage {
 			GetModsList();
 			return;
 		}
+
 		GetOnlineInfo();
 	}
 
@@ -266,6 +267,7 @@ public partial class BrowsePage : MenuPage {
 	}
 
 	private async Task UpdatePage() {
+		await Task.Run(_selectModpackButton!.ModpackConfig!.UpdateMods);
 		if (_gameVersionIds.Length == 0 || _tagIds.Length == 0) {
 			GetOnlineInfo();
 		} else {
@@ -281,7 +283,6 @@ public partial class BrowsePage : MenuPage {
 			}
 
 			if (modInstallStatus[0] != 0) {
-				_selectModpackButton!.ModpackConfig!.UpdateMods();
 				list = list.Where(summary => {
 					var isInstalled = _selectModpackButton!.ModpackConfig!.Mods.Values.Any(m =>
 						summary.ModIdStrs.Any(s => s.Equals(m.ModId, StringComparison.OrdinalIgnoreCase)));

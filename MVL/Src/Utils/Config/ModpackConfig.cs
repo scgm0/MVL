@@ -49,10 +49,14 @@ public class ModpackConfig {
 	public void UpdateMods() {
 		Mods.Clear();
 
-		if (string.IsNullOrEmpty(Path)) return;
+		if (string.IsNullOrEmpty(Path)) {
+			return;
+		}
 
 		var modsPath = System.IO.Path.Combine(Path, "Mods");
-		if (!Directory.Exists(modsPath)) return;
+		if (!Directory.Exists(modsPath)) {
+			Directory.CreateDirectory(modsPath);
+		}
 
 		foreach (var entryPath in Directory.EnumerateFileSystemEntries(modsPath)) {
 			var modInfo = TryLoadMod(entryPath);
