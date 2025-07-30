@@ -84,7 +84,7 @@ public partial class HomePage : MenuPage {
 		await UpdateInfo();
 	}
 
-	private void ShowSelectModpackPanel() {
+	private async void ShowSelectModpackPanel() {
 		_modpackInfoScrollContainer!.Call(StringNames.Scroll, true, 0, 0, 0);
 		_modpackInfoScrollContainer!.VerticalScrollMode = ScrollContainer.ScrollMode.Disabled;
 		_modpackInfoControl!.Modulate = Colors.Transparent;
@@ -140,6 +140,7 @@ public partial class HomePage : MenuPage {
 		animation.TrackSetKeyTime(0, 1, animation.Length);
 		_animationPlayer.Play(StringNames.Show);
 
+		await ToSignal(_animationPlayer, AnimationMixer.SignalName.AnimationFinished);
 		if (selectedItem != null) {
 			_modpackInfoScrollContainer!.Call(StringNames.EnsureControlVisible, selectedItem);
 		}

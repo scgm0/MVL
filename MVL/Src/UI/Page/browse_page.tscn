@@ -1,4 +1,4 @@
-[gd_scene load_steps=33 format=3 uid="uid://dri1d4mt1w68c"]
+[gd_scene load_steps=35 format=3 uid="uid://dri1d4mt1w68c"]
 
 [ext_resource type="Script" uid="uid://g2x8e85gx8ct" path="res://Src/UI/Page/BrowsePage.cs" id="1_vnkfo"]
 [ext_resource type="PackedScene" uid="uid://by3fewq1gv8si" path="res://Src/UI/Item/browse_item.tscn" id="2_b5fxa"]
@@ -9,6 +9,7 @@
 [ext_resource type="Script" uid="uid://bbv088hy4ilpa" path="res://Src/UI/Other/SelectModpackButton.cs" id="7_s2qbl"]
 [ext_resource type="PackedScene" uid="uid://don6xai5trupe" path="res://Src/UI/Item/select_modpack_item.tscn" id="8_salu6"]
 [ext_resource type="Texture2D" uid="uid://d3mq4tlr6rr01" path="res://Assets/Icon/VS/gameicon.png" id="9_erb6i"]
+[ext_resource type="Shader" uid="uid://bw4cstfk8udci" path="res://Assets/Shader/blur.gdshader" id="10_b5fxa"]
 [ext_resource type="Script" uid="uid://bgqglerkcylxx" path="res://addons/SmoothScroll/SmoothScrollContainer.gd" id="10_d3orq"]
 [ext_resource type="Script" uid="uid://b7h0k2h2qwlqv" path="res://addons/SmoothScroll/scroll_damper/expo_scroll_damper.gd" id="11_l2ewu"]
 [ext_resource type="PackedScene" uid="uid://buymc11h2tiu6" path="res://Src/UI/Other/authors_line_edit.tscn" id="12_v2jk5"]
@@ -56,6 +57,11 @@ corner_radius_bottom_left = 3
 SpinBoxInnerLineEdit/base_type = &"LineEdit"
 SpinBoxInnerLineEdit/constants/minimum_character_width = 2
 SpinBoxInnerLineEdit/font_sizes/font_size = 16
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_2b3vt"]
+shader = ExtResource("10_b5fxa")
+shader_parameter/lod = 5.0000002375
+shader_parameter/blend = 0.350000016625
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_gioba"]
 content_margin_top = 4.0
@@ -265,8 +271,11 @@ grow_horizontal = 2
 grow_vertical = 2
 flat = true
 
+[node name="BackBufferCopy" type="BackBufferCopy" parent="MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer/SelectModpackButton/Button"]
+copy_mode = 2
+
 [node name="PanelContainer" type="PanelContainer" parent="MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer/SelectModpackButton/Button"]
-material = ExtResource("5_k83tl")
+material = SubResource("ShaderMaterial_2b3vt")
 layout_mode = 1
 anchors_preset = -1
 offset_right = 10.0

@@ -74,7 +74,9 @@ public partial class SelectModpackButton : Button {
 		_bg.Disabled = false;
 	}
 
-	private void OnPressed() {
+	private async void OnPressed() {
+		_scrollContainer!.Call(StringNames.Scroll, true, 0, 0, 0);
+		_scrollContainer!.VerticalScrollMode = ScrollContainer.ScrollMode.Disabled;
 		_bg!.Modulate = Colors.Transparent;
 		_bg!.Show();
 
@@ -92,7 +94,6 @@ public partial class SelectModpackButton : Button {
 			maxWidth = _panelContainer!.Size.X;
 		}
 
-		_scrollContainer!.VerticalScrollMode = ScrollContainer.ScrollMode.Disabled;
 		_maxHeight = 0f;
 		SelectModpackItem? selectedItem = null;
 		for (var index = 0; index < Main.BaseConfig.Modpack.Count; index++) {
@@ -125,6 +126,7 @@ public partial class SelectModpackButton : Button {
 		_tween = CreateTween();
 		_tween.TweenProperty(_panelContainer, "size:y", _maxHeight, Mathf.Min(_vboxContainer!.GetChildCount(), 5) * 0.02f);
 
+		await ToSignal(_tween, Tween.SignalName.Finished);
 		if (selectedItem is not null) {
 			_scrollContainer!.Call(StringNames.EnsureControlVisible, selectedItem);
 		}

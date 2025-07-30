@@ -266,34 +266,38 @@ public partial class BrowsePage : MenuPage {
 	}
 
 	private async Task UpdatePage() {
-		var modSide = _modSideButton!.Selected;
-		var modInstallStatus = _modInstallStatusButton!.Selected;
-		var list = _modSummaryList.ToList();
-		if (modSide[0] != 0) {
-			list = list.Where(summary => {
-				return modSide[0] switch {
-					1 => summary.Side == "client", 2 => summary.Side == "server", 3 => summary.Side == "both", _ => false
-				};
-			}).ToList();
-		}
+		if (_gameVersionIds.Length == 0 || _tagIds.Length == 0) {
+			GetOnlineInfo();
+		} else {
+			var modSide = _modSideButton!.Selected;
+			var modInstallStatus = _modInstallStatusButton!.Selected;
+			var list = _modSummaryList.ToList();
+			if (modSide[0] != 0) {
+				list = list.Where(summary => {
+					return modSide[0] switch {
+						1 => summary.Side == "client", 2 => summary.Side == "server", 3 => summary.Side == "both", _ => false
+					};
+				}).ToList();
+			}
 
-		if (modInstallStatus[0] != 0) {
-			_selectModpackButton!.ModpackConfig!.UpdateMods();
-			list = list.Where(summary => {
-				var isInstalled = _selectModpackButton!.ModpackConfig!.Mods.Values.Any(m =>
-					summary.ModIdStrs.Any(s => s.Equals(m.ModId, StringComparison.OrdinalIgnoreCase)));
-				return modInstallStatus[0] switch { 1 => isInstalled, 2 => !isInstalled, _ => false };
-			}).ToList();
-		}
+			if (modInstallStatus[0] != 0) {
+				_selectModpackButton!.ModpackConfig!.UpdateMods();
+				list = list.Where(summary => {
+					var isInstalled = _selectModpackButton!.ModpackConfig!.Mods.Values.Any(m =>
+						summary.ModIdStrs.Any(s => s.Equals(m.ModId, StringComparison.OrdinalIgnoreCase)));
+					return modInstallStatus[0] switch { 1 => isInstalled, 2 => !isInstalled, _ => false };
+				}).ToList();
+			}
 
-		if (_swapButton!.ButtonPressed) {
-			list.Reverse();
-		}
+			if (_swapButton!.ButtonPressed) {
+				list.Reverse();
+			}
 
-		_modSummaryPageList = list.Chunk((int)_modCountSpinBox!.Value).ToArray();
-		MaxPage = _modSummaryPageList.Length > 0 ? _modSummaryPageList.Length : 1;
-		CurrentPage = 1;
-		await UpdateList();
+			_modSummaryPageList = list.Chunk((int)_modCountSpinBox!.Value).ToArray();
+			MaxPage = _modSummaryPageList.Length > 0 ? _modSummaryPageList.Length : 1;
+			CurrentPage = 1;
+			await UpdateList();
+		}
 	}
 
 	private async Task UpdateList() {
