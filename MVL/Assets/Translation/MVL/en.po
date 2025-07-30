@@ -27,8 +27,8 @@ msgstr "Modpack"
 msgid "版本"
 msgstr "Release"
 
-msgid "模组"
-msgstr "Module"
+msgid "浏览"
+msgstr "Browse"
 
 msgid "设置"
 msgstr "Setting"
@@ -373,3 +373,78 @@ msgstr ""
 
 msgid "正在从ModDB获取模组信息..."
 msgstr "Fetching mods information from ModDB..."
+
+msgid "搜索模组"
+msgstr "Search Mods"
+
+msgid "模组作者"
+msgstr "Mod Author"
+
+msgid "游戏版本"
+msgstr "Game Versions"
+
+msgid "模组标签"
+msgstr "Mod Tags"
+
+msgid "排序依据"
+msgstr "Sort By"
+
+msgid "运行位置"
+msgstr "Running Side"
+
+msgid "安装状态"
+msgstr "Installation Status"
+
+msgid "上一页"
+msgstr "Previous Page"
+
+msgid "下一页"
+msgstr "Next Page"
+
+msgid "任意"
+msgstr "Any"
+
+msgid "客户端"
+msgstr "Client"
+
+msgid "服务端"
+msgstr "Server"
+
+msgid "双方"
+msgstr "Both"
+
+msgid "创建时间"
+msgstr "Creation Time"
+
+msgid "更新时间"
+msgstr "Update Time"
+
+msgid "下载数量"
+msgstr "Download Count"
+
+msgid "关注数量"
+msgstr "Followers Count"
+
+msgid "热门趋势"
+msgstr "Trending Topics"
+
+msgid "所有"
+msgstr "All"
+
+msgid "已安装"
+msgstr "Installed"
+
+msgid "未安装"
+msgstr "Not Installed"
+
+msgid "获取在线信息时发生错误，请检查网络连接"
+msgstr "An error occurred while retrieving online information. Please check your network connection"
+
+msgid "请先创建整合包"
+msgstr "Please create the Modpack first"
+
+msgid "没有找到符合条件的模组"
+msgstr "No matching mods found"
+
+msgid "获取模组信息失败"
+msgstr "Failed to retrieve mod information"

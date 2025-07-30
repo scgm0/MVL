@@ -30,8 +30,8 @@ msgstr "Modpack"
 msgid "版本"
 msgstr "Version"
 
-msgid "模组"
-msgstr "Mod"
+msgid "浏览"
+msgstr ""
 
 msgid "设置"
 msgstr "Paramètres"
@@ -366,4 +366,79 @@ msgid "缺少以下依赖模组，是否尝试从ModDB获取？\n{0}"
 msgstr ""
 
 msgid "正在从ModDB获取模组信息..."
+msgstr ""
+
+msgid "搜索模组"
+msgstr ""
+
+msgid "模组作者"
+msgstr ""
+
+msgid "游戏版本"
+msgstr ""
+
+msgid "模组标签"
+msgstr ""
+
+msgid "排序依据"
+msgstr ""
+
+msgid "运行位置"
+msgstr ""
+
+msgid "安装状态"
+msgstr ""
+
+msgid "上一页"
+msgstr ""
+
+msgid "下一页"
+msgstr ""
+
+msgid "任意"
+msgstr ""
+
+msgid "客户端"
+msgstr ""
+
+msgid "服务端"
+msgstr ""
+
+msgid "双方"
+msgstr ""
+
+msgid "创建时间"
+msgstr ""
+
+msgid "更新时间"
+msgstr ""
+
+msgid "下载数量"
+msgstr ""
+
+msgid "关注数量"
+msgstr ""
+
+msgid "热门趋势"
+msgstr ""
+
+msgid "所有"
+msgstr ""
+
+msgid "已安装"
+msgstr ""
+
+msgid "未安装"
+msgstr ""
+
+msgid "获取在线信息时发生错误，请检查网络连接"
+msgstr ""
+
+msgid "请先创建整合包"
+msgstr ""
+
+msgid "没有找到符合条件的模组"
+msgstr ""
+
+msgid "获取模组信息失败"
 msgstr ""

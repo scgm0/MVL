@@ -307,7 +307,7 @@ public partial class BrowsePage : MenuPage {
 
 		if (_selectModpackButton!.ModpackConfig is null) {
 			var label = new Label {
-				Text = "请先创建模组包",
+				Text = "请先创建整合包",
 				Modulate = Colors.Yellow,
 				LabelSettings = new() {
 					FontSize = 20
@@ -388,7 +388,7 @@ public partial class BrowsePage : MenuPage {
 
 			if (_selectModpackButton!.ModpackConfig is null) {
 				var label = new Label {
-					Text = "请先创建模组包",
+					Text = "请先创建整合包",
 					Modulate = Colors.Yellow,
 					LabelSettings = new() {
 						FontSize = 20
