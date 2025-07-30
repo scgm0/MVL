@@ -11,7 +11,10 @@ public partial class IconTexture2D : Texture2D {
 	public string IconName {
 		get;
 		set {
-			if (field == value) return;
+			if (field == value) {
+				return;
+			}
+
 			field = value;
 			EmitChanged();
 		}
@@ -21,7 +24,10 @@ public partial class IconTexture2D : Texture2D {
 	public int IconSize {
 		get;
 		set {
-			if (field == value) return;
+			if (field == value) {
+				return;
+			}
+
 			field = value;
 			EmitChanged();
 		}

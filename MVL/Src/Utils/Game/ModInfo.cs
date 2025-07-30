@@ -88,12 +88,15 @@ public record ModInfo : IComparable<ModInfo> {
 			var num1 = c is < 'a' or > 'z' ? (c < 'A' ? 0 : (c <= 'Z' ? 1 : 0)) : 1;
 			var flag = c is >= '0' and <= '9';
 			var num2 = flag ? 1 : 0;
-			if ((num1 | num2) != 0)
+			if ((num1 | num2) != 0) {
 				stringBuilder.Append(char.ToLower(c));
-			if (flag && index == 0)
+			}
+
+			if (flag && index == 0) {
 				throw new ArgumentException(
 					$"无法自动将“{name}”转换为模组ID，因其以数字开头，不符合命名规范",
 					nameof(name));
+			}
 		}
 
 		return stringBuilder.ToString();
@@ -110,8 +113,9 @@ public record ModInfo : IComparable<ModInfo> {
 			var ch = str[index];
 			var num = ch < 'a' ? 0 : ch <= 'z' ? 1 : 0;
 			var flag = ch is >= '0' and <= '9';
-			if (num == 0 && (!flag || index == 0))
+			if (num == 0 && (!flag || index == 0)) {
 				return false;
+			}
 		}
 
 		return true;
@@ -160,7 +164,10 @@ public record ModInfo : IComparable<ModInfo> {
 	}
 
 	static private string[] ParseStringArray(CustomAttributeArgument argument) {
-		if (argument.Value is not CustomAttributeArgument[] arrayArgs) return [];
+		if (argument.Value is not CustomAttributeArgument[] arrayArgs) {
+			return [];
+		}
+
 		var array = arrayArgs.Select(a => a.Value.ToString() ?? string.Empty).ToArray();
 		return array;
 	}
@@ -172,8 +179,9 @@ public record ModInfo : IComparable<ModInfo> {
 			var modInfoAttribute = assembly.CustomAttributes
 				.FirstOrDefault(a => a.AttributeType.FullName == "Vintagestory.API.Common.ModInfoAttribute");
 
-			if (modInfoAttribute == null)
+			if (modInfoAttribute == null) {
 				return null;
+			}
 
 			var modInfo = new ModInfo {
 				Name = modInfoAttribute.ConstructorArguments[0].Value?.ToString() ?? string.Empty,

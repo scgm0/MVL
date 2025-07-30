@@ -322,7 +322,10 @@ public partial class Main : NativeWindowUtility {
 		var list = BaseConfig.Account.Distinct().ToList();
 		foreach (var account in list) {
 			var name = account.PlayerName!;
-			if (Accounts.TryAdd(name, account) || account == Accounts[name]) continue;
+			if (Accounts.TryAdd(name, account) || account == Accounts[name]) {
+				continue;
+			}
+
 			BaseConfig.Account.Remove(Accounts[name]);
 			Accounts[name] = account;
 		}
@@ -538,7 +541,10 @@ public partial class Main : NativeWindowUtility {
 			process.ErrorDataReceived += (_, args) => { GD.PrintErr(args.Data); };
 
 			process.OutputDataReceived += (_, args) => {
-				if (args.Data == null) return;
+				if (args.Data == null) {
+					return;
+				}
+
 				GD.PrintRich(args.Data.ConvertAnsiToBbCode());
 				if (args.Data.EndsWith("Client logger started.")) {
 					Dispatcher.SynchronizationContext.Post(_ => { SceneTree.Root.Minimize(); }, null);

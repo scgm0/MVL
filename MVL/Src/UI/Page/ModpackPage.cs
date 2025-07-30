@@ -64,7 +64,10 @@ public partial class ModpackPage : MenuPage {
 	}
 
 	private void OnVisibilityChanged() {
-		if (!Visible) return;
+		if (!Visible) {
+			return;
+		}
+
 		UpdateList();
 	}
 

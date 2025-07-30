@@ -25,7 +25,10 @@ public static partial class NullExceptionHelper
         [CallerArgumentExpression("value")] string? valueName = null,
         [CallerMemberName] string? memberName = null)
     {
-        if (value is not null) return value;
+        if (value is not null) {
+            return value;
+        }
+
         throw new NullReferenceException($"[{memberName}] 类型为 {typeof(T).Name} 的参数 {valueName} 为 Null !");
     }
 }

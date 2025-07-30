@@ -285,7 +285,10 @@ public partial class ModInfoItem : PanelContainer {
 
 				CanUpdate = true;
 				Dispatcher.SynchronizationContext.Post(_ => {
-						if (!IsInstanceValid(this)) return;
+						if (!IsInstanceValid(this)) {
+							return;
+						}
+
 						_updateButton!.Disabled = false;
 						_updateButton!.Modulate = Colors.Green;
 						HasAutoUpdate?.Invoke(this);

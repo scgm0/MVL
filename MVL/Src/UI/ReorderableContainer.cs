@@ -99,9 +99,15 @@ public partial class ReorderableContainer : Container {
 	}
 
 	public override void _GuiInput(InputEvent @event) {
-		if (@event is not InputEventMouseButton { ButtonIndex: MouseButton.Left } mouseEvent) return;
+		if (@event is not InputEventMouseButton { ButtonIndex: MouseButton.Left } mouseEvent) {
+			return;
+		}
+
 		foreach (var node in GetChildren()) {
-			if (node is not Control child) continue;
+			if (node is not Control child) {
+				continue;
+			}
+
 			if (child.GetRect().HasPoint(GetLocalMousePosition()) && mouseEvent.IsPressed()) {
 				_focusChild = child;
 				_isPress = true;
@@ -114,7 +120,9 @@ public partial class ReorderableContainer : Container {
 	}
 
 	public override void _Process(double delta) {
-		if (Engine.IsEditorHint() || !(_isPress || _isHold || _isUsingProcess)) return;
+		if (Engine.IsEditorHint() || !(_isPress || _isHold || _isUsingProcess)) {
+			return;
+		}
 
 		_HandleInput(delta);
 		if (_currentDuration >= HoldDuration != _isHold) {
@@ -174,7 +182,10 @@ public partial class ReorderableContainer : Container {
 		EmitSignalReordered(focusChildIndex, _dropZoneIndex);
 		_focusChild = null;
 		_dropZoneIndex = -1;
-		if (!_isSmoothScroll) return;
+		if (!_isSmoothScroll) {
+			return;
+		}
+
 		ScrollContainer!.Set("pos", -new Vector2(ScrollContainer.ScrollHorizontal, ScrollContainer.ScrollVertical));
 		ScrollContainer.ProcessMode = ProcessModeEnum.Inherit;
 	}
@@ -259,7 +270,10 @@ public partial class ReorderableContainer : Container {
 		var endPoint = 0.0f;
 		for (var i = 0; i < children.Count; i++) {
 			var node = children[i];
-			if (node is not Control child) continue;
+			if (node is not Control child) {
+				continue;
+			}
+
 			var minSize = child.GetCombinedMinimumSize();
 			if (IsVertical) {
 				if (i == _dropZoneIndex) {
@@ -288,7 +302,10 @@ public partial class ReorderableContainer : Container {
 		var isAnimating = false;
 		for (var i = 0; i < children.Count; i++) {
 			var node = children[i];
-			if (node is not Control child) continue;
+			if (node is not Control child) {
+				continue;
+			}
+
 			if (child.Position == _expectChildRect[i].Position && child.Size == _expectChildRect[i].Size) {
 				continue;
 			}
@@ -336,7 +353,10 @@ public partial class ReorderableContainer : Container {
 		var children = _GetVisibleChildren();
 		for (var i = 0; i < children.Count; i++) {
 			var node = children[i];
-			if (node is not Control child) continue;
+			if (node is not Control child) {
+				continue;
+			}
+
 			Rect2 dropZoneRect = new();
 			if (IsVertical) {
 				if (i == 0) {
@@ -352,7 +372,10 @@ public partial class ReorderableContainer : Container {
 					}
 				}
 
-				if (i != children.Count - 1) continue;
+				if (i != children.Count - 1) {
+					continue;
+				}
+
 				dropZoneRect.Position = new(child.Position.X, child.GetRect().GetCenter().Y);
 				dropZoneRect.End = new(child.Size.X, child.GetRect().End.Y + DropZoneExtend);
 			} else {
@@ -369,7 +392,10 @@ public partial class ReorderableContainer : Container {
 					}
 				}
 
-				if (i != children.Count - 1) continue;
+				if (i != children.Count - 1) {
+					continue;
+				}
+
 				dropZoneRect.Position = new(child.GetRect().GetCenter().X, child.Position.Y);
 				dropZoneRect.End = new(child.GetRect().End.X + DropZoneExtend, child.Size.Y);
 			}
@@ -381,7 +407,9 @@ public partial class ReorderableContainer : Container {
 	private List<Node> _GetVisibleChildren() {
 		var visibleControls = new List<Node>();
 		foreach (var node in GetChildren()) {
-			if (node is not Control child) continue;
+			if (node is not Control child) {
+				continue;
+			}
 
 			if (!child.Visible) {
 				continue;

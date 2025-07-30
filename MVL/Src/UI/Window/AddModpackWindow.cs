@@ -214,7 +214,10 @@ public partial class AddModpackWindow : BaseWindow {
 		_tooltip!.Text = "将自动创建文件夹";
 		_tooltip.Modulate = Colors.White;
 
-		if (!Directory.Exists(path)) return;
+		if (!Directory.Exists(path)) {
+			return;
+		}
+
 		_tooltip!.Text = Directory.GetFileSystemEntries(path).Length > 0 ? "文件夹不为空，确定选择它吗？" : "文件夹存在且为空";
 		_tooltip.Modulate = Directory.GetFileSystemEntries(path).Length > 0 ? Colors.Yellow : Colors.White;
 	}

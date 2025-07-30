@@ -195,7 +195,10 @@ public partial class HomePage : MenuPage {
 			}
 		}
 
-		if (UI.Main.CurrentModpack is null) return;
+		if (UI.Main.CurrentModpack is null) {
+			return;
+		}
+
 		_playButton!.Disabled = false;
 		_playButton!.Text = "停止游戏";
 		_playButton!.Modulate = Colors.Red;

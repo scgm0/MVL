@@ -15,7 +15,10 @@ public record ReleaseInfo {
 		set {
 			field = value;
 			var assemblyPath = Path.PathJoin("VintagestoryAPI.dll");
-			if (!File.Exists(assemblyPath)) return;
+			if (!File.Exists(assemblyPath)) {
+				return;
+			}
+
 			var targetFramework = GetTargetFramework(assemblyPath);
 			TargetFrameworkName = targetFramework.FrameworkName;
 			TargetFrameworkVersion = targetFramework.Version;

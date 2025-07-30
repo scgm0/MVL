@@ -71,8 +71,9 @@ public static class Tools {
 				}
 
 				var runtimeInfo = line.Trim().Split(' ', StringSplitOptions.RemoveEmptyEntries);
-				if (runtimeInfo.Length < 2)
+				if (runtimeInfo.Length < 2) {
 					continue;
+				}
 
 				var versionString = runtimeInfo[1];
 				if (Version.TryParse(versionString, out var installedVersion) &&

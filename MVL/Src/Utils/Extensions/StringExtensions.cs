@@ -81,7 +81,9 @@ public static class StringExtensions {
 
 			while (char.IsDigit(source[checkIndex])) {
 				checkIndex++;
-				if (checkIndex >= source.Length) break;
+				if (checkIndex >= source.Length) {
+					break;
+				}
 			}
 
 			var digitEndIndex = checkIndex;

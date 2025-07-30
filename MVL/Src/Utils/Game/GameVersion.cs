@@ -61,7 +61,10 @@ public readonly record struct GameVersion {
 
 		var numArray = new int[array.Count];
 		for (var index = 0; index < array.Count; ++index) {
-			if (!int.TryParse(array[index], out var result)) continue;
+			if (!int.TryParse(array[index], out var result)) {
+				continue;
+			}
+
 			numArray[index] = result;
 		}
 
@@ -78,8 +81,9 @@ public readonly record struct GameVersion {
 		for (var index = 0;
 			index < numArray1.Length && index < numArray2.Length && numArray1[index] <= numArray2[index];
 			++index) {
-			if (numArray1[index] < numArray2[index])
+			if (numArray1[index] < numArray2[index]) {
 				return true;
+			}
 		}
 
 		return false;
@@ -128,7 +132,10 @@ public readonly record struct GameVersion {
 
 		public override GameVersion Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options) {
 			var str = reader.GetString();
-			if (str != null) return new(str);
+			if (str != null) {
+				return new(str);
+			}
+
 			return default;
 		}
 
@@ -145,7 +152,10 @@ public readonly record struct GameVersion {
 			Type typeToConvert,
 			JsonSerializerOptions options) {
 			var versionString = reader.GetString();
-			if (versionString != null) return new(versionString);
+			if (versionString != null) {
+				return new(versionString);
+			}
+
 			return default;
 		}
 	}
