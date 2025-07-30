@@ -104,9 +104,15 @@ public partial class NativeWindowUtility : Control {
 	}
 
 	private void HandleResize(InputEvent @event) {
-		if (@event is InputEventMouseButton { ButtonIndex: MouseButton.Left, Pressed: true } && IsResizable) {
-			GetWindow().StartResize(WindowEdge);
+		if (@event is not InputEventMouseButton { ButtonIndex: MouseButton.Left, Pressed: true } || !IsResizable) {
+			return;
 		}
+
+		GetWindow().StartResize(WindowEdge);
+		using var mb = new InputEventMouseButton();
+		mb.ButtonIndex = MouseButton.Left;
+		mb.Pressed = false;
+		Input.ParseInputEvent(mb);
 	}
 
 	private void HandleDrag(InputEvent @event) {
@@ -119,14 +125,25 @@ public partial class NativeWindowUtility : Control {
 			StopTimer();
 		}
 
-		if (!_pressed || @event is not InputEventMouseMotion) return;
+		if (!_pressed || @event is not InputEventMouseMotion) {
+			return;
+		}
+
 		StopTimer();
 		GetWindow().StartDrag();
+		using var mb = new InputEventMouseButton();
+		mb.ButtonIndex = MouseButton.Left;
+		mb.Pressed = false;
+		Input.ParseInputEvent(mb);
 	}
 
 	private void OnTimerOnTimeout() {
 		_pressed = false;
 		GetWindow().StartDrag();
+		using var mb = new InputEventMouseButton();
+		mb.ButtonIndex = MouseButton.Left;
+		mb.Pressed = false;
+		Input.ParseInputEvent(mb);
 	}
 
 	private void StopTimer() {
