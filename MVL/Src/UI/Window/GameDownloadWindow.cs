@@ -18,6 +18,7 @@ using MVL.Utils.Extensions;
 using MVL.Utils.Game;
 using MVL.Utils.Help;
 using FileAccess = System.IO.FileAccess;
+using HttpClient = System.Net.Http.HttpClient;
 
 namespace MVL.UI.Window;
 
@@ -238,7 +239,7 @@ public partial class GameDownloadWindow : BaseWindow {
 				ChunkCount = Main.BaseConfig.DownloadThreads,
 				ParallelCount = Main.BaseConfig.DownloadThreads,
 				RequestConfiguration = new() {
-					Proxy = string.IsNullOrEmpty(Main.BaseConfig.ProxyAddress) ? null : new WebProxy(Main.BaseConfig.ProxyAddress)
+					Proxy = string.IsNullOrWhiteSpace(Main.BaseConfig.ProxyAddress) ? HttpClient.DefaultProxy : new WebProxy(Main.BaseConfig.ProxyAddress)
 				}
 			})
 			.Build();

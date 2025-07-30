@@ -9,6 +9,7 @@ using MVL.Utils;
 using MVL.Utils.Config;
 using MVL.Utils.Game;
 using MVL.Utils.Help;
+using HttpClient = System.Net.Http.HttpClient;
 using Range = Godot.Range;
 
 namespace MVL.UI.Item;
@@ -187,8 +188,8 @@ public partial class ApiModReleaseItem : PanelContainer {
 				ChunkCount = Main.BaseConfig.DownloadThreads,
 				ParallelCount = Main.BaseConfig.DownloadThreads,
 				RequestConfiguration = new() {
-					Proxy = string.IsNullOrEmpty(Main.BaseConfig.ProxyAddress)
-						? null
+					Proxy = string.IsNullOrWhiteSpace(Main.BaseConfig.ProxyAddress)
+						? HttpClient.DefaultProxy
 						: new WebProxy(Main.BaseConfig.ProxyAddress)
 				}
 			})

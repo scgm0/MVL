@@ -19,6 +19,7 @@ using MVL.Utils.Extensions;
 using MVL.Utils.Game;
 using MVL.Utils.Help;
 using SharedLibrary;
+using HttpClient = System.Net.Http.HttpClient;
 
 namespace MVL.UI;
 
@@ -167,7 +168,7 @@ public partial class Main : NativeWindowUtility {
 
 		FlurlHttp.Clients.WithDefaults(builder => {
 			builder.ConfigureInnerHandler(handler => {
-				handler.Proxy = string.IsNullOrEmpty(BaseConfig.ProxyAddress) ? null : new WebProxy(BaseConfig.ProxyAddress);
+				handler.Proxy = string.IsNullOrWhiteSpace(BaseConfig.ProxyAddress) ? HttpClient.DefaultProxy : new WebProxy(BaseConfig.ProxyAddress);
 			});
 		});
 	}
