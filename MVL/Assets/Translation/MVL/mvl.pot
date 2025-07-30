@@ -349,9 +349,6 @@ msgstr ""
 msgid "正在从ModDB获取模组信息..."
 msgstr ""
 
-msgid "搜索模组"
-msgstr ""
-
 msgid "模组作者"
 msgstr ""
 

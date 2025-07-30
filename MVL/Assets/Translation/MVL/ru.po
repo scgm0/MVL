@@ -376,9 +376,6 @@ msgstr ""
 msgid "正在从ModDB获取模组信息..."
 msgstr "Получение информации о модах из ModDB..."
 
-msgid "搜索模组"
-msgstr ""
-
 msgid "模组作者"
 msgstr ""
 
