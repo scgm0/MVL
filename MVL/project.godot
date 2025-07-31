@@ -15,7 +15,7 @@ general/accessibility_support=2
 [application]
 
 config/name="神麤詭末的复古物语启动器"
-config/version="0.5.0"
+config/version="0.5.1"
 run/main_scene="uid://buuu4ls8t7l4u"
 config/use_custom_user_dir=true
 config/custom_user_dir_name="MVL"
