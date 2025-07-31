@@ -445,3 +445,6 @@ msgstr "No matching mods found"
 
 msgid "获取模组信息失败"
 msgstr "Failed to retrieve mod information"
+
+msgid "导入已安装游戏"
+msgstr "Import installed game"

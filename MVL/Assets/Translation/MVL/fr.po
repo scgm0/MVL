@@ -439,3 +439,6 @@ msgstr ""
 
 msgid "获取模组信息失败"
 msgstr ""
+
+msgid "导入已安装游戏"
+msgstr ""
