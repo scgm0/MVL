@@ -232,6 +232,7 @@ public partial class BrowsePage : MenuPage {
 		url = modTags.Aggregate(url, (current, t) => current.AppendQueryParam("tagids[]", _tagIds[t].ToString()));
 		url = modOrderBy.Aggregate(url, (current, o) => current.AppendQueryParam("orderby", OrderBys[o].ToString()));
 
+		GD.Print($"获取模组列表: {url}");
 		await Task.Run(async () => {
 			try {
 				var modListText = await url.GetStringAsync();
@@ -424,14 +425,14 @@ public partial class BrowsePage : MenuPage {
 				apiGameVersions.GameVersions.Reverse();
 				_gameVersionIds = (apiGameVersions.GameVersions ?? []).Select(g => g.TagId).ToArray();
 				var list = (apiGameVersions.GameVersions ?? []).Select(g => g.Name).ToList();
-				await _modVersionsButton!.UpdateList(list);
+				_ = _modVersionsButton!.UpdateList(list);
 			}
 
 			var apiTags = JsonSerializer.Deserialize(apiTagsText,
 				SourceGenerationContext.Default.ApiStatusModTags);
 			if (apiTags?.StatusCode is "200") {
 				_tagIds = (apiTags.Tags ?? []).Select(t => t.TagId).ToArray();
-				await _modTagsButton!.UpdateList((apiTags.Tags ?? []).Select(t => t.Name).ToList());
+				_ = _modTagsButton!.UpdateList((apiTags.Tags ?? []).Select(t => t.Name).ToList());
 			}
 
 			GetModsList();
