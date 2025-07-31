@@ -137,6 +137,7 @@ public partial class GameDownloadWindow : BaseWindow {
 	private void ValidateInputs() {
 		var name = _releaseName!.Text;
 		var path = _releasePath!.Text.NormalizePath();
+		_importButton!.Disabled = false;
 
 		if (_lastException != null) {
 			OkButton!.Disabled = true;
@@ -190,7 +191,6 @@ public partial class GameDownloadWindow : BaseWindow {
 		_tooltip!.Text = Directory.Exists(Path.Combine(path, name)) ? string.Format(Tr("'{0}'已存在，确定覆盖它吗？"), name) : "将自动创建文件夹";
 		_tooltip.Modulate = Directory.Exists(Path.Combine(path, name)) ? Colors.Yellow : Colors.White;
 		OkButton!.Disabled = false;
-		_importButton!.Disabled = false;
 	}
 
 	override protected async void CancelButtonOnPressed() {
@@ -362,7 +362,7 @@ public partial class GameDownloadWindow : BaseWindow {
 				}
 			}
 		} catch (FlurlHttpException e) {
-			GD.Print(e.Message);
+			GD.PrintErr(e.Message);
 			_lastException = e;
 		}
 	}
