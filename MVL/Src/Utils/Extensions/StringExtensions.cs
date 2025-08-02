@@ -157,13 +157,11 @@ public static class StringExtensions {
 			return str;
 		}
 
-		str = Path.Combine(OS.GetExecutablePath(), str);
-		var fullPath = Path.GetFullPath(str.GetBaseDir());
+		var combinedPath = Path.Combine(OS.GetExecutablePath(), str);
 
-		fullPath = Path.Combine(fullPath, Path.GetFileName(str))
-			.Replace(Path.AltDirectorySeparatorChar, Path.DirectorySeparatorChar);
+		var fullPath = Path.GetFullPath(combinedPath);
 
-		return Path.TrimEndingDirectorySeparator(fullPath);
+		return fullPath;
 	}
 
 }

@@ -250,7 +250,7 @@ public partial class GameDownloadWindow : BaseWindow {
 
 		_download.DownloadFileCompleted += (_, args) => {
 			if (!args.Cancelled && args.Error is null) {
-				var path = _releasePath!.Text;
+				var path = _releasePath!.Text.NormalizePath();
 				var name = _releaseName!.Text;
 
 				CallDeferred(nameof(ExtractGame),
