@@ -204,7 +204,7 @@ msgid "选择版本"
 msgstr "Sélectionner une version"
 
 msgid "模组数量: {0}"
-msgstr "Nombre de modules:{0}"
+msgstr "Nombre de mods:{0}"
 
 msgid "该名称已存在"
 msgstr "Existence du nom"
@@ -447,4 +447,7 @@ msgid "渲染驱动"
 msgstr ""
 
 msgid "更改渲染驱动需要重启才能生效\n是否立即重启？"
+msgstr ""
+
+msgid "浏览在线模组"
 msgstr ""

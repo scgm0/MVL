@@ -463,3 +463,6 @@ msgstr ""
 "Para cambiar el controlador de renderizado es necesario reiniciar el sistema."
 "\n"
 "¿Quieres reiniciar ahora?"
+
+msgid "浏览在线模组"
+msgstr ""

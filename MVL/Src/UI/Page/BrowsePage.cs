@@ -10,6 +10,7 @@ using MVL.UI.Item;
 using MVL.UI.Other;
 using MVL.UI.Window;
 using MVL.Utils;
+using MVL.Utils.Config;
 using MVL.Utils.Game;
 using MVL.Utils.Help;
 
@@ -102,6 +103,11 @@ public partial class BrowsePage : MenuPage {
 		}
 	} = 1;
 
+	public ModpackConfig? ModpackConfig {
+		get => _selectModpackButton?.ModpackConfig;
+		set => _selectModpackButton?.ModpackConfig = value;
+	}
+
 	static private long[] _gameVersionIds = [];
 	static private int[] _tagIds = [];
 	static private readonly string[] OrderBys = ["asset.created", "lastreleased", "downloads", "follows", "trendingpoints"];
@@ -145,7 +151,6 @@ public partial class BrowsePage : MenuPage {
 		_pageNumberButton.ButtonDown += PageNumberButtonOnButtonDown;
 		_previousPageButton.ButtonDown += PreviousPageButtonOnButtonDown;
 		_nextPageButton.ButtonDown += NextPageButtonOnButtonDown;
-		VisibilityChanged += OnVisibilityChanged;
 
 		_modSideButton.SelectionChanged += () => _ = UpdatePage();
 		_modInstallStatusButton.SelectionChanged += () => _ = UpdatePage();
@@ -181,25 +186,12 @@ public partial class BrowsePage : MenuPage {
 		GetOnlineInfo();
 	}
 
-	private async void OnVisibilityChanged() {
-		if (!Visible) {
-			return;
-		}
-
-		if (_gameVersionIds.Length != 0 && _tagIds.Length != 0) {
-			return;
-		}
-
-		await ToSignal(_selectModpackButton!, CanvasItem.SignalName.VisibilityChanged);
-		GetOnlineInfo();
-	}
-
 	private async void GetModsList() {
 		foreach (var child in _moduleListContainer!.GetChildren()) {
 			child.Free();
 		}
 
-		if (_selectModpackButton!.ModpackConfig is null) {
+		if (ModpackConfig is null) {
 			var label = new Label {
 				Text = "请先创建模组包",
 				Modulate = Colors.Yellow,
@@ -268,7 +260,7 @@ public partial class BrowsePage : MenuPage {
 	}
 
 	private async Task UpdatePage() {
-		await Task.Run(_selectModpackButton!.ModpackConfig!.UpdateMods);
+		await Task.Run(ModpackConfig!.UpdateMods);
 		if (_gameVersionIds.Length == 0 || _tagIds.Length == 0) {
 			GetOnlineInfo();
 		} else {
@@ -285,7 +277,7 @@ public partial class BrowsePage : MenuPage {
 
 			if (modInstallStatus[0] != 0) {
 				list = list.Where(summary => {
-					var isInstalled = _selectModpackButton!.ModpackConfig!.Mods.Values.Any(m =>
+					var isInstalled = ModpackConfig!.Mods.Values.Any(m =>
 						summary.ModIdStrs.Any(s => s.Equals(m.ModId, StringComparison.OrdinalIgnoreCase)));
 					return modInstallStatus[0] switch { 1 => isInstalled, 2 => !isInstalled, _ => false };
 				}).ToList();
@@ -307,7 +299,7 @@ public partial class BrowsePage : MenuPage {
 			child.Free();
 		}
 
-		if (_selectModpackButton!.ModpackConfig is null) {
+		if (ModpackConfig is null) {
 			var label = new Label {
 				Text = "请先创建整合包",
 				Modulate = Colors.Yellow,
@@ -346,7 +338,7 @@ public partial class BrowsePage : MenuPage {
 				UI.Main.Instance?.AddChild(confirmationWindow);
 				await confirmationWindow.Show();
 				try {
-					_selectModpackButton!.ModpackConfig!.UpdateMods();
+					ModpackConfig!.UpdateMods();
 					var url = $"https://mods.vintagestory.at/api/mod/{apiModSummary.ModId}";
 					var result = await url.GetStringAsync();
 					GD.Print(result);
@@ -358,10 +350,10 @@ public partial class BrowsePage : MenuPage {
 					}
 
 					await confirmationWindow.Hide();
-					var modInfo = _selectModpackButton!.ModpackConfig!.Mods.Values.FirstOrDefault(m =>
+					var modInfo = ModpackConfig!.Mods.Values.FirstOrDefault(m =>
 						apiModSummary.ModIdStrs.Any(s => s.Equals(m.ModId, StringComparison.OrdinalIgnoreCase)));
 					var apiModReleasesWindow = _apiModReleasesWindowScene!.Instantiate<ApiModReleasesWindow>();
-					apiModReleasesWindow.DownloadModInfo = (modInfo, status.Mod!, _selectModpackButton!.ModpackConfig);
+					apiModReleasesWindow.DownloadModInfo = (modInfo, status.Mod!, ModpackConfig);
 					apiModReleasesWindow.Hidden += () => { apiModReleasesWindow.QueueFree(); };
 					UI.Main.Instance?.AddChild(apiModReleasesWindow);
 					await apiModReleasesWindow.Show();
@@ -388,7 +380,7 @@ public partial class BrowsePage : MenuPage {
 				child.Free();
 			}
 
-			if (_selectModpackButton!.ModpackConfig is null) {
+			if (ModpackConfig is null) {
 				var label = new Label {
 					Text = "请先创建整合包",
 					Modulate = Colors.Yellow,

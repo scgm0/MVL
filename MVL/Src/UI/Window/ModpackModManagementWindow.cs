@@ -7,6 +7,7 @@ using Flurl.Http;
 using FuzzySharp;
 using Godot;
 using MVL.UI.Item;
+using MVL.UI.Page;
 using MVL.Utils;
 using MVL.Utils.Config;
 using MVL.Utils.Game;
@@ -69,6 +70,15 @@ public partial class ModpackModManagementWindow : BaseWindow {
 		_updateInfoButton.Pressed += UpdateInfoButtonOnPressed;
 		_syncFileButton.Pressed += SyncFileButtonOnPressed;
 		_downloadButton.Pressed += DownloadButtonOnPressed;
+		OkButton!.Pressed += OkButtonOnPressed;
+	}
+
+	private async void OkButtonOnPressed() {
+		await Hide();
+		var button = Main.Instance!.GetNode<Button>("%BrowseButton");
+		button.ButtonPressed = true;
+		var browsePage = Main.Instance.GetNode<BrowsePage>("%BrowsePage");
+		browsePage.ModpackConfig = ModpackItem!.ModpackConfig;
 	}
 
 	private async void DownloadButtonOnPressed() {

@@ -36,7 +36,18 @@ public partial class SelectModpackButton : Button {
 	private readonly ButtonGroup _buttonGroup = new();
 	private Tween? _tween;
 
-	public ModpackConfig? ModpackConfig { get; set; }
+	public ModpackConfig? ModpackConfig {
+		get;
+		set {
+			if (field == value) {
+				return;
+			}
+
+			field = value;
+			UpdateInfo();
+			SelectionChanged?.Invoke();
+		}
+	}
 
 	public event Action? SelectionChanged;
 
@@ -102,11 +113,7 @@ public partial class SelectModpackButton : Button {
 			var item = _selectModpackItemScene!.Instantiate<SelectModpackItem>();
 			item.ButtonGroup = _buttonGroup;
 			item.ModpackConfig = modpackConfig;
-			item.ButtonPressed += () => {
-				ModpackConfig = modpackConfig;
-				UpdateInfo();
-				SelectionChanged?.Invoke();
-			};
+			item.ButtonPressed += () => { ModpackConfig = modpackConfig; };
 
 			if (path == ModpackConfig!.Path) {
 				selectedItem = item;
@@ -120,7 +127,9 @@ public partial class SelectModpackButton : Button {
 			}
 		}
 
-		_scrollContainer!.VerticalScrollMode = Main.BaseConfig.Modpack.Count > 5 ? ScrollContainer.ScrollMode.Auto : ScrollContainer.ScrollMode.ShowNever;
+		_scrollContainer!.VerticalScrollMode = Main.BaseConfig.Modpack.Count > 5
+			? ScrollContainer.ScrollMode.Auto
+			: ScrollContainer.ScrollMode.ShowNever;
 		_panelContainer.Size = _panelContainer.Size with { X = maxWidth, Y = 0 };
 		_bg.Modulate = Colors.White;
 		_tween = CreateTween();

@@ -189,7 +189,7 @@ msgid "选择版本"
 msgstr "Select Version"
 
 msgid "模组数量: {0}"
-msgstr "Number of Modules: {0}"
+msgstr "Number of Mods: {0}"
 
 msgid "版本名称:"
 msgstr "Version Name:"
@@ -454,3 +454,6 @@ msgstr "Rendering Driver"
 
 msgid "更改渲染驱动需要重启才能生效\n是否立即重启？"
 msgstr "Changing the rendering driver requires a restart to take effect\nWould you like to restart now?"
+
+msgid "浏览在线模组"
+msgstr "Browse Online Mods"
