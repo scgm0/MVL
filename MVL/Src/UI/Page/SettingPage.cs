@@ -1,6 +1,7 @@
 using System.IO;
 using Flurl.Http;
 using Godot;
+using MVL.UI.Window;
 using MVL.Utils;
 using MVL.Utils.Config;
 using MVL.Utils.Extensions;
@@ -10,10 +11,16 @@ namespace MVL.UI.Page;
 
 public partial class SettingPage : MenuPage {
 	[Export]
+	private PackedScene? _confirmationWindowScene;
+
+	[Export]
 	private OptionButton? _displayLanguageOptionButton;
 
 	[Export]
 	private SpinBox? _displayScaleSpinbox;
+
+	[Export]
+	private OptionButton? _renderingDriverOptionButton;
 
 	[Export]
 	private LineEdit? _proxyAddressLineEdit;
@@ -35,10 +42,27 @@ public partial class SettingPage : MenuPage {
 
 	private string[] _languages = TranslationServer.GetLoadedLocales();
 
+	private ConfigFile _configFile = new();
+
+	private string[] _renderingDrivers = [
+#if GODOT_WINDOWS
+		"d3d12",
+#endif
+		"vulkan",
+		"opengl3"
+	];
+#if GODOT_WINDOWS
+	private string _renderingDriverKey = "rendering_device/driver.windows";
+#else
+
+	private string _renderingDriverKey = "rendering_device/driver.linuxbsd";
+#endif
+
 	public override void _Ready() {
 		base._Ready();
 		_displayLanguageOptionButton.NotNull();
 		_displayScaleSpinbox.NotNull();
+		_renderingDriverOptionButton.NotNull();
 		_proxyAddressLineEdit.NotNull();
 		_downloadThreadSpinbox.NotNull();
 		_modpackFolderLineEdit.NotNull();
@@ -54,6 +78,7 @@ public partial class SettingPage : MenuPage {
 
 		_displayLanguageOptionButton.ItemSelected += LanguageOptionButtonOnItemSelected;
 		_displayScaleSpinbox.ValueChanged += DisplayScaleSpinboxOnValueChanged;
+		_renderingDriverOptionButton.ItemSelected += RenderingDriverOptionButtonOnItemSelected;
 		_proxyAddressLineEdit.EditingToggled += ProxyAddressLineEditOnEditingToggled;
 		_downloadThreadSpinbox.ValueChanged += DownloadThreadSpinboxOnValueChanged;
 		_modpackFolderLineEdit.EditingToggled += ModpackFolderLineEditOnEditingToggled;
@@ -68,7 +93,31 @@ public partial class SettingPage : MenuPage {
 
 		DisplayScaleSpinboxOnValueChanged(_displayScaleSpinbox.Value);
 		UpdateLanguage();
+		UpdateRenderingDriver();
 		UI.Main.SceneTree.Root.Position -= (UI.Main.SceneTree.Root.Size - size) / 2;
+
+		_configFile.SetValue("rendering",
+			_renderingDriverKey,
+			RenderingServer.GetCurrentRenderingDriverName());
+		_configFile.Save(Paths.OverrideConfigPath);
+	}
+
+	private void RenderingDriverOptionButtonOnItemSelected(long index) {
+		var driver = _renderingDrivers[index];
+		_configFile.SetValue("rendering",
+			_renderingDriverKey,
+			driver);
+		_configFile.Save(Paths.OverrideConfigPath);
+		GD.Print("更改渲染驱动为: " + driver);
+		var confirmationWindow = _confirmationWindowScene!.Instantiate<ConfirmationWindow>();
+		confirmationWindow.Message = "更改渲染驱动需要重启才能生效\n是否立即重启？";
+		confirmationWindow.Confirm += () => {
+			OS.SetRestartOnExit(true);
+			UI.Main.SceneTree.Quit();
+		};
+		confirmationWindow.Hidden += confirmationWindow.QueueFree;
+		UI.Main.Instance!.AddChild(confirmationWindow);
+		_ = confirmationWindow.Show();
 	}
 
 	private void ReleaseFolderButtonOnPressed() {
@@ -170,6 +219,19 @@ public partial class SettingPage : MenuPage {
 			_displayLanguageOptionButton.AddItem(TranslationServer.GetLocaleName(locale), i);
 			if (locale == UI.Main.BaseConfig.DisplayLanguage) {
 				_displayLanguageOptionButton.Select(i);
+			}
+
+			i++;
+		}
+	}
+
+	public void UpdateRenderingDriver() {
+		_renderingDriverOptionButton!.Clear();
+		var i = 0;
+		foreach (var renderingDriver in _renderingDrivers) {
+			_renderingDriverOptionButton.AddItem(renderingDriver, i);
+			if (renderingDriver == RenderingServer.GetCurrentRenderingDriverName()) {
+				_renderingDriverOptionButton.Select(i);
 			}
 
 			i++;

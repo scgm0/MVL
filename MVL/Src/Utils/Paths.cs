@@ -10,6 +10,7 @@ public static class Paths {
 	public static string CacheFolder { get; } = OS.GetUserDataDir().PathJoin(".Cache").NormalizePath();
 	public static string LockFile { get; } = OS.GetTempDir().PathJoin("MVL-Lock").NormalizePath();
 	public static string PortFile { get; } = OS.GetTempDir().PathJoin("MVL-Port").NormalizePath();
+	public static string OverrideConfigPath { get; } = OS.GetUserDataDir().PathJoin("override.cfg").NormalizePath();
 	static Paths() { EnsureFolderExists(); }
 
 	static private void EnsureFolderExists() {

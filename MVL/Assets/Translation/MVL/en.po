@@ -451,3 +451,6 @@ msgstr "Import installed game"
 
 msgid "渲染驱动"
 msgstr "Rendering Driver"
+
+msgid "更改渲染驱动需要重启才能生效\n是否立即重启？"
+msgstr "Changing the rendering driver requires a restart to take effect\nWould you like to restart now?"
