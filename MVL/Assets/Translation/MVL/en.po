@@ -448,3 +448,6 @@ msgstr "Failed to retrieve mod information"
 
 msgid "导入已安装游戏"
 msgstr "Import installed game"
+
+msgid "渲染驱动"
+msgstr "Rendering Driver"

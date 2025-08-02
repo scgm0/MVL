@@ -429,3 +429,6 @@ msgstr ""
 
 msgid "导入已安装游戏"
 msgstr ""
+
+msgid "渲染驱动"
+msgstr ""
