@@ -72,22 +72,8 @@ public partial class BrowseItem : Button {
 			return;
 		}
 
-		var path = Path.Join(Paths.CacheFolder, $"{new Guid(ModSummary.Logo.Sha256Buffer().Take(16).ToArray())}.png");
 		ImageTexture? texture = null;
-		await Task.Run(async () => {
-			try {
-				if (!File.Exists(path)) {
-					GD.Print(ModSummary.Logo);
-					var buffer = await ModSummary.Logo.GetBytesAsync();
-					texture = Tools.CreateTextureFromBytes(buffer, Tools.GetImageFormatWithSwitch(buffer));
-					texture.GetImage().SavePng(path);
-				} else {
-					texture = ImageTexture.CreateFromImage(Image.LoadFromFile(path));
-				}
-			} catch (Exception e) {
-				GD.PrintErr(e);
-			}
-		});
+		await Task.Run(async () => { texture = await Tools.LoadTextureFromUrl(ModSummary.Logo); });
 		if (IsInstanceValid(this) && texture is not null) {
 			_modIconTextureRect!.Texture = texture;
 		}

@@ -17,10 +17,7 @@ public record ModInfo : IComparable<ModInfo> {
 	public required string Name { get; set; }
 
 	[field: AllowNull, MaybeNull]
-	public string ModId {
-		get => field ??= ToModId(Name) ?? string.Empty;
-		set;
-	}
+	public string ModId { get => field ??= ToModId(Name) ?? string.Empty; set; }
 
 	public string ModPath { get; set; } = "";
 	public string Version { get; set; } = "1.0.0";
@@ -37,7 +34,7 @@ public record ModInfo : IComparable<ModInfo> {
 			}
 
 			field = GD.Load<Texture2D>("uid://dcoju08mvjqim");
-			byte[]? iconBytes;
+			ImageTexture? texture;
 			switch (ModPath.GetExtension()) {
 				case "zip": {
 					using var zipArchive = ZipFile.OpenRead(ModPath);
@@ -46,21 +43,30 @@ public record ModInfo : IComparable<ModInfo> {
 						break;
 					}
 
-					using var iconStream = iconEntry.Open();
-					using var iconReader = new BinaryReader(iconStream);
-					iconBytes = iconReader.ReadBytes((int)iconEntry.Length);
-					field = Tools.CreateTextureFromBytes(iconBytes);
-					break;
-				}
-				default:
-					var iconPath = Path.Combine(ModPath, "modicon.png");
-					if (!File.Exists(iconPath)) {
+					var path = Path.Combine(ModPath, iconEntry.FullName);
+					if (ResourceLoader.Exists(path)) {
+						field = ResourceLoader.Load<Texture2D>(path);
 						break;
 					}
 
-					iconBytes = File.ReadAllBytes(iconPath);
-					field = Tools.CreateTextureFromBytes(iconBytes);
+					using var iconStream = iconEntry.Open();
+					using var iconReader = new BinaryReader(iconStream);
+					var iconBytes = iconReader.ReadBytes((int)iconEntry.Length);
+					texture = Tools.CreateTextureFromBytes(iconBytes);
+					texture.TakeOverPath(path);
+					field = texture;
 					break;
+				}
+
+				default: {
+					var iconPath = Path.Combine(ModPath, "modicon.png");
+					texture = Tools.LoadTextureFromPath(iconPath);
+					if (texture != null) {
+						field = texture;
+					}
+
+					break;
+				}
 			}
 
 			return field;
@@ -82,6 +88,7 @@ public record ModInfo : IComparable<ModInfo> {
 		if (name == null) {
 			return null;
 		}
+
 		var stringBuilder = new StringBuilder(name.Length);
 		for (var index = 0; index < name.Length; ++index) {
 			var c = name[index];
@@ -125,7 +132,8 @@ public record ModInfo : IComparable<ModInfo> {
 		try {
 			using var zipArchive = ZipFile.OpenRead(zipPath);
 
-			var jsonEntry = zipArchive.Entries.FirstOrDefault(entry => string.Equals(entry.Name, "modinfo.json", StringComparison.OrdinalIgnoreCase));
+			var jsonEntry = zipArchive.Entries.FirstOrDefault(entry =>
+				string.Equals(entry.Name, "modinfo.json", StringComparison.OrdinalIgnoreCase));
 			if (jsonEntry == null) {
 				return null;
 			}

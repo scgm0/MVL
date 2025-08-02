@@ -1,6 +1,10 @@
 using System;
+using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
+using Flurl.Http;
 using Godot;
+using FileAccess = Godot.FileAccess;
 using Process = System.Diagnostics.Process;
 
 namespace MVL.Utils;
@@ -118,7 +122,7 @@ public static class Tools {
 	static private readonly byte[] Jpeg = [0xFF, 0xD8];
 	static private readonly byte[] Jpeg2 = [0xFF, 0xD9];
 
-	public static ImageFormat GetImageFormatWithSwitch(ReadOnlySpan<byte> fileHeader) {
+	public static ImageFormat GetImageFormat(ReadOnlySpan<byte> fileHeader) {
 		return fileHeader switch {
 			_ when fileHeader.StartsWith(Bmp) => ImageFormat.Bmp,
 			_ when fileHeader.StartsWith(Png) => ImageFormat.Png,
@@ -126,5 +130,56 @@ public static class Tools {
 			_ when fileHeader.StartsWith(Webp) => ImageFormat.Webp,
 			_ => ImageFormat.Unknown,
 		};
+	}
+
+	public static ImageTexture? LoadTextureFromPath(string path) {
+		if (!File.Exists(path)) {
+			return null;
+		}
+
+		var fileSha256 = FileAccess.GetSha256(path);
+		var shaPath = $"{path}.{fileSha256}";
+		if (ResourceLoader.Exists(shaPath)) {
+			return ResourceLoader.Load<ImageTexture>(shaPath);
+		}
+
+		var buffer = FileAccess.GetFileAsBytes(path);
+		var format = GetImageFormat(buffer);
+		if (format == ImageFormat.Unknown) {
+			return null;
+		}
+
+		var texture = CreateTextureFromBytes(buffer, format);
+		texture.TakeOverPath(path);
+		return texture;
+	}
+
+	public static async Task<ImageTexture?> LoadTextureFromUrl(string url) {
+		try {
+			var path = Path.Join(Paths.CacheFolder, $"{new Guid(url.Sha256Buffer().Take(16).ToArray())}.png");
+			if (File.Exists(path)) {
+				return LoadTextureFromPath(path);
+			}
+
+			GD.Print(url);
+			var buffer = await url.GetBytesAsync();
+
+			var format = GetImageFormat(buffer);
+			if (format == ImageFormat.Unknown) {
+				return null;
+			}
+
+			var texture = CreateTextureFromBytes(buffer, format);
+			texture.GetImage().SavePng(path);
+
+			var fileSha256 = FileAccess.GetSha256(path);
+			var shaPath = $"{path}.{fileSha256}";
+			texture.TakeOverPath(shaPath);
+
+			return texture;
+		} catch (Exception e) {
+			GD.PrintErr(e);
+			return null;
+		}
 	}
 }
