@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: 神麤詭末的复古物语启动器\n"
-"PO-Revision-Date: 2025-05-10 21:42+0000\n"
+"PO-Revision-Date: 2025-08-02 16:13+0000\n"
 "Last-Translator: Xurxo Martínez Ferreira <xurxolaxe@gmail.com>\n"
 "Language-Team: Spanish <https://hosted.weblate.org/projects/mvl/mvl/es/>\n"
 "Language: es\n"
@@ -13,7 +13,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8-bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.12-dev\n"
+"X-Generator: Weblate 5.13-dev\n"
 
 msgid "神麤詭末的复古物语启动器"
 msgstr "Vintage Story Launcher de MystiVaid"
@@ -31,7 +31,7 @@ msgid "版本"
 msgstr "Versiónes"
 
 msgid "浏览"
-msgstr ""
+msgstr "Buscar"
 
 msgid "设置"
 msgstr "Ajustes"
@@ -379,82 +379,87 @@ msgid "正在从ModDB获取模组信息..."
 msgstr "Obteniendo información de los mods desde la ModDB..."
 
 msgid "模组作者"
-msgstr ""
+msgstr "Autor del Mod"
 
 msgid "游戏版本"
-msgstr ""
+msgstr "Versiones del Juego"
 
 msgid "模组标签"
-msgstr ""
+msgstr "Etiquetas del Mod"
 
 msgid "排序依据"
-msgstr ""
+msgstr "Ordenar Por"
 
 msgid "运行位置"
-msgstr ""
+msgstr "Lado"
 
 msgid "安装状态"
-msgstr ""
+msgstr "Estado de Instalación"
 
 msgid "上一页"
-msgstr ""
+msgstr "Página Anterior"
 
 msgid "下一页"
-msgstr ""
+msgstr "Página Siguiente"
 
 msgid "任意"
-msgstr ""
+msgstr "Cualquiera"
 
 msgid "客户端"
-msgstr ""
+msgstr "Cliente"
 
 msgid "服务端"
-msgstr ""
+msgstr "Servidor"
 
 msgid "双方"
-msgstr ""
+msgstr "Ambos"
 
 msgid "创建时间"
-msgstr ""
+msgstr "Creado El"
 
 msgid "更新时间"
-msgstr ""
+msgstr "Actualizado El"
 
 msgid "下载数量"
-msgstr ""
+msgstr "Veces Descargado"
 
 msgid "关注数量"
-msgstr ""
+msgstr "Recuento de Seguidores"
 
 msgid "热门趋势"
-msgstr ""
+msgstr "En Tendencia"
 
 msgid "所有"
-msgstr ""
+msgstr "Todos"
 
 msgid "已安装"
-msgstr ""
+msgstr "Instalados"
 
 msgid "未安装"
-msgstr ""
+msgstr "No Instalados"
 
 msgid "获取在线信息时发生错误，请检查网络连接"
 msgstr ""
+"Se produjo un error al recuperar la información en línea. Verifiqua tu "
+"conexión de red"
 
 msgid "请先创建整合包"
-msgstr ""
+msgstr "Por favor, crea el Modpack primero"
 
 msgid "没有找到符合条件的模组"
-msgstr ""
+msgstr "No se encontraron mods que coincidan"
 
 msgid "获取模组信息失败"
-msgstr ""
+msgstr "Ha ocurrido un error al obtener la información del mod"
 
 msgid "导入已安装游戏"
-msgstr ""
+msgstr "Importar juego instalado"
 
 msgid "渲染驱动"
-msgstr ""
+msgstr "Controlador de Renderizado"
 
 msgid "更改渲染驱动需要重启才能生效\n是否立即重启？"
 msgstr ""
+"Para cambiar el controlador de renderizado es necesario reiniciar el sistema."
+"\n"
+"¿Quieres reiniciar ahora?"
