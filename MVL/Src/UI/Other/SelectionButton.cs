@@ -112,8 +112,6 @@ public partial class SelectionButton : Button {
 				_maxHeight = _vboxContainer!.GetCombinedMinimumSize().Y;
 			}
 		}
-
-		_scrollContainer!.VerticalScrollMode = i > MaxShow ? ScrollContainer.ScrollMode.Auto : ScrollContainer.ScrollMode.ShowNever;
 	}
 
 	public void ShowList() {
@@ -134,6 +132,8 @@ public partial class SelectionButton : Button {
 			maxWidth = _panelContainer!.Size.X;
 		}
 
+		_scrollContainer!.VerticalScrollMode =
+			_vboxContainer.GetChildCount() > MaxShow ? ScrollContainer.ScrollMode.Auto : ScrollContainer.ScrollMode.ShowNever;
 		_panelContainer!.Size = _panelContainer!.Size with { Y = 0, X = maxWidth };
 		Bg.Modulate = Colors.White;
 		_tween = CreateTween();
