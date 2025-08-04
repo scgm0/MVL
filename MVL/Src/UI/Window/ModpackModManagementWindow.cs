@@ -75,10 +75,10 @@ public partial class ModpackModManagementWindow : BaseWindow {
 
 	private async void OkButtonOnPressed() {
 		await Hide();
-		var button = Main.Instance!.GetNode<Button>("%BrowseButton");
-		button.ButtonPressed = true;
-		var browsePage = Main.Instance.GetNode<BrowsePage>("%BrowsePage");
+		var browsePage = Main.Instance!.GetNode<BrowsePage>("%BrowsePage");
 		browsePage.ModpackConfig = ModpackItem!.ModpackConfig;
+		var button = Main.Instance.GetNode<Button>("%BrowseButton");
+		button.ButtonPressed = true;
 	}
 
 	private async void DownloadButtonOnPressed() {
