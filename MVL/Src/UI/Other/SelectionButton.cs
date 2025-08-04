@@ -106,7 +106,7 @@ public partial class SelectionButton : Button {
 			};
 
 			_vboxContainer!.AddChild(button);
-			await ToSignal(Main.SceneTree, SceneTree.SignalName.PhysicsFrame);
+			await ToSignal(Main.SceneTree, SceneTree.SignalName.ProcessFrame);
 			i++;
 			if (i <= MaxShow) {
 				_maxHeight = _vboxContainer!.GetCombinedMinimumSize().Y;
