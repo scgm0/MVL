@@ -459,3 +459,6 @@ msgstr ""
 
 msgid "浏览在线模组"
 msgstr ""
+
+msgid "菜单展开"
+msgstr ""

@@ -25,6 +25,8 @@ public partial class MenuPanel : NativeWindowUtility {
 		_blurShaderMaterial.NotNull();
 		_menuButton.Toggled += MenuButtonOnToggled;
 		_pageContainer.TabChanged += PageContainerOnTabChanged;
+
+		_menuButton.ButtonPressed = Main.BaseConfig.MenuExpand;
 	}
 
 	private void PageContainerOnTabChanged(long tab) {

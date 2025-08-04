@@ -13,6 +13,7 @@ public class BaseConfig {
 	public string CurrentAccount { get; set; } = "";
 	public string DisplayLanguage { get; set; } = OS.GetLocale();
 	public double DisplayScale { get; set; } = Tools.GetAutoDisplayScale();
+	public bool MenuExpand { get; set; } = true;
 	public string ProxyAddress { get; set; } = "";
 	public int DownloadThreads { get; set; } = Environment.ProcessorCount;
 	public string ModpackFolder { get; set; } = Paths.ModpackFolder;

@@ -23,6 +23,9 @@ public partial class SettingPage : MenuPage {
 	private OptionButton? _renderingDriverOptionButton;
 
 	[Export]
+	private CheckButton? _menuExpandCheckButton;
+
+	[Export]
 	private LineEdit? _proxyAddressLineEdit;
 
 	[Export]
@@ -63,6 +66,7 @@ public partial class SettingPage : MenuPage {
 		_displayLanguageOptionButton.NotNull();
 		_displayScaleSpinbox.NotNull();
 		_renderingDriverOptionButton.NotNull();
+		_menuExpandCheckButton.NotNull();
 		_proxyAddressLineEdit.NotNull();
 		_downloadThreadSpinbox.NotNull();
 		_modpackFolderLineEdit.NotNull();
@@ -71,6 +75,7 @@ public partial class SettingPage : MenuPage {
 		_releaseFolderButton.NotNull();
 
 		_displayScaleSpinbox.Value = UI.Main.BaseConfig.DisplayScale * 100;
+		_menuExpandCheckButton.ButtonPressed = UI.Main.BaseConfig.MenuExpand;
 		_proxyAddressLineEdit.Text = UI.Main.BaseConfig.ProxyAddress;
 		_downloadThreadSpinbox.Value = UI.Main.BaseConfig.DownloadThreads;
 		_modpackFolderLineEdit.Text = UI.Main.BaseConfig.ModpackFolder;
@@ -79,6 +84,7 @@ public partial class SettingPage : MenuPage {
 		_displayLanguageOptionButton.ItemSelected += LanguageOptionButtonOnItemSelected;
 		_displayScaleSpinbox.ValueChanged += DisplayScaleSpinboxOnValueChanged;
 		_renderingDriverOptionButton.ItemSelected += RenderingDriverOptionButtonOnItemSelected;
+		_menuExpandCheckButton.Toggled += MenuExpandCheckButtonOnToggled;
 		_proxyAddressLineEdit.EditingToggled += ProxyAddressLineEditOnEditingToggled;
 		_downloadThreadSpinbox.ValueChanged += DownloadThreadSpinboxOnValueChanged;
 		_modpackFolderLineEdit.EditingToggled += ModpackFolderLineEditOnEditingToggled;
@@ -100,6 +106,11 @@ public partial class SettingPage : MenuPage {
 			_renderingDriverKey,
 			RenderingServer.GetCurrentRenderingDriverName());
 		_configFile.Save(Paths.OverrideConfigPath);
+	}
+
+	private void MenuExpandCheckButtonOnToggled(bool toggledOn) {
+		UI.Main.BaseConfig.MenuExpand = toggledOn;
+		BaseConfig.Save(UI.Main.BaseConfig);
 	}
 
 	private void RenderingDriverOptionButtonOnItemSelected(long index) {

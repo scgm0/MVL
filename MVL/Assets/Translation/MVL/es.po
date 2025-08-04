@@ -466,3 +466,6 @@ msgstr ""
 
 msgid "浏览在线模组"
 msgstr "Buscar Mods Online"
+
+msgid "菜单展开"
+msgstr ""

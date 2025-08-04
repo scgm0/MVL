@@ -22,7 +22,7 @@ IconName = "file-settings-outline"
 IconSize = 18
 metadata/_custom_type_script = "uid://bk3tot6c35bwu"
 
-[node name="SettingPage" type="Control" node_paths=PackedStringArray("_displayLanguageOptionButton", "_displayScaleSpinbox", "_renderingDriverOptionButton", "_proxyAddressLineEdit", "_downloadThreadSpinbox", "_modpackFolderLineEdit", "_modpackFolderButton", "_releaseFolderLineEdit", "_releaseFolderButton", "Main")]
+[node name="SettingPage" type="Control" node_paths=PackedStringArray("_displayLanguageOptionButton", "_displayScaleSpinbox", "_renderingDriverOptionButton", "_menuExpandCheckButton", "_proxyAddressLineEdit", "_downloadThreadSpinbox", "_modpackFolderLineEdit", "_modpackFolderButton", "_releaseFolderLineEdit", "_releaseFolderButton", "Main")]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -35,6 +35,7 @@ _confirmationWindowScene = ExtResource("2_tr7nv")
 _displayLanguageOptionButton = NodePath("MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer/OptionButton")
 _displayScaleSpinbox = NodePath("MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer2/SpinBox")
 _renderingDriverOptionButton = NodePath("MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer3/OptionButton")
+_menuExpandCheckButton = NodePath("MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer4/CheckButton")
 _proxyAddressLineEdit = NodePath("MarginContainer/VBoxContainer/PanelContainer2/VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer/LineEdit")
 _downloadThreadSpinbox = NodePath("MarginContainer/VBoxContainer/PanelContainer2/VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer2/SpinBox")
 _modpackFolderLineEdit = NodePath("MarginContainer/VBoxContainer/PanelContainer3/VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer/LineEdit")
@@ -132,6 +133,18 @@ layout_mode = 2
 size_flags_horizontal = 10
 flat = true
 alignment = 2
+
+[node name="HBoxContainer4" type="HBoxContainer" parent="MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer4"]
+layout_mode = 2
+text = "菜单展开"
+vertical_alignment = 1
+
+[node name="CheckButton" type="CheckButton" parent="MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer4"]
+layout_mode = 2
+size_flags_horizontal = 10
 
 [node name="PanelContainer2" type="PanelContainer" parent="MarginContainer/VBoxContainer"]
 material = ExtResource("4_tr7nv")

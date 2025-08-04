@@ -457,3 +457,6 @@ msgstr "Changing the rendering driver requires a restart to take effect\nWould y
 
 msgid "浏览在线模组"
 msgstr "Browse Online Mods"
+
+msgid "菜单展开"
+msgstr "Menu Expand"
