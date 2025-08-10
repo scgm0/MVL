@@ -267,7 +267,7 @@ public partial class ModInfoItem : PanelContainer {
 				var version1 = SemVer.Parse(Mod!.Version);
 				var version2 = SemVer.Parse(modInfoRelease.ModVersion);
 				if (version1 >= version2) {
-					return;
+					continue;
 				}
 
 				if (string.IsNullOrWhiteSpace(modInfoRelease.MainFile)) {

@@ -25,5 +25,5 @@ public record ApiModInfo {
 	public DateTimeOffset Created { get; init; }
 	public DateTimeOffset LastModified { get; init; }
 	public string[] Tags { get; init; } = [];
-	public ApiModRelease[] Releases { get; init; } = [];
+	public ApiModRelease[] Releases { get; set; } = [];
 }

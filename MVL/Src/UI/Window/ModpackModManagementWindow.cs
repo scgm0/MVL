@@ -214,6 +214,10 @@ public partial class ModpackModManagementWindow : BaseWindow {
 				}
 
 				var apiModInfo = status.Mod!;
+				apiModInfo.Releases = apiModInfo.Releases.OrderByDescending(modRelease => {
+					var version = SemVer.TryParse(modRelease.ModVersion.Replace('*', '0'), out var m) ? m : SemVer.Zero;
+					return version;
+				}).ToArray();
 				var release = apiModInfo.Releases.FirstOrDefault(r => {
 					var version = SemVer.TryParse(modDependency.Version.Replace('*', '0'), out var m) ? m : SemVer.Zero;
 					var releaseVersion = SemVer.TryParse(r.ModVersion, out var v) ? v : SemVer.Zero;
