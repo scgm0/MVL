@@ -239,7 +239,9 @@ public partial class GameDownloadWindow : BaseWindow {
 				ChunkCount = Main.BaseConfig.DownloadThreads,
 				ParallelCount = Main.BaseConfig.DownloadThreads,
 				RequestConfiguration = new() {
-					Proxy = string.IsNullOrWhiteSpace(Main.BaseConfig.ProxyAddress) ? HttpClient.DefaultProxy : new WebProxy(Main.BaseConfig.ProxyAddress)
+					Proxy = string.IsNullOrWhiteSpace(Main.BaseConfig.ProxyAddress)
+						? HttpClient.DefaultProxy
+						: new WebProxy(Main.BaseConfig.ProxyAddress)
 				}
 			})
 			.Build();
@@ -274,7 +276,9 @@ public partial class GameDownloadWindow : BaseWindow {
 
 		var assetDir = Path.Combine(outputDir, name, "assets");
 		if (Directory.Exists(assetDir)) {
-			foreach (var fileSystemEntry in Directory.GetFileSystemEntries(assetDir, "version-*.txt", SearchOption.TopDirectoryOnly)) {
+			foreach (var fileSystemEntry in Directory.GetFileSystemEntries(assetDir,
+				"version-*.txt",
+				SearchOption.TopDirectoryOnly)) {
 				File.Delete(Path.Combine(assetDir, fileSystemEntry));
 			}
 		}
@@ -296,7 +300,14 @@ public partial class GameDownloadWindow : BaseWindow {
 		_progressBar.GetNode<Label>("Label").Text = $"{fmtSpeed:0.00} {unit}/s";
 	}
 
-	private void ButtonGroupOnPressed(BaseButton button) { ValidateInputs(); }
+	private void ButtonGroupOnPressed(BaseButton button) {
+		if (string.IsNullOrEmpty(_releaseName?.Text)) {
+			var item = button.GetOwner<InstalledGameItem>();
+			_releaseName?.Text = item.GameVersion.ShortGameVersion;
+		}
+
+		ValidateInputs();
+	}
 
 	public async void UpdateDownloadList(string releaseUrl) {
 		OkButton!.Disabled = true;
@@ -330,7 +341,8 @@ public partial class GameDownloadWindow : BaseWindow {
 			if (_cancellation is not null && !_cancellation.IsCancellationRequested && _releases is not null) {
 				var i = 1;
 				var minVersion = new GameVersion("1.18.8");
-				foreach (var group in _releases.Where(kv => GameVersion.ComparerVersion(kv.Key, minVersion) > -1).GroupBy(r => r.Key.OverallVersion)) {
+				foreach (var group in _releases.Where(kv => GameVersion.ComparerVersion(kv.Key, minVersion) > -1)
+					.GroupBy(r => r.Key.OverallVersion)) {
 					var container = new FoldableContainer();
 					container.Folded = true;
 					container.Title = group.Key;
