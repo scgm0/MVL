@@ -5,8 +5,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: 神麤詭末的复古物语启动器\n"
-"PO-Revision-Date: 2025-05-08 11:55+0000\n"
-"Last-Translator: 神麤詭末 <2682963017@qq.com>\n"
+"PO-Revision-Date: 2025-08-28 03:02+0000\n"
+"Last-Translator: marvel at flowers <qiuhangli_2024@qq.com>\n"
 "Language-Team: Chinese (Traditional Han script) <https://hosted.weblate.org/"
 "projects/mvl/mvl/zh_Hant/>\n"
 "Language: zh_Hant\n"
@@ -14,58 +14,58 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8-bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 5.12-dev\n"
+"X-Generator: Weblate 5.13\n"
 
 msgid "神麤詭末的复古物语启动器"
-msgstr ""
+msgstr "神麤詭末的復古物語啟動器‌"
 
 msgid "菜单"
-msgstr ""
+msgstr "選單‌"
 
 msgid "主页"
-msgstr ""
+msgstr "首頁‌"
 
 msgid "整合"
-msgstr ""
+msgstr "模組組合包‌"
 
 msgid "版本"
-msgstr ""
+msgstr "發行版本‌"
 
 msgid "浏览"
-msgstr ""
+msgstr "瀏覽‌"
 
 msgid "设置"
-msgstr ""
+msgstr "設定‌"
 
 msgid "关于"
-msgstr ""
+msgstr "資訊‌"
 
 msgid "点击登录账号"
-msgstr ""
+msgstr "按此登入帳戶‌"
 
 msgid "启动游戏"
-msgstr ""
+msgstr "開始遊玩‌"
 
 msgid "停止游戏"
-msgstr ""
+msgstr "停止‌"
 
 msgid "确定"
-msgstr ""
+msgstr "確定‌"
 
 msgid "取消"
-msgstr ""
+msgstr "取消‌"
 
 msgid "贡献者"
-msgstr ""
+msgstr "貢獻者‌"
 
 msgid "赞助者"
-msgstr ""
+msgstr "贊助者‌"
 
 msgid "许可证"
-msgstr ""
+msgstr "‌授權"
 
 msgid "图标制作"
-msgstr ""
+msgstr "圖示創作‌"
 
 msgid "项目创始人"
 msgstr ""
