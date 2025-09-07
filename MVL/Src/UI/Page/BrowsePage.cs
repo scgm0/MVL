@@ -144,6 +144,7 @@ public partial class BrowsePage : MenuPage {
 		await _modInstallStatusButton.UpdateList(["所有", "已安装", "未安装"]);
 		_modInstallStatusButton.Selected = [0];
 
+		_modNameLineEdit.TextSubmitted += _ => SearchButtonOnPressed();
 		_searchButton.Pressed += SearchButtonOnPressed;
 		_swapButton.Toggled += SwapButtonOnToggled;
 		_modCountSpinBox.ValueChanged += ModCountSpinBoxOnValueChanged;
