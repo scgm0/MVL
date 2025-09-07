@@ -33,7 +33,7 @@ public partial class IconTexture2D : Texture2D {
 		}
 	} = 24;
 
-	private SvgTexture _svgTexture = new();
+	private DpiTexture _svgTexture = new();
 
 	public IconTexture2D() { EmitChanged(); }
 
