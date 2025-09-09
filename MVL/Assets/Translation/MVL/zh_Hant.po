@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: 神麤詭末的复古物语启动器\n"
-"PO-Revision-Date: 2025-08-28 03:02+0000\n"
+"PO-Revision-Date: 2025-09-09 13:01+0000\n"
 "Last-Translator: marvel at flowers <qiuhangli_2024@qq.com>\n"
 "Language-Team: Chinese (Traditional Han script) <https://hosted.weblate.org/"
 "projects/mvl/mvl/zh_Hant/>\n"
@@ -14,7 +14,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8-bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 5.13\n"
+"X-Generator: Weblate 5.14-dev\n"
 
 msgid "神麤詭末的复古物语启动器"
 msgstr "神麤詭末的復古物語啟動器‌"
@@ -68,232 +68,237 @@ msgid "图标制作"
 msgstr "圖示創作‌"
 
 msgid "项目创始人"
-msgstr ""
+msgstr "專案創辦人"
 
 msgid "主要开发者"
-msgstr ""
+msgstr "主力開發人員"
 
 msgid "开发人员"
-msgstr ""
+msgstr "開發者"
 
 msgid "私人赞助"
-msgstr ""
+msgstr "私人機構的贊助"
 
 msgid "添加整合包"
-msgstr ""
+msgstr "加入模組包"
 
 msgid "选择游戏版本"
-msgstr ""
+msgstr "選取遊戲的版本"
 
 msgid "账号登录"
-msgstr ""
+msgstr "登入賬戶"
 
 msgid "请先选择一个整合包"
-msgstr ""
+msgstr "請先選擇模組包"
 
 msgid "请先在整合界面添加一个整合包"
-msgstr ""
+msgstr "請先於模組包介面中加入模組包"
 
 msgid "请先在版本界面中导入游戏"
-msgstr ""
+msgstr "請先於版本發布介面中匯入遊戲"
 
 msgid "选择已安装版本"
-msgstr ""
+msgstr "選已安裝版本"
 
 msgid "请输入名称"
-msgstr ""
+msgstr "輸入姓名"
 
 msgid "请输入路径"
-msgstr ""
+msgstr "輸入路徑"
 
 msgid "路径包含非法字符"
-msgstr ""
+msgstr "路徑含有無效字元"
 
 msgid "父文件夹不存在"
-msgstr ""
+msgstr "不存在父資料夾"
 
 msgid "文件夹不存在"
-msgstr ""
+msgstr "不存在資料夾"
 
 msgid "将自动创建文件夹"
-msgstr ""
+msgstr "資料夾將自動建立"
 
 msgid "文件夹不为空，确定选择它吗？"
-msgstr ""
+msgstr "此資料夾不是空的，您確定要選取嗎？"
 
 msgid "文件夹存在且为空"
-msgstr ""
+msgstr "資料夾已存在且為空"
 
 msgid "网络请求失败，请重试"
-msgstr ""
+msgstr "網路請求失敗，請再試一次"
 
 msgid "名称包含非法字符"
-msgstr ""
+msgstr "姓名包含無效字元"
 
 msgid "路径不存在"
-msgstr ""
+msgstr "沒有路徑"
 
 msgid "请选择版本"
-msgstr ""
+msgstr "選版本"
 
 msgid "'{0}'已存在，确定覆盖它吗？"
-msgstr ""
+msgstr "「{0}」已經存在，確定要覆寫嗎？"
 
 msgid "下载中..."
-msgstr ""
+msgstr "正在下載…"
 
 msgid "提取中..."
-msgstr ""
+msgstr "解壓縮中…"
 
 msgid "确定要删除账号 [color=#0078d7][b]{0}[/b][/color] 吗？"
-msgstr ""
+msgstr "您確定要刪除帳戶[color=#0078d7][b]{0}[/b][/color]嗎？"
 
 msgid "整合包名称:"
-msgstr ""
+msgstr "模組包名稱："
 
 msgid "名称不能为空"
-msgstr ""
+msgstr "名稱不能空白"
 
 msgid "整合包路径:"
-msgstr ""
+msgstr "模組包路徑："
 
 msgid "创建文件夹"
-msgstr ""
+msgstr "建立資料夾"
 
 msgid "路径不能为空"
-msgstr ""
+msgstr "路徑不能空白"
 
 msgid "游戏版本:"
-msgstr ""
+msgstr "遊戲版本："
 
 msgid "版本名称:"
-msgstr ""
+msgstr "版本名称："
 
 msgid "安装路径:"
-msgstr ""
+msgstr "安裝路徑："
 
 msgid "邮箱:"
-msgstr ""
+msgstr "電子信箱："
 
 msgid "邮箱不能为空"
-msgstr ""
+msgstr "信箱不能空白"
 
 msgid "密码:"
-msgstr ""
+msgstr "密碼："
 
 msgid "密码不能为空"
-msgstr ""
+msgstr "密碼不能空白"
 
 msgid "离线模式"
-msgstr ""
+msgstr "離線模式"
 
 msgid "访问代码:"
-msgstr ""
+msgstr "存取代碼："
 
 msgid "若账号开启了2FA，则不能为空"
-msgstr ""
+msgstr "雙重驗證啟用時不能空白"
 
 msgid "玩家名称:"
-msgstr ""
+msgstr "玩家名字："
 
 msgid "玩家名称不能为空"
-msgstr ""
+msgstr "玩家名字不能空白"
 
 msgid "选择版本"
-msgstr ""
+msgstr "選擇版本"
 
 msgid "模组数量: {0}"
-msgstr ""
+msgstr "模組數: {0}"
 
 msgid "该名称已存在"
-msgstr ""
+msgstr "此名稱已經存在"
 
 msgid "请输入邮箱"
-msgstr ""
+msgstr "輸入電子信箱"
 
 msgid "请输入密码"
-msgstr ""
+msgstr "輸入密碼"
 
 msgid "请输入访问代码"
-msgstr ""
+msgstr "輸入存取代碼"
 
 msgid "正在登录..."
-msgstr ""
+msgstr "登入中..."
 
 msgid "请求失败"
-msgstr ""
+msgstr "要求的被拒絕"
 
 msgid "登录成功"
-msgstr ""
+msgstr "登入成功"
 
 msgid "访问代码错误"
-msgstr ""
+msgstr "存取代碼錯誤"
 
 msgid "登录失败: {0}"
-msgstr ""
+msgstr "登入失敗: {0}"
 
 msgid "如果启动器对您有所帮助且您财力有余，可以赞助一下开发者，您的支持将促进启动器的开发与完善: [color=#3c7fe1][url]https://afdian.com/a/MystiVaid[/url][/color]"
 msgstr ""
+"若啟動器對您有所幫助且您有能力，請考慮贊助開發者。您的支持將有助於推進與完善"
+"啟動器的開發：[color=#3c7fe1][url]https://afdian.com/a/MystiVaid[/url][/"
+"color]"
 
 msgid "不喜欢MVL？那么您还可以试试另一款复古物语启动器: [wave][pulse][rainbow][url=https://vsldocs.xurxomf.xyz]VS Launcher[/url][/rainbow][/pulse][/wave]"
 msgstr ""
+"若不喜歡 MVL，您也可以嘗試其他《Vintage Story》啟動器：[wave][pulse][rainbow]"
+"[url=https://vsldocs.xurxomf.xyz]VS 啟動器[/url][/rainbow][/pulse][/wave]"
 
 msgid "英语翻译"
-msgstr ""
+msgstr "英語翻譯"
 
 msgid "西班牙语翻译"
-msgstr ""
+msgstr "西班牙語翻譯"
 
 msgid "法语翻译"
-msgstr ""
+msgstr "法語翻譯"
 
 msgid "俄语翻译"
-msgstr ""
+msgstr "俄語翻譯"
 
 msgid "界面"
-msgstr ""
+msgstr "介面"
 
 msgid "显示语言"
-msgstr ""
+msgstr "顯示語言"
 
 msgid "显示缩放"
-msgstr ""
+msgstr "顯示縮放級別"
 
 msgid "网络"
-msgstr ""
+msgstr "網路"
 
 msgid "代理地址"
-msgstr ""
+msgstr "代理位址"
 
 msgid "下载线程"
-msgstr ""
+msgstr "下載執行緒"
 
 msgid "目录"
-msgstr ""
+msgstr "目錄"
 
 msgid "整合目录"
-msgstr ""
+msgstr "模組包目錄"
 
 msgid "版本目录"
-msgstr ""
+msgstr "版本目錄"
 
 msgid "若为空，则使用系统代理"
-msgstr ""
+msgstr "如果空白，則使用系統代理"
 
 msgid "若为无效路径，则使用默认目录"
-msgstr ""
+msgstr "若路徑無效則使用預設目錄"
 
 msgid "警告"
-msgstr ""
+msgstr "警報"
 
 msgid "启动器运行中，无法重复启动"
-msgstr ""
+msgstr "啟動器已在執行中，無法重複啟動"
 
 msgid "复古物语"
-msgstr ""
+msgstr "復古故事"
 
 msgid "一个免费、开源且由社区驱动的复古物语启动器"
-msgstr ""
+msgstr "免費、開源且社群驅動的《Vintage Story》啟動器"
 
 msgid "[b]{0}[/b] 需要安装 [b].NET {1} 运行时[/b]\n请点击链接下载并安装：\n[color=#3c7fe1][url]https://dotnet.microsoft.com/download/dotnet/{2}[/url][/color]\n是否尝试强制启动游戏？"
 msgstr ""
