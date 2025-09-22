@@ -11,18 +11,30 @@
         <TargetFrameworks>net7.0;net8.0</TargetFrameworks>
     </PropertyGroup>
 
+    <PropertyGroup>
+        <VintageStory>$(VINTAGE_STORY_NET7)</VintageStory>
+    </PropertyGroup>
+
+    <PropertyGroup Condition="'$(TargetFramework)' == 'net7.0'">
+        <VintageStory>$(VINTAGE_STORY_NET7)</VintageStory>
+    </PropertyGroup>
+
+    <PropertyGroup Condition="'$(TargetFramework)' == 'net8.0'">
+        <VintageStory>$(VINTAGE_STORY_NET8)</VintageStory>
+    </PropertyGroup>
+
     <ItemGroup>
-        <Reference Include="$(VINTAGE_STORY)/*.dll">
+        <Reference Include="$(VintageStory)/*.dll">
             <Private>false</Private>
         </Reference>
-        <Reference Include="$(VINTAGE_STORY)/Mods/*.dll">
+        <Reference Include="$(VintageStory)/Mods/*.dll">
             <Private>false</Private>
         </Reference>
-        <Reference Include="$(VINTAGE_STORY)/Lib/*.dll">
+        <Reference Include="$(VintageStory)/Lib/*.dll">
             <Private>false</Private>
         </Reference>
-        <Reference Remove="$(VINTAGE_STORY)/Lib/System*.dll"/>
-        <Reference Remove="$(VINTAGE_STORY)/Lib/CairoSharp.dll"/>
+        <Reference Remove="$(VintageStory)/Lib/System*.dll"/>
+        <Reference Remove="$(VintageStory)/Lib/CairoSharp.dll"/>
     </ItemGroup>
 
     <ItemGroup>
