@@ -133,7 +133,7 @@ public static class Program {
 		var stateInstance = stateFieldInfo?.GetValue(null) as Dictionary<MethodBase, byte[]>;
 		stateInstance?.Clear();
 
-		var assembly = Assembly.LoadFile(Path.Combine(Config.VintageStoryPath, Config.AssemblyPath));
+		var assembly = Assembly.LoadFrom(Path.Combine(Config.VintageStoryPath, Config.AssemblyPath));
 		var assemblyName = assembly.GetName().Name;
 
 		var mainMethod = assembly.EntryPoint;
