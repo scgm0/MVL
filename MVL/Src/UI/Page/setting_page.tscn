@@ -1,17 +1,14 @@
-[gd_scene load_steps=9 format=3 uid="uid://bp02so1m0q7m0"]
+[gd_scene load_steps=8 format=3 uid="uid://bp02so1m0q7m0"]
 
 [ext_resource type="Script" uid="uid://er6sd5rjfnp5" path="res://Src/UI/Page/SettingPage.cs" id="1_f2m4w"]
 [ext_resource type="PackedScene" uid="uid://cx30yvsu80t6f" path="res://Src/UI/Window/confirmation_window.tscn" id="2_tr7nv"]
 [ext_resource type="Material" uid="uid://c0sb2bjy16ljf" path="res://Assets/Material/button_blur.tres" id="4_tr7nv"]
 [ext_resource type="Script" uid="uid://bk3tot6c35bwu" path="res://Src/Utils/IconTexture2D.cs" id="8_axk81"]
 
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_yoik7"]
-
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_axk81"]
 
 [sub_resource type="Theme" id="Theme_yaaqs"]
 LineEdit/font_sizes/font_size = 16
-LineEdit/styles/focus = SubResource("StyleBoxEmpty_yoik7")
 LineEdit/styles/normal = SubResource("StyleBoxEmpty_axk81")
 
 [sub_resource type="Texture2D" id="Texture2D_yaaqs"]

@@ -1,8 +1,6 @@
-[gd_resource type="Theme" load_steps=6 format=3 uid="uid://bwauanadesdm6"]
+[gd_resource type="Theme" load_steps=5 format=3 uid="uid://bwauanadesdm6"]
 
 [ext_resource type="FontFile" uid="uid://bmgx1vyg6bavd" path="res://Assets/Font/HarmonyOS_Sans_SC_Bold.ttf" id="1_n8wox"]
-
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_gblyu"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_megpf"]
 content_margin_left = 8.0
@@ -44,7 +42,6 @@ Button/colors/icon_normal_color = Color(1, 1, 1, 0.784314)
 Button/colors/icon_pressed_color = Color(0, 0, 0, 0.784314)
 Button/constants/h_separation = 0
 Button/constants/icon_max_width = 24
-Button/styles/focus = SubResource("StyleBoxEmpty_gblyu")
 Button/styles/hover = SubResource("StyleBoxFlat_megpf")
 Button/styles/normal = SubResource("StyleBoxFlat_r111f")
 Button/styles/pressed = SubResource("StyleBoxFlat_bhu72")

@@ -34,7 +34,6 @@ content_margin_right = 10.0
 content_margin_bottom = 4.0
 
 [sub_resource type="Theme" id="Theme_sggsl"]
-CheckBox/styles/focus = SubResource("StyleBoxEmpty_srd6e")
 CheckBox/styles/hover = SubResource("StyleBoxEmpty_srd6e")
 CheckBox/styles/hover_pressed = SubResource("StyleBoxEmpty_srd6e")
 CheckBox/styles/normal = SubResource("StyleBoxEmpty_srd6e")
