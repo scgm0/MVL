@@ -1,12 +1,13 @@
-using System.Collections.Generic;
-using System.Linq;
-using FuzzySharp;
+using System;
 using Godot;
+using MVL.Utils;
 using MVL.Utils.Game;
 
 namespace MVL.UI.Other;
 
 public partial class AuthorsLineEdit : CandidateLineEdit<ApiAuthor?> {
+	private (ApiAuthor? data, int ratio)[]? _cachedCandidatesWithRatio;
+	private string? _cachedSelfText;
 
 	public override void _Ready() {
 		base._Ready();
@@ -14,17 +15,35 @@ public partial class AuthorsLineEdit : CandidateLineEdit<ApiAuthor?> {
 	}
 
 	private void BgOnHidden() {
-		if (Selected is null) {
-			Text = "";
+		if (Selected is not null) {
+			return;
 		}
+
+		Text = string.Empty;
+		SelfText = string.Empty;
 	}
 
-	public override IEnumerable<(ApiAuthor? data, int ratio)> GetCandidate() {
-		return Candidates.Select(data => {
+	public override Span<(ApiAuthor? data, int ratio)> GetCandidate() {
+		if (_cachedSelfText == SelfText && _cachedCandidatesWithRatio is not null) {
+			return _cachedCandidatesWithRatio;
+		}
+
+		_cachedSelfText = SelfText;
+
+		if (_cachedCandidatesWithRatio == null || _cachedCandidatesWithRatio.Length != Candidates.Length) {
+			_cachedCandidatesWithRatio = new (ApiAuthor? data, int ratio)[Candidates.Length];
+		}
+
+		for (var i = 0; i < Candidates.Length; i++) {
+			var data = Candidates[i];
 			var name = data?.Name ?? data?.UserId.ToString();
-			var ratio = Fuzz.Ratio(name, Text);
-			return (data, ratio);
-		});
+			var ratio = Fuzzy.Ratio(name, SelfText);
+			_cachedCandidatesWithRatio[i] = (data, ratio);
+		}
+
+		Array.Sort(_cachedCandidatesWithRatio, (x, y) => y.ratio.CompareTo(x.ratio));
+
+		return _cachedCandidatesWithRatio;
 	}
 
 	public override Button GetItemContainer((ApiAuthor? data, int ratio) item) {

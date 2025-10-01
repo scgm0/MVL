@@ -410,7 +410,7 @@ public partial class BrowsePage : MenuPage {
 			var apiAuthors = JsonSerializer.Deserialize(apiAuthorsText,
 				SourceGenerationContext.Default.ApiStatusAuthors);
 			if (apiAuthors.StatusCode is "200") {
-				_modAuthorLineEdit?.Candidates = apiAuthors.Authors?.Cast<ApiAuthor?>() ?? [];
+				_modAuthorLineEdit?.Candidates = apiAuthors.Authors?.Cast<ApiAuthor?>().ToArray() ?? [];
 			}
 
 			var apiGameVersions = JsonSerializer.Deserialize(apiGameVersionsText,

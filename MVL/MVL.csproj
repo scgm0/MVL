@@ -20,7 +20,6 @@
     <ItemGroup>
         <PackageReference Include="Downloader" Version="4.0.3" />
         <PackageReference Include="Flurl.Http" Version="4.0.2" />
-        <PackageReference Include="FuzzySharp" Version="2.0.2" />
         <PackageReference Include="Mono.Cecil" Version="0.11.6" />
         <PackageReference Include="SemVer2" Version="1.0.0" />
     </ItemGroup>
@@ -29,7 +28,6 @@
         <Compile Include="../SharedLibrary/*.cs">
             <Link>Src/SharedLibrary/*.cs</Link>
         </Compile>
-        <Compile Remove="Src\Utils\Help\NodeSortHelper.cs" />
     </ItemGroup>
 
     <ItemGroup>

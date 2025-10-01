@@ -4,7 +4,6 @@ using System.Linq;
 using System.Text.Json;
 using System.Threading.Tasks;
 using Flurl.Http;
-using FuzzySharp;
 using Godot;
 using MVL.UI.Item;
 using MVL.UI.Page;
@@ -66,6 +65,7 @@ public partial class ModpackModManagementWindow : BaseWindow {
 		_loadingContainer.NotNull();
 
 		CancelButton!.Pressed += CancelButtonOnPressed;
+		_searchInput.TextSubmitted += _ => SearchButtonOnPressed();
 		_searchButton.Pressed += SearchButtonOnPressed;
 		_updateInfoButton.Pressed += UpdateInfoButtonOnPressed;
 		_syncFileButton.Pressed += SyncFileButtonOnPressed;
@@ -297,7 +297,7 @@ public partial class ModpackModManagementWindow : BaseWindow {
 
 		var sortedNodes = nodesToSort
 			.OrderByDescending(item => {
-				var ratio = Fuzz.PartialRatio($"{item.Mod?.Name} {item.ApiModInfo?.Name} {item.Mod?.ModId}", searchString);
+				var ratio = Fuzzy.PartialRatio($"{item.Mod?.Name} {item.ApiModInfo?.Name} {item.Mod?.ModId}", searchString);
 				if (ratio <= 0) {
 					item.Hide();
 				} else {

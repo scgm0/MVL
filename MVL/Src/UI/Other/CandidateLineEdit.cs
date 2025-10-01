@@ -1,6 +1,5 @@
+using System;
 using Godot;
-using System.Collections.Generic;
-using System.Linq;
 using MVL.Utils.Help;
 
 namespace MVL.UI.Other;
@@ -20,13 +19,15 @@ public abstract partial class CandidateLineEdit<T> : LineEdit {
 	[Export]
 	private Timer? _timer;
 
-	public IEnumerable<T> Candidates { get; set; } = [];
+	public T[] Candidates { get; set; } = [];
 
 	public T? Selected { get; set; }
 
 	public int MaxCandidates { get; set; } = 10;
 
 	public int MaxShow { get; set; } = 5;
+
+	protected string SelfText = string.Empty;
 
 	public override void _Ready() {
 		Bg.NotNull();
@@ -37,17 +38,20 @@ public abstract partial class CandidateLineEdit<T> : LineEdit {
 		Bg.MouseFilter = MouseFilterEnum.Stop;
 		Bg.Pressed += Bg.Hide;
 
-		TextChanged += _ => { _timer.Start(0.1); };
+		TextChanged += _ => {
+			_timer.Start(0.1);
+		};
 
 		_timer.Timeout += UpdateCandidates;
 	}
 
-	public abstract IEnumerable<(T data, int ratio)> GetCandidate();
+	public abstract Span<(T data, int ratio)> GetCandidate();
 
 	public abstract Button GetItemContainer((T data, int ratio) candidate);
 
 	public void UpdateCandidates() {
 		Selected = default;
+		SelfText = Text;
 
 		Bg!.Show();
 
@@ -60,7 +64,7 @@ public abstract partial class CandidateLineEdit<T> : LineEdit {
 			child.Free();
 		}
 
-		var list = GetCandidate().OrderByDescending(item => item.ratio).Take(MaxCandidates);
+		var list = GetCandidate()[..MaxCandidates];
 
 		var i = 0;
 		var maxHeight = 0f;

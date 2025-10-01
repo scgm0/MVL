@@ -276,8 +276,8 @@ public partial class ModInfoItem : PanelContainer {
 								return;
 							}
 
-							_webButton.Disabled = false;
-							_releaseButton.Disabled = false;
+							_webButton!.Disabled = false;
+							_releaseButton!.Disabled = false;
 							_modName.Text = Mod!.Name.Equals(ApiModInfo.Value.Name, StringComparison.Ordinal)
 								? Mod.Name
 								: $"{ApiModInfo.Value.Name} ({Mod.Name})";
