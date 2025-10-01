@@ -10,6 +10,8 @@ using Process = System.Diagnostics.Process;
 namespace MVL.Utils;
 
 public static class Tools {
+	public static bool IsEditorHint { get; } = Engine.IsEditorHint();
+
 	public static void RichTextOpenUrl(Variant url) { Task.Run(() => OS.ShellOpen(url.AsString())); }
 
 	public static float GetAutoDisplayScale() {
@@ -182,4 +184,5 @@ public static class Tools {
 			return null;
 		}
 	}
+
 }
