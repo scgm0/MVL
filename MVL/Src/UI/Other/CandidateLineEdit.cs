@@ -23,8 +23,6 @@ public abstract partial class CandidateLineEdit<T> : LineEdit {
 
 	public T? Selected { get; set; }
 
-	public int MaxCandidates { get; set; } = 10;
-
 	public int MaxShow { get; set; } = 5;
 
 	protected string SelfText = string.Empty;
@@ -39,7 +37,7 @@ public abstract partial class CandidateLineEdit<T> : LineEdit {
 		Bg.Pressed += Bg.Hide;
 
 		TextChanged += _ => {
-			_timer.Start(0.1);
+			_timer.Start(0.2);
 		};
 
 		_timer.Timeout += UpdateCandidates;
@@ -48,6 +46,8 @@ public abstract partial class CandidateLineEdit<T> : LineEdit {
 	public abstract Span<(T data, int ratio)> GetCandidate();
 
 	public abstract Button GetItemContainer((T data, int ratio) candidate);
+
+	public abstract void Sorted();
 
 	public void UpdateCandidates() {
 		Selected = default;
@@ -64,7 +64,7 @@ public abstract partial class CandidateLineEdit<T> : LineEdit {
 			child.Free();
 		}
 
-		var list = GetCandidate()[..MaxCandidates];
+		var list = GetCandidate();
 
 		var i = 0;
 		var maxHeight = 0f;
@@ -81,6 +81,8 @@ public abstract partial class CandidateLineEdit<T> : LineEdit {
 				maxHeight = _vboxContainer!.GetCombinedMinimumSize().Y;
 			}
 		}
+
+		Sorted();
 
 		var maxWidth = _vboxContainer!.GetCombinedMinimumSize().X;
 		if (maxWidth > _panelContainer!.Size.X) {

@@ -141,7 +141,9 @@ public static class Fuzzy {
 			}
 
 			// 交换 v0 和 v1 以进行下一轮迭代
-			v1.CopyTo(v0);
+			var temp = v0;
+			v0 = v1;
+			v1 = temp;
 		}
 
 		// 经过最后一次循环后，结果在 v0 中（因为我们交换了）

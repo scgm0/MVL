@@ -6,8 +6,9 @@ using MVL.Utils.Game;
 namespace MVL.UI.Other;
 
 public partial class AuthorsLineEdit : CandidateLineEdit<ApiAuthor?> {
-	private (ApiAuthor? data, int ratio)[]? _cachedCandidatesWithRatio;
-	private string? _cachedSelfText;
+	private (ApiAuthor? data, int ratio)[] _cachedCandidatesWithRatio = [];
+
+	public int MaxCandidates { get; set; } = 10;
 
 	public override void _Ready() {
 		base._Ready();
@@ -24,26 +25,26 @@ public partial class AuthorsLineEdit : CandidateLineEdit<ApiAuthor?> {
 	}
 
 	public override Span<(ApiAuthor? data, int ratio)> GetCandidate() {
-		if (_cachedSelfText == SelfText && _cachedCandidatesWithRatio is not null) {
-			return _cachedCandidatesWithRatio;
+		if (_cachedCandidatesWithRatio.Length != Candidates.Length) {
+			_cachedCandidatesWithRatio = new (ApiAuthor? data, int ratio)[Candidates.Length];
 		}
 
-		_cachedSelfText = SelfText;
-
-		if (_cachedCandidatesWithRatio == null || _cachedCandidatesWithRatio.Length != Candidates.Length) {
-			_cachedCandidatesWithRatio = new (ApiAuthor? data, int ratio)[Candidates.Length];
+		if (Candidates.Length == 0) {
+			return [];
 		}
 
 		for (var i = 0; i < Candidates.Length; i++) {
 			var data = Candidates[i];
-			var name = data?.Name ?? data?.UserId.ToString();
+			var name = data?.Name ?? data?.UserId.ToString() ?? string.Empty;
 			var ratio = Fuzzy.Ratio(name, SelfText);
 			_cachedCandidatesWithRatio[i] = (data, ratio);
 		}
 
 		Array.Sort(_cachedCandidatesWithRatio, (x, y) => y.ratio.CompareTo(x.ratio));
 
-		return _cachedCandidatesWithRatio;
+		var count = Math.Min(Candidates.Length, MaxCandidates);
+
+		return _cachedCandidatesWithRatio.AsSpan(0, count);
 	}
 
 	public override Button GetItemContainer((ApiAuthor? data, int ratio) item) {
@@ -60,5 +61,9 @@ public partial class AuthorsLineEdit : CandidateLineEdit<ApiAuthor?> {
 		};
 
 		return button;
+	}
+
+	public override void Sorted() {
+		Array.Clear(_cachedCandidatesWithRatio);
 	}
 }
