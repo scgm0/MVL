@@ -27,51 +27,7 @@ public record ModInfo : IComparable<ModInfo> {
 	[JsonConverter(typeof(DependenciesConverter))]
 	public IReadOnlyList<ModDependency> Dependencies { get; set; } = [];
 
-	public Texture2D? Icon {
-		get {
-			if (field != null) {
-				return field;
-			}
-
-			field = GD.Load<Texture2D>("uid://dcoju08mvjqim");
-			ImageTexture? texture;
-			switch (ModPath.GetExtension()) {
-				case "zip": {
-					using var zipArchive = ZipFile.OpenRead(ModPath);
-					var iconEntry = zipArchive.GetEntry("modicon.png");
-					if (iconEntry == null) {
-						break;
-					}
-
-					var path = Path.Combine(ModPath, iconEntry.FullName);
-					if (ResourceLoader.Exists(path)) {
-						field = ResourceLoader.Load<Texture2D>(path);
-						break;
-					}
-
-					using var iconStream = iconEntry.Open();
-					using var iconReader = new BinaryReader(iconStream);
-					var iconBytes = iconReader.ReadBytes((int)iconEntry.Length);
-					texture = Tools.CreateTextureFromBytes(iconBytes);
-					texture.TakeOverPath(path);
-					field = texture;
-					break;
-				}
-
-				default: {
-					var iconPath = Path.Combine(ModPath, "modicon.png");
-					texture = Tools.LoadTextureFromPath(iconPath);
-					if (texture != null) {
-						field = texture;
-					}
-
-					break;
-				}
-			}
-
-			return field;
-		}
-	}
+	public string Icon { get; set; } = "modicon.png";
 
 	public ModpackConfig? ModpackConfig { get; set; }
 

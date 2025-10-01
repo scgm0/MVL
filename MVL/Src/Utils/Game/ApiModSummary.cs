@@ -2,7 +2,7 @@ using System;
 
 namespace MVL.Utils.Game;
 
-public record ApiModSummary {
+public struct ApiModSummary {
 	public int ModId { get; init; }
 	public int AssetId { get; init; }
 	public int Downloads { get; init; }

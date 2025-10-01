@@ -39,7 +39,7 @@ public partial class InstalledGamesImport : BaseWindow {
 		try {
 			await Hide();
 			List<string> gamePaths = [];
-			gamePaths.AddRange(from InstalledGameItem? installedGameItem in _installedGameList!.GetChildren()
+			gamePaths.AddRange(from InstalledGameItem installedGameItem in _installedGameList!.GetChildren()
 							   where installedGameItem.Check
 							   select installedGameItem.GamePath);
 			EmitSignalImport(gamePaths.ToArray());

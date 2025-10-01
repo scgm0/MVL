@@ -1,9 +1,5 @@
 using Godot;
-using System;
-using System.IO;
-using System.Linq;
 using System.Threading.Tasks;
-using Flurl.Http;
 using MVL.Utils;
 using MVL.Utils.Extensions;
 using MVL.Utils.Game;
@@ -46,12 +42,12 @@ public partial class BrowseItem : Button {
 		ModSummary.NotNull();
 
 		_modAuthorButton.GetParent<Container>().MouseFilter = MouseFilterEnum.Stop;
-		_modNameLabel.Text = ModSummary.Name;
-		_modDescriptionLabel.Text = ModSummary.Summary;
-		_modAuthorButton.Text = ModSummary.Author;
-		_modDownloadsButton.Text = ModSummary.Downloads.FormatNumber();
-		_modFollowsButton.Text = ModSummary.Follows.FormatNumber();
-		_modCommentsButton.Text = ModSummary.Comments.FormatNumber();
+		_modNameLabel.Text = ModSummary.Value.Name;
+		_modDescriptionLabel.Text = ModSummary.Value.Summary;
+		_modAuthorButton.Text = ModSummary.Value.Author;
+		_modDownloadsButton.Text = ModSummary.Value.Downloads.FormatNumber();
+		_modFollowsButton.Text = ModSummary.Value.Follows.FormatNumber();
+		_modCommentsButton.Text = ModSummary.Value.Comments.FormatNumber();
 
 		_modAuthorButton.Pressed += OpenModDbPage;
 		_modDownloadsButton.Pressed += OpenModDbPage;
@@ -62,18 +58,18 @@ public partial class BrowseItem : Button {
 	}
 
 	private void OpenModDbPage() {
-		Tools.RichTextOpenUrl(ModSummary!.UrlAlias is null
-			? $"https://mods.vintagestory.at/show/mod/{ModSummary!.AssetId}"
-			: $"https://mods.vintagestory.at/{ModSummary!.UrlAlias}");
+		Tools.RichTextOpenUrl(ModSummary!.Value.UrlAlias is null
+			? $"https://mods.vintagestory.at/show/mod/{ModSummary!.Value.AssetId}"
+			: $"https://mods.vintagestory.at/{ModSummary!.Value.UrlAlias}");
 	}
 
 	private async void GetLogoTexture() {
-		if (ModSummary!.Logo is null) {
+		if (ModSummary!.Value.Logo is null) {
 			return;
 		}
 
 		ImageTexture? texture = null;
-		await Task.Run(async () => { texture = await Tools.LoadTextureFromUrl(ModSummary.Logo); });
+		await Task.Run(async () => { texture = await Tools.LoadTextureFromUrl(ModSummary.Value.Logo); });
 		if (IsInstanceValid(this) && texture is not null) {
 			_modIconTextureRect!.Texture = texture;
 		}

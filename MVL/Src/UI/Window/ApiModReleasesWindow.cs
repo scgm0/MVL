@@ -67,7 +67,7 @@ public partial class ApiModReleasesWindow : BaseWindow {
 
 		if (ModInfoItem != null) {
 			OkButton?.Hide();
-			foreach (var apiModRelease in ModInfoItem.ApiModInfo!.Releases) {
+			foreach (var apiModRelease in ModInfoItem.ApiModInfo!.Value.Releases) {
 				if (!IsInstanceValid(this)) {
 					return;
 				}
@@ -132,7 +132,7 @@ public partial class ApiModReleasesWindow : BaseWindow {
 
 		if (DownloadModInfo != null) {
 			OkButton?.Hide();
-			foreach (var apiModRelease in DownloadModInfo.Value.apiModInfo!.Releases) {
+			foreach (var apiModRelease in DownloadModInfo.Value.apiModInfo.Releases) {
 				if (!IsInstanceValid(this)) {
 					return;
 				}
@@ -171,7 +171,7 @@ public partial class ApiModReleasesWindow : BaseWindow {
 
 		if (ModDependencies is not null) {
 			var list = ModDependencies.ToList();
-			list.Remove((apiModReleaseItem.ApiModInfo!, apiModReleaseItem.ApiModRelease!, apiModReleaseItem.ModpackConfig!));
+			list.Remove((apiModReleaseItem.ApiModInfo!.Value, apiModReleaseItem.ApiModRelease!.Value, apiModReleaseItem.ModpackConfig!));
 			ModDependencies = list;
 		}
 

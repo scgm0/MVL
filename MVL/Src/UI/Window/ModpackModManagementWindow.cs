@@ -209,19 +209,22 @@ public partial class ModpackModManagementWindow : BaseWindow {
 				var url = $"https://mods.vintagestory.at/api/mod/{modDependency.ModId}";
 				var result = await url.GetStringAsync();
 				var status = JsonSerializer.Deserialize(result, SourceGenerationContext.Default.ApiStatusModInfo);
-				if (status?.StatusCode != "200" || !IsInstanceValid(this)) {
+				if (status.StatusCode is not "200" || !IsInstanceValid(this)) {
 					continue;
 				}
 
 				var apiModInfo = status.Mod!;
-				apiModInfo.Releases = apiModInfo.Releases.OrderByDescending(modRelease => {
-					var version = SemVer.TryParse(modRelease.ModVersion.Replace('*', '0'), out var m) ? m : SemVer.Zero;
-					return version;
-				}).ToArray();
-				var release = apiModInfo.Releases.FirstOrDefault(r => {
+				apiModInfo = apiModInfo.Value with {
+					Releases = apiModInfo.Value.Releases.OrderByDescending(modRelease => {
+						var version = SemVer.TryParse(modRelease.ModVersion.Replace('*', '0'), out var m) ? m : SemVer.Zero;
+						return version;
+					}).ToArray()
+				};
+
+				var release = apiModInfo.Value.Releases.Cast<ApiModRelease?>().FirstOrDefault(r => {
 					var version = SemVer.TryParse(modDependency.Version.Replace('*', '0'), out var m) ? m : SemVer.Zero;
-					var releaseVersion = SemVer.TryParse(r.ModVersion, out var v) ? v : SemVer.Zero;
-					return releaseVersion >= version && r.Tags.Any(gameVersion =>
+					var releaseVersion = SemVer.TryParse(r?.ModVersion, out var v) ? v : SemVer.Zero;
+					return releaseVersion >= version && r!.Value.Tags.Any(gameVersion =>
 						GameVersion.ComparerVersion(ModpackItem!.ModpackConfig!.Version!.Value, new(gameVersion)) >= 0);
 				});
 
@@ -229,7 +232,7 @@ public partial class ModpackModManagementWindow : BaseWindow {
 					continue;
 				}
 
-				list.Add((apiModInfo, release, ModpackItem!.ModpackConfig!));
+				list.Add((apiModInfo.Value, release.Value, ModpackItem!.ModpackConfig!));
 			}
 		});
 
@@ -245,15 +248,15 @@ public partial class ModpackModManagementWindow : BaseWindow {
 	}
 
 	private void ModInfoItemOnNeedToDepend(ModDependency modDependency) {
-		var oldDependency = _modDependencies.FirstOrDefault(m => m.ModId == modDependency.ModId);
+		var oldDependency = _modDependencies.Cast<ModDependency?>().FirstOrDefault(m => m?.ModId == modDependency.ModId);
 		if (oldDependency is not null) {
 			var newVersion = SemVer.TryParse(modDependency.Version.Replace('*', '0'), out var n) ? n : SemVer.Zero;
-			var oldVersion = SemVer.TryParse(oldDependency.Version.Replace('*', '0'), out var o) ? o : SemVer.Zero;
+			var oldVersion = SemVer.TryParse(oldDependency.Value.Version.Replace('*', '0'), out var o) ? o : SemVer.Zero;
 			if (newVersion <= oldVersion) {
 				return;
 			}
 
-			_modDependencies.Remove(oldDependency);
+			_modDependencies.Remove(oldDependency.Value);
 		}
 
 		_modDependencies.Add(modDependency);

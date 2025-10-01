@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.IO.Compression;
 using System.Linq;
 using System.Net;
 using System.Text.Json;
@@ -83,14 +84,7 @@ public partial class ModInfoItem : PanelContainer {
 		_updateButton.NotNull();
 		_progressBar.NotNull();
 
-		_icon!.Texture = Mod?.Icon;
-		_modName!.Text = Mod?.Name;
-		_modName.TooltipText = Mod!.ModPath;
-		_version!.Text = $"{Mod?.ModId}-{Mod?.Version}";
-		_description!.Text = Mod?.Description;
-		_webButton!.Disabled = true;
-		_updateButton!.Disabled = true;
-		_updateButton!.Modulate = Colors.White;
+		UpdateUI();
 
 		_webButton!.Pressed += WebButtonOnPressed;
 		_updateButton.Pressed += UpdateButtonOnPressed;
@@ -132,22 +126,22 @@ public partial class ModInfoItem : PanelContainer {
 	}
 
 	private void WebButtonOnPressed() {
-		Tools.RichTextOpenUrl(ApiModInfo!.UrlAlias is null
-			? $"https://mods.vintagestory.at/show/mod/{ApiModInfo!.AssetId}"
-			: $"https://mods.vintagestory.at/{ApiModInfo.UrlAlias}");
+		Tools.RichTextOpenUrl(ApiModInfo?.UrlAlias is null
+			? $"https://mods.vintagestory.at/show/mod/{ApiModInfo?.AssetId}"
+			: $"https://mods.vintagestory.at/{ApiModInfo.Value.UrlAlias}");
 	}
 
 	private async void UpdateButtonOnPressed() {
 		_updateButton!.Disabled = true;
 		_progressBar!.Show();
-		GD.Print($"下载 {ApiModRelease!.FileName}...");
+		GD.Print($"下载 {ApiModRelease!.Value.FileName}...");
 
 		using var downloadTmp = DirAccess.CreateTemp("MVL_Download");
 		var downloadDir = downloadTmp.GetCurrentDir();
 		var download = DownloadBuilder.New()
-			.WithUrl(ApiModRelease!.MainFile)
+			.WithUrl(ApiModRelease?.MainFile)
 			.WithDirectory(downloadDir)
-			.WithFileName(ApiModRelease.FileName)
+			.WithFileName(ApiModRelease?.FileName)
 			.WithConfiguration(new() {
 				ParallelDownload = true,
 				ChunkCount = Main.BaseConfig.DownloadThreads,
@@ -171,8 +165,8 @@ public partial class ModInfoItem : PanelContainer {
 
 		_progressBar.Hide();
 
-		var path = Path.Combine(Mod!.ModPath.GetBaseDir(), ApiModRelease.FileName);
-		File.Move(Path.Combine(downloadDir, ApiModRelease.FileName), path);
+		var path = Path.Combine(Mod!.ModPath.GetBaseDir(), ApiModRelease!.Value.FileName);
+		File.Move(Path.Combine(downloadDir, ApiModRelease.Value.FileName), path);
 		File.Delete(Mod!.ModPath);
 
 		var mod = ModInfo.FromZip(path);
@@ -209,9 +203,8 @@ public partial class ModInfoItem : PanelContainer {
 		}
 	}
 
-	public async Task UpdateApiModInfo() {
-		_icon!.Texture = Mod!.Icon;
-		_modName!.Text = Mod!.Name;
+	public void UpdateUI() {
+		_modName!.Text = Mod?.Name;
 		_modName.TooltipText = Mod!.ModPath;
 		_version!.Text = $"{Mod?.ModId}-{Mod?.Version}";
 		_description!.Text = Mod?.Description;
@@ -219,6 +212,48 @@ public partial class ModInfoItem : PanelContainer {
 		_releaseButton!.Disabled = true;
 		_updateButton!.Disabled = true;
 		_updateButton!.Modulate = Colors.White;
+
+		if (string.IsNullOrEmpty(Mod?.Icon)) {
+			return;
+		}
+
+		Texture2D? texture = null;
+		switch (Mod.ModPath.GetExtension()) {
+			case "zip": {
+				using var zipArchive = ZipFile.OpenRead(Mod.ModPath);
+				var iconEntry = zipArchive.GetEntry(Mod.Icon);
+				if (iconEntry == null) {
+					break;
+				}
+
+				var path = Path.Combine(Mod.ModPath, iconEntry.FullName);
+				if (ResourceLoader.Exists(path)) {
+					texture = ResourceLoader.Load<Texture2D>(path);
+					break;
+				}
+
+				using var iconStream = iconEntry.Open();
+				using var iconReader = new BinaryReader(iconStream);
+				var iconBytes = iconReader.ReadBytes((int)iconEntry.Length);
+				texture = Tools.CreateTextureFromBytes(iconBytes);
+				texture.TakeOverPath(path);
+				break;
+			}
+
+			default: {
+				var iconPath = Path.Combine(Mod.ModPath, Mod.Icon);
+				texture = Tools.LoadTextureFromPath(iconPath);
+				break;
+			}
+		}
+
+		if (texture is not null) {
+			_icon!.Texture = texture;
+		}
+	}
+
+	public async Task UpdateApiModInfo() {
+		UpdateUI();
 		ApiModInfo = null;
 		ApiModRelease = null;
 		HasNewVersion = false;
@@ -231,7 +266,7 @@ public partial class ModInfoItem : PanelContainer {
 					var url = $"https://mods.vintagestory.at/api/mod/{Mod.ModId}";
 					var result = await url.GetStringAsync();
 					var status = JsonSerializer.Deserialize(result, SourceGenerationContext.Default.ApiStatusModInfo);
-					if (status?.StatusCode != "200" || !IsInstanceValid(this)) {
+					if (status.StatusCode is not "200" || !IsInstanceValid(this)) {
 						return;
 					}
 
@@ -243,9 +278,9 @@ public partial class ModInfoItem : PanelContainer {
 
 							_webButton.Disabled = false;
 							_releaseButton.Disabled = false;
-							_modName.Text = Mod!.Name.Equals(ApiModInfo.Name, StringComparison.Ordinal)
+							_modName.Text = Mod!.Name.Equals(ApiModInfo.Value.Name, StringComparison.Ordinal)
 								? Mod.Name
-								: $"{ApiModInfo.Name} ({Mod.Name})";
+								: $"{ApiModInfo.Value.Name} ({Mod.Name})";
 						},
 						null);
 
@@ -258,7 +293,7 @@ public partial class ModInfoItem : PanelContainer {
 	}
 
 	public void UpdateApiModRelease() {
-		foreach (var modInfoRelease in ApiModInfo!.Releases) {
+		foreach (var modInfoRelease in ApiModInfo!.Value.Releases) {
 			try {
 				if (!IsInstanceValid(this)) {
 					return;
@@ -277,7 +312,7 @@ public partial class ModInfoItem : PanelContainer {
 				HasNewVersion = true;
 				ApiModRelease = modInfoRelease;
 				GD.Print(
-					$"找到 {ApiModInfo.Name} {modInfoRelease.ModVersion} ({Mod.Version}) ({modInfoRelease.Tags.Stringify()})");
+					$"找到 {ApiModInfo.Value.Name} {modInfoRelease.ModVersion} ({Mod.Version}) ({modInfoRelease.Tags.Stringify()})");
 				if (!modInfoRelease.Tags.Any(gameVersion =>
 					GameVersion.ComparerVersion(Mod.ModpackConfig!.Version!.Value, new(gameVersion)) >= 0)) {
 					continue;

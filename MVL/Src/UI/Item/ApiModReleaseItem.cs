@@ -96,18 +96,18 @@ public partial class ApiModReleaseItem : PanelContainer {
 	private async void DownloadButtonOnPressed() { await Download(); }
 
 	public void UpdateInfo() {
-		var url = ApiModInfo!.UrlAlias is null
-			? $"https://mods.vintagestory.at/show/mod/{ApiModInfo!.AssetId}#tab-files"
-			: $"https://mods.vintagestory.at/{ApiModInfo.UrlAlias}#tab-files";
-		_modName!.Text = $"[url={url}]{ApiModInfo!.Name}[/url]";
-		_modName.TooltipText = ApiModRelease!.FileName;
+		var url = ApiModInfo!.Value.UrlAlias is null
+			? $"https://mods.vintagestory.at/show/mod/{ApiModInfo!.Value.AssetId}#tab-files"
+			: $"https://mods.vintagestory.at/{ApiModInfo.Value.UrlAlias}#tab-files";
+		_modName!.Text = $"[url={url}]{ApiModInfo!.Value.Name}[/url]";
+		_modName.TooltipText = ApiModRelease!.Value.FileName;
 		_version!.Text = _isChecked && ModInfo is not null
-			? $"{ModInfo.Version} > {ApiModRelease!.ModVersion}"
-			: ApiModRelease!.ModVersion;
-		_dateLabel!.Text = ApiModRelease!.Created.ToString("yyyy-MM-dd");
-		_downloadCountLabel!.Text = ApiModRelease!.Downloads.ToString();
+			? $"{ModInfo.Version} > {ApiModRelease!.Value.ModVersion}"
+			: ApiModRelease!.Value.ModVersion;
+		_dateLabel!.Text = ApiModRelease.Value.Created.ToString("yyyy-MM-dd");
+		_downloadCountLabel!.Text = ApiModRelease.Value.Downloads.ToString();
 
-		if (string.IsNullOrEmpty(ApiModRelease!.MainFile)) {
+		if (string.IsNullOrEmpty(ApiModRelease.Value.MainFile)) {
 			_downloadButton!.Disabled = true;
 			_checkBox!.Disabled = true;
 			_downloadButton.TooltipText = "无可下载文件";
@@ -125,7 +125,7 @@ public partial class ApiModReleaseItem : PanelContainer {
 
 		try {
 			if (ModInfo != null) {
-				_downloadButton!.Disabled = SemVer.Parse(ApiModRelease.ModVersion) == SemVer.Parse(ModInfo.Version);
+				_downloadButton!.Disabled = SemVer.Parse(ApiModRelease.Value.ModVersion) == SemVer.Parse(ModInfo.Version);
 			}
 
 			_checkBox!.Disabled = _downloadButton!.Disabled;
@@ -142,8 +142,8 @@ public partial class ApiModReleaseItem : PanelContainer {
 			child.QueueFree();
 		}
 
-		ApiModRelease.Tags.Reverse();
-		foreach (var tag in ApiModRelease.Tags) {
+		ApiModRelease.Value.Tags.Reverse();
+		foreach (var tag in ApiModRelease.Value.Tags) {
 			var label = new Label { Text = tag };
 			label.Modulate = Colors.DarkRed;
 			label.ThemeTypeVariation = "ModReleaseTag";
@@ -181,14 +181,14 @@ public partial class ApiModReleaseItem : PanelContainer {
 		_checkBox!.Hide();
 		_progressLabel!.Show();
 		_progressBar!.Show();
-		GD.Print($"下载 {ApiModRelease!.FileName}...");
+		GD.Print($"下载 {ApiModRelease!.Value.FileName}...");
 
 		using var downloadTmp = DirAccess.CreateTemp("MVL_Download");
 		var downloadDir = downloadTmp.GetCurrentDir();
 		_download = DownloadBuilder.New()
-			.WithUrl(ApiModRelease!.MainFile)
+			.WithUrl(ApiModRelease.Value.MainFile)
 			.WithDirectory(downloadDir)
-			.WithFileName(ApiModRelease.FileName)
+			.WithFileName(ApiModRelease.Value.FileName)
 			.WithConfiguration(new() {
 				ParallelDownload = true,
 				ChunkCount = Main.BaseConfig.DownloadThreads,
@@ -217,8 +217,8 @@ public partial class ApiModReleaseItem : PanelContainer {
 			return;
 		}
 
-		var path = Path.Combine(ModpackConfig!.Path!, "Mods", ApiModRelease.FileName);
-		File.Move(Path.Combine(downloadDir, ApiModRelease.FileName), path);
+		var path = Path.Combine(ModpackConfig!.Path!, "Mods", ApiModRelease.Value.FileName);
+		File.Move(Path.Combine(downloadDir, ApiModRelease.Value.FileName), path);
 		if (ModInfo != null) {
 			File.Delete(ModInfo.ModPath);
 		}

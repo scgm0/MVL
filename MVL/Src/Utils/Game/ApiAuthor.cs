@@ -1,6 +1,6 @@
 namespace MVL.Utils.Game;
 
-public class ApiAuthor {
+public struct ApiAuthor {
 	public int UserId { get; init; }
 	public string? Name { get; init; }
 }

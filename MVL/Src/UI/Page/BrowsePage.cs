@@ -217,7 +217,7 @@ public partial class BrowsePage : MenuPage {
 		}
 
 		if (modAuthor is not null) {
-			url = url.AppendQueryParam("author", modAuthor.UserId);
+			url = url.AppendQueryParam("author", modAuthor.Value.UserId);
 		}
 
 		url = modVersion.Aggregate(url,
@@ -230,7 +230,7 @@ public partial class BrowsePage : MenuPage {
 			try {
 				var modListText = await url.GetStringAsync();
 				var modList = JsonSerializer.Deserialize(modListText, SourceGenerationContext.Default.ApiStatusModsList);
-				if (modList?.StatusCode is "200") {
+				if (modList.StatusCode is "200") {
 					var list = modList.Mods!.Where(m => m.Type == "mod");
 					_modSummaryList = list.ToArray();
 					Dispatcher.SynchronizationContext.Send(async void (_) => { await UpdatePage(); }, null);
@@ -344,7 +344,7 @@ public partial class BrowsePage : MenuPage {
 					var result = await url.GetStringAsync();
 					GD.Print(result);
 					var status = JsonSerializer.Deserialize(result, SourceGenerationContext.Default.ApiStatusModInfo);
-					if (status?.StatusCode != "200") {
+					if (status.StatusCode != "200") {
 						confirmationWindow.Message = "获取模组信息失败";
 						confirmationWindow.CancelButton!.Disabled = false;
 						return;
@@ -354,7 +354,7 @@ public partial class BrowsePage : MenuPage {
 					var modInfo = ModpackConfig!.Mods.Values.FirstOrDefault(m =>
 						apiModSummary.ModIdStrs.Any(s => s.Equals(m.ModId, StringComparison.OrdinalIgnoreCase)));
 					var apiModReleasesWindow = _apiModReleasesWindowScene!.Instantiate<ApiModReleasesWindow>();
-					apiModReleasesWindow.DownloadModInfo = (modInfo, status.Mod!, ModpackConfig);
+					apiModReleasesWindow.DownloadModInfo = (modInfo, status.Mod!.Value, ModpackConfig);
 					apiModReleasesWindow.Hidden += () => { apiModReleasesWindow.QueueFree(); };
 					UI.Main.Instance?.AddChild(apiModReleasesWindow);
 					await apiModReleasesWindow.Show();
@@ -406,16 +406,17 @@ public partial class BrowsePage : MenuPage {
 
 			GD.Print($"apiGameVersionsText: {apiGameVersionsText}");
 			GD.Print($"apiTagsText: {apiTagsText}");
+
 			var apiAuthors = JsonSerializer.Deserialize(apiAuthorsText,
 				SourceGenerationContext.Default.ApiStatusAuthors);
-			if (apiAuthors?.StatusCode is "200") {
-				_modAuthorLineEdit?.Candidates = apiAuthors.Authors ?? [];
+			if (apiAuthors.StatusCode is "200") {
+				_modAuthorLineEdit?.Candidates = apiAuthors.Authors?.Cast<ApiAuthor?>() ?? [];
 			}
 
 			var apiGameVersions = JsonSerializer.Deserialize(apiGameVersionsText,
 				SourceGenerationContext.Default.ApiStatusGameVersions);
-			if (apiGameVersions?.StatusCode is "200") {
-				apiGameVersions.GameVersions.Reverse();
+			if (apiGameVersions.StatusCode is "200") {
+				apiGameVersions.GameVersions?.Reverse();
 				_gameVersionIds = (apiGameVersions.GameVersions ?? []).Select(g => g.TagId).ToArray();
 				var list = (apiGameVersions.GameVersions ?? []).Select(g => g.Name).ToList();
 				_ = _modVersionsButton!.UpdateList(list);
@@ -423,7 +424,7 @@ public partial class BrowsePage : MenuPage {
 
 			var apiTags = JsonSerializer.Deserialize(apiTagsText,
 				SourceGenerationContext.Default.ApiStatusModTags);
-			if (apiTags?.StatusCode is "200") {
+			if (apiTags.StatusCode is "200") {
 				_tagIds = (apiTags.Tags ?? []).Select(t => t.TagId).ToArray();
 				_ = _modTagsButton!.UpdateList((apiTags.Tags ?? []).Select(t => t.Name).ToList());
 			}

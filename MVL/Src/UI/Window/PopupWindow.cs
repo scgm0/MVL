@@ -2,6 +2,8 @@ using Godot;
 using System;
 using MVL.Utils.Help;
 
+namespace MVL.UI.Window;
+
 public partial class PopupWindow : Control {
 	[Export]
 	private Button? _closeButton;
