@@ -5,7 +5,6 @@ using System.Linq;
 using System.Text.Json;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
-using Flurl;
 using Flurl.Http;
 using MVL.UI.Item;
 using MVL.UI.Other;
@@ -88,7 +87,7 @@ public partial class BrowsePage : MenuPage {
 			field = value;
 			_pageNumberLineEdit?.Text = value.ToString();
 
-			_ = UpdateList();
+			_ = UpdateListAsync();
 		}
 	} = 1;
 
@@ -154,14 +153,14 @@ public partial class BrowsePage : MenuPage {
 		_previousPageButton.ButtonDown += PreviousPageButtonOnButtonDown;
 		_nextPageButton.ButtonDown += NextPageButtonOnButtonDown;
 
-		_modSideButton.SelectionChanged += () => _ = UpdatePage();
-		_modInstallStatusButton.SelectionChanged += () => _ = UpdatePage();
-		_selectModpackButton.SelectionChanged += () => _ = UpdatePage();
+		_modSideButton.SelectionChanged += () => _ = UpdatePageAsync();
+		_modInstallStatusButton.SelectionChanged += () => _ = UpdatePageAsync();
+		_selectModpackButton.SelectionChanged += () => _ = UpdatePageAsync();
 	}
 
-	private void ModCountSpinBoxOnValueChanged(double value) { _ = UpdatePage(); }
+	private void ModCountSpinBoxOnValueChanged(double value) { _ = UpdatePageAsync(); }
 
-	private void SwapButtonOnToggled(bool toggledOn) { _ = UpdatePage(); }
+	private void SwapButtonOnToggled(bool toggledOn) { _ = UpdatePageAsync(); }
 
 	private void NextPageButtonOnButtonDown() {
 		if (CurrentPage >= MaxPage) {
@@ -181,91 +180,100 @@ public partial class BrowsePage : MenuPage {
 
 	private void SearchButtonOnPressed() {
 		if (_gameVersionIds.Length != 0 && _tagIds.Length != 0) {
-			GetModsList();
+			_ = GetModsListAsync();
 			return;
 		}
 
-		GetOnlineInfo();
+		_ = GetOnlineInfoAsync();
 	}
 
-	private async void GetModsList() {
+	private async Task GetModsListAsync() {
 		foreach (var child in _moduleListContainer!.GetChildren()) {
 			child.Free();
 		}
 
 		if (ModpackConfig is null) {
-			var label = new Label {
-				Text = "请先创建模组包",
-				Modulate = Colors.Yellow,
-				LabelSettings = new() {
-					FontSize = 20
-				}
-			};
-			_moduleListContainer!.AddChild(label);
+			ShowMessageInContainer(_moduleListContainer!, "请先创建整合包", Colors.Yellow);
 			return;
 		}
 
 		_loadingControl?.Show();
-		var url = "https://mods.vintagestory.at/api/mods";
-		var modName = _modNameLineEdit!.Text;
-		var modAuthor = _modAuthorLineEdit!.Selected;
-		var modVersion = _modVersionsButton!.Selected;
-		var modTags = _modTagsButton!.Selected;
-		var modOrderBy = _modOrderByButton!.Selected;
 
-		if (!string.IsNullOrWhiteSpace(modName)) {
-			url = url.AppendQueryParam("text", modName);
-		}
+		try {
+			var url = BuildModsApiUrl();
+			GD.Print($"获取模组列表: {url}");
 
-		if (modAuthor is not null) {
-			url = url.AppendQueryParam("author", modAuthor.Value.UserId);
-		}
+			await using var modListStream = await url.GetStreamAsync();
+			var modList =
+				await JsonSerializer.DeserializeAsync(modListStream, SourceGenerationContext.Default.ApiStatusModsList);
 
-		url = modVersion.Aggregate(url,
-			(current, v) => current.AppendQueryParam("gameversions[]", _gameVersionIds[v].ToString()));
-		url = modTags.Aggregate(url, (current, t) => current.AppendQueryParam("tagids[]", _tagIds[t].ToString()));
-		url = modOrderBy.Aggregate(url, (current, o) => current.AppendQueryParam("orderby", OrderBys[o].ToString()));
+			GD.Print($"模组列表获取完成，StatusCode: {modList.StatusCode}");
 
-		GD.Print($"获取模组列表: {url}");
-		await Task.Run(async () => {
-			try {
-				await using var modListStream = await url.GetStreamAsync();
-				var modList = JsonSerializer.Deserialize(modListStream, SourceGenerationContext.Default.ApiStatusModsList);
-				if (modList.StatusCode is "200") {
-					var list = modList.Mods!.Where(m => m.Type == "mod");
-					_modSummaryList = list.ToArray();
-					Dispatcher.SynchronizationContext.Send(async void (_) => { await UpdatePage(); }, null);
-				} else {
-					var label = new Label {
-						Text = "获取在线信息时发生错误，请检查网络连接",
-						Modulate = Colors.Red,
-						LabelSettings = new() {
-							FontSize = 20
-						}
-					};
-					_moduleListContainer!.AddChild(label);
-				}
-			} catch (Exception e) {
-				GD.PrintErr($"获取在线信息时发生错误: {e.Message}");
-				var label = new Label {
-					Text = "获取在线信息时发生错误，请检查网络连接",
-					Modulate = Colors.Red,
-					LabelSettings = new() {
-						FontSize = 20
+			if (modList.StatusCode is "200") {
+				var mods = modList.Mods ?? [];
+				var filteredList = new List<ApiModSummary>(mods.Length);
+				foreach (var mod in mods) {
+					if (mod.Type == "mod") {
+						filteredList.Add(mod);
 					}
-				};
-				_moduleListContainer!.AddChild(label);
-			}
-		});
+				}
 
-		_loadingControl?.Hide();
+				_modSummaryList = filteredList.ToArray();
+
+				_loadingControl?.Hide();
+				await UpdatePageAsync();
+			} else {
+				ShowMessageInContainer(_moduleListContainer!, "获取模组列表失败，请检查筛选条件或网络", Colors.Red);
+			}
+		} catch (Exception ex) {
+			_loadingControl?.Hide();
+			GD.PrintErr($"获取在线信息时发生错误: {ex.Message}");
+			ShowMessageInContainer(_moduleListContainer!, "获取在线信息时发生错误，请检查网络连接", Colors.Red);
+		}
 	}
 
-	private async Task UpdatePage() {
+	private string BuildModsApiUrl() {
+		const string baseUrl = "https://mods.vintagestory.at/api/mods";
+		var queryParams = new List<KeyValuePair<string, string>>();
+
+		var modName = _modNameLineEdit!.Text;
+		if (!string.IsNullOrWhiteSpace(modName)) {
+			queryParams.Add(new("text", modName));
+		}
+
+		var modAuthor = _modAuthorLineEdit!.Selected;
+		if (modAuthor is not null) {
+			queryParams.Add(new("author", modAuthor.Value.UserId.ToString()));
+		}
+
+		foreach (var v in _modVersionsButton!.Selected) {
+			queryParams.Add(new("gameversions[]", _gameVersionIds[v].ToString()));
+		}
+
+		foreach (var t in _modTagsButton!.Selected) {
+			queryParams.Add(new("tagids[]", _tagIds[t].ToString()));
+		}
+
+		foreach (var o in _modOrderByButton!.Selected) {
+			queryParams.Add(new("orderby", OrderBys[o]));
+		}
+
+		if (queryParams.Count == 0) {
+			return baseUrl;
+		}
+
+		var queryString = string.Join("&",
+			queryParams.Select(kvp =>
+				$"{Uri.EscapeDataString(kvp.Key)}={Uri.EscapeDataString(kvp.Value)}"));
+
+		return $"{baseUrl}?{queryString}";
+	}
+
+	private async Task UpdatePageAsync() {
 		await Task.Run(ModpackConfig!.UpdateMods);
 
 		if (_gameVersionIds.Length == 0 || _tagIds.Length == 0) {
-			GetOnlineInfo();
+			await GetOnlineInfoAsync();
 			return;
 		}
 
@@ -309,35 +317,21 @@ public partial class BrowsePage : MenuPage {
 
 		MaxPage = _modSummaryPageList.Length > 0 ? _modSummaryPageList.Length : 1;
 		CurrentPage = 1;
-		await UpdateList();
+		await UpdateListAsync();
 	}
 
-	private async Task UpdateList() {
+	private async Task UpdateListAsync() {
 		foreach (var child in _moduleListContainer!.GetChildren()) {
 			child.Free();
 		}
 
 		if (ModpackConfig is null) {
-			var label = new Label {
-				Text = "请先创建整合包",
-				Modulate = Colors.Yellow,
-				LabelSettings = new() {
-					FontSize = 20
-				}
-			};
-			_moduleListContainer!.AddChild(label);
+			ShowMessageInContainer(_moduleListContainer!, "请先创建整合包", Colors.Yellow);
 			return;
 		}
 
 		if (_modSummaryPageList.Length == 0) {
-			var label = new Label {
-				Text = "没有找到符合条件的模组",
-				Modulate = Colors.Yellow,
-				LabelSettings = new() {
-					FontSize = 20
-				}
-			};
-			_moduleListContainer!.AddChild(label);
+			ShowMessageInContainer(_moduleListContainer!, "没有找到符合条件的模组", Colors.Yellow);
 			return;
 		}
 
@@ -359,7 +353,8 @@ public partial class BrowsePage : MenuPage {
 					ModpackConfig!.UpdateMods();
 					var url = $"https://mods.vintagestory.at/api/mod/{apiModSummary.ModId}";
 					await using var result = await url.GetStreamAsync();
-					var status = JsonSerializer.Deserialize(result, SourceGenerationContext.Default.ApiStatusModInfo);
+					var status = await JsonSerializer.DeserializeAsync(result,
+						SourceGenerationContext.Default.ApiStatusModInfo);
 					GD.Print($"获取模组信息: {url} ({status.StatusCode})");
 					if (status.StatusCode != "200") {
 						confirmationWindow.Message = "获取模组信息失败";
@@ -392,91 +387,112 @@ public partial class BrowsePage : MenuPage {
 		}
 	}
 
-	private async void GetOnlineInfo() {
+	private async Task GetOnlineInfoAsync() {
+		foreach (var child in _moduleListContainer!.GetChildren()) {
+			child.QueueFree();
+		}
+
+		if (ModpackConfig is null) {
+			ShowMessageInContainer(_moduleListContainer!, "请先创建整合包", Colors.Yellow);
+			return;
+		}
+
+		_loadingControl?.Show();
+
 		try {
-			foreach (var child in _moduleListContainer!.GetChildren()) {
-				child.Free();
-			}
+			var authorsTask = FetchAndDeserializeAsync(
+				"https://mods.vintagestory.at/api/authors",
+				SourceGenerationContext.Default.ApiStatusAuthors);
 
-			if (ModpackConfig is null) {
-				var label = new Label {
-					Text = "请先创建整合包",
-					Modulate = Colors.Yellow,
-					LabelSettings = new() {
-						FontSize = 20
-					}
-				};
-				_moduleListContainer!.AddChild(label);
-				return;
-			}
+			var gameVersionsTask = FetchAndDeserializeAsync(
+				"https://mods.vintagestory.at/api/gameversions",
+				SourceGenerationContext.Default.ApiStatusGameVersions);
 
-			_loadingControl?.Show();
-			using var authorsTask = "https://mods.vintagestory.at/api/authors".GetStreamAsync();
-			using var gameVersionsTask = "https://mods.vintagestory.at/api/gameversions".GetStreamAsync();
-			using var tagsTask = "https://mods.vintagestory.at/api/tags".GetStreamAsync();
+			var tagsTask = FetchAndDeserializeAsync(
+				"https://mods.vintagestory.at/api/tags",
+				SourceGenerationContext.Default.ApiStatusModTags);
 
 			await Task.WhenAll(authorsTask, gameVersionsTask, tagsTask);
 
-			await using var apiAuthorsStream = await authorsTask;
-			await using var apiGameVersionsStream = await gameVersionsTask;
-			await using var apiTagsStream = await tagsTask;
+			var apiAuthors = await authorsTask;
+			var apiGameVersions = await gameVersionsTask;
+			var apiTags = await tagsTask;
 
-			var apiAuthors = JsonSerializer.Deserialize(apiAuthorsStream,
-				SourceGenerationContext.Default.ApiStatusAuthors);
-			GD.PrintS("apiAuthors:", apiAuthors.StatusCode);
-			if (apiAuthors.StatusCode is "200") {
-				_modAuthorLineEdit!.Candidates = apiAuthors.Authors ?? [];
-			}
+			ProcessAuthors(apiAuthors);
+			ProcessGameVersions(apiGameVersions);
+			ProcessTags(apiTags);
 
-			var apiGameVersions = JsonSerializer.Deserialize(apiGameVersionsStream,
-				SourceGenerationContext.Default.ApiStatusGameVersions);
-			GD.PrintS("apiGameVersions:", apiGameVersions.StatusCode);
-			if (apiGameVersions.StatusCode is "200") {
-				apiGameVersions.GameVersions?.Reverse();
-
-				Array.Resize(ref _gameVersionIds, apiGameVersions.GameVersions?.Length ?? 0);
-				for (var i = 0; i < _gameVersionIds.Length; i++) {
-					_gameVersionIds[i] = apiGameVersions.GameVersions![i].TagId;
-				}
-
-				var list = new string[apiGameVersions.GameVersions?.Length ?? 0];
-				for (var i = 0; i < list.Length; i++) {
-					list[i] = apiGameVersions.GameVersions![i].Name;
-				}
-
-				_ = _modVersionsButton!.UpdateList(list);
-			}
-
-			var apiTags = JsonSerializer.Deserialize(apiTagsStream,
-				SourceGenerationContext.Default.ApiStatusModTags);
-			GD.PrintS("apiTags:", apiTags.StatusCode);
-			if (apiTags.StatusCode is "200") {
-				Array.Resize(ref _tagIds, apiTags.Tags?.Length ?? 0);
-				for (var i = 0; i < _tagIds.Length; i++) {
-					_tagIds[i] = apiTags.Tags![i].TagId;
-				}
-
-				var list = new string[apiTags.Tags?.Length ?? 0];
-				for (var i = 0; i < list.Length; i++) {
-					list[i] = apiTags.Tags![i].Name;
-				}
-
-				_ = _modTagsButton!.UpdateList(list);
-			}
-
-			GetModsList();
+			await GetModsListAsync();
 		} catch (Exception ex) {
-			GD.PrintErr($"获取在线信息时发生错误: {ex.Message}");
-			var label = new Label {
-				Text = "获取在线信息时发生错误，请检查网络连接",
-				Modulate = Colors.Red,
-				LabelSettings = new() {
-					FontSize = 20
-				}
-			};
-			_moduleListContainer!.AddChild(label);
 			_loadingControl?.Hide();
+			GD.PrintErr($"获取在线信息时发生错误: {ex.Message}");
+			ShowMessageInContainer(_moduleListContainer!, "获取在线信息时发生错误，请检查网络连接", Colors.Red);
 		}
+	}
+
+	private async Task<T?> FetchAndDeserializeAsync<T>(
+		string url,
+		System.Text.Json.Serialization.Metadata.JsonTypeInfo<T> typeInfo) {
+		await using var stream = await url.GetStreamAsync();
+		return await JsonSerializer.DeserializeAsync(stream, typeInfo);
+	}
+
+	private void ProcessAuthors(ApiStatusAuthors? apiAuthors) {
+		GD.PrintS("apiAuthors status:", apiAuthors?.StatusCode);
+		if (apiAuthors?.StatusCode is "200") {
+			_modAuthorLineEdit!.Candidates = apiAuthors.Value.Authors ?? [];
+		}
+	}
+
+	private void ProcessGameVersions(ApiStatusGameVersions? apiGameVersions) {
+		GD.PrintS("apiGameVersions status:", apiGameVersions?.StatusCode);
+		if (apiGameVersions?.StatusCode is not "200") {
+			return;
+		}
+
+		var versions = apiGameVersions.Value.GameVersions ?? [];
+		var count = versions.Length;
+
+		Array.Resize(ref _gameVersionIds, count);
+		var nameList = new string[count];
+
+		for (var i = 0; i < count; i++) {
+			var version = versions[count - 1 - i];
+			_gameVersionIds[i] = version.TagId;
+			nameList[i] = version.Name;
+		}
+
+		_ = _modVersionsButton!.UpdateList(nameList);
+	}
+
+	private void ProcessTags(ApiStatusModTags? apiTags) {
+		GD.PrintS("apiTags status:", apiTags?.StatusCode);
+		if (apiTags?.StatusCode is not "200") {
+			return;
+		}
+
+		var tags = apiTags.Value.Tags ?? [];
+		var count = tags.Length;
+
+		Array.Resize(ref _tagIds, count);
+		var nameList = new string[count];
+
+		for (var i = 0; i < count; i++) {
+			var tag = tags[i];
+			_tagIds[i] = tag.TagId;
+			nameList[i] = tag.Name;
+		}
+
+		_ = _modTagsButton!.UpdateList(nameList);
+	}
+
+	private void ShowMessageInContainer(Node container, string text, Color color) {
+		var label = new Label {
+			Text = text,
+			Modulate = color,
+			LabelSettings = new() { FontSize = 20 }
+		};
+		container.AddChild(label);
 	}
 
 	private void PageNumberButtonOnButtonDown() {
