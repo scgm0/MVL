@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using System.Threading.Tasks;
 using Godot;
 using MVL.UI;
 using MVL.Utils.Game;
@@ -58,31 +59,40 @@ public class ModpackConfig {
 			Directory.CreateDirectory(modsPath);
 		}
 
-		foreach (var entryPath in Directory.EnumerateFileSystemEntries(modsPath)) {
-			var modInfo = TryLoadMod(entryPath);
-			if (modInfo == null) {
-				continue;
-			}
-
-			modInfo.ModpackConfig = this;
-
-			if (Mods.TryAdd(modInfo.ModId, modInfo)) {
-				continue;
-			}
-
-			try {
-				var oldModInfo = Mods[modInfo.ModId];
-				var version1 = SemVer.Parse(oldModInfo.Version);
-				var version2 = SemVer.Parse(modInfo.Version);
-				if (version1 > version2) {
-					Mods[modInfo.ModId] = oldModInfo;
-				} else {
-					Mods[modInfo.ModId] = modInfo;
+		Parallel.ForEach(Directory.EnumerateFileSystemEntries(modsPath),
+			entryPath => {
+				var modInfo = TryLoadMod(entryPath);
+				if (modInfo == null) {
+					return;
 				}
-			} catch (Exception ex) {
-				GD.PrintErr($"从 {entryPath} 加载 mod 时出错: {ex.Message}");
-			}
-		}
+
+				modInfo.ModpackConfig = this;
+
+				var success = false;
+				while (!success) {
+					if (Mods.TryGetValue(modInfo.ModId, out var existingModInfo)) {
+						try {
+							var newVersion = SemVer.Parse(modInfo.Version);
+							var oldVersion = SemVer.Parse(existingModInfo.Version);
+
+							if (newVersion > oldVersion) {
+								if (Mods.TryUpdate(modInfo.ModId, modInfo, existingModInfo)) {
+									success = true;
+								}
+							} else {
+								success = true;
+							}
+						} catch (Exception ex) {
+							GD.PrintErr($"比较 {modInfo.ModId} 版本时出错: {ex.Message}");
+							success = true;
+						}
+					} else {
+						if (Mods.TryAdd(modInfo.ModId, modInfo)) {
+							success = true;
+						}
+					}
+				}
+			});
 	}
 
 	static private ModInfo? TryLoadMod(string entryPath) {
@@ -106,8 +116,9 @@ public class ModpackConfig {
 		var configPath = System.IO.Path.Combine(modpackPath, "modpack.json");
 		ModpackConfig modPackConfig;
 		try {
-			if (FileAccess.FileExists(configPath)) {
-				modPackConfig = JsonSerializer.Deserialize<ModpackConfig>(FileAccess.GetFileAsString(configPath),
+			if (File.Exists(configPath)) {
+				using var file = File.OpenRead(configPath);
+				modPackConfig = JsonSerializer.Deserialize<ModpackConfig>(file,
 						SourceGenerationContext.Default.ModpackConfig) ??
 					new ModpackConfig();
 			} else {
