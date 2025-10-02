@@ -25,7 +25,7 @@ public partial class SelectionButton : Button {
 	private ButtonGroup _buttonGroup = new();
 	private float _maxHeight;
 	private Tween? _tween;
-	public IList<string> SelectionList { get; set; } = [];
+	public string[] SelectionList { get; set; } = [];
 
 	public int MaxShow { get; set; } = 5;
 
@@ -65,7 +65,7 @@ public partial class SelectionButton : Button {
 		Bg.Disabled = false;
 	}
 
-	public async Task UpdateList(IList<string> list) {
+	public async Task UpdateList(string[] list) {
 		SelectionList = list;
 		Selected.Clear();
 

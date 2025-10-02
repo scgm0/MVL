@@ -1,5 +1,6 @@
 using Godot;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text.Json;
 using System.Text.RegularExpressions;
@@ -262,37 +263,53 @@ public partial class BrowsePage : MenuPage {
 
 	private async Task UpdatePage() {
 		await Task.Run(ModpackConfig!.UpdateMods);
+
 		if (_gameVersionIds.Length == 0 || _tagIds.Length == 0) {
 			GetOnlineInfo();
-		} else {
-			var modSide = _modSideButton!.Selected;
-			var modInstallStatus = _modInstallStatusButton!.Selected;
-			var list = _modSummaryList.ToList();
+			return;
+		}
+
+		var filteredList = new List<ApiModSummary>(_modSummaryList.Length);
+
+		var modInstallStatus = _modInstallStatusButton!.Selected;
+		Lazy<HashSet<string>> installedModIdSet = new(() =>
+			ModpackConfig!.Mods.Values
+				.Select(m => m.ModId)
+				.ToHashSet(StringComparer.OrdinalIgnoreCase)
+		);
+
+		var modSide = _modSideButton!.Selected;
+
+		foreach (var summary in _modSummaryList) {
 			if (modSide[0] != 0) {
-				list = list.Where(summary => {
-					return modSide[0] switch {
-						1 => summary.Side == "client", 2 => summary.Side == "server", 3 => summary.Side == "both", _ => false
-					};
-				}).ToList();
+				var sideMatch = modSide[0] switch {
+					1 => summary.Side == "client", 2 => summary.Side == "server", 3 => summary.Side == "both", _ => false
+				};
+				if (!sideMatch) {
+					continue;
+				}
 			}
 
 			if (modInstallStatus[0] != 0) {
-				list = list.Where(summary => {
-					var isInstalled = ModpackConfig!.Mods.Values.Any(m =>
-						summary.ModIdStrs.Any(s => s.Equals(m.ModId, StringComparison.OrdinalIgnoreCase)));
-					return modInstallStatus[0] switch { 1 => isInstalled, 2 => !isInstalled, _ => false };
-				}).ToList();
+				var isInstalled = summary.ModIdStrs.Any(installedModIdSet.Value.Contains);
+				var installStatusMatch = modInstallStatus[0] switch { 1 => isInstalled, 2 => !isInstalled, _ => false };
+				if (!installStatusMatch) {
+					continue;
+				}
 			}
 
-			if (_swapButton!.ButtonPressed) {
-				list.Reverse();
-			}
-
-			_modSummaryPageList = list.Chunk((int)_modCountSpinBox!.Value).ToArray();
-			MaxPage = _modSummaryPageList.Length > 0 ? _modSummaryPageList.Length : 1;
-			CurrentPage = 1;
-			await UpdateList();
+			filteredList.Add(summary);
 		}
+
+		if (_swapButton!.ButtonPressed) {
+			filteredList.Reverse();
+		}
+
+		_modSummaryPageList = filteredList.Chunk((int)_modCountSpinBox!.Value).ToArray();
+
+		MaxPage = _modSummaryPageList.Length > 0 ? _modSummaryPageList.Length : 1;
+		CurrentPage = 1;
+		await UpdateList();
 	}
 
 	private async Task UpdateList() {
@@ -404,29 +421,47 @@ public partial class BrowsePage : MenuPage {
 			var apiGameVersionsText = await gameVersionsTask;
 			var apiTagsText = await tagsTask;
 
-			GD.Print($"apiGameVersionsText: {apiGameVersionsText}");
-			GD.Print($"apiTagsText: {apiTagsText}");
-
 			var apiAuthors = JsonSerializer.Deserialize(apiAuthorsText,
 				SourceGenerationContext.Default.ApiStatusAuthors);
+			GD.PrintS("apiAuthors:", apiAuthors.StatusCode);
 			if (apiAuthors.StatusCode is "200") {
-				_modAuthorLineEdit?.Candidates = apiAuthors.Authors?.Cast<ApiAuthor?>().ToArray() ?? [];
+				_modAuthorLineEdit!.Candidates = apiAuthors.Authors ?? [];
 			}
 
 			var apiGameVersions = JsonSerializer.Deserialize(apiGameVersionsText,
 				SourceGenerationContext.Default.ApiStatusGameVersions);
+			GD.PrintS("apiGameVersions:", apiGameVersions.StatusCode);
 			if (apiGameVersions.StatusCode is "200") {
 				apiGameVersions.GameVersions?.Reverse();
-				_gameVersionIds = (apiGameVersions.GameVersions ?? []).Select(g => g.TagId).ToArray();
-				var list = (apiGameVersions.GameVersions ?? []).Select(g => g.Name).ToList();
+
+				Array.Resize(ref _gameVersionIds, apiGameVersions.GameVersions?.Length ?? 0);
+				for (var i = 0; i < _gameVersionIds.Length; i++) {
+					_gameVersionIds[i] = apiGameVersions.GameVersions![i].TagId;
+				}
+
+				var list = new string[apiGameVersions.GameVersions?.Length ?? 0];
+				for (var i = 0; i < list.Length; i++) {
+					list[i] = apiGameVersions.GameVersions![i].Name;
+				}
+
 				_ = _modVersionsButton!.UpdateList(list);
 			}
 
 			var apiTags = JsonSerializer.Deserialize(apiTagsText,
 				SourceGenerationContext.Default.ApiStatusModTags);
+			GD.PrintS("apiTags:", apiTags.StatusCode);
 			if (apiTags.StatusCode is "200") {
-				_tagIds = (apiTags.Tags ?? []).Select(t => t.TagId).ToArray();
-				_ = _modTagsButton!.UpdateList((apiTags.Tags ?? []).Select(t => t.Name).ToList());
+				Array.Resize(ref _tagIds, apiTags.Tags?.Length ?? 0);
+				for (var i = 0; i < _tagIds.Length; i++) {
+					_tagIds[i] = apiTags.Tags![i].TagId;
+				}
+
+				var list = new string[apiTags.Tags?.Length ?? 0];
+				for (var i = 0; i < list.Length; i++) {
+					list[i] = apiTags.Tags![i].Name;
+				}
+
+				_ = _modTagsButton!.UpdateList(list);
 			}
 
 			GetModsList();
@@ -445,7 +480,7 @@ public partial class BrowsePage : MenuPage {
 	}
 
 	private void PageNumberButtonOnButtonDown() {
-		_pageNumberLineEdit?.GrabFocus();
+		_pageNumberLineEdit?.GrabFocus(true);
 		_pageNumberLineEdit?.CaretColumn = _pageNumberLineEdit.Text.Length;
 	}
 
