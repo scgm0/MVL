@@ -31,6 +31,8 @@ public record ModInfo : IComparable<ModInfo> {
 
 	public ModpackConfig? ModpackConfig { get; set; }
 
+	private const string JsonName = "modinfo.json";
+
 	public int CompareTo(ModInfo? other) {
 		if (other is null) {
 			return 1;
@@ -88,17 +90,18 @@ public record ModInfo : IComparable<ModInfo> {
 		try {
 			using var zipArchive = ZipFile.OpenRead(zipPath);
 
-			var jsonEntry = zipArchive.Entries.FirstOrDefault(entry =>
-				string.Equals(entry.Name, "modinfo.json", StringComparison.OrdinalIgnoreCase));
+			var jsonEntry = zipArchive.GetEntry(JsonName);
+
+			jsonEntry ??= zipArchive.Entries.FirstOrDefault(entry =>
+				string.Equals(entry.Name, JsonName, StringComparison.OrdinalIgnoreCase));
+
 			if (jsonEntry == null) {
 				return null;
 			}
 
 			using var stream = jsonEntry.Open();
-			using var reader = new StreamReader(stream, Encoding.UTF8);
-			var jsonContent = reader.ReadToEnd();
+			var modInfo = JsonSerializer.Deserialize(stream, SourceGenerationContext.Default.ModInfo);
 
-			var modInfo = JsonSerializer.Deserialize(jsonContent, SourceGenerationContext.Default.ModInfo);
 			modInfo?.ModPath = zipPath;
 
 			return modInfo;
@@ -110,14 +113,14 @@ public record ModInfo : IComparable<ModInfo> {
 
 	public static ModInfo? FromDirectory(string directoryPath) {
 		try {
-			var jsonPath = Path.Combine(directoryPath, "modinfo.json");
+			var jsonPath = Path.Combine(directoryPath, JsonName);
 			if (!File.Exists(jsonPath)) {
 				return null;
 			}
 
-			var jsonContent = File.ReadAllText(jsonPath);
+			using var fileStream = File.OpenRead(jsonPath);
+			var modInfo = JsonSerializer.Deserialize(fileStream, SourceGenerationContext.Default.ModInfo);
 
-			var modInfo = JsonSerializer.Deserialize(jsonContent, SourceGenerationContext.Default.ModInfo);
 			modInfo?.ModPath = directoryPath;
 
 			return modInfo;
