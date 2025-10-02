@@ -1,8 +1,10 @@
 using System.Collections.Generic;
+using System.IO;
 using System.Text.Json;
 using Godot;
 using SharedLibrary;
 using Environment = System.Environment;
+using FileAccess = Godot.FileAccess;
 
 namespace MVL.Utils.Config;
 
@@ -25,8 +27,8 @@ public class BaseConfig {
 	public static BaseConfig Load(string configPath) {
 		BaseConfig baseConfig;
 		try {
-			if (FileAccess.FileExists(configPath)) {
-				baseConfig = JsonSerializer.Deserialize(FileAccess.GetFileAsString(configPath),
+			if (File.Exists(configPath)) {
+				baseConfig = JsonSerializer.Deserialize(File.OpenRead(configPath),
 					SourceGenerationContext.Default.BaseConfig) ?? new BaseConfig();
 			} else {
 				baseConfig = new();

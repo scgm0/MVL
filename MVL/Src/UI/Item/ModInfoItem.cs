@@ -264,7 +264,7 @@ public partial class ModInfoItem : PanelContainer {
 			if (!string.IsNullOrWhiteSpace(Mod!.ModId)) {
 				try {
 					var url = $"https://mods.vintagestory.at/api/mod/{Mod.ModId}";
-					var result = await url.GetStringAsync();
+					var result = await url.GetStreamAsync();
 					var status = JsonSerializer.Deserialize(result, SourceGenerationContext.Default.ApiStatusModInfo);
 					if (status.StatusCode is not "200" || !IsInstanceValid(this)) {
 						return;

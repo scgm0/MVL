@@ -229,8 +229,8 @@ public partial class BrowsePage : MenuPage {
 		GD.Print($"获取模组列表: {url}");
 		await Task.Run(async () => {
 			try {
-				var modListText = await url.GetStringAsync();
-				var modList = JsonSerializer.Deserialize(modListText, SourceGenerationContext.Default.ApiStatusModsList);
+				var modListStream = await url.GetStreamAsync();
+				var modList = JsonSerializer.Deserialize(modListStream, SourceGenerationContext.Default.ApiStatusModsList);
 				if (modList.StatusCode is "200") {
 					var list = modList.Mods!.Where(m => m.Type == "mod");
 					_modSummaryList = list.ToArray();
@@ -358,7 +358,7 @@ public partial class BrowsePage : MenuPage {
 				try {
 					ModpackConfig!.UpdateMods();
 					var url = $"https://mods.vintagestory.at/api/mod/{apiModSummary.ModId}";
-					var result = await url.GetStringAsync();
+					var result = await url.GetStreamAsync();
 					GD.Print(result);
 					var status = JsonSerializer.Deserialize(result, SourceGenerationContext.Default.ApiStatusModInfo);
 					if (status.StatusCode != "200") {
@@ -411,24 +411,24 @@ public partial class BrowsePage : MenuPage {
 			}
 
 			_loadingControl?.Show();
-			using var authorsTask = "https://mods.vintagestory.at/api/authors".GetStringAsync();
-			using var gameVersionsTask = "https://mods.vintagestory.at/api/gameversions".GetStringAsync();
-			using var tagsTask = "https://mods.vintagestory.at/api/tags".GetStringAsync();
+			using var authorsTask = "https://mods.vintagestory.at/api/authors".GetStreamAsync();
+			using var gameVersionsTask = "https://mods.vintagestory.at/api/gameversions".GetStreamAsync();
+			using var tagsTask = "https://mods.vintagestory.at/api/tags".GetStreamAsync();
 
 			await Task.WhenAll(authorsTask, gameVersionsTask, tagsTask);
 
-			var apiAuthorsText = await authorsTask;
-			var apiGameVersionsText = await gameVersionsTask;
-			var apiTagsText = await tagsTask;
+			var apiAuthorsStream = await authorsTask;
+			var apiGameVersionsStream = await gameVersionsTask;
+			var apiTagsStream = await tagsTask;
 
-			var apiAuthors = JsonSerializer.Deserialize(apiAuthorsText,
+			var apiAuthors = JsonSerializer.Deserialize(apiAuthorsStream,
 				SourceGenerationContext.Default.ApiStatusAuthors);
 			GD.PrintS("apiAuthors:", apiAuthors.StatusCode);
 			if (apiAuthors.StatusCode is "200") {
 				_modAuthorLineEdit!.Candidates = apiAuthors.Authors ?? [];
 			}
 
-			var apiGameVersions = JsonSerializer.Deserialize(apiGameVersionsText,
+			var apiGameVersions = JsonSerializer.Deserialize(apiGameVersionsStream,
 				SourceGenerationContext.Default.ApiStatusGameVersions);
 			GD.PrintS("apiGameVersions:", apiGameVersions.StatusCode);
 			if (apiGameVersions.StatusCode is "200") {
@@ -447,7 +447,7 @@ public partial class BrowsePage : MenuPage {
 				_ = _modVersionsButton!.UpdateList(list);
 			}
 
-			var apiTags = JsonSerializer.Deserialize(apiTagsText,
+			var apiTags = JsonSerializer.Deserialize(apiTagsStream,
 				SourceGenerationContext.Default.ApiStatusModTags);
 			GD.PrintS("apiTags:", apiTags.StatusCode);
 			if (apiTags.StatusCode is "200") {
