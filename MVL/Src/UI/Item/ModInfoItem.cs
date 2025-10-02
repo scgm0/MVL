@@ -260,36 +260,32 @@ public partial class ModInfoItem : PanelContainer {
 		CanUpdate = false;
 		HasAutoUpdate?.Invoke(this);
 
-		await Task.Run(async () => {
-			if (!string.IsNullOrWhiteSpace(Mod!.ModId)) {
-				try {
-					var url = $"https://mods.vintagestory.at/api/mod/{Mod.ModId}";
-					await using var result = await url.GetStreamAsync();
-					var status = JsonSerializer.Deserialize(result, SourceGenerationContext.Default.ApiStatusModInfo);
-					if (status.StatusCode is not "200" || !IsInstanceValid(this)) {
-						return;
-					}
-
-					ApiModInfo = status.Mod!;
-					Dispatcher.SynchronizationContext.Post(_ => {
-							if (_modName == null || !IsInstanceValid(this)) {
-								return;
-							}
-
-							_webButton!.Disabled = false;
-							_releaseButton!.Disabled = false;
-							_modName.Text = Mod!.Name.Equals(ApiModInfo.Value.Name, StringComparison.Ordinal)
-								? Mod.Name
-								: $"{ApiModInfo.Value.Name} ({Mod.Name})";
-						},
-						null);
-
-					UpdateApiModRelease();
-				} catch (Exception e) {
-					GD.PrintErr(e);
+		if (!string.IsNullOrWhiteSpace(Mod!.ModId)) {
+			try {
+				var url = $"https://mods.vintagestory.at/api/mod/{Mod.ModId}";
+				await using var result = await url.GetStreamAsync();
+				var status = await JsonSerializer.DeserializeAsync(result, SourceGenerationContext.Default.ApiStatusModInfo);
+				if (status.StatusCode is not "200" || !IsInstanceValid(this)) {
+					return;
 				}
+
+				ApiModInfo = status.Mod!;
+
+				await Task.Run(UpdateApiModRelease);
+
+				if (_modName == null || !IsInstanceValid(this)) {
+					return;
+				}
+
+				_webButton!.Disabled = false;
+				_releaseButton!.Disabled = false;
+				_modName.Text = Mod!.Name.Equals(ApiModInfo.Value.Name, StringComparison.Ordinal)
+					? Mod.Name
+					: $"{ApiModInfo.Value.Name} ({Mod.Name})";
+			} catch (Exception e) {
+				GD.PrintErr(e);
 			}
-		});
+		}
 	}
 
 	public void UpdateApiModRelease() {
