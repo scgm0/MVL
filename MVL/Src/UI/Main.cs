@@ -545,7 +545,7 @@ public partial class Main : NativeWindowUtility {
 					return;
 				}
 
-				GD.PrintRich(args.Data.ConvertAnsiToBbCode());
+				GD.Print(args.Data);
 				if (args.Data.EndsWith("Client logger started.")) {
 					Dispatcher.SynchronizationContext.Post(_ => { SceneTree.Root.Minimize(); }, null);
 				}
