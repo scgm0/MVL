@@ -106,13 +106,21 @@ public readonly record struct GameVersion {
 	}
 
 	public static GameVersion? FromGamePath(string gamePath) {
+		var assemblyPath = Path.Combine(gamePath, "VintagestoryAPI.dll");
 		try {
-			using var assembly = AssemblyDefinition.ReadAssembly(Path.Combine(gamePath, "VintagestoryAPI.dll"));
+			using var assembly = AssemblyDefinition.ReadAssembly(assemblyPath);
 			var type = assembly.MainModule.GetType("Vintagestory.API.Config.GameVersion");
-			var fields = type.Fields.ToDictionary(definition => definition.Name, definition => definition.Constant);
-			var gameVersion = new GameVersion((string)fields["ShortGameVersion"]);
-			return gameVersion;
-		} catch {
+			var versionField = type.Fields.FirstOrDefault(field =>
+				field.Name == "ShortGameVersion" && field.IsLiteral);
+			if (versionField?.Constant is string version) {
+				var gameVersion = new GameVersion(version);
+				return gameVersion;
+			}
+
+			GD.PrintErr($"无法从游戏程序集 {assemblyPath} 获取游戏版本: 未找到 ShortGameVersion 字段");
+			return null;
+		} catch (Exception e) {
+			GD.PrintErr($"无法从游戏程序集 {assemblyPath} 获取游戏版本: {e.Message}");
 			return null;
 		}
 	}
