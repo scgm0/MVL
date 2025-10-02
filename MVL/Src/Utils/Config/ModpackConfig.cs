@@ -2,6 +2,7 @@ using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
@@ -13,7 +14,10 @@ using FileAccess = Godot.FileAccess;
 namespace MVL.Utils.Config;
 
 public class ModpackConfig {
+	private readonly record struct ModCacheEntry(ModInfo ModInfo, DateTime LastWriteTimeUtc);
+
 	private string _configPath = string.Empty;
+	private readonly ConcurrentDictionary<string, ModCacheEntry> _modInfoCache = new();
 	public string? Name { get; set; }
 	public GameVersion? Version { get; set; }
 
@@ -59,6 +63,13 @@ public class ModpackConfig {
 			Directory.CreateDirectory(modsPath);
 		}
 
+		var existingPaths = new HashSet<string>(Directory.EnumerateFileSystemEntries(modsPath));
+		foreach (var cachedPath in _modInfoCache.Keys) {
+			if (!existingPaths.Contains(cachedPath)) {
+				_modInfoCache.TryRemove(cachedPath, out _);
+			}
+		}
+
 		Parallel.ForEach(Directory.EnumerateFileSystemEntries(modsPath),
 			entryPath => {
 				var modInfo = TryLoadMod(entryPath);
@@ -95,19 +106,39 @@ public class ModpackConfig {
 			});
 	}
 
-	static private ModInfo? TryLoadMod(string entryPath) {
+	private ModInfo? TryLoadMod(string entryPath) {
 		try {
+			var lastWriteTime = File.GetLastWriteTimeUtc(entryPath);
+
+			if (_modInfoCache.TryGetValue(entryPath, out var cachedEntry) &&
+				cachedEntry.LastWriteTimeUtc == lastWriteTime) {
+				return cachedEntry.ModInfo;
+			}
+
+			ModInfo? newModInfo = null;
 			var attributes = File.GetAttributes(entryPath);
 
 			if ((attributes & FileAttributes.Directory) == FileAttributes.Directory) {
-				return ModInfo.FromDirectory(entryPath);
+				newModInfo = ModInfo.FromDirectory(entryPath);
+			} else {
+				if (entryPath.EndsWith(".zip", StringComparison.OrdinalIgnoreCase)) {
+					newModInfo = ModInfo.FromZip(entryPath);
+				} else if (entryPath.EndsWith(".dll", StringComparison.OrdinalIgnoreCase)) {
+					newModInfo = ModInfo.FromAssembly(entryPath);
+				}
 			}
 
-			return System.IO.Path.GetExtension(entryPath).ToLowerInvariant() switch {
-				".zip" => ModInfo.FromZip(entryPath), ".dll" => ModInfo.FromAssembly(entryPath), _ => null
-			};
+			if (newModInfo != null) {
+				var newCacheEntry = new ModCacheEntry(newModInfo, lastWriteTime);
+				_modInfoCache[entryPath] = newCacheEntry;
+			} else {
+				_modInfoCache.TryRemove(entryPath, out _);
+			}
+
+			return newModInfo;
 		} catch (Exception ex) {
 			GD.PrintErr($"从 {entryPath} 加载 mod 时出错: {ex.Message}");
+			_modInfoCache.TryRemove(entryPath, out _);
 			return null;
 		}
 	}
