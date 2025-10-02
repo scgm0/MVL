@@ -334,7 +334,7 @@ public partial class GameDownloadWindow : BaseWindow {
 	private async Task GetReleases(string releaseUrl) {
 		try {
 			_lastException = null;
-			var stream = await releaseUrl.GetStreamAsync(cancellationToken: _cancellation!.Token);
+			await using var stream = await releaseUrl.GetStreamAsync(cancellationToken: _cancellation!.Token);
 			_releases = JsonSerializer.Deserialize(stream,
 				SourceGenerationContext.Default.DictionaryGameVersionGameRelease);
 

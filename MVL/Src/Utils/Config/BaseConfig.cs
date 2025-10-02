@@ -28,7 +28,8 @@ public class BaseConfig {
 		BaseConfig baseConfig;
 		try {
 			if (File.Exists(configPath)) {
-				baseConfig = JsonSerializer.Deserialize(File.OpenRead(configPath),
+				using var file = File.OpenRead(configPath);
+				baseConfig = JsonSerializer.Deserialize(file,
 					SourceGenerationContext.Default.BaseConfig) ?? new BaseConfig();
 			} else {
 				baseConfig = new();

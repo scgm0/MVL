@@ -207,7 +207,7 @@ public partial class ModpackModManagementWindow : BaseWindow {
 		await Task.Run(async () => {
 			foreach (var modDependency in _modDependencies) {
 				var url = $"https://mods.vintagestory.at/api/mod/{modDependency.ModId}";
-				var result = await url.GetStreamAsync();
+				await using var result = await url.GetStreamAsync();
 				var status = JsonSerializer.Deserialize(result, SourceGenerationContext.Default.ApiStatusModInfo);
 				if (status.StatusCode is not "200" || !IsInstanceValid(this)) {
 					continue;

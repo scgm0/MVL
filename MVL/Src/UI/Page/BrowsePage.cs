@@ -229,7 +229,7 @@ public partial class BrowsePage : MenuPage {
 		GD.Print($"获取模组列表: {url}");
 		await Task.Run(async () => {
 			try {
-				var modListStream = await url.GetStreamAsync();
+				await using var modListStream = await url.GetStreamAsync();
 				var modList = JsonSerializer.Deserialize(modListStream, SourceGenerationContext.Default.ApiStatusModsList);
 				if (modList.StatusCode is "200") {
 					var list = modList.Mods!.Where(m => m.Type == "mod");
@@ -358,9 +358,9 @@ public partial class BrowsePage : MenuPage {
 				try {
 					ModpackConfig!.UpdateMods();
 					var url = $"https://mods.vintagestory.at/api/mod/{apiModSummary.ModId}";
-					var result = await url.GetStreamAsync();
-					GD.Print(result);
+					await using var result = await url.GetStreamAsync();
 					var status = JsonSerializer.Deserialize(result, SourceGenerationContext.Default.ApiStatusModInfo);
+					GD.Print($"获取模组信息: {url} ({status.StatusCode})");
 					if (status.StatusCode != "200") {
 						confirmationWindow.Message = "获取模组信息失败";
 						confirmationWindow.CancelButton!.Disabled = false;
@@ -417,9 +417,9 @@ public partial class BrowsePage : MenuPage {
 
 			await Task.WhenAll(authorsTask, gameVersionsTask, tagsTask);
 
-			var apiAuthorsStream = await authorsTask;
-			var apiGameVersionsStream = await gameVersionsTask;
-			var apiTagsStream = await tagsTask;
+			await using var apiAuthorsStream = await authorsTask;
+			await using var apiGameVersionsStream = await gameVersionsTask;
+			await using var apiTagsStream = await tagsTask;
 
 			var apiAuthors = JsonSerializer.Deserialize(apiAuthorsStream,
 				SourceGenerationContext.Default.ApiStatusAuthors);
