@@ -64,6 +64,16 @@ public partial class SelectModpackButton : Button {
 		VisibilityChanged += OnVisibilityChanged;
 		Pressed += OnPressed;
 		_bg.Pressed += BgOnPressed;
+		_bg.VisibilityChanged += BgOnVisibilityChanged;
+	}
+
+	private void BgOnVisibilityChanged() {
+		var rid = _bg!.GetCanvasItem();
+		if (_bg.Visible) {
+			RenderingServer.CanvasItemSetCopyToBackbuffer(rid, true, _bg.GetGlobalRect());
+		} else {
+			RenderingServer.CanvasItemSetCopyToBackbuffer(rid, false, new());
+		}
 	}
 
 	private async void BgOnPressed() {

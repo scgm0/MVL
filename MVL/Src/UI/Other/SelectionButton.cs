@@ -49,6 +49,16 @@ public partial class SelectionButton : Button {
 
 		Pressed += ShowList;
 		Bg.Pressed += BgOnPressed;
+		Bg.VisibilityChanged += BgOnVisibilityChanged;
+	}
+
+	private void BgOnVisibilityChanged() {
+		var rid = Bg!.GetCanvasItem();
+		if (Bg.Visible) {
+			RenderingServer.CanvasItemSetCopyToBackbuffer(rid, true, Bg.GetGlobalRect());
+		} else {
+			RenderingServer.CanvasItemSetCopyToBackbuffer(rid, false, new());
+		}
 	}
 
 	private async void BgOnPressed() {

@@ -57,9 +57,6 @@ grow_horizontal = 2
 grow_vertical = 2
 flat = true
 
-[node name="BackBufferCopy" type="BackBufferCopy" parent="Button"]
-copy_mode = 2
-
 [node name="PanelContainer" type="PanelContainer" parent="Button"]
 material = ExtResource("2_p6n26")
 layout_mode = 1
