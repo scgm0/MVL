@@ -35,12 +35,20 @@ public abstract partial class CandidateLineEdit<T> : LineEdit {
 
 		Bg.MouseFilter = MouseFilterEnum.Stop;
 		Bg.Pressed += Bg.Hide;
+		Bg.VisibilityChanged += BgOnVisibilityChanged;
 
-		TextChanged += _ => {
-			_timer.Start(0.2);
-		};
+		TextChanged += _ => { _timer.Start(0.2); };
 
 		_timer.Timeout += UpdateCandidates;
+	}
+
+	private void BgOnVisibilityChanged() {
+		var rid = Bg!.GetCanvasItem();
+		if (Bg.Visible) {
+			RenderingServer.CanvasItemSetCopyToBackbuffer(rid, true, Bg.GetGlobalRect());
+		} else {
+			RenderingServer.CanvasItemSetCopyToBackbuffer(rid, false, new());
+		}
 	}
 
 	public abstract Span<(T data, int ratio)> GetCandidate();

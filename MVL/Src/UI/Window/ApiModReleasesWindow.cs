@@ -5,6 +5,7 @@ using Godot;
 using MVL.UI.Item;
 using MVL.Utils.Config;
 using MVL.Utils.Game;
+using MVL.Utils.Help;
 
 namespace MVL.UI.Window;
 
@@ -28,10 +29,24 @@ public partial class ApiModReleasesWindow : BaseWindow {
 
 	public override void _Ready() {
 		base._Ready();
+		_apiModReleaseItemScene.NotNull();
+		_apiModReleaseItemsContainer.NotNull();
+		_loadingContainer.NotNull();
 
 		CancelButton!.Pressed += CancelButtonOnPressed;
 		OkButton!.Pressed += OkButtonOnPressed;
+		_loadingContainer.VisibilityChanged += LoadingContainerOnVisibilityChanged;
+
 		UpdateApiModInfo();
+	}
+
+	private void LoadingContainerOnVisibilityChanged() {
+		var rid = _loadingContainer!.GetCanvasItem();
+		if (_loadingContainer.Visible) {
+			RenderingServer.CanvasItemSetCopyToBackbuffer(rid, true, Container!.GetGlobalRect());
+		} else {
+			RenderingServer.CanvasItemSetCopyToBackbuffer(rid, false, new());
+		}
 	}
 
 	private async void OkButtonOnPressed() {
@@ -60,7 +75,6 @@ public partial class ApiModReleasesWindow : BaseWindow {
 	}
 
 	public async void UpdateApiModInfo() {
-		RenderingServer.CanvasItemSetCopyToBackbuffer(_loadingContainer!.GetCanvasItem(), true, Container!.GetGlobalRect());
 		_loadingContainer!.Show();
 
 		foreach (var child in _apiModReleaseItemsContainer!.GetChildren()) {
@@ -155,7 +169,6 @@ public partial class ApiModReleasesWindow : BaseWindow {
 
 		if (IsInstanceValid(this)) {
 			_loadingContainer.Hide();
-			RenderingServer.CanvasItemSetCopyToBackbuffer(_loadingContainer.GetCanvasItem(), false, new());
 		}
 	}
 

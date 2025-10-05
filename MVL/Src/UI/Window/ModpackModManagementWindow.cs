@@ -65,12 +65,22 @@ public partial class ModpackModManagementWindow : BaseWindow {
 		_loadingContainer.NotNull();
 
 		CancelButton!.Pressed += CancelButtonOnPressed;
+		OkButton!.Pressed += OkButtonOnPressed;
 		_searchInput.TextSubmitted += _ => SearchButtonOnPressed();
 		_searchButton.Pressed += SearchButtonOnPressed;
 		_updateInfoButton.Pressed += UpdateInfoButtonOnPressed;
 		_syncFileButton.Pressed += SyncFileButtonOnPressed;
 		_downloadButton.Pressed += DownloadButtonOnPressed;
-		OkButton!.Pressed += OkButtonOnPressed;
+		_loadingContainer.VisibilityChanged += LoadingContainerOnVisibilityChanged;
+	}
+
+	private void LoadingContainerOnVisibilityChanged() {
+		var rid = _loadingContainer!.GetCanvasItem();
+		if (_loadingContainer.Visible) {
+			RenderingServer.CanvasItemSetCopyToBackbuffer(rid, true, Container!.GetGlobalRect());
+		} else {
+			RenderingServer.CanvasItemSetCopyToBackbuffer(rid, false, new());
+		}
 	}
 
 	private async void OkButtonOnPressed() {
@@ -93,8 +103,8 @@ public partial class ModpackModManagementWindow : BaseWindow {
 
 	private async void UpdateInfoButtonOnPressed() {
 		_downloadButton!.Disabled = true;
-		RenderingServer.CanvasItemSetCopyToBackbuffer(_loadingContainer!.GetCanvasItem(), true, Container!.GetGlobalRect());
-		_loadingContainer!.Show();List<Task> tasks = [];
+		_loadingContainer!.Show();
+		List<Task> tasks = [];
 		tasks.AddRange(_modInfoItemsContainer!.GetChildren()
 			.Cast<ModInfoItem>()
 			.TakeWhile(modInfoItem => modInfoItem.Visible && IsInstanceValid(this))
@@ -104,7 +114,6 @@ public partial class ModpackModManagementWindow : BaseWindow {
 
 		if (IsInstanceValid(this)) {
 			_loadingContainer.Hide();
-			RenderingServer.CanvasItemSetCopyToBackbuffer(_loadingContainer.GetCanvasItem(), false, new());
 		}
 	}
 
@@ -120,9 +129,8 @@ public partial class ModpackModManagementWindow : BaseWindow {
 
 		_scrollContainer!.Call(StringNames.Scroll, true, 0, 0, 0);
 
-		RenderingServer.CanvasItemSetCopyToBackbuffer(_loadingContainer!.GetCanvasItem(), true, Container!.GetGlobalRect());
 		_loadingContainer!.Show();
-		
+
 		foreach (var modInfoItem in newList) {
 			if (!IsInstanceValid(this)) {
 				return;
@@ -141,14 +149,12 @@ public partial class ModpackModManagementWindow : BaseWindow {
 
 		if (IsInstanceValid(this)) {
 			_loadingContainer.Hide();
-			RenderingServer.CanvasItemSetCopyToBackbuffer(_loadingContainer.GetCanvasItem(), false, new());
 		}
 	}
 
 	public async void ShowList() {
 		_downloadButton!.Disabled = true;
 		_modDependencies = [];
-		RenderingServer.CanvasItemSetCopyToBackbuffer(_loadingContainer!.GetCanvasItem(), true, Container!.GetGlobalRect());
 		_loadingContainer!.Show();
 
 		foreach (var child in _modInfoItemsContainer!.GetChildren()) {
@@ -160,7 +166,6 @@ public partial class ModpackModManagementWindow : BaseWindow {
 		await ModpackItem!.UpdateMods();
 		if (ModpackItem!.ModpackConfig?.Mods == null) {
 			_loadingContainer.Hide();
-			RenderingServer.CanvasItemSetCopyToBackbuffer(_loadingContainer.GetCanvasItem(), false, new());
 			return;
 		}
 
@@ -189,7 +194,6 @@ public partial class ModpackModManagementWindow : BaseWindow {
 		}
 
 		_loadingContainer.Hide();
-		RenderingServer.CanvasItemSetCopyToBackbuffer(_loadingContainer.GetCanvasItem(), false, new());
 
 		if (_modDependencies.Count <= 0) {
 			return;
@@ -278,7 +282,6 @@ public partial class ModpackModManagementWindow : BaseWindow {
 	}
 
 	public async void UpdateApiModInfo() {
-		RenderingServer.CanvasItemSetCopyToBackbuffer(_loadingContainer!.GetCanvasItem(), true, Container!.GetGlobalRect());
 		_loadingContainer!.Show();
 
 		List<Task> tasks = [];
@@ -289,7 +292,6 @@ public partial class ModpackModManagementWindow : BaseWindow {
 
 		if (IsInstanceValid(this)) {
 			_loadingContainer.Hide();
-			RenderingServer.CanvasItemSetCopyToBackbuffer(_loadingContainer.GetCanvasItem(), false, new());
 		}
 	}
 

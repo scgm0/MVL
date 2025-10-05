@@ -271,9 +271,6 @@ grow_horizontal = 2
 grow_vertical = 2
 flat = true
 
-[node name="BackBufferCopy" type="BackBufferCopy" parent="MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer/SelectModpackButton/Button"]
-copy_mode = 2
-
 [node name="PanelContainer" type="PanelContainer" parent="MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer/SelectModpackButton/Button"]
 material = SubResource("ShaderMaterial_2b3vt")
 layout_mode = 1
@@ -285,6 +282,7 @@ theme_override_styles/panel = SubResource("StyleBoxFlat_gioba")
 [node name="SmoothScrollContainer" type="ScrollContainer" parent="MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer/SelectModpackButton/Button/PanelContainer"]
 layout_mode = 2
 theme_override_styles/panel = SubResource("StyleBoxEmpty_gioba")
+scroll_horizontal = -4
 horizontal_scroll_mode = 0
 vertical_scroll_mode = 0
 script = ExtResource("10_d3orq")
