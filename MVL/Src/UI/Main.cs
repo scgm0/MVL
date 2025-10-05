@@ -164,6 +164,7 @@ public partial class Main : NativeWindowUtility {
 		_closeButton.Pressed += () => SceneTree.Quit();
 		_accountButton.Pressed += AccountButtonOnPressed;
 		_accountSelectButton.Pressed += AccountSelectButtonOnPressed;
+		_accountSelectButton.VisibilityChanged += AccountSelectButtonOnVisibilityChanged;
 		_accountSelectAddButton.Pressed += AccountSelectAddButtonOnPressed;
 
 		FlurlHttp.Clients.WithDefaults(builder => {
@@ -171,6 +172,15 @@ public partial class Main : NativeWindowUtility {
 				handler.Proxy = string.IsNullOrWhiteSpace(BaseConfig.ProxyAddress) ? HttpClient.DefaultProxy : new WebProxy(BaseConfig.ProxyAddress);
 			});
 		});
+	}
+
+	private void AccountSelectButtonOnVisibilityChanged() {
+		var rid = _accountSelectButton!.GetCanvasItem();
+		if (_accountSelectButton.Visible) {
+			RenderingServer.CanvasItemSetCopyToBackbuffer(rid, true, _accountSelectButton.GetGlobalRect());
+		} else {
+			RenderingServer.CanvasItemSetCopyToBackbuffer(rid, false, new());
+		}
 	}
 
 	private async void AccountSelectButtonOnPressed() {

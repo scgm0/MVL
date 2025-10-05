@@ -598,11 +598,6 @@ grow_horizontal = 2
 grow_vertical = 2
 flat = true
 
-[node name="BackBufferCopy" type="BackBufferCopy" parent="HBoxContainer/ColorRect/VBoxContainer/MarginContainer2/HBoxContainer/Button/Button2"]
-position = Vector2(151, 103)
-scale = Vector2(1.5, 1.02)
-copy_mode = 2
-
 [node name="PanelContainer" type="PanelContainer" parent="HBoxContainer/ColorRect/VBoxContainer/MarginContainer2/HBoxContainer/Button/Button2"]
 material = SubResource("ShaderMaterial_o4ctv")
 layout_mode = 1
