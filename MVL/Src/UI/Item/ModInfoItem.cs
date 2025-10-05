@@ -91,7 +91,7 @@ public partial class ModInfoItem : PanelContainer {
 		_releaseButton!.Pressed += ReleaseButtonOnPressed;
 		_deleteButton!.Pressed += DeleteButtonOnPressed;
 
-		DependencyDetection();
+		Task.Run(DependencyDetection);
 	}
 
 	private async void ReleaseButtonOnPressed() {
@@ -217,37 +217,40 @@ public partial class ModInfoItem : PanelContainer {
 			return;
 		}
 
-		Texture2D? texture = null;
-		switch (Mod.ModPath.GetExtension()) {
-			case "zip": {
+		Texture2D? texture;
+		if (Mod.ModPath.EndsWith(".zip", StringComparison.OrdinalIgnoreCase)) {
+			Task.Run(() => {
 				using var zipArchive = ZipFile.OpenRead(Mod.ModPath);
 				var iconEntry = zipArchive.GetEntry(Mod.Icon);
 				if (iconEntry == null) {
-					break;
+					return;
 				}
 
 				var path = Path.Combine(Mod.ModPath, iconEntry.FullName);
 				if (ResourceLoader.Exists(path)) {
 					texture = ResourceLoader.Load<Texture2D>(path);
-					break;
+				} else {
+					using var iconStream = iconEntry.Open();
+					using var iconReader = new BinaryReader(iconStream);
+					var iconBytes = iconReader.ReadBytes((int)iconEntry.Length);
+					texture = Tools.CreateTextureFromBytes(iconBytes);
 				}
 
-				using var iconStream = iconEntry.Open();
-				using var iconReader = new BinaryReader(iconStream);
-				var iconBytes = iconReader.ReadBytes((int)iconEntry.Length);
-				texture = Tools.CreateTextureFromBytes(iconBytes);
+				if (texture is null) {
+					return;
+				}
+
 				texture.TakeOverPath(path);
-				break;
+				_icon!.SetDeferred(TextureRect.PropertyName.Texture, texture);
+			});
+		} else {
+			var iconPath = Path.Combine(Mod.ModPath, Mod.Icon);
+			texture = Tools.LoadTextureFromPath(iconPath);
+
+			if (texture is null) {
+				return;
 			}
 
-			default: {
-				var iconPath = Path.Combine(Mod.ModPath, Mod.Icon);
-				texture = Tools.LoadTextureFromPath(iconPath);
-				break;
-			}
-		}
-
-		if (texture is not null) {
 			_icon!.Texture = texture;
 		}
 	}
