@@ -18,7 +18,6 @@ resource_local_to_scene = false
 resource_name = ""
 script = ExtResource("3_i7wln")
 IconName = "file-plus-outline"
-IconSize = 24
 metadata/_custom_type_script = "uid://bk3tot6c35bwu"
 
 [sub_resource type="Texture2D" id="Texture2D_vgayu"]
@@ -26,7 +25,6 @@ resource_local_to_scene = false
 resource_name = ""
 script = ExtResource("3_i7wln")
 IconName = "file-settings-outline"
-IconSize = 24
 metadata/_custom_type_script = "uid://bk3tot6c35bwu"
 
 [node name="AddModpackWindow" node_paths=PackedStringArray("_modpackName", "_modpackPath", "_createPath", "_folderButton", "_fileDialog", "_gameVersion", "_releasePath", "_tooltip") instance=ExtResource("1_fvt7b")]
@@ -40,15 +38,7 @@ _gameVersion = NodePath("PanelContainer/VBoxContainer/VBoxContainer3/HBoxContain
 _releasePath = NodePath("PanelContainer/VBoxContainer/VBoxContainer3/HBoxContainer2/OptionButton2")
 _tooltip = NodePath("PanelContainer/VBoxContainer/VBoxContainer2/Label")
 
-[node name="FileDialog" type="FileDialog" parent="." index="3"]
-title = "Open a Directory"
-ok_button_text = "Select Current Folder"
-file_mode = 2
-access = 2
-show_hidden_files = true
-use_native_dialog = true
-
-[node name="PanelContainer" parent="." index="4"]
+[node name="PanelContainer" parent="." index="2"]
 custom_minimum_size = Vector2(475, 250)
 
 [node name="Label" parent="PanelContainer/VBoxContainer" index="0"]
@@ -139,3 +129,10 @@ size_flags_horizontal = 3
 alignment = 1
 text_overrun_behavior = 3
 clip_text = true
+
+[node name="FileDialog" type="FileDialog" parent="." index="3"]
+title = "Open a Directory"
+ok_button_text = "Select Current Folder"
+file_mode = 2
+access = 2
+use_native_dialog = true

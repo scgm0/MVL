@@ -10,15 +10,9 @@
 
 [sub_resource type="Resource" id="Resource_711ho"]
 script = ExtResource("4_xyogq")
-friction = 4.0
-minimum_velocity = 0.4
-rebound_strength = 7.0
 
 [sub_resource type="Resource" id="Resource_fkd44"]
 script = ExtResource("4_xyogq")
-friction = 4.0
-minimum_velocity = 0.4
-rebound_strength = 7.0
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_fkd44"]
 shader = ExtResource("6_vudin")
@@ -41,9 +35,7 @@ script = ExtResource("2_4m0nh")
 _apiModReleaseItemScene = ExtResource("5_jb7f0")
 _apiModReleaseItemsContainer = NodePath("PanelContainer/VBoxContainer/MarginContainer/SmoothScrollContainer/MarginContainer/VBoxContainer")
 _loadingContainer = NodePath("PanelContainer/VBoxContainer/MarginContainer/Control")
-
-[node name="BackBufferCopy" parent="." index="0"]
-copy_mode = 0
+BackBufferCopy = false
 
 [node name="Label" parent="PanelContainer/VBoxContainer" index="0"]
 text = "选择要下载的模组版本"
@@ -76,10 +68,7 @@ theme_override_constants/separation = 12
 visible = false
 layout_mode = 2
 
-[node name="BackBufferCopy" type="BackBufferCopy" parent="PanelContainer/VBoxContainer/MarginContainer/Control" index="0"]
-copy_mode = 2
-
-[node name="Panel" type="Panel" parent="PanelContainer/VBoxContainer/MarginContainer/Control" index="1"]
+[node name="Panel" type="Panel" parent="PanelContainer/VBoxContainer/MarginContainer/Control" index="0"]
 material = SubResource("ShaderMaterial_fkd44")
 layout_mode = 1
 anchors_preset = 15
@@ -89,7 +78,7 @@ grow_horizontal = 2
 grow_vertical = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_iy5mg")
 
-[node name="ColorRect" type="ColorRect" parent="PanelContainer/VBoxContainer/MarginContainer/Control" index="2"]
+[node name="ColorRect" type="ColorRect" parent="PanelContainer/VBoxContainer/MarginContainer/Control" index="1"]
 material = ExtResource("7_711ho")
 custom_minimum_size = Vector2(80, 80)
 layout_mode = 1

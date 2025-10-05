@@ -7,8 +7,7 @@ using MVL.Utils.Help;
 namespace MVL.UI.Window;
 
 public partial class BaseWindow : Control {
-	[Export]
-	private PanelContainer? _container;
+	[Export] protected PanelContainer? Container;
 
 	[Export]
 	private AnimationPlayer? _animationPlayer;
@@ -19,13 +18,19 @@ public partial class BaseWindow : Control {
 
 	[Export] public Button? OkButton;
 
-	[Export] protected BackBufferCopy? BackBufferCopy;
+	[Export] public bool BackBufferCopy {
+		get;
+		set {
+			field = value;
+			RenderingServer.CanvasItemSetCopyToBackbuffer(GetCanvasItem(), value, GetGlobalRect());
+		}
+	}
 
 	[Signal]
 	public delegate void CancelEventHandler();
 
 	public override void _Ready() {
-		_container.NotNull();
+		Container.NotNull();
 		_animationPlayer.NotNull();
 		TitleLabel.NotNull();
 		CancelButton.NotNull();
@@ -33,16 +38,16 @@ public partial class BaseWindow : Control {
 	}
 
 	public new virtual async Task Show() {
-		_container!.PivotOffset = _container.GetCombinedMinimumSize() / 2.0f;
+		Container!.PivotOffset = Container.GetCombinedMinimumSize() / 2.0f;
 		Modulate = Colors.Transparent;
-		_container.Scale = Vector2.Zero;
+		Container.Scale = Vector2.Zero;
 		base.Show();
 		_animationPlayer!.Play(StringNames.Show);
 		await ToSignal(_animationPlayer, AnimationMixer.SignalName.AnimationFinished);
 	}
 
 	public new virtual async Task Hide() {
-		_container!.PivotOffset = _container.Size / 2.0f;
+		Container!.PivotOffset = Container.Size / 2.0f;
 		_animationPlayer!.PlayBackwards(StringNames.Show);
 		await ToSignal(_animationPlayer, AnimationMixer.SignalName.AnimationFinished);
 		base.Hide();

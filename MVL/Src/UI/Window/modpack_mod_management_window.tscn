@@ -74,11 +74,9 @@ _downloadButton = NodePath("PanelContainer/VBoxContainer/MarginContainer/VBoxCon
 _scrollContainer = NodePath("PanelContainer/VBoxContainer/MarginContainer/VBoxContainer/SmoothScrollContainer")
 _modInfoItemsContainer = NodePath("PanelContainer/VBoxContainer/MarginContainer/VBoxContainer/SmoothScrollContainer/MarginContainer/VBoxContainer")
 _loadingContainer = NodePath("PanelContainer/VBoxContainer/MarginContainer/Control")
+BackBufferCopy = false
 
-[node name="BackBufferCopy" parent="." index="0"]
-copy_mode = 0
-
-[node name="PanelContainer" parent="." index="3"]
+[node name="PanelContainer" parent="." index="2"]
 anchors_preset = -1
 
 [node name="Label" parent="PanelContainer/VBoxContainer" index="0"]
@@ -164,10 +162,7 @@ visible = false
 layout_mode = 2
 mouse_filter = 1
 
-[node name="BackBufferCopy" type="BackBufferCopy" parent="PanelContainer/VBoxContainer/MarginContainer/Control" index="0"]
-copy_mode = 2
-
-[node name="Panel" type="Panel" parent="PanelContainer/VBoxContainer/MarginContainer/Control" index="1"]
+[node name="Panel" type="Panel" parent="PanelContainer/VBoxContainer/MarginContainer/Control" index="0"]
 material = SubResource("ShaderMaterial_o3v2t")
 layout_mode = 1
 anchors_preset = 15
@@ -178,7 +173,7 @@ grow_vertical = 2
 mouse_filter = 1
 theme_override_styles/panel = SubResource("StyleBoxFlat_0flki")
 
-[node name="ColorRect" type="ColorRect" parent="PanelContainer/VBoxContainer/MarginContainer/Control" index="2"]
+[node name="ColorRect" type="ColorRect" parent="PanelContainer/VBoxContainer/MarginContainer/Control" index="1"]
 material = ExtResource("7_o3v2t")
 custom_minimum_size = Vector2(80, 80)
 layout_mode = 1

@@ -60,7 +60,9 @@ public partial class ApiModReleasesWindow : BaseWindow {
 	}
 
 	public async void UpdateApiModInfo() {
+		RenderingServer.CanvasItemSetCopyToBackbuffer(_loadingContainer!.GetCanvasItem(), true, Container!.GetGlobalRect());
 		_loadingContainer!.Show();
+
 		foreach (var child in _apiModReleaseItemsContainer!.GetChildren()) {
 			child.QueueFree();
 		}
@@ -153,6 +155,7 @@ public partial class ApiModReleasesWindow : BaseWindow {
 
 		if (IsInstanceValid(this)) {
 			_loadingContainer.Hide();
+			RenderingServer.CanvasItemSetCopyToBackbuffer(_loadingContainer.GetCanvasItem(), false, new());
 		}
 	}
 
@@ -171,7 +174,8 @@ public partial class ApiModReleasesWindow : BaseWindow {
 
 		if (ModDependencies is not null) {
 			var list = ModDependencies.ToList();
-			list.Remove((apiModReleaseItem.ApiModInfo!.Value, apiModReleaseItem.ApiModRelease!.Value, apiModReleaseItem.ModpackConfig!));
+			list.Remove((apiModReleaseItem.ApiModInfo!.Value, apiModReleaseItem.ApiModRelease!.Value,
+				apiModReleaseItem.ModpackConfig!));
 			ModDependencies = list;
 		}
 

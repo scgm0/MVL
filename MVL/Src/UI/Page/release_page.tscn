@@ -25,18 +25,12 @@ VScrollBar/styles/scroll = SubResource("StyleBoxFlat_ty1b0")
 
 [sub_resource type="Resource" id="Resource_364to"]
 script = ExtResource("4_h8roc")
-friction = 4.0
-minimum_velocity = 0.4
-rebound_strength = 7.0
 
 [sub_resource type="Resource" id="Resource_7nt4r"]
 script = ExtResource("4_h8roc")
-friction = 4.0
-minimum_velocity = 0.4
-rebound_strength = 7.0
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_oarc7"]
-bg_color = Color(0.21, 0.21, 0.21, 1)
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_bmwv3"]
+bg_color = Color(0, 0, 0, 1)
 border_width_left = 2
 border_width_top = 2
 border_width_right = 2
@@ -61,8 +55,8 @@ corner_radius_top_right = 10
 corner_radius_bottom_right = 10
 corner_radius_bottom_left = 10
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_bmwv3"]
-bg_color = Color(0, 0, 0, 1)
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_oarc7"]
+bg_color = Color(0.21, 0.21, 0.21, 1)
 border_width_left = 2
 border_width_top = 2
 border_width_right = 2
@@ -133,9 +127,10 @@ material = ExtResource("6_gqxwp")
 custom_minimum_size = Vector2(145, 192)
 layout_mode = 2
 focus_mode = 0
+mouse_filter = 1
 theme_override_constants/icon_max_width = 80
-theme_override_styles/hover = SubResource("StyleBoxFlat_oarc7")
-theme_override_styles/pressed = SubResource("StyleBoxFlat_gblyu")
 theme_override_styles/normal = SubResource("StyleBoxFlat_bmwv3")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_gblyu")
+theme_override_styles/hover = SubResource("StyleBoxFlat_oarc7")
 icon = SubResource("Texture2D_364to")
 icon_alignment = 1
