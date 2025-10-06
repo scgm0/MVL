@@ -340,7 +340,6 @@ public partial class BrowsePage : MenuPage {
 			var moduleItem = _moduleItemScene!.Instantiate<BrowseItem>();
 			moduleItem.ModSummary = apiModSummary;
 			moduleItem.Pressed += async () => {
-				GD.Print(apiModSummary);
 				var confirmationWindow = _confirmationWindowScene!.Instantiate<ConfirmationWindow>();
 				confirmationWindow.Message = "正在从ModDB获取模组信息...";
 				confirmationWindow.Modulate = Colors.Transparent;
