@@ -169,7 +169,9 @@ public partial class Main : NativeWindowUtility {
 
 		FlurlHttp.Clients.WithDefaults(builder => {
 			builder.ConfigureInnerHandler(handler => {
-				handler.Proxy = string.IsNullOrWhiteSpace(BaseConfig.ProxyAddress) ? HttpClient.DefaultProxy : new WebProxy(BaseConfig.ProxyAddress);
+				handler.Proxy = string.IsNullOrWhiteSpace(BaseConfig.ProxyAddress)
+					? HttpClient.DefaultProxy
+					: new WebProxy(BaseConfig.ProxyAddress);
 			});
 		});
 	}
@@ -620,7 +622,7 @@ public partial class Main : NativeWindowUtility {
 			confirmationWindow.Hidden += confirmationWindow.QueueFree;
 			confirmationWindow.Confirm += async () => {
 				await confirmationWindow.Hide();
-				StartGame(releaseInfo.Path, modpackConfig.Path!);
+				StartGame(releaseInfo.Path, modpackConfig.Path!, modpackConfig.Command, modpackConfig.GameAssembly);
 			};
 			confirmationWindow.Cancel += () => {
 				GameExitEvent?.Invoke();
@@ -647,7 +649,7 @@ public partial class Main : NativeWindowUtility {
 				confirmationWindow.Hidden += confirmationWindow.QueueFree;
 				confirmationWindow.Confirm += async () => {
 					await confirmationWindow.Hide();
-					StartGame(releaseInfo.Path, modpackConfig.Path!);
+					StartGame(releaseInfo.Path, modpackConfig.Path!, modpackConfig.Command, modpackConfig.GameAssembly);
 				};
 				confirmationWindow.Cancel += () => {
 					GameExitEvent?.Invoke();
@@ -668,6 +670,8 @@ public partial class Main : NativeWindowUtility {
 		string command = "%command%",
 		string assembleName = "Vintagestory.dll") {
 		try {
+			GC.Collect(GC.MaxGeneration, GCCollectionMode.Forced);
+			GC.WaitForPendingFinalizers();
 			var tmp = CopyVsRun();
 			command = command.Replace("%game_path%", gamePath)
 				.Replace("%tmp_path%", tmp.GetCurrentDir())

@@ -125,7 +125,7 @@ _data = {
 &"show": SubResource("Animation_glb6t")
 }
 
-[node name="HomePage" type="Control" node_paths=PackedStringArray("_playButton", "_modPackNameLabel", "_gameVersionLabel", "_releaseNameLabel", "_selectModpackButton", "_modpackInfoControl", "_modpackInfoPanel", "_modpackInfoScrollContainer", "_modpackInfoVBoxContainer", "_animationPlayer", "Main")]
+[node name="HomePage" type="Control" unique_id=500880883 node_paths=PackedStringArray("_playButton", "_modPackNameLabel", "_gameVersionLabel", "_releaseNameLabel", "_selectModpackButton", "_modpackInfoControl", "_modpackInfoPanel", "_modpackInfoScrollContainer", "_modpackInfoVBoxContainer", "_animationPlayer", "Main")]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -148,16 +148,17 @@ _animationPlayer = NodePath("Control/Button/AnimationPlayer")
 Main = NodePath("Control")
 metadata/_tab_index = 0
 
-[node name="Control" type="Control" parent="."]
+[node name="Control" type="Control" parent="." unique_id=104538942]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+pivot_offset_ratio = Vector2(0.5, 0.5)
 mouse_filter = 2
 
-[node name="MarginContainer" type="MarginContainer" parent="Control"]
+[node name="MarginContainer" type="MarginContainer" parent="Control" unique_id=644407019]
 layout_mode = 1
 anchors_preset = -1
 anchor_left = 1.0
@@ -173,33 +174,33 @@ theme_override_constants/margin_top = 10
 theme_override_constants/margin_right = 10
 theme_override_constants/margin_bottom = 10
 
-[node name="Panel" type="Panel" parent="Control/MarginContainer"]
+[node name="Panel" type="Panel" parent="Control/MarginContainer" unique_id=1182928487]
 layout_mode = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_glb6t")
 
-[node name="PanelContainer" type="PanelContainer" parent="Control/MarginContainer"]
+[node name="PanelContainer" type="PanelContainer" parent="Control/MarginContainer" unique_id=1035678448]
 material = SubResource("ShaderMaterial_xq365")
 layout_mode = 2
 size_flags_vertical = 8
 theme_override_styles/panel = SubResource("StyleBoxFlat_rwne7")
 
-[node name="VBoxContainer" type="VBoxContainer" parent="Control/MarginContainer/PanelContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="Control/MarginContainer/PanelContainer" unique_id=1184243005]
 layout_mode = 2
 theme_override_constants/separation = 0
 
-[node name="PanelContainer" type="PanelContainer" parent="Control/MarginContainer/PanelContainer/VBoxContainer"]
+[node name="PanelContainer" type="PanelContainer" parent="Control/MarginContainer/PanelContainer/VBoxContainer" unique_id=1473047980]
 custom_minimum_size = Vector2(280, 40)
 layout_mode = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_1jowr")
 
-[node name="MarginContainer" type="MarginContainer" parent="Control/MarginContainer/PanelContainer/VBoxContainer/PanelContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="Control/MarginContainer/PanelContainer/VBoxContainer/PanelContainer" unique_id=1812860966]
 layout_mode = 2
 theme_override_constants/margin_left = 10
 
-[node name="HBoxContainer" type="HBoxContainer" parent="Control/MarginContainer/PanelContainer/VBoxContainer/PanelContainer/MarginContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="Control/MarginContainer/PanelContainer/VBoxContainer/PanelContainer/MarginContainer" unique_id=23521952]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="Control/MarginContainer/PanelContainer/VBoxContainer/PanelContainer/MarginContainer/HBoxContainer"]
+[node name="Label" type="Label" parent="Control/MarginContainer/PanelContainer/VBoxContainer/PanelContainer/MarginContainer/HBoxContainer" unique_id=748883788]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 1
@@ -211,13 +212,13 @@ vertical_alignment = 1
 clip_text = true
 text_overrun_behavior = 3
 
-[node name="VBoxContainer" type="VBoxContainer" parent="Control/MarginContainer/PanelContainer/VBoxContainer/PanelContainer/MarginContainer/HBoxContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="Control/MarginContainer/PanelContainer/VBoxContainer/PanelContainer/MarginContainer/HBoxContainer" unique_id=1705866972]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 4
 theme_override_constants/separation = 0
 
-[node name="Label" type="Label" parent="Control/MarginContainer/PanelContainer/VBoxContainer/PanelContainer/MarginContainer/HBoxContainer/VBoxContainer"]
+[node name="Label" type="Label" parent="Control/MarginContainer/PanelContainer/VBoxContainer/PanelContainer/MarginContainer/HBoxContainer/VBoxContainer" unique_id=1068887115]
 layout_mode = 2
 size_flags_vertical = 6
 theme_override_colors/font_color = Color(0.607843, 0.607843, 0.607843, 1)
@@ -228,7 +229,7 @@ vertical_alignment = 1
 clip_text = true
 text_overrun_behavior = 3
 
-[node name="Label2" type="Label" parent="Control/MarginContainer/PanelContainer/VBoxContainer/PanelContainer/MarginContainer/HBoxContainer/VBoxContainer"]
+[node name="Label2" type="Label" parent="Control/MarginContainer/PanelContainer/VBoxContainer/PanelContainer/MarginContainer/HBoxContainer/VBoxContainer" unique_id=1340581898]
 layout_mode = 2
 size_flags_vertical = 6
 theme_override_colors/font_color = Color(0.60933, 0.60933, 0.60933, 1)
@@ -239,14 +240,14 @@ vertical_alignment = 1
 clip_text = true
 text_overrun_behavior = 3
 
-[node name="TextureRect" type="TextureRect" parent="Control/MarginContainer/PanelContainer/VBoxContainer/PanelContainer/MarginContainer/HBoxContainer"]
+[node name="TextureRect" type="TextureRect" parent="Control/MarginContainer/PanelContainer/VBoxContainer/PanelContainer/MarginContainer/HBoxContainer" unique_id=2031595401]
 modulate = Color(0.60933, 0.60933, 0.60933, 1)
 custom_minimum_size = Vector2(24, 0)
 layout_mode = 2
 texture = SubResource("Texture2D_k556s")
 stretch_mode = 3
 
-[node name="Button" type="Button" parent="Control/MarginContainer/PanelContainer/VBoxContainer/PanelContainer"]
+[node name="Button" type="Button" parent="Control/MarginContainer/PanelContainer/VBoxContainer/PanelContainer" unique_id=2092129492]
 layout_mode = 2
 theme_override_colors/font_disabled_color = Color(1, 1, 1, 1)
 theme_override_styles/normal = SubResource("StyleBoxEmpty_xq365")
@@ -254,7 +255,7 @@ theme_override_styles/pressed = SubResource("StyleBoxFlat_xq365")
 theme_override_styles/hover = SubResource("StyleBoxFlat_k556s")
 toggle_mode = true
 
-[node name="Button" type="Button" parent="Control/MarginContainer/PanelContainer/VBoxContainer"]
+[node name="Button" type="Button" parent="Control/MarginContainer/PanelContainer/VBoxContainer" unique_id=548065922]
 custom_minimum_size = Vector2(0, 50)
 layout_mode = 2
 mouse_default_cursor_shape = 2
@@ -270,7 +271,7 @@ theme_override_styles/disabled = SubResource("StyleBoxFlat_gi4mh")
 text = "启动游戏"
 icon_alignment = 2
 
-[node name="Button" type="Button" parent="Control"]
+[node name="Button" type="Button" parent="Control" unique_id=610282550]
 visible = false
 top_level = true
 custom_minimum_size = Vector2(50, 50)
@@ -281,7 +282,7 @@ grow_horizontal = 2
 grow_vertical = 2
 flat = true
 
-[node name="PanelContainer" type="PanelContainer" parent="Control/Button"]
+[node name="PanelContainer" type="PanelContainer" parent="Control/Button" unique_id=1226243636]
 material = SubResource("ShaderMaterial_j4kqc")
 custom_minimum_size = Vector2(280, 0)
 layout_mode = 1
@@ -298,7 +299,7 @@ grow_horizontal = 0
 grow_vertical = 0
 theme_override_styles/panel = SubResource("StyleBoxFlat_vb8vt")
 
-[node name="SmoothScrollContainer" type="ScrollContainer" parent="Control/Button/PanelContainer"]
+[node name="SmoothScrollContainer" type="ScrollContainer" parent="Control/Button/PanelContainer" unique_id=1767173050]
 layout_mode = 2
 follow_focus = true
 horizontal_scroll_mode = 0
@@ -308,13 +309,13 @@ wheel_scroll_damper = SubResource("Resource_gi4mh")
 dragging_scroll_damper = SubResource("Resource_vb8vt")
 allow_horizontal_scroll = false
 
-[node name="VBoxContainer" type="VBoxContainer" parent="Control/Button/PanelContainer/SmoothScrollContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="Control/Button/PanelContainer/SmoothScrollContainer" unique_id=1877351585]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 theme_override_constants/separation = 5
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="Control/Button"]
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Control/Button" unique_id=1338479077]
 libraries = {
 &"": SubResource("AnimationLibrary_vb8vt")
 }

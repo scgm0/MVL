@@ -38,16 +38,14 @@ public partial class BaseWindow : Control {
 	}
 
 	public new virtual async Task Show() {
-		Container!.PivotOffset = Container.GetCombinedMinimumSize() / 2.0f;
 		Modulate = Colors.Transparent;
-		Container.Scale = Vector2.Zero;
+		Container!.Scale = Vector2.Zero;
 		base.Show();
 		_animationPlayer!.Play(StringNames.Show);
 		await ToSignal(_animationPlayer, AnimationMixer.SignalName.AnimationFinished);
 	}
 
 	public new virtual async Task Hide() {
-		Container!.PivotOffset = Container.Size / 2.0f;
 		_animationPlayer!.PlayBackwards(StringNames.Show);
 		await ToSignal(_animationPlayer, AnimationMixer.SignalName.AnimationFinished);
 		base.Hide();

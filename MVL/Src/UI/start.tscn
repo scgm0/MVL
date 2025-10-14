@@ -167,17 +167,17 @@ _data = {
 &"boot": SubResource("Animation_874xg")
 }
 
-[node name="Start" type="Control"]
+[node name="Start" type="Control" unique_id=485835331]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-pivot_offset = Vector2(581, 329)
+pivot_offset_ratio = Vector2(0.5, 0.5)
 script = ExtResource("1_0eqgt")
 
-[node name="MarginContainer" type="MarginContainer" parent="."]
+[node name="MarginContainer" type="MarginContainer" parent="." unique_id=2039637775]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -189,12 +189,12 @@ theme_override_constants/margin_top = 5
 theme_override_constants/margin_right = 5
 theme_override_constants/margin_bottom = 5
 
-[node name="SubViewportContainer" type="SubViewportContainer" parent="MarginContainer"]
+[node name="SubViewportContainer" type="SubViewportContainer" parent="MarginContainer" unique_id=669852467]
 self_modulate = Color(1, 1, 1, 0)
 layout_mode = 2
 stretch = true
 
-[node name="SubViewport" type="SubViewport" parent="MarginContainer/SubViewportContainer"]
+[node name="SubViewport" type="SubViewport" parent="MarginContainer/SubViewportContainer" unique_id=1630811673]
 disable_3d = true
 transparent_bg = true
 handle_input_locally = false
@@ -204,11 +204,11 @@ size = Vector2i(1152, 648)
 size_2d_override_stretch = true
 render_target_update_mode = 4
 
-[node name="Main" parent="MarginContainer/SubViewportContainer/SubViewport" node_paths=PackedStringArray("_marginContainer", "_subViewport") instance=ExtResource("1_7ma3r")]
+[node name="Main" parent="MarginContainer/SubViewportContainer/SubViewport" unique_id=1954405694 node_paths=PackedStringArray("_marginContainer", "_subViewport") instance=ExtResource("1_7ma3r")]
 _marginContainer = NodePath("../../..")
 _subViewport = NodePath("..")
 
-[node name="TextureRect" type="TextureRect" parent="."]
+[node name="TextureRect" type="TextureRect" parent="." unique_id=1663254526]
 material = ExtResource("2_874xg")
 layout_mode = 1
 anchors_preset = 15
@@ -220,7 +220,7 @@ mouse_filter = 2
 texture = SubResource("ViewportTexture_0eqgt")
 expand_mode = 1
 
-[node name="WindowDecoration" type="Control" parent="."]
+[node name="WindowDecoration" type="Control" parent="." unique_id=2136561373]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -229,7 +229,7 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 
-[node name="Left" type="Control" parent="WindowDecoration"]
+[node name="Left" type="Control" parent="WindowDecoration" unique_id=392465176]
 custom_minimum_size = Vector2(7, 0)
 layout_mode = 1
 anchors_preset = 9
@@ -241,7 +241,7 @@ IsResizable = true
 WindowEdge = 3
 metadata/_custom_type_script = "uid://dbies7u5fo4sh"
 
-[node name="Top" type="Control" parent="WindowDecoration"]
+[node name="Top" type="Control" parent="WindowDecoration" unique_id=1657812727]
 custom_minimum_size = Vector2(0, 7)
 layout_mode = 1
 anchors_preset = 10
@@ -253,7 +253,7 @@ IsResizable = true
 WindowEdge = 1
 metadata/_custom_type_script = "uid://dbies7u5fo4sh"
 
-[node name="Right" type="Control" parent="WindowDecoration"]
+[node name="Right" type="Control" parent="WindowDecoration" unique_id=403952672]
 custom_minimum_size = Vector2(7, 0)
 layout_mode = 1
 anchors_preset = 11
@@ -268,7 +268,7 @@ IsResizable = true
 WindowEdge = 4
 metadata/_custom_type_script = "uid://dbies7u5fo4sh"
 
-[node name="Bottom" type="Control" parent="WindowDecoration"]
+[node name="Bottom" type="Control" parent="WindowDecoration" unique_id=115963593]
 custom_minimum_size = Vector2(0, 7)
 layout_mode = 1
 anchors_preset = 12
@@ -283,7 +283,7 @@ IsResizable = true
 WindowEdge = 6
 metadata/_custom_type_script = "uid://dbies7u5fo4sh"
 
-[node name="TopLeft" type="Control" parent="WindowDecoration"]
+[node name="TopLeft" type="Control" parent="WindowDecoration" unique_id=1674078727]
 custom_minimum_size = Vector2(14, 14)
 layout_mode = 1
 anchors_preset = 0
@@ -293,7 +293,7 @@ script = ExtResource("3_874xg")
 IsResizable = true
 metadata/_custom_type_script = "uid://dbies7u5fo4sh"
 
-[node name="TopRight" type="Control" parent="WindowDecoration"]
+[node name="TopRight" type="Control" parent="WindowDecoration" unique_id=1463755029]
 custom_minimum_size = Vector2(14, 14)
 layout_mode = 1
 anchors_preset = 1
@@ -307,7 +307,7 @@ IsResizable = true
 WindowEdge = 2
 metadata/_custom_type_script = "uid://dbies7u5fo4sh"
 
-[node name="BottomRight" type="Control" parent="WindowDecoration"]
+[node name="BottomRight" type="Control" parent="WindowDecoration" unique_id=464693931]
 custom_minimum_size = Vector2(14, 14)
 layout_mode = 1
 anchors_preset = 3
@@ -324,7 +324,7 @@ IsResizable = true
 WindowEdge = 7
 metadata/_custom_type_script = "uid://dbies7u5fo4sh"
 
-[node name="BottomLeft" type="Control" parent="WindowDecoration"]
+[node name="BottomLeft" type="Control" parent="WindowDecoration" unique_id=867226677]
 custom_minimum_size = Vector2(14, 14)
 layout_mode = 1
 anchors_preset = 2
@@ -338,8 +338,8 @@ IsResizable = true
 WindowEdge = 5
 metadata/_custom_type_script = "uid://dbies7u5fo4sh"
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=883047749]
 libraries = {
 &"": SubResource("AnimationLibrary_is28b")
 }
-autoplay = "boot"
+autoplay = &"boot"

@@ -330,7 +330,7 @@ IconName = "window-close"
 IconSize = 14
 metadata/_custom_type_script = "uid://bk3tot6c35bwu"
 
-[node name="Main" type="Control" node_paths=PackedStringArray("_minButton", "_closeButton", "_accountButton", "_accountSelectButton", "_accountSelectContainer", "_accountSelectScrollContainer", "_accountSelectAddButton", "_accountSelectListContainer", "_accountSelectAnimationPlayer")]
+[node name="Main" type="Control" unique_id=442936745 node_paths=PackedStringArray("_minButton", "_closeButton", "_accountButton", "_accountSelectButton", "_accountSelectContainer", "_accountSelectScrollContainer", "_accountSelectAddButton", "_accountSelectListContainer", "_accountSelectAnimationPlayer")]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -354,7 +354,7 @@ _accountSelectAnimationPlayer = NodePath("HBoxContainer/ColorRect/VBoxContainer/
 WindowMaterial = ExtResource("7_a6wm3")
 IsDraggable = true
 
-[node name="Background" type="TextureRect" parent="."]
+[node name="Background" type="TextureRect" parent="." unique_id=1019345145]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -365,7 +365,7 @@ texture = ExtResource("2_1opgh")
 expand_mode = 1
 stretch_mode = 6
 
-[node name="HBoxContainer" type="HBoxContainer" parent="."]
+[node name="HBoxContainer" type="HBoxContainer" parent="." unique_id=687907993]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -374,7 +374,7 @@ grow_horizontal = 2
 grow_vertical = 2
 theme_override_constants/separation = 0
 
-[node name="MenuPanel" type="PanelContainer" parent="HBoxContainer" node_paths=PackedStringArray("_menuButton", "_pageContainer", "_animationPlayer")]
+[node name="MenuPanel" type="PanelContainer" parent="HBoxContainer" unique_id=829115462 node_paths=PackedStringArray("_menuButton", "_pageContainer", "_animationPlayer")]
 material = ExtResource("6_oarc7")
 layout_mode = 2
 theme = ExtResource("7_7nt4r")
@@ -387,12 +387,12 @@ _blurShaderMaterial = ExtResource("9_bmwv3")
 IsDraggable = true
 DoubleClickWindowMaximized = true
 
-[node name="VBoxContainer" type="VBoxContainer" parent="HBoxContainer/MenuPanel"]
+[node name="VBoxContainer" type="VBoxContainer" parent="HBoxContainer/MenuPanel" unique_id=1388485276]
 custom_minimum_size = Vector2(36, 0)
 layout_mode = 2
 theme_override_constants/separation = 14
 
-[node name="MenuButton" type="Button" parent="HBoxContainer/MenuPanel/VBoxContainer"]
+[node name="MenuButton" type="Button" parent="HBoxContainer/MenuPanel/VBoxContainer" unique_id=1404229084]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 0
@@ -404,11 +404,11 @@ icon_alignment = 2
 script = ExtResource("7_bl4fu")
 metadata/_custom_type_script = "uid://dvjtigpqee0jw"
 
-[node name="HSeparator1" type="HSeparator" parent="HBoxContainer/MenuPanel/VBoxContainer"]
+[node name="HSeparator1" type="HSeparator" parent="HBoxContainer/MenuPanel/VBoxContainer" unique_id=1390581068]
 layout_mode = 2
 mouse_filter = 2
 
-[node name="HomeButton" type="Button" parent="HBoxContainer/MenuPanel/VBoxContainer" node_paths=PackedStringArray("Page")]
+[node name="HomeButton" type="Button" parent="HBoxContainer/MenuPanel/VBoxContainer" unique_id=297773346 node_paths=PackedStringArray("Page")]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 0
@@ -422,7 +422,7 @@ script = ExtResource("7_bl4fu")
 Page = NodePath("../../../ColorRect/VBoxContainer/MarginContainer/PageContainer/HomePage")
 metadata/_custom_type_script = "uid://dvjtigpqee0jw"
 
-[node name="ModpackButton" type="Button" parent="HBoxContainer/MenuPanel/VBoxContainer" node_paths=PackedStringArray("Page")]
+[node name="ModpackButton" type="Button" parent="HBoxContainer/MenuPanel/VBoxContainer" unique_id=169210888 node_paths=PackedStringArray("Page")]
 unique_name_in_owner = true
 layout_mode = 2
 toggle_mode = true
@@ -434,7 +434,7 @@ script = ExtResource("7_bl4fu")
 Page = NodePath("../../../ColorRect/VBoxContainer/MarginContainer/PageContainer/ModpackPage")
 metadata/_custom_type_script = "uid://dvjtigpqee0jw"
 
-[node name="ReleaseButton" type="Button" parent="HBoxContainer/MenuPanel/VBoxContainer" node_paths=PackedStringArray("Page")]
+[node name="ReleaseButton" type="Button" parent="HBoxContainer/MenuPanel/VBoxContainer" unique_id=840009723 node_paths=PackedStringArray("Page")]
 unique_name_in_owner = true
 layout_mode = 2
 toggle_mode = true
@@ -446,7 +446,7 @@ script = ExtResource("7_bl4fu")
 Page = NodePath("../../../ColorRect/VBoxContainer/MarginContainer/PageContainer/ReleasePage")
 metadata/_custom_type_script = "uid://dvjtigpqee0jw"
 
-[node name="BrowseButton" type="Button" parent="HBoxContainer/MenuPanel/VBoxContainer" node_paths=PackedStringArray("Page")]
+[node name="BrowseButton" type="Button" parent="HBoxContainer/MenuPanel/VBoxContainer" unique_id=1103819412 node_paths=PackedStringArray("Page")]
 unique_name_in_owner = true
 layout_mode = 2
 toggle_mode = true
@@ -458,16 +458,16 @@ script = ExtResource("7_bl4fu")
 Page = NodePath("../../../ColorRect/VBoxContainer/MarginContainer/PageContainer/BrowsePage")
 metadata/_custom_type_script = "uid://dvjtigpqee0jw"
 
-[node name="Control" type="Control" parent="HBoxContainer/MenuPanel/VBoxContainer"]
+[node name="Control" type="Control" parent="HBoxContainer/MenuPanel/VBoxContainer" unique_id=762683819]
 layout_mode = 2
 size_flags_vertical = 3
 mouse_filter = 2
 
-[node name="HSeparator2" type="HSeparator" parent="HBoxContainer/MenuPanel/VBoxContainer"]
+[node name="HSeparator2" type="HSeparator" parent="HBoxContainer/MenuPanel/VBoxContainer" unique_id=1755150113]
 layout_mode = 2
 mouse_filter = 2
 
-[node name="SettingButton" type="Button" parent="HBoxContainer/MenuPanel/VBoxContainer" node_paths=PackedStringArray("Page")]
+[node name="SettingButton" type="Button" parent="HBoxContainer/MenuPanel/VBoxContainer" unique_id=381119762 node_paths=PackedStringArray("Page")]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 8
@@ -480,7 +480,7 @@ script = ExtResource("7_bl4fu")
 Page = NodePath("../../../ColorRect/VBoxContainer/MarginContainer/PageContainer/SettingPage")
 metadata/_custom_type_script = "uid://dvjtigpqee0jw"
 
-[node name="InfoButton" type="Button" parent="HBoxContainer/MenuPanel/VBoxContainer" node_paths=PackedStringArray("Page")]
+[node name="InfoButton" type="Button" parent="HBoxContainer/MenuPanel/VBoxContainer" unique_id=1281460120 node_paths=PackedStringArray("Page")]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 8
@@ -493,25 +493,25 @@ script = ExtResource("7_bl4fu")
 Page = NodePath("../../../ColorRect/VBoxContainer/MarginContainer/PageContainer/InfoPage")
 metadata/_custom_type_script = "uid://dvjtigpqee0jw"
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="HBoxContainer/MenuPanel"]
+[node name="AnimationPlayer" type="AnimationPlayer" parent="HBoxContainer/MenuPanel" unique_id=854001060]
 libraries = {
 &"": SubResource("AnimationLibrary_nxjuw")
 }
 
-[node name="VSeparator" type="VSeparator" parent="HBoxContainer"]
+[node name="VSeparator" type="VSeparator" parent="HBoxContainer" unique_id=858669517]
 layout_mode = 2
 size_flags_horizontal = 8
 mouse_filter = 2
 theme_override_constants/separation = 1
 theme_override_styles/separator = SubResource("StyleBoxLine_v5ddw")
 
-[node name="ColorRect" type="ColorRect" parent="HBoxContainer"]
+[node name="ColorRect" type="ColorRect" parent="HBoxContainer" unique_id=1259170736]
 material = ExtResource("9_bmwv3")
 layout_mode = 2
 size_flags_horizontal = 3
 mouse_filter = 2
 
-[node name="VBoxContainer" type="VBoxContainer" parent="HBoxContainer/ColorRect"]
+[node name="VBoxContainer" type="VBoxContainer" parent="HBoxContainer/ColorRect" unique_id=1876104871]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -521,35 +521,35 @@ grow_vertical = 2
 size_flags_horizontal = 3
 theme_override_constants/separation = 0
 
-[node name="MarginContainer2" type="MarginContainer" parent="HBoxContainer/ColorRect/VBoxContainer"]
+[node name="MarginContainer2" type="MarginContainer" parent="HBoxContainer/ColorRect/VBoxContainer" unique_id=695064616]
 layout_mode = 2
 size_flags_horizontal = 0
 theme_override_constants/margin_left = 5
 theme_override_constants/margin_top = 5
 
-[node name="HBoxContainer" type="HBoxContainer" parent="HBoxContainer/ColorRect/VBoxContainer/MarginContainer2"]
+[node name="HBoxContainer" type="HBoxContainer" parent="HBoxContainer/ColorRect/VBoxContainer/MarginContainer2" unique_id=1163518415]
 layout_mode = 2
 size_flags_horizontal = 0
 theme_override_constants/separation = 0
 
-[node name="MarginContainer" type="MarginContainer" parent="HBoxContainer/ColorRect/VBoxContainer/MarginContainer2/HBoxContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="HBoxContainer/ColorRect/VBoxContainer/MarginContainer2/HBoxContainer" unique_id=494436991]
 layout_mode = 2
 theme_override_constants/margin_left = 5
 theme_override_constants/margin_top = 5
 theme_override_constants/margin_right = 5
 theme_override_constants/margin_bottom = 5
 
-[node name="PanelContainer2" type="PanelContainer" parent="HBoxContainer/ColorRect/VBoxContainer/MarginContainer2/HBoxContainer/MarginContainer"]
+[node name="PanelContainer2" type="PanelContainer" parent="HBoxContainer/ColorRect/VBoxContainer/MarginContainer2/HBoxContainer/MarginContainer" unique_id=459375185]
 layout_mode = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_30yt8")
 
-[node name="PanelContainer" type="PanelContainer" parent="HBoxContainer/ColorRect/VBoxContainer/MarginContainer2/HBoxContainer/MarginContainer/PanelContainer2"]
+[node name="PanelContainer" type="PanelContainer" parent="HBoxContainer/ColorRect/VBoxContainer/MarginContainer2/HBoxContainer/MarginContainer/PanelContainer2" unique_id=1659521671]
 clip_children = 2
 layout_mode = 2
 mouse_filter = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_08ol6")
 
-[node name="TextureRect" type="TextureRect" parent="HBoxContainer/ColorRect/VBoxContainer/MarginContainer2/HBoxContainer/MarginContainer/PanelContainer2/PanelContainer"]
+[node name="TextureRect" type="TextureRect" parent="HBoxContainer/ColorRect/VBoxContainer/MarginContainer2/HBoxContainer/MarginContainer/PanelContainer2/PanelContainer" unique_id=1756440084]
 use_parent_material = true
 custom_minimum_size = Vector2(40, 40)
 layout_mode = 2
@@ -557,7 +557,7 @@ texture = ExtResource("2_xnuua")
 expand_mode = 1
 stretch_mode = 6
 
-[node name="Button" type="Button" parent="HBoxContainer/ColorRect/VBoxContainer/MarginContainer2/HBoxContainer"]
+[node name="Button" type="Button" parent="HBoxContainer/ColorRect/VBoxContainer/MarginContainer2/HBoxContainer" unique_id=909337993]
 layout_mode = 2
 size_flags_vertical = 4
 focus_mode = 0
@@ -570,7 +570,7 @@ theme_override_styles/pressed = SubResource("StyleBoxFlat_gblyu")
 theme_override_styles/hover = SubResource("StyleBoxFlat_oarc7")
 toggle_mode = true
 
-[node name="Button" type="Button" parent="HBoxContainer/ColorRect/VBoxContainer/MarginContainer2/HBoxContainer/Button"]
+[node name="Button" type="Button" parent="HBoxContainer/ColorRect/VBoxContainer/MarginContainer2/HBoxContainer/Button" unique_id=69445318]
 show_behind_parent = true
 material = SubResource("ShaderMaterial_gblyu")
 layout_mode = 1
@@ -587,7 +587,7 @@ theme_override_styles/hover = SubResource("StyleBoxFlat_bmwv3")
 toggle_mode = true
 script = SubResource("GDScript_o4ctv")
 
-[node name="Button2" type="Button" parent="HBoxContainer/ColorRect/VBoxContainer/MarginContainer2/HBoxContainer/Button"]
+[node name="Button2" type="Button" parent="HBoxContainer/ColorRect/VBoxContainer/MarginContainer2/HBoxContainer/Button" unique_id=585716867]
 visible = false
 top_level = true
 layout_mode = 1
@@ -598,7 +598,7 @@ grow_horizontal = 2
 grow_vertical = 2
 flat = true
 
-[node name="PanelContainer" type="PanelContainer" parent="HBoxContainer/ColorRect/VBoxContainer/MarginContainer2/HBoxContainer/Button/Button2"]
+[node name="PanelContainer" type="PanelContainer" parent="HBoxContainer/ColorRect/VBoxContainer/MarginContainer2/HBoxContainer/Button/Button2" unique_id=279808276]
 material = SubResource("ShaderMaterial_o4ctv")
 layout_mode = 1
 anchors_preset = -1
@@ -606,33 +606,33 @@ offset_right = 162.0
 offset_bottom = 80.0
 theme_override_styles/panel = SubResource("StyleBoxFlat_7eosv")
 
-[node name="ScrollContainer" type="ScrollContainer" parent="HBoxContainer/ColorRect/VBoxContainer/MarginContainer2/HBoxContainer/Button/Button2/PanelContainer"]
+[node name="ScrollContainer" type="ScrollContainer" parent="HBoxContainer/ColorRect/VBoxContainer/MarginContainer2/HBoxContainer/Button/Button2/PanelContainer" unique_id=1407348842]
 layout_mode = 2
 size_flags_vertical = 3
 horizontal_scroll_mode = 0
 vertical_scroll_mode = 0
 
-[node name="VBoxContainer" type="VBoxContainer" parent="HBoxContainer/ColorRect/VBoxContainer/MarginContainer2/HBoxContainer/Button/Button2/PanelContainer/ScrollContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="HBoxContainer/ColorRect/VBoxContainer/MarginContainer2/HBoxContainer/Button/Button2/PanelContainer/ScrollContainer" unique_id=1975330004]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="Button" type="Button" parent="HBoxContainer/ColorRect/VBoxContainer/MarginContainer2/HBoxContainer/Button/Button2/PanelContainer/ScrollContainer/VBoxContainer"]
+[node name="Button" type="Button" parent="HBoxContainer/ColorRect/VBoxContainer/MarginContainer2/HBoxContainer/Button/Button2/PanelContainer/ScrollContainer/VBoxContainer" unique_id=1936769094]
 layout_mode = 2
 mouse_filter = 1
 icon = SubResource("Texture2D_364to")
 icon_alignment = 1
 
-[node name="VBoxContainer" type="VBoxContainer" parent="HBoxContainer/ColorRect/VBoxContainer/MarginContainer2/HBoxContainer/Button/Button2/PanelContainer/ScrollContainer/VBoxContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="HBoxContainer/ColorRect/VBoxContainer/MarginContainer2/HBoxContainer/Button/Button2/PanelContainer/ScrollContainer/VBoxContainer" unique_id=1049774526]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="HBoxContainer/ColorRect/VBoxContainer/MarginContainer2/HBoxContainer/Button/Button2/PanelContainer"]
+[node name="AnimationPlayer" type="AnimationPlayer" parent="HBoxContainer/ColorRect/VBoxContainer/MarginContainer2/HBoxContainer/Button/Button2/PanelContainer" unique_id=10945203]
 libraries = {
 &"": SubResource("AnimationLibrary_o4ctv")
 }
 
-[node name="MarginContainer" type="MarginContainer" parent="HBoxContainer/ColorRect/VBoxContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="HBoxContainer/ColorRect/VBoxContainer" unique_id=1014273207]
 layout_mode = 2
 size_flags_vertical = 3
 theme_override_constants/margin_left = 15
@@ -640,7 +640,7 @@ theme_override_constants/margin_top = 10
 theme_override_constants/margin_right = 15
 theme_override_constants/margin_bottom = 15
 
-[node name="PageContainer" type="TabContainer" parent="HBoxContainer/ColorRect/VBoxContainer/MarginContainer"]
+[node name="PageContainer" type="TabContainer" parent="HBoxContainer/ColorRect/VBoxContainer/MarginContainer" unique_id=942228242]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
@@ -650,35 +650,35 @@ tab_alignment = 1
 current_tab = 0
 tabs_visible = false
 
-[node name="HomePage" parent="HBoxContainer/ColorRect/VBoxContainer/MarginContainer/PageContainer" instance=ExtResource("14_oarc7")]
+[node name="HomePage" parent="HBoxContainer/ColorRect/VBoxContainer/MarginContainer/PageContainer" unique_id=1868245299 instance=ExtResource("14_oarc7")]
 unique_name_in_owner = true
 layout_mode = 2
 
-[node name="ModpackPage" parent="HBoxContainer/ColorRect/VBoxContainer/MarginContainer/PageContainer" instance=ExtResource("16_bmwv3")]
+[node name="ModpackPage" parent="HBoxContainer/ColorRect/VBoxContainer/MarginContainer/PageContainer" unique_id=475031135 instance=ExtResource("16_bmwv3")]
 unique_name_in_owner = true
 visible = false
 layout_mode = 2
 metadata/_tab_index = 1
 
-[node name="ReleasePage" parent="HBoxContainer/ColorRect/VBoxContainer/MarginContainer/PageContainer" instance=ExtResource("17_o4ctv")]
+[node name="ReleasePage" parent="HBoxContainer/ColorRect/VBoxContainer/MarginContainer/PageContainer" unique_id=239078650 instance=ExtResource("17_o4ctv")]
 unique_name_in_owner = true
 visible = false
 layout_mode = 2
 metadata/_tab_index = 2
 
-[node name="BrowsePage" parent="HBoxContainer/ColorRect/VBoxContainer/MarginContainer/PageContainer" instance=ExtResource("18_365jr")]
+[node name="BrowsePage" parent="HBoxContainer/ColorRect/VBoxContainer/MarginContainer/PageContainer" unique_id=1399320901 instance=ExtResource("18_365jr")]
 unique_name_in_owner = true
 visible = false
 layout_mode = 2
 metadata/_tab_index = 3
 
-[node name="SettingPage" parent="HBoxContainer/ColorRect/VBoxContainer/MarginContainer/PageContainer" instance=ExtResource("19_a6wm3")]
+[node name="SettingPage" parent="HBoxContainer/ColorRect/VBoxContainer/MarginContainer/PageContainer" unique_id=755577266 instance=ExtResource("19_a6wm3")]
 unique_name_in_owner = true
 visible = false
 layout_mode = 2
 metadata/_tab_index = 4
 
-[node name="InfoPage" parent="HBoxContainer/ColorRect/VBoxContainer/MarginContainer/PageContainer" node_paths=PackedStringArray("_titleBar") instance=ExtResource("20_53u4p")]
+[node name="InfoPage" parent="HBoxContainer/ColorRect/VBoxContainer/MarginContainer/PageContainer" unique_id=1595657485 node_paths=PackedStringArray("_titleBar") instance=ExtResource("20_53u4p")]
 unique_name_in_owner = true
 visible = false
 layout_mode = 2
@@ -686,7 +686,7 @@ _buttonGroup = SubResource("ButtonGroup_08ol6")
 _titleBar = NodePath("../../../MarginContainer2/HBoxContainer")
 metadata/_tab_index = 5
 
-[node name="HBoxContainer2" type="HBoxContainer" parent="."]
+[node name="HBoxContainer2" type="HBoxContainer" parent="." unique_id=1999562561]
 layout_mode = 1
 anchors_preset = -1
 anchor_left = 1.0
@@ -697,7 +697,7 @@ grow_horizontal = 0
 theme_override_constants/separation = 0
 alignment = 2
 
-[node name="MinButton" type="Button" parent="HBoxContainer2"]
+[node name="MinButton" type="Button" parent="HBoxContainer2" unique_id=148036384]
 texture_filter = 1
 custom_minimum_size = Vector2(35, 30)
 layout_mode = 2
@@ -712,7 +712,7 @@ theme_override_styles/hover = SubResource("StyleBoxFlat_53u4p")
 icon = SubResource("Texture2D_7nt4r")
 icon_alignment = 1
 
-[node name="CloseButton" type="Button" parent="HBoxContainer2"]
+[node name="CloseButton" type="Button" parent="HBoxContainer2" unique_id=836360268]
 custom_minimum_size = Vector2(35, 30)
 layout_mode = 2
 size_flags_horizontal = 8

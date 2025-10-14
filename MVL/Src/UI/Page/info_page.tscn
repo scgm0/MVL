@@ -31,8 +31,8 @@ corner_radius_top_right = 10
 corner_radius_bottom_right = 10
 corner_radius_bottom_left = 10
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_pb4g6"]
-bg_color = Color(0.6, 0.6, 0.6, 0.6)
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_2do0o"]
+bg_color = Color(0, 0, 0, 0.6)
 corner_radius_top_left = 10
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_cnlqv"]
@@ -40,22 +40,22 @@ bg_color = Color(0.137255, 0.137255, 0.137255, 0.6)
 border_width_bottom = 1
 corner_radius_top_left = 10
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_2do0o"]
-bg_color = Color(0, 0, 0, 0.6)
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_pb4g6"]
+bg_color = Color(0.6, 0.6, 0.6, 0.6)
 corner_radius_top_left = 10
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_0fd5h"]
-bg_color = Color(0.6, 0.6, 0.6, 0.6)
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_pbvk2"]
+bg_color = Color(0, 0, 0, 0.6)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_f5d0o"]
 bg_color = Color(0.137255, 0.137255, 0.137255, 0.6)
 border_width_bottom = 1
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_pbvk2"]
-bg_color = Color(0, 0, 0, 0.6)
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_oec7v"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_0fd5h"]
 bg_color = Color(0.6, 0.6, 0.6, 0.6)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_8py1v"]
+bg_color = Color(0, 0, 0, 0.6)
 corner_radius_top_right = 10
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_twkd0"]
@@ -63,8 +63,8 @@ bg_color = Color(0.137255, 0.137255, 0.137255, 0.6)
 border_width_bottom = 1
 corner_radius_top_right = 10
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_8py1v"]
-bg_color = Color(0, 0, 0, 0.6)
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_oec7v"]
+bg_color = Color(0.6, 0.6, 0.6, 0.6)
 corner_radius_top_right = 10
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_b7o7j"]
@@ -78,15 +78,9 @@ corner_radius_bottom_left = 10
 
 [sub_resource type="Resource" id="Resource_365jr"]
 script = ExtResource("7_twkd0")
-friction = 4.0
-minimum_velocity = 0.4
-rebound_strength = 7.0
 
 [sub_resource type="Resource" id="Resource_a6wm3"]
 script = ExtResource("7_twkd0")
-friction = 4.0
-minimum_velocity = 0.4
-rebound_strength = 7.0
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_fwjxq"]
 content_margin_left = 10.0
@@ -104,7 +98,7 @@ corner_radius_top_right = 10
 corner_radius_bottom_right = 10
 corner_radius_bottom_left = 10
 
-[node name="InfoPage" type="Control" node_paths=PackedStringArray("_versionLabel", "_authorButton", "_donorButton", "_licenseButton", "_list", "_richText", "_richText2", "Main")]
+[node name="InfoPage" type="Control" unique_id=1606254125 node_paths=PackedStringArray("_versionLabel", "_authorButton", "_donorButton", "_licenseButton", "_list", "_richText", "_richText2", "Main")]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -125,25 +119,26 @@ _richText2 = NodePath("MarginContainer/VBoxContainer/PanelContainer2/VBoxContain
 Main = NodePath("MarginContainer")
 metadata/_tab_index = 6
 
-[node name="MarginContainer" type="MarginContainer" parent="."]
+[node name="MarginContainer" type="MarginContainer" parent="." unique_id=400498319]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+pivot_offset_ratio = Vector2(0.5, 0.5)
 theme_override_constants/margin_top = 10
 
-[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer" unique_id=711857194]
 layout_mode = 2
 theme_override_constants/separation = 20
 
-[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer" unique_id=378388728]
 layout_mode = 2
 size_flags_horizontal = 4
 theme_override_constants/separation = 10
 
-[node name="TextureRect" type="TextureRect" parent="MarginContainer/VBoxContainer/HBoxContainer"]
+[node name="TextureRect" type="TextureRect" parent="MarginContainer/VBoxContainer/HBoxContainer" unique_id=186109191]
 custom_minimum_size = Vector2(75, 75)
 layout_mode = 2
 size_flags_horizontal = 4
@@ -151,15 +146,15 @@ texture = ExtResource("4_cnlqv")
 expand_mode = 1
 stretch_mode = 5
 
-[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer" unique_id=1579787012]
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
 
-[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer" unique_id=2075985584]
 layout_mode = 2
 
-[node name="LinkButton" type="LinkButton" parent="MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/HBoxContainer"]
+[node name="LinkButton" type="LinkButton" parent="MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/HBoxContainer" unique_id=1370164440]
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
@@ -170,7 +165,7 @@ text = "神麤詭末的复古物语启动器"
 underline = 1
 uri = "https://github.com/scgm0/MVL"
 
-[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/HBoxContainer"]
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/HBoxContainer" unique_id=1184609022]
 layout_mode = 2
 size_flags_vertical = 8
 theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
@@ -178,71 +173,71 @@ theme_override_font_sizes/font_size = 12
 text = "v0.0.0"
 vertical_alignment = 1
 
-[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer"]
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer" unique_id=1452585905]
 layout_mode = 2
 theme_override_constants/outline_size = 4
 text = "一个免费、开源且由社区驱动的复古物语启动器"
 
-[node name="PanelContainer" type="PanelContainer" parent="MarginContainer/VBoxContainer"]
+[node name="PanelContainer" type="PanelContainer" parent="MarginContainer/VBoxContainer" unique_id=1587236462]
 material = SubResource("ShaderMaterial_2do0o")
 layout_mode = 2
 size_flags_vertical = 3
 mouse_filter = 1
 theme_override_styles/panel = SubResource("StyleBoxFlat_7nt4r")
 
-[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/PanelContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/PanelContainer" unique_id=1241420349]
 layout_mode = 2
 theme_override_constants/separation = 1
 
-[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/PanelContainer/VBoxContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/PanelContainer/VBoxContainer" unique_id=2064752024]
 custom_minimum_size = Vector2(0, 44)
 layout_mode = 2
 theme_override_constants/separation = 1
 
-[node name="Button" type="Button" parent="MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer"]
+[node name="Button" type="Button" parent="MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer" unique_id=1737379398]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_fonts/font = ExtResource("5_pb4g6")
 theme_override_font_sizes/font_size = 20
-theme_override_styles/hover = SubResource("StyleBoxFlat_pb4g6")
-theme_override_styles/pressed = SubResource("StyleBoxFlat_cnlqv")
 theme_override_styles/normal = SubResource("StyleBoxFlat_2do0o")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_cnlqv")
+theme_override_styles/hover = SubResource("StyleBoxFlat_pb4g6")
 toggle_mode = true
 button_pressed = true
 button_group = ExtResource("3_cnlqv")
 text = "贡献者"
 
-[node name="Button2" type="Button" parent="MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer"]
+[node name="Button2" type="Button" parent="MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer" unique_id=1861165032]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_fonts/font = ExtResource("5_pb4g6")
 theme_override_font_sizes/font_size = 20
-theme_override_styles/hover = SubResource("StyleBoxFlat_0fd5h")
-theme_override_styles/pressed = SubResource("StyleBoxFlat_f5d0o")
 theme_override_styles/normal = SubResource("StyleBoxFlat_pbvk2")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_f5d0o")
+theme_override_styles/hover = SubResource("StyleBoxFlat_0fd5h")
 toggle_mode = true
 button_group = ExtResource("3_cnlqv")
 text = "赞助者"
 
-[node name="Button3" type="Button" parent="MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer"]
+[node name="Button3" type="Button" parent="MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer" unique_id=1180426201]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_fonts/font = ExtResource("5_pb4g6")
 theme_override_font_sizes/font_size = 20
-theme_override_styles/hover = SubResource("StyleBoxFlat_oec7v")
-theme_override_styles/pressed = SubResource("StyleBoxFlat_twkd0")
 theme_override_styles/normal = SubResource("StyleBoxFlat_8py1v")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_twkd0")
+theme_override_styles/hover = SubResource("StyleBoxFlat_oec7v")
 toggle_mode = true
 button_group = ExtResource("3_cnlqv")
 text = "许可证"
 
-[node name="PanelContainer" type="PanelContainer" parent="MarginContainer/VBoxContainer/PanelContainer/VBoxContainer"]
+[node name="PanelContainer" type="PanelContainer" parent="MarginContainer/VBoxContainer/PanelContainer/VBoxContainer" unique_id=2073448820]
 layout_mode = 2
 size_flags_vertical = 3
 mouse_filter = 1
 theme_override_styles/panel = SubResource("StyleBoxFlat_b7o7j")
 
-[node name="SmoothScrollContainer" type="ScrollContainer" parent="MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/PanelContainer"]
+[node name="SmoothScrollContainer" type="ScrollContainer" parent="MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/PanelContainer" unique_id=619789274]
 layout_mode = 2
 size_flags_vertical = 3
 script = ExtResource("6_oec7v")
@@ -252,23 +247,23 @@ drag_with_mouse = false
 drag_with_touch = false
 handle_input = false
 
-[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/PanelContainer/SmoothScrollContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/PanelContainer/SmoothScrollContainer" unique_id=951434703]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 0
 theme_override_constants/separation = 20
 
-[node name="PanelContainer2" type="PanelContainer" parent="MarginContainer/VBoxContainer"]
+[node name="PanelContainer2" type="PanelContainer" parent="MarginContainer/VBoxContainer" unique_id=1265737890]
 material = ExtResource("8_gvx1g")
 layout_mode = 2
 mouse_filter = 1
 theme_override_styles/panel = SubResource("StyleBoxFlat_fwjxq")
 
-[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/PanelContainer2"]
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/PanelContainer2" unique_id=1643653055]
 layout_mode = 2
 theme_override_constants/separation = 10
 
-[node name="RichTextLabel" type="RichTextLabel" parent="MarginContainer/VBoxContainer/PanelContainer2/VBoxContainer"]
+[node name="RichTextLabel" type="RichTextLabel" parent="MarginContainer/VBoxContainer/PanelContainer2/VBoxContainer" unique_id=494685227]
 layout_mode = 2
 size_flags_horizontal = 3
 focus_mode = 2
@@ -281,7 +276,7 @@ horizontal_alignment = 1
 threaded = true
 selection_enabled = true
 
-[node name="RichTextLabel2" type="RichTextLabel" parent="MarginContainer/VBoxContainer/PanelContainer2/VBoxContainer"]
+[node name="RichTextLabel2" type="RichTextLabel" parent="MarginContainer/VBoxContainer/PanelContainer2/VBoxContainer" unique_id=50233055]
 layout_mode = 2
 size_flags_horizontal = 3
 focus_mode = 2
@@ -294,34 +289,34 @@ horizontal_alignment = 1
 threaded = true
 selection_enabled = true
 
-[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/PanelContainer2/VBoxContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/PanelContainer2/VBoxContainer" unique_id=548231137]
 layout_mode = 2
 size_flags_horizontal = 4
 
-[node name="LinkButton" type="LinkButton" parent="MarginContainer/VBoxContainer/PanelContainer2/VBoxContainer/HBoxContainer"]
+[node name="LinkButton" type="LinkButton" parent="MarginContainer/VBoxContainer/PanelContainer2/VBoxContainer/HBoxContainer" unique_id=829479608]
 layout_mode = 2
 size_flags_horizontal = 6
 text = "QQ频道"
 uri = "https://pd.qq.com/s/cgzpnm0lh"
 
-[node name="LinkButton2" type="LinkButton" parent="MarginContainer/VBoxContainer/PanelContainer2/VBoxContainer/HBoxContainer"]
+[node name="LinkButton2" type="LinkButton" parent="MarginContainer/VBoxContainer/PanelContainer2/VBoxContainer/HBoxContainer" unique_id=595963674]
 layout_mode = 2
 size_flags_horizontal = 6
 text = "Github"
 uri = "https://github.com/scgm0/MVL"
 
-[node name="LinkButton3" type="LinkButton" parent="MarginContainer/VBoxContainer/PanelContainer2/VBoxContainer/HBoxContainer"]
+[node name="LinkButton3" type="LinkButton" parent="MarginContainer/VBoxContainer/PanelContainer2/VBoxContainer/HBoxContainer" unique_id=980533748]
 layout_mode = 2
 size_flags_horizontal = 6
 text = "ModDB"
 uri = "https://mods.vintagestory.at/mvl"
 
-[node name="LinkButton4" type="LinkButton" parent="MarginContainer/VBoxContainer/PanelContainer2/VBoxContainer/HBoxContainer"]
+[node name="LinkButton4" type="LinkButton" parent="MarginContainer/VBoxContainer/PanelContainer2/VBoxContainer/HBoxContainer" unique_id=155595645]
 layout_mode = 2
 text = "Weblate"
 uri = "https://hosted.weblate.org/engage/mvl"
 
-[node name="LinkButton5" type="LinkButton" parent="MarginContainer/VBoxContainer/PanelContainer2/VBoxContainer/HBoxContainer"]
+[node name="LinkButton5" type="LinkButton" parent="MarginContainer/VBoxContainer/PanelContainer2/VBoxContainer/HBoxContainer" unique_id=2048862158]
 layout_mode = 2
 text = "复古物语"
 uri = "https://www.vintagestory.at/"

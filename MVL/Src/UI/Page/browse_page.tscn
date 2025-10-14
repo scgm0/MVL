@@ -117,7 +117,7 @@ script = ExtResource("11_l2ewu")
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_ceq8m"]
 
-[node name="BrowsePage" type="Control" node_paths=PackedStringArray("_modNameLineEdit", "_searchButton", "_swapButton", "_modCountSpinBox", "_selectModpackButton", "_modAuthorLineEdit", "_modVersionsButton", "_modTagsButton", "_modSideButton", "_modOrderByButton", "_modInstallStatusButton", "_moduleListContainer", "_pageNumberLineEdit", "_pageNumberButton", "_previousPageButton", "_nextPageButton", "_loadingControl", "Main")]
+[node name="BrowsePage" type="Control" unique_id=510509351 node_paths=PackedStringArray("_modNameLineEdit", "_searchButton", "_swapButton", "_modCountSpinBox", "_selectModpackButton", "_modAuthorLineEdit", "_modVersionsButton", "_modTagsButton", "_modSideButton", "_modOrderByButton", "_modInstallStatusButton", "_moduleListContainer", "_pageNumberLineEdit", "_pageNumberButton", "_previousPageButton", "_nextPageButton", "_loadingControl", "Main")]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -149,31 +149,32 @@ _loadingControl = NodePath("Control")
 Main = NodePath("MarginContainer")
 metadata/_tab_index = 4
 
-[node name="MarginContainer" type="MarginContainer" parent="."]
+[node name="MarginContainer" type="MarginContainer" parent="." unique_id=1000739210]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+pivot_offset_ratio = Vector2(0.5, 0.5)
 
-[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer" unique_id=1767906833]
 layout_mode = 2
 theme_override_constants/separation = 10
 
-[node name="PanelContainer" type="PanelContainer" parent="MarginContainer/VBoxContainer"]
+[node name="PanelContainer" type="PanelContainer" parent="MarginContainer/VBoxContainer" unique_id=1514598501]
 material = ExtResource("5_k83tl")
 layout_mode = 2
 mouse_filter = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_dvdbd")
 
-[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/PanelContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/PanelContainer" unique_id=615421863]
 layout_mode = 2
 
-[node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer/VBoxContainer/PanelContainer/VBoxContainer"]
+[node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer/VBoxContainer/PanelContainer/VBoxContainer" unique_id=1135139172]
 layout_mode = 2
 
-[node name="LineEdit" type="LineEdit" parent="MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer2"]
+[node name="LineEdit" type="LineEdit" parent="MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer2" unique_id=66918803]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 0
@@ -181,20 +182,20 @@ theme_override_font_sizes/font_size = 18
 placeholder_text = "搜索模组"
 clear_button_enabled = true
 
-[node name="Button" type="Button" parent="MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer2"]
+[node name="Button" type="Button" parent="MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer2" unique_id=1990365534]
 layout_mode = 2
 icon = SubResource("Texture2D_wrfr1")
 
-[node name="Button2" type="Button" parent="MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer2"]
+[node name="Button2" type="Button" parent="MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer2" unique_id=604492044]
 layout_mode = 2
 toggle_mode = true
 icon = SubResource("Texture2D_blyna")
 
-[node name="PanelContainer" type="PanelContainer" parent="MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer2"]
+[node name="PanelContainer" type="PanelContainer" parent="MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer2" unique_id=1455484405]
 layout_mode = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_blyna")
 
-[node name="SpinBox" type="SpinBox" parent="MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer2/PanelContainer"]
+[node name="SpinBox" type="SpinBox" parent="MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer2/PanelContainer" unique_id=356256782]
 layout_mode = 2
 size_flags_horizontal = 4
 theme = SubResource("Theme_blyna")
@@ -202,10 +203,10 @@ min_value = 1.0
 value = 4.0
 alignment = 2
 
-[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/PanelContainer/VBoxContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/PanelContainer/VBoxContainer" unique_id=1186613310]
 layout_mode = 2
 
-[node name="SelectModpackButton" type="Button" parent="MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer" node_paths=PackedStringArray("_hBoxContainer", "_name", "_version", "_bg", "_panelContainer", "_scrollContainer", "_vboxContainer")]
+[node name="SelectModpackButton" type="Button" parent="MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer" unique_id=1165931760 node_paths=PackedStringArray("_hBoxContainer", "_name", "_version", "_bg", "_panelContainer", "_scrollContainer", "_vboxContainer")]
 layout_mode = 2
 size_flags_horizontal = 3
 script = ExtResource("7_s2qbl")
@@ -218,7 +219,7 @@ _panelContainer = NodePath("Button/PanelContainer")
 _scrollContainer = NodePath("Button/PanelContainer/SmoothScrollContainer")
 _vboxContainer = NodePath("Button/PanelContainer/SmoothScrollContainer/VBoxContainer")
 
-[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer/SelectModpackButton"]
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer/SelectModpackButton" unique_id=982826356]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -226,25 +227,25 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer/SelectModpackButton/HBoxContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer/SelectModpackButton/HBoxContainer" unique_id=1291545642]
 layout_mode = 2
 theme_override_constants/margin_left = 5
 theme_override_constants/margin_top = 5
 theme_override_constants/margin_right = 5
 theme_override_constants/margin_bottom = 5
 
-[node name="TextureRect" type="TextureRect" parent="MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer/SelectModpackButton/HBoxContainer/MarginContainer"]
+[node name="TextureRect" type="TextureRect" parent="MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer/SelectModpackButton/HBoxContainer/MarginContainer" unique_id=725529555]
 custom_minimum_size = Vector2(50, 50)
 layout_mode = 2
 texture = ExtResource("9_erb6i")
 expand_mode = 1
 stretch_mode = 5
 
-[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer/SelectModpackButton/HBoxContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer/SelectModpackButton/HBoxContainer" unique_id=83113951]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer/SelectModpackButton/HBoxContainer/VBoxContainer"]
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer/SelectModpackButton/HBoxContainer/VBoxContainer" unique_id=951159635]
 layout_mode = 2
 size_flags_vertical = 3
 theme_override_font_sizes/font_size = 18
@@ -252,7 +253,7 @@ text = "整合包"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="Label2" type="Label" parent="MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer/SelectModpackButton/HBoxContainer/VBoxContainer"]
+[node name="Label2" type="Label" parent="MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer/SelectModpackButton/HBoxContainer/VBoxContainer" unique_id=1277568623]
 layout_mode = 2
 size_flags_vertical = 3
 theme_override_font_sizes/font_size = 14
@@ -260,7 +261,7 @@ text = "版本"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="Button" type="Button" parent="MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer/SelectModpackButton"]
+[node name="Button" type="Button" parent="MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer/SelectModpackButton" unique_id=434578453]
 visible = false
 top_level = true
 layout_mode = 1
@@ -271,7 +272,7 @@ grow_horizontal = 2
 grow_vertical = 2
 flat = true
 
-[node name="PanelContainer" type="PanelContainer" parent="MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer/SelectModpackButton/Button"]
+[node name="PanelContainer" type="PanelContainer" parent="MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer/SelectModpackButton/Button" unique_id=1510372090]
 material = SubResource("ShaderMaterial_2b3vt")
 layout_mode = 1
 anchors_preset = -1
@@ -279,10 +280,9 @@ offset_right = 10.0
 offset_bottom = 8.0
 theme_override_styles/panel = SubResource("StyleBoxFlat_gioba")
 
-[node name="SmoothScrollContainer" type="ScrollContainer" parent="MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer/SelectModpackButton/Button/PanelContainer"]
+[node name="SmoothScrollContainer" type="ScrollContainer" parent="MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer/SelectModpackButton/Button/PanelContainer" unique_id=1054492652]
 layout_mode = 2
 theme_override_styles/panel = SubResource("StyleBoxEmpty_gioba")
-scroll_horizontal = -4
 horizontal_scroll_mode = 0
 vertical_scroll_mode = 0
 script = ExtResource("10_d3orq")
@@ -290,69 +290,69 @@ wheel_scroll_damper = SubResource("Resource_gioba")
 dragging_scroll_damper = SubResource("Resource_jfbpu")
 metadata/_custom_type_script = "uid://bgqglerkcylxx"
 
-[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer/SelectModpackButton/Button/PanelContainer/SmoothScrollContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer/SelectModpackButton/Button/PanelContainer/SmoothScrollContainer" unique_id=1264198908]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 6
 
-[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer" unique_id=447592443]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer/MarginContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer/MarginContainer" unique_id=271851814]
 layout_mode = 2
 
-[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer/MarginContainer/VBoxContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer/MarginContainer/VBoxContainer" unique_id=1184309068]
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="AuthorsLineEdit" parent="MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer/MarginContainer/VBoxContainer/HBoxContainer" instance=ExtResource("12_v2jk5")]
+[node name="AuthorsLineEdit" parent="MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer/MarginContainer/VBoxContainer/HBoxContainer" unique_id=1798075219 instance=ExtResource("12_v2jk5")]
 layout_mode = 2
 theme_override_font_sizes/font_size = 16
 theme_override_styles/normal = SubResource("StyleBoxFlat_u5j2m")
 placeholder_text = "模组作者"
 alignment = 1
 
-[node name="SelectionButton" parent="MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer/MarginContainer/VBoxContainer/HBoxContainer" instance=ExtResource("13_mqq6l")]
+[node name="SelectionButton" parent="MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer/MarginContainer/VBoxContainer/HBoxContainer" unique_id=1567459253 instance=ExtResource("13_mqq6l")]
 layout_mode = 2
 size_flags_horizontal = 3
 text = "游戏版本"
 
-[node name="SelectionButton2" parent="MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer/MarginContainer/VBoxContainer/HBoxContainer" instance=ExtResource("13_mqq6l")]
+[node name="SelectionButton2" parent="MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer/MarginContainer/VBoxContainer/HBoxContainer" unique_id=2019429923 instance=ExtResource("13_mqq6l")]
 layout_mode = 2
 size_flags_horizontal = 3
 text = "模组标签"
 
-[node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer/MarginContainer/VBoxContainer"]
+[node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer/MarginContainer/VBoxContainer" unique_id=1516765277]
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="SelectionButton" parent="MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer/MarginContainer/VBoxContainer/HBoxContainer2" instance=ExtResource("13_mqq6l")]
+[node name="SelectionButton" parent="MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer/MarginContainer/VBoxContainer/HBoxContainer2" unique_id=855604389 instance=ExtResource("13_mqq6l")]
 layout_mode = 2
 size_flags_horizontal = 3
 text = "排序依据"
 Radio = true
 
-[node name="SelectionButton2" parent="MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer/MarginContainer/VBoxContainer/HBoxContainer2" instance=ExtResource("13_mqq6l")]
+[node name="SelectionButton2" parent="MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer/MarginContainer/VBoxContainer/HBoxContainer2" unique_id=1305489265 instance=ExtResource("13_mqq6l")]
 layout_mode = 2
 size_flags_horizontal = 3
 text = "运行位置"
 Radio = true
 
-[node name="SelectionButton3" parent="MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer/MarginContainer/VBoxContainer/HBoxContainer2" instance=ExtResource("13_mqq6l")]
+[node name="SelectionButton3" parent="MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer/MarginContainer/VBoxContainer/HBoxContainer2" unique_id=1718480657 instance=ExtResource("13_mqq6l")]
 layout_mode = 2
 size_flags_horizontal = 3
 text = "安装状态"
 Radio = true
 
-[node name="PanelContainer2" type="PanelContainer" parent="MarginContainer/VBoxContainer"]
+[node name="PanelContainer2" type="PanelContainer" parent="MarginContainer/VBoxContainer" unique_id=1105916553]
 material = ExtResource("5_k83tl")
 layout_mode = 2
 size_flags_vertical = 3
 mouse_filter = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_dvdbd")
 
-[node name="ScrollContainer" type="ScrollContainer" parent="MarginContainer/VBoxContainer/PanelContainer2"]
+[node name="ScrollContainer" type="ScrollContainer" parent="MarginContainer/VBoxContainer/PanelContainer2" unique_id=1506915009]
 layout_mode = 2
 size_flags_vertical = 3
 script = ExtResource("10_d3orq")
@@ -360,7 +360,7 @@ wheel_scroll_damper = SubResource("Resource_dvdbd")
 dragging_scroll_damper = SubResource("Resource_1j2tx")
 metadata/_custom_type_script = "uid://bgqglerkcylxx"
 
-[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/VBoxContainer/PanelContainer2/ScrollContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/VBoxContainer/PanelContainer2/ScrollContainer" unique_id=1754595711]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
@@ -369,7 +369,7 @@ theme_override_constants/margin_top = 2
 theme_override_constants/margin_right = 2
 theme_override_constants/margin_bottom = 2
 
-[node name="HFlowContainer" type="HFlowContainer" parent="MarginContainer/VBoxContainer/PanelContainer2/ScrollContainer/MarginContainer"]
+[node name="HFlowContainer" type="HFlowContainer" parent="MarginContainer/VBoxContainer/PanelContainer2/ScrollContainer/MarginContainer" unique_id=858843140]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 6
@@ -377,30 +377,30 @@ theme_override_constants/h_separation = 8
 theme_override_constants/v_separation = 8
 alignment = 1
 
-[node name="PanelContainer3" type="PanelContainer" parent="MarginContainer/VBoxContainer"]
+[node name="PanelContainer3" type="PanelContainer" parent="MarginContainer/VBoxContainer" unique_id=1768590347]
 material = ExtResource("5_k83tl")
 layout_mode = 2
 mouse_filter = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_dvdbd")
 
-[node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer/VBoxContainer/PanelContainer3"]
+[node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer/VBoxContainer/PanelContainer3" unique_id=465328176]
 layout_mode = 2
 alignment = 1
 
-[node name="Button" type="Button" parent="MarginContainer/VBoxContainer/PanelContainer3/HBoxContainer2"]
+[node name="Button" type="Button" parent="MarginContainer/VBoxContainer/PanelContainer3/HBoxContainer2" unique_id=1690783375]
 layout_mode = 2
 size_flags_horizontal = 3
 mouse_default_cursor_shape = 2
 text = "上一页"
 flat = true
 
-[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/PanelContainer3/HBoxContainer2"]
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/PanelContainer3/HBoxContainer2" unique_id=1087409380]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_constants/separation = 0
 alignment = 1
 
-[node name="LineEdit" type="LineEdit" parent="MarginContainer/VBoxContainer/PanelContainer3/HBoxContainer2/HBoxContainer"]
+[node name="LineEdit" type="LineEdit" parent="MarginContainer/VBoxContainer/PanelContainer3/HBoxContainer2/HBoxContainer" unique_id=1502552950]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_font_sizes/font_size = 16
@@ -411,7 +411,7 @@ virtual_keyboard_type = 2
 caret_blink = true
 structured_text_bidi_override = 3
 
-[node name="Button" type="Button" parent="MarginContainer/VBoxContainer/PanelContainer3/HBoxContainer2/HBoxContainer"]
+[node name="Button" type="Button" parent="MarginContainer/VBoxContainer/PanelContainer3/HBoxContainer2/HBoxContainer" unique_id=2131655291]
 layout_mode = 2
 size_flags_horizontal = 3
 mouse_default_cursor_shape = 1
@@ -423,14 +423,14 @@ theme_override_styles/disabled = SubResource("StyleBoxEmpty_ceq8m")
 text = "/1"
 alignment = 0
 
-[node name="Button2" type="Button" parent="MarginContainer/VBoxContainer/PanelContainer3/HBoxContainer2"]
+[node name="Button2" type="Button" parent="MarginContainer/VBoxContainer/PanelContainer3/HBoxContainer2" unique_id=1646220440]
 layout_mode = 2
 size_flags_horizontal = 3
 mouse_default_cursor_shape = 2
 text = "下一页"
 flat = true
 
-[node name="Control" type="Control" parent="."]
+[node name="Control" type="Control" parent="." unique_id=2017141408]
 visible = false
 layout_mode = 1
 anchors_preset = 15
@@ -439,7 +439,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="ColorRect" type="ColorRect" parent="Control"]
+[node name="ColorRect" type="ColorRect" parent="Control" unique_id=1260741081]
 material = ExtResource("14_wixqv")
 custom_minimum_size = Vector2(75, 75)
 layout_mode = 1

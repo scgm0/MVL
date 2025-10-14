@@ -161,7 +161,7 @@ _data = {
 &"show": SubResource("Animation_mqeym")
 }
 
-[node name="BaseWindow" type="ColorRect" node_paths=PackedStringArray("Container", "_animationPlayer", "TitleLabel", "CancelButton", "OkButton")]
+[node name="BaseWindow" type="ColorRect" unique_id=1805424548 node_paths=PackedStringArray("Container", "_animationPlayer", "TitleLabel", "CancelButton", "OkButton")]
 top_level = true
 anchors_preset = 15
 anchor_right = 1.0
@@ -177,7 +177,7 @@ CancelButton = NodePath("PanelContainer/VBoxContainer/HBoxContainer3/Button")
 OkButton = NodePath("PanelContainer/VBoxContainer/HBoxContainer3/Button2")
 BackBufferCopy = true
 
-[node name="ColorRect" type="ColorRect" parent="."]
+[node name="ColorRect" type="ColorRect" parent="." unique_id=165873757]
 material = SubResource("ShaderMaterial_v4xgt")
 layout_mode = 1
 anchors_preset = 15
@@ -187,7 +187,7 @@ grow_horizontal = 2
 grow_vertical = 2
 color = Color(0, 0, 0, 1)
 
-[node name="NativeWindowUtility" type="Control" parent="."]
+[node name="NativeWindowUtility" type="Control" parent="." unique_id=2126615631]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -198,7 +198,7 @@ script = ExtResource("2_1nfmj")
 IsDraggable = true
 metadata/_custom_type_script = "uid://dbies7u5fo4sh"
 
-[node name="PanelContainer" type="PanelContainer" parent="."]
+[node name="PanelContainer" type="PanelContainer" parent="." unique_id=1939254484]
 material = SubResource("ShaderMaterial_wrq3t")
 layout_mode = 1
 anchors_preset = 8
@@ -212,44 +212,45 @@ offset_right = 20.0
 offset_bottom = 20.0
 grow_horizontal = 2
 grow_vertical = 2
+pivot_offset_ratio = Vector2(0.5, 0.5)
 theme_override_styles/panel = SubResource("StyleBoxFlat_rnayx")
 
-[node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer" unique_id=1085092068]
 layout_mode = 2
 theme_override_constants/separation = 10
 
-[node name="Label" type="Label" parent="PanelContainer/VBoxContainer"]
+[node name="Label" type="Label" parent="PanelContainer/VBoxContainer" unique_id=45475559]
 layout_mode = 2
 theme_override_fonts/font = ExtResource("3_1nfmj")
 theme_override_font_sizes/font_size = 20
 text = "标题"
 horizontal_alignment = 1
 
-[node name="HSeparator" type="HSeparator" parent="PanelContainer/VBoxContainer"]
+[node name="HSeparator" type="HSeparator" parent="PanelContainer/VBoxContainer" unique_id=434749734]
 layout_mode = 2
 theme_override_constants/separation = 15
 
-[node name="HSeparator2" type="HSeparator" parent="PanelContainer/VBoxContainer"]
+[node name="HSeparator2" type="HSeparator" parent="PanelContainer/VBoxContainer" unique_id=852108949]
 layout_mode = 2
 theme_override_constants/separation = 15
 
-[node name="HBoxContainer3" type="HBoxContainer" parent="PanelContainer/VBoxContainer"]
+[node name="HBoxContainer3" type="HBoxContainer" parent="PanelContainer/VBoxContainer" unique_id=522919472]
 layout_mode = 2
 size_flags_horizontal = 4
 theme = SubResource("Theme_r1ufi")
 theme_override_constants/separation = 125
 
-[node name="Button" type="Button" parent="PanelContainer/VBoxContainer/HBoxContainer3"]
+[node name="Button" type="Button" parent="PanelContainer/VBoxContainer/HBoxContainer3" unique_id=42009310]
 layout_mode = 2
 size_flags_horizontal = 6
 text = "取消"
 
-[node name="Button2" type="Button" parent="PanelContainer/VBoxContainer/HBoxContainer3"]
+[node name="Button2" type="Button" parent="PanelContainer/VBoxContainer/HBoxContainer3" unique_id=1754640447]
 layout_mode = 2
 size_flags_horizontal = 6
 text = "确定"
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=1829304291]
 libraries = {
 &"": SubResource("AnimationLibrary_0mth8")
 }
