@@ -5,15 +5,15 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: 神麤詭末的复古物语启动器\n"
-"PO-Revision-Date: 2025-05-08 11:55+0000\n"
-"Last-Translator: 神麤詭末 <2682963017@qq.com>\n"
+"PO-Revision-Date: 2025-10-21 12:02+0000\n"
+"Last-Translator: LorIlcs <soumanadrx@gmail.com>\n"
 "Language-Team: French <https://hosted.weblate.org/projects/mvl/mvl/fr/>\n"
 "Language: fr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8-bit\n"
 "Plural-Forms: nplurals=2; plural=n > 1;\n"
-"X-Generator: Weblate 5.12-dev\n"
+"X-Generator: Weblate 5.14-dev\n"
 
 msgid "神麤詭末的复古物语启动器"
 msgstr "Launcher Vintage Story de MystiVaid"
@@ -31,7 +31,7 @@ msgid "版本"
 msgstr "Version"
 
 msgid "浏览"
-msgstr ""
+msgstr "Parcourir"
 
 msgid "设置"
 msgstr "Paramètres"
@@ -256,7 +256,7 @@ msgid "法语翻译"
 msgstr "Traduction française"
 
 msgid "俄语翻译"
-msgstr ""
+msgstr "Traduction russe"
 
 msgid "界面"
 msgstr "Interface"
@@ -315,55 +315,64 @@ msgid "无法登录？检查您的游戏账号"
 msgstr "Impossible de se connecter ? Vérifiez votre compte."
 
 msgid "整合包模组管理"
-msgstr ""
+msgstr "Gestion des Modpacks"
 
 msgid "输入模组名称"
-msgstr ""
+msgstr "Entrez le nom du mod"
 
 msgid "搜索模组"
-msgstr ""
+msgstr "Rechercher un mod"
 
 msgid "同步本地模组信息"
-msgstr ""
+msgstr "Synchroniser les informations locales des mods"
 
 msgid "同步模组在线信息"
-msgstr ""
+msgstr "Informations en ligne des mods synchronisées"
 
 msgid "模组批量更新"
-msgstr ""
+msgstr "Mise à jour groupée des mods"
 
 msgid "关闭"
-msgstr ""
+msgstr "Fermer"
 
 msgid "选择要下载的模组版本"
-msgstr ""
+msgstr "Sélectionnez la version du mod à télécharger"
 
 msgid "跳转到ModDB网页"
-msgstr ""
+msgstr "Ouvrir la page sur la ModDB"
 
 msgid "更新到最新可用版本"
-msgstr ""
+msgstr "Mettre à jour vers la dernière version disponible"
 
 msgid "查看所有发布版本"
-msgstr ""
+msgstr "Voir toutes les versions publiées"
 
 msgid "删除本地模组"
-msgstr ""
+msgstr "Supprimer le mod local"
 
 msgid "确定要删除 [b]{0}[/b] 吗？"
-msgstr ""
+msgstr "Êtes-vous sûr de vouloir supprimer [b]{0}[/b] ?"
 
 msgid "兼容的游戏版本高于整合包游戏版本，游戏不会加载"
 msgstr ""
+"La version compatible du jeu est plus récente que celle du modpack, et le "
+"jeu ne se chargera pas"
 
 msgid "兼容的游戏版本包含整合包游戏版本，能够安全使用"
 msgstr ""
+"Les versions compatibles du jeu incluent celles du modpack, garantissant une "
+"utilisation sûre"
 
 msgid "兼容的游戏版本低于整合包游戏版本，可能已经过时"
 msgstr ""
+"La version compatible du jeu est inférieure à celle du modpack et peut être "
+"obsolète"
 
 msgid "缺少以下依赖模组，是否尝试从ModDB获取？\n{0}"
 msgstr ""
+"Les dépendances suivantes sont manquantes. Voulez-vous tenter de les "
+"récupérer depuis la ModDB ?\n"
+"{0}"
 
 msgid "正在从ModDB获取模组信息..."
 msgstr ""
