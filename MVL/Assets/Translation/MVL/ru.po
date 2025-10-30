@@ -5,16 +5,17 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: 神麤詭末的复古物语启动器\n"
-"PO-Revision-Date: 2025-05-10 14:19+0000\n"
-"Last-Translator: Xapitonov <sergejharitonov001@gmail.com>\n"
+"PO-Revision-Date: 2025-10-31 19:02+0000\n"
+"Last-Translator: vt729830 <vt729830@gmail.com>\n"
 "Language-Team: Russian <https://hosted.weblate.org/projects/mvl/mvl/ru/>\n"
 "Language: ru\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8-bit\n"
-"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
-"n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
-"X-Generator: Weblate 5.12-dev\n"
+"Plural-Forms: nplurals=3; plural="
+"(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? "
+"1 : 2);\n"
+"X-Generator: Weblate 5.14.1-dev\n"
 
 msgid "神麤詭末的复古物语启动器"
 msgstr "Лаунчер VintageStory от MystiVaid"
@@ -32,7 +33,7 @@ msgid "版本"
 msgstr "Релиз"
 
 msgid "浏览"
-msgstr ""
+msgstr "Просмотр"
 
 msgid "设置"
 msgstr "Настройки"
@@ -256,7 +257,7 @@ msgid "法语翻译"
 msgstr "Французский перевод"
 
 msgid "俄语翻译"
-msgstr ""
+msgstr "Перевод на русский язык"
 
 msgid "界面"
 msgstr "Интерфейс"
@@ -377,88 +378,92 @@ msgid "正在从ModDB获取模组信息..."
 msgstr "Получение информации о модах из ModDB..."
 
 msgid "模组作者"
-msgstr ""
+msgstr "Автор модуля"
 
 msgid "游戏版本"
-msgstr ""
+msgstr "Версия игры"
 
 msgid "模组标签"
-msgstr ""
+msgstr "Тег/Метка модуля"
 
 msgid "排序依据"
-msgstr ""
+msgstr "Сортировать по"
 
 msgid "运行位置"
-msgstr ""
+msgstr "Место запуска"
 
 msgid "安装状态"
-msgstr ""
+msgstr "Статус установки"
 
 msgid "上一页"
-msgstr ""
+msgstr "Предыдущая страница"
 
 msgid "下一页"
-msgstr ""
+msgstr "Следующая страница"
 
 msgid "任意"
-msgstr ""
+msgstr "Любой"
 
 msgid "客户端"
-msgstr ""
+msgstr "Клиент"
 
 msgid "服务端"
-msgstr ""
+msgstr "Сервер"
 
 msgid "双方"
-msgstr ""
+msgstr "Обе стороны"
 
 msgid "创建时间"
-msgstr ""
+msgstr "Время создания"
 
 msgid "更新时间"
-msgstr ""
+msgstr "Время обновления"
 
 msgid "下载数量"
-msgstr ""
+msgstr "Число скачиваний"
 
 msgid "关注数量"
-msgstr ""
+msgstr "Количество подписчиков"
 
 msgid "热门趋势"
-msgstr ""
+msgstr "Популярные тренды"
 
 msgid "所有"
-msgstr ""
+msgstr "Все"
 
 msgid "已安装"
-msgstr ""
+msgstr "Установлено"
 
 msgid "未安装"
-msgstr ""
+msgstr "Не установлено"
 
 msgid "获取在线信息时发生错误，请检查网络连接"
 msgstr ""
+"Произошла ошибка при получении онлайн-информации, пожалуйста, проверьте ваше "
+"сетевое соединение"
 
 msgid "请先创建整合包"
-msgstr ""
+msgstr "Сначала создайте сборку"
 
 msgid "没有找到符合条件的模组"
-msgstr ""
+msgstr "Не найден ни один модуль, соответствующий условиям"
 
 msgid "获取模组信息失败"
-msgstr ""
+msgstr "Не удалось получить информацию о модуле"
 
 msgid "导入已安装游戏"
-msgstr ""
+msgstr "Импортировать установленную игру"
 
 msgid "渲染驱动"
-msgstr ""
+msgstr "Драйвер рендеринга"
 
 msgid "更改渲染驱动需要重启才能生效\n是否立即重启？"
 msgstr ""
+"Для вступления в силу изменений драйвера рендеринга требуется перезапуск\n"
+"Перезапустить немедленно?"
 
 msgid "浏览在线模组"
-msgstr ""
+msgstr "Просмотр онлайн-модулей"
 
 msgid "菜单展开"
-msgstr ""
+msgstr "Меню развёрнуто"
