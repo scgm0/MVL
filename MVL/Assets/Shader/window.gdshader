@@ -3,6 +3,7 @@ shader_type canvas_item;
 uniform float radius = 10.0;
 uniform vec2 windowTopLeft = vec2(5);
 uniform vec2 windowExpandedSize = vec2(1162, 658);
+uniform bool hasRoundCorners = true;
 
 uniform vec4 shadowColor: source_color = vec4(0.0, 0.0, 0.0, 1.0);
 
@@ -10,14 +11,14 @@ uniform vec4  outlineColor: source_color = vec4(1, 1, 1, 0.5);
 uniform float outlineThickness = 0.0;
 uniform vec4  secondOutlineColor: source_color = vec4(1, 1, 1, 0.5);
 uniform float secondOutlineThickness = 0.0;
-uniform vec4  outerOutlineColor: source_color = vec4(1, 1, 1, 0.5);
+uniform vec4  outerOutlineColor: source_color = vec4(1, 1, 1, 0.65);
 uniform float outerOutlineThickness = 1.0;
 
 varying vec2 windowSize;
 varying vec2 halfSize;
 varying vec2 rectCenter;
 varying vec2 fragCoord;
-//varying vec2 uv2;
+varying vec2 uv2;
 varying vec4 modulate;
 
 vec2 tex_to_pixel(vec2 texcoord) {
@@ -44,20 +45,20 @@ float roundedBoxSDF(vec2 p, vec2 b, float r) {
 }
 
 vec4 getShadow() {
-	float distance = roundedBoxSDF(fragCoord - rectCenter, halfSize, radius);
+	float distance = roundedBoxSDF(fragCoord - rectCenter, halfSize, hasRoundCorners ? radius : 0.0);
 	float shadowAlpha = 1.0 - smoothstep(-windowTopLeft.x * 0.5, windowTopLeft.x, distance);
 	return mix(vec4(0), shadowColor, shadowAlpha);
 }
 
-//vec4 getBase(sampler2D sampler) {
-	//vec4 tex = texture(sampler, uv2);
-	//float distance = roundedBoxSDF(fragCoord - rectCenter, halfSize, 0.0);
-	//return mix(
-		//vec4(1, 1, 1, 0),
-		//tex,
-		//min(tex.a, 1.0 - distance)
-	//);
-//}
+vec4 getBase(sampler2D sampler) {
+	vec4 tex = texture(sampler, uv2);
+	float distance = roundedBoxSDF(fragCoord - rectCenter, halfSize, 0.0);
+	return mix(
+		vec4(1, 1, 1, 0),
+		tex,
+		min(tex.a, 1.0 - distance)
+	);
+}
 
 vec4 shapeCorner(vec2 coord0, vec4 tex, vec2 start, float angle, vec4 coord_shadowColor) {
 	vec2 angle_vector = vec2(cos(angle), sin(angle));
@@ -133,9 +134,9 @@ vec4 shapeCorner(vec2 coord0, vec4 tex, vec2 start, float angle, vec4 coord_shad
 }
 
 vec4 run(vec2 texcoord0, vec4 tex) {
-	//if (tex.a == 0.0) {
-		//return tex;
-	//}
+	if (tex.a == 0.0) {
+		return tex;
+	}
 
 	float r = max(radius, outlineThickness);
 	vec2 coord0 = tex_to_pixel(texcoord0);
@@ -175,10 +176,11 @@ void vertex() {
 	fragCoord = UV * windowExpandedSize;
 	rectCenter = windowExpandedSize * 0.5;
 	halfSize = windowSize * 0.5;
-	//uv2 = UV * (windowExpandedSize / windowSize) - (windowTopLeft / windowExpandedSize);
+	uv2 = UV * (windowExpandedSize / windowSize) - (windowTopLeft / windowExpandedSize);
 	modulate = COLOR;
 }
 
 void fragment() {
-	COLOR = run(UV, COLOR) * modulate;
+	vec4 tex = getBase(TEXTURE);
+	COLOR = run(UV, tex) * modulate;
 }

@@ -7,6 +7,7 @@ public static class StringNames {
 	public static readonly StringName Unfold = new("unfold");
 	public static readonly StringName Lod = new("lod");
 	public static readonly StringName Radius = new("radius");
+	public static readonly StringName HasRoundCorners = new("hasRoundCorners");
 	public static readonly StringName WindowTopLeft  = new("windowTopLeft");
 	public static readonly StringName WindowExpandedSize  = new("windowExpandedSize");
 	public static readonly StringName MarginLeft  = new("margin_left");

@@ -391,14 +391,14 @@ public partial class Main : NativeWindowUtility {
 		WindowMaterial!.SetShaderParameter(StringNames.WindowExpandedSize, SceneTree.Root.Size);
 		if (SceneTree.Root.Mode != Godot.Window.ModeEnum.Maximized) {
 			ShadowSize = 5;
-			WindowMaterial!.SetShaderParameter(StringNames.Radius, 10);
+			WindowMaterial!.SetShaderParameter(StringNames.HasRoundCorners, true);
 		} else {
 			ShadowSize = 0;
-			WindowMaterial!.SetShaderParameter(StringNames.Radius, 0);
+			WindowMaterial!.SetShaderParameter(StringNames.HasRoundCorners, false);
 		}
 
-		_subViewport!.Size2DOverride = new(Mathf.CeilToInt(SceneTree.Root.Size.X / BaseConfig.DisplayScale),
-			Mathf.CeilToInt(SceneTree.Root.Size.Y / BaseConfig.DisplayScale));
+		_subViewport!.Size2DOverride = new(Mathf.CeilToInt((SceneTree.Root.Size.X - ShadowSize * 2) / BaseConfig.DisplayScale),
+			Mathf.CeilToInt((SceneTree.Root.Size.Y - ShadowSize * 2) / BaseConfig.DisplayScale));
 	}
 
 	public InstalledGamesImport InstantiateInstalledGamesImport() {
