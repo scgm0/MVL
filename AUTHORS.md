@@ -36,3 +36,4 @@
 ## 俄语翻译
 
     Xapitonov <https://github.com/Xapitonov>
+    vt729830 <https://github.com/vt72983>
