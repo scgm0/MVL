@@ -13,5 +13,5 @@ shader_parameter/outlineColor = Color(1, 1, 1, 0.5)
 shader_parameter/outlineThickness = 0.0
 shader_parameter/secondOutlineColor = Color(1, 1, 1, 0.5)
 shader_parameter/secondOutlineThickness = 0.0
-shader_parameter/outerOutlineColor = Color(1, 1, 1, 0.65)
+shader_parameter/outerOutlineColor = Color(1, 1, 1, 0.5)
 shader_parameter/outerOutlineThickness = 1.0

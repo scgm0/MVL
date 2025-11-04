@@ -11,7 +11,7 @@ uniform vec4  outlineColor: source_color = vec4(1, 1, 1, 0.5);
 uniform float outlineThickness = 0.0;
 uniform vec4  secondOutlineColor: source_color = vec4(1, 1, 1, 0.5);
 uniform float secondOutlineThickness = 0.0;
-uniform vec4  outerOutlineColor: source_color = vec4(1, 1, 1, 0.65);
+uniform vec4  outerOutlineColor: source_color = vec4(1, 1, 1, 0.5);
 uniform float outerOutlineThickness = 1.0;
 
 varying vec2 windowSize;
