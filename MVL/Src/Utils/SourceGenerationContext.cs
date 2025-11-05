@@ -5,6 +5,7 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using MVL.Utils.Config;
 using MVL.Utils.Game;
+using MVL.Utils.GitHub;
 using SharedLibrary;
 
 namespace MVL.Utils;
@@ -28,6 +29,7 @@ namespace MVL.Utils;
 [JsonSerializable(typeof(ApiStatusGameVersions))]
 [JsonSerializable(typeof(ApiStatusModTags))]
 [JsonSerializable(typeof(ApiStatusModsList))]
+[JsonSerializable(typeof(ApiRelease))]
 [JsonSourceGenerationOptions(JsonSerializerDefaults.Web,
 	AllowTrailingCommas = true,
 	UseStringEnumConverter = true,

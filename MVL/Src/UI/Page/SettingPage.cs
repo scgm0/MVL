@@ -1,10 +1,12 @@
 using System.IO;
+using System.Text.Json;
 using Flurl.Http;
 using Godot;
 using MVL.UI.Window;
 using MVL.Utils;
 using MVL.Utils.Config;
 using MVL.Utils.Extensions;
+using MVL.Utils.GitHub;
 using MVL.Utils.Help;
 
 namespace MVL.UI.Page;
@@ -12,6 +14,9 @@ namespace MVL.UI.Page;
 public partial class SettingPage : MenuPage {
 	[Export]
 	private PackedScene? _confirmationWindowScene;
+
+	[Export]
+	private PackedScene? _autoUpdaterWindowScene;
 
 	[Export]
 	private OptionButton? _displayLanguageOptionButton;
@@ -43,6 +48,9 @@ public partial class SettingPage : MenuPage {
 	[Export]
 	private Button? _releaseFolderButton;
 
+	[Export]
+	private Button? _getLatestReleaseButton;
+
 	private string[] _languages = TranslationServer.GetLoadedLocales();
 
 	private ConfigFile _configFile = new();
@@ -73,6 +81,7 @@ public partial class SettingPage : MenuPage {
 		_modpackFolderButton.NotNull();
 		_releaseFolderLineEdit.NotNull();
 		_releaseFolderButton.NotNull();
+		_getLatestReleaseButton.NotNull();
 
 		_displayScaleSpinbox.Value = UI.Main.BaseConfig.DisplayScale * 100;
 		_menuExpandCheckButton.ButtonPressed = UI.Main.BaseConfig.MenuExpand;
@@ -91,6 +100,7 @@ public partial class SettingPage : MenuPage {
 		_releaseFolderLineEdit.EditingToggled += ReleaseFolderLineEditOnEditingToggled;
 		_modpackFolderButton.Pressed += ModpackFolderButtonOnPressed;
 		_releaseFolderButton.Pressed += ReleaseFolderButtonOnPressed;
+		_getLatestReleaseButton.Pressed += GetLatestReleaseButtonOnPressed;
 
 		var size = UI.Main.SceneTree.Root.Size;
 		UI.Main.SceneTree.Root.Size = new(Mathf.CeilToInt(size.X * UI.Main.BaseConfig.DisplayScale),
@@ -108,6 +118,12 @@ public partial class SettingPage : MenuPage {
 		_configFile.Save(Paths.OverrideConfigPath);
 	}
 
+	private async void GetLatestReleaseButtonOnPressed() {
+		var autoUpdaterWindow = _autoUpdaterWindowScene!.Instantiate<AutoUpdaterWindow>();
+		UI.Main.Instance!.AddChild(autoUpdaterWindow);
+		await autoUpdaterWindow.GetLatestRelease();
+	}
+
 	private void MenuExpandCheckButtonOnToggled(bool toggledOn) {
 		UI.Main.BaseConfig.MenuExpand = toggledOn;
 		BaseConfig.Save(UI.Main.BaseConfig);
@@ -119,7 +135,7 @@ public partial class SettingPage : MenuPage {
 			_renderingDriverKey,
 			driver);
 		_configFile.Save(Paths.OverrideConfigPath);
-		GD.Print("更改渲染驱动为: " + driver);
+		GD.Print($"更改渲染驱动为: {driver}");
 		var confirmationWindow = _confirmationWindowScene!.Instantiate<ConfirmationWindow>();
 		confirmationWindow.Message = "更改渲染驱动需要重启才能生效\n是否立即重启？";
 		confirmationWindow.Confirm += () => {
