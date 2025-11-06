@@ -53,6 +53,7 @@ enabled=PackedStringArray("res://addons/SmoothScroll/plugin.cfg")
 
 [gui]
 
+common/show_focus_state_on_pointer_event=0
 theme/custom="uid://26j2wsw1c43m"
 theme/custom_font="uid://d0e3mw7yvdf0v"
 
