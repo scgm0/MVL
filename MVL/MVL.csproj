@@ -44,6 +44,7 @@
         <AdditionalFiles Include="../DONORS.md" />
         <AdditionalFiles Include="../LICENSE" />
         <AdditionalFiles Include="License/**/LICENSE.txt" />
+        <AdditionalFiles Include="License/**/WEBSITE.txt" />
     </ItemGroup>
 
     <ItemGroup>

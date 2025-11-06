@@ -1,5 +1,6 @@
 using System;
 using System.IO;
+using System.Linq;
 using System.Text;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Text;
@@ -9,20 +10,41 @@ namespace MVLGenerator;
 [Generator]
 public class LicenseGenerator : IIncrementalGenerator {
 	public void Initialize(IncrementalGeneratorInitializationContext context) {
-		var licenseFiles = context.AdditionalTextsProvider
-			.Where(static file => Path.GetFileName(file.Path)
-				.StartsWith("LICENSE", StringComparison.OrdinalIgnoreCase));
-		var compilationAndLicenses = context.CompilationProvider.Combine(licenseFiles.Collect());
+		var allFiles = context.AdditionalTextsProvider.Collect();
+		var compilationAndAllFiles = context.CompilationProvider.Combine(allFiles);
 
-		context.RegisterSourceOutput(compilationAndLicenses,
+		context.RegisterSourceOutput(compilationAndAllFiles,
 			static (spc, source) => {
 				var entries = new StringBuilder();
-				foreach (var licenseFile in source.Right) {
-					var content = licenseFile.GetText(spc.CancellationToken)?.ToString();
-					if (content == null) continue;
+				var filesByDirectory = source.Right.GroupBy(f => Path.GetDirectoryName(Path.GetFullPath(f.Path)));
 
-					var escapedValue = content.Replace("\"", "\\\"").Replace("\n", "\\n").Replace("\r", "");
-					entries.AppendLine($$"""        ("{{Path.GetFileName(Path.GetDirectoryName(Path.GetFullPath(licenseFile.Path)))}}", "{{escapedValue}}"),""");
+				foreach (var group in filesByDirectory) {
+					var licenseFile = group.FirstOrDefault(f =>
+						Path.GetFileName(Path.GetFullPath(f.Path)).StartsWith("LICENSE", StringComparison.OrdinalIgnoreCase));
+
+					var licenseContent = licenseFile?.GetText(spc.CancellationToken)?.ToString();
+					if (licenseContent == null) {
+						continue;
+					}
+
+					var finalContent = new StringBuilder();
+
+					var websiteFile = group.FirstOrDefault(f =>
+						Path.GetFileName(Path.GetFullPath(f.Path)).StartsWith("WEBSITE", StringComparison.OrdinalIgnoreCase));
+
+					if (websiteFile != null) {
+						var websiteUrl = websiteFile.GetText(spc.CancellationToken)?.ToString()?.Trim();
+						if (!string.IsNullOrEmpty(websiteUrl)) {
+							finalContent.AppendLine($"[color=#3c7fe1][url]{websiteUrl}[/url][/color]");
+							finalContent.AppendLine();
+						}
+					}
+
+					finalContent.Append(licenseContent);
+
+					var escapedValue = finalContent.ToString().Replace("\"", "\\\"").Replace("\n", "\\n").Replace("\r", "");
+					var directoryName = Path.GetFileName(group.Key);
+					entries.AppendLine($"""        ("{directoryName}", "{escapedValue}"),""");
 				}
 
 				spc.AddSource($"Info.LICENSES.g.cs",
@@ -38,6 +60,7 @@ public class LicenseGenerator : IIncrementalGenerator {
 									  }
 									  """,
 						Encoding.UTF8));
+				
 			});
 	}
 }
