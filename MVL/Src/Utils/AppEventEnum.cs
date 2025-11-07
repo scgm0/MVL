@@ -1,3 +1,6 @@
 namespace MVL.Utils;
 
-public enum AppEventEnum { RepeatStartup }
+public enum AppEventEnum {
+	RepeatStartup,
+	None = -1
+}
