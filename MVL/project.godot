@@ -21,6 +21,7 @@ config/use_custom_user_dir=true
 config/custom_user_dir_name="MVL"
 config/project_settings_override="user://override.cfg"
 config/features=PackedStringArray("4.6", "C#", "Mobile")
+run/flush_stdout_on_print=true
 run/low_processor_mode=true
 boot_splash/bg_color=Color(0, 0, 0, 0)
 boot_splash/show_image=false
