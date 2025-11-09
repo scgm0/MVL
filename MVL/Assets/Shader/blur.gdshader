@@ -16,9 +16,9 @@ const int dither_matrix[64] = int[](
 );
 
 const float weights[5] = float[](
-	0.125,
-	0.125,  0.25,   0.125,
-	0.125
+	0.175,
+	0.175,  0.3,   0.175,
+	0.175
 );
 
 const vec2 offsets[5] = vec2[](
