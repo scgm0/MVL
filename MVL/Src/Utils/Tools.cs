@@ -1,6 +1,8 @@
 using System;
 using System.IO;
 using System.Linq;
+using System.Net;
+using System.Net.Sockets;
 using System.Threading.Tasks;
 using Flurl.Http;
 using Godot;
@@ -185,4 +187,22 @@ public static class Tools {
 		}
 	}
 
+	public static int GetAvailablePort() {
+		using var listener = new TcpListener(IPAddress.Loopback, 0);
+		listener.Start();
+		var port = ((IPEndPoint)listener.LocalEndpoint).Port;
+		listener.Stop();
+		return port;
+	}
+
+	public static bool PortIsAvailable(int port) {
+		try {
+			using var listener = new TcpListener(IPAddress.Loopback, port);
+			listener.Start();
+			listener.Stop();
+			return true;
+		} catch {
+			return false;
+		}
+	}
 }
