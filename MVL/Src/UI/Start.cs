@@ -9,10 +9,9 @@ using FileAccess = System.IO.FileAccess;
 namespace MVL.UI;
 
 public partial class Start : Control {
+	static private TcpListener? _server;
 	static private FileStream? _lockFile;
 	public static bool IsRunning => _lockFile != null;
-
-	static Start() { AsyncIO.ForceDotNet.Force(); }
 
 	public Start() {
 		try {
@@ -21,17 +20,20 @@ public partial class Start : Control {
 				FileAccess.ReadWrite,
 				FileShare.None);
 
-			var mvlPort = Tools.GetAvailablePort();
-			TcpListener server = new(IPAddress.Loopback, mvlPort);
-			server.Start();
-			ListenForMessagesAsync(server);
+			_server = new(IPAddress.Loopback, 0);
+			_server.Start();
+			var mvlPort = ((IPEndPoint)_server.LocalEndpoint).Port;
+			ListenForMessagesAsync();
 
 			File.WriteAllBytesAsync(Paths.PortFile, BitConverter.GetBytes(mvlPort));
 			Main.SceneTree.Root.TreeExiting += () => {
 				_lockFile?.Close();
 				_lockFile?.Dispose();
 				_lockFile = null;
-				server.Stop();
+				_server.Stop();
+				_server?.Dispose();
+				_server = null;
+				File.Delete(Paths.PortFile);
 			};
 		} catch (Exception err) {
 			GD.PrintErr(err);
@@ -40,7 +42,8 @@ public partial class Start : Control {
 				var port = File.ReadAllBytes(Paths.PortFile);
 				using var client = new TcpClient();
 				client.Connect(IPAddress.Loopback, BitConverter.ToInt32(port));
-				client.Client.Send(BitConverter.GetBytes((int)AppEventEnum.RepeatStartup));
+				using var stream = client.GetStream();
+				stream.Write(BitConverter.GetBytes((int)AppEventEnum.RepeatStartup));
 			} catch (Exception e) {
 				GD.PrintErr("发送通知失败: ", e);
 			}
@@ -49,46 +52,32 @@ public partial class Start : Control {
 		}
 	}
 
-	static private async void ListenForMessagesAsync(TcpListener server) {
+	static private async void ListenForMessagesAsync() {
 		try {
 			while (true) {
-				using var client = await server.AcceptTcpClientAsync();
-				HandleClientAsync(client);
-			}
-		} catch (Exception e) {
-			GD.Print("TCP监听器已停止: ", e.Message);
-		}
-	}
-
-	static private async void HandleClientAsync(TcpClient client) {
-		try {
-			using (client)
-			await using (var stream = client.GetStream()) {
+				using var client = await _server!.AcceptTcpClientAsync();
+				await using var stream = client.GetStream();
 				var buffer = new byte[4];
 				await stream.ReadExactlyAsync(buffer, 0, 4);
 
 				var eventCode = (AppEventEnum)BitConverter.ToInt32(buffer, 0);
-				HandleAppEvent(eventCode);
+				switch (eventCode) {
+					case AppEventEnum.RepeatStartup:
+						Dispatcher.SynchronizationContext.Post(_ => {
+								OS.Alert(TranslationServer.Translate("启动器运行中，无法重复启动"), TranslationServer.Translate("警告"));
+								var window = Main.SceneTree.Root;
+								window.GrabFocus();
+							},
+							null);
+						break;
+					case AppEventEnum.None:
+					default:
+						GD.PrintErr("收到未知的事件代码: ", eventCode);
+						break;
+				}
 			}
 		} catch (Exception e) {
-			GD.PrintErr("处理客户端消息时出错: ", e);
-		}
-	}
-
-	static private void HandleAppEvent(AppEventEnum eventCode) {
-		switch (eventCode) {
-			case AppEventEnum.RepeatStartup:
-				Dispatcher.SynchronizationContext.Post(_ => {
-						OS.Alert(TranslationServer.Translate("启动器运行中，无法重复启动"), TranslationServer.Translate("警告"));
-						var window = Main.SceneTree.Root;
-						window.GrabFocus();
-					},
-					null);
-				break;
-			case AppEventEnum.None:
-			default:
-				GD.PrintErr("收到未知的事件代码: ", eventCode);
-				break;
+			GD.PrintErr(e);
 		}
 	}
 }
