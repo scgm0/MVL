@@ -33,14 +33,17 @@ public static class Tools {
 		if (DisplayServer.ScreenGetSize(screen) == default) {
 			return 1;
 		}
-
+#if GODOT_WINDOWS
+		return DisplayServer.ScreenGetDpi(screen) / 96.0f;
+#else
 		var size = DisplayServer.ScreenGetSize(screen);
-		var smallestDimension = MathF.Min(size.X, size.Y);
+		var smallestDimension = Math.Min(size.X, size.Y);
 		if (DisplayServer.ScreenGetDpi(screen) >= 192 && smallestDimension >= 1400) {
 			return 2;
 		}
 
 		return smallestDimension switch { >= 1700 => 1.5f, <= 800 => 0.75f, _ => 1.0f };
+#endif
 	}
 
 	public static double Fract(double value) {
