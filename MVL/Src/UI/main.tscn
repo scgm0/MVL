@@ -1,4 +1,4 @@
-[gd_scene load_steps=62 format=3 uid="uid://514oox50h8yl"]
+[gd_scene load_steps=65 format=3 uid="uid://514oox50h8yl"]
 
 [ext_resource type="Script" uid="uid://cvyeyg8ttnwmu" path="res://Src/UI/Main.cs" id="1_1opgh"]
 [ext_resource type="Texture2D" uid="uid://bhh1jvyj73qxh" path="res://Assets/Gui/Background.png" id="2_1opgh"]
@@ -22,6 +22,8 @@
 [ext_resource type="PackedScene" uid="uid://dri1d4mt1w68c" path="res://Src/UI/Page/browse_page.tscn" id="18_365jr"]
 [ext_resource type="PackedScene" uid="uid://bp02so1m0q7m0" path="res://Src/UI/Page/setting_page.tscn" id="19_a6wm3"]
 [ext_resource type="PackedScene" uid="uid://d0bdto738ug2l" path="res://Src/UI/Page/info_page.tscn" id="20_53u4p"]
+[ext_resource type="PackedScene" uid="uid://vbu26hqxpm53" path="res://Src/UI/Page/multiplayer_page.tscn" id="22_a6wm3"]
+[ext_resource type="Script" uid="uid://cwlhl7ihjaxsm" path="res://Src/UI/Page/MultiplayerPage.cs" id="23_53u4p"]
 [ext_resource type="FontFile" uid="uid://bmgx1vyg6bavd" path="res://Assets/Font/HarmonyOS_Sans_SC_Bold.ttf" id="24_365jr"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_p7a31"]
@@ -65,6 +67,13 @@ resource_local_to_scene = false
 resource_name = ""
 script = ExtResource("13_7nt4r")
 IconName = "widgets"
+metadata/_custom_type_script = "uid://bk3tot6c35bwu"
+
+[sub_resource type="Texture2D" id="Texture2D_365jr"]
+resource_local_to_scene = false
+resource_name = ""
+script = ExtResource("13_7nt4r")
+IconName = "multicast"
 metadata/_custom_type_script = "uid://bk3tot6c35bwu"
 
 [sub_resource type="Texture2D" id="Texture2D_30yt8"]
@@ -458,12 +467,27 @@ script = ExtResource("7_bl4fu")
 Page = NodePath("../../../ColorRect/VBoxContainer/MarginContainer/PageContainer/BrowsePage")
 metadata/_custom_type_script = "uid://dvjtigpqee0jw"
 
+[node name="HSeparator2" type="HSeparator" parent="HBoxContainer/MenuPanel/VBoxContainer" unique_id=1755150113]
+layout_mode = 2
+mouse_filter = 2
+
 [node name="Control" type="Control" parent="HBoxContainer/MenuPanel/VBoxContainer" unique_id=762683819]
 layout_mode = 2
 size_flags_vertical = 3
 mouse_filter = 2
 
-[node name="HSeparator2" type="HSeparator" parent="HBoxContainer/MenuPanel/VBoxContainer" unique_id=1755150113]
+[node name="MultiplayerButton" type="Button" parent="HBoxContainer/MenuPanel/VBoxContainer" unique_id=1816883485 node_paths=PackedStringArray("Page")]
+layout_mode = 2
+toggle_mode = true
+button_group = ExtResource("4_megpf")
+text = "联机"
+icon = SubResource("Texture2D_365jr")
+clip_text = true
+script = ExtResource("7_bl4fu")
+Page = NodePath("../../../ColorRect/VBoxContainer/MarginContainer/PageContainer/MultiplayerPage")
+metadata/_custom_type_script = "uid://dvjtigpqee0jw"
+
+[node name="HSeparator3" type="HSeparator" parent="HBoxContainer/MenuPanel/VBoxContainer" unique_id=1363875780]
 layout_mode = 2
 mouse_filter = 2
 
@@ -672,11 +696,15 @@ visible = false
 layout_mode = 2
 metadata/_tab_index = 3
 
+[node name="MultiplayerPage" parent="HBoxContainer/ColorRect/VBoxContainer/MarginContainer/PageContainer" unique_id=1452598718 instance=ExtResource("22_a6wm3")]
+unique_name_in_owner = true
+layout_mode = 2
+script = ExtResource("23_53u4p")
+
 [node name="SettingPage" parent="HBoxContainer/ColorRect/VBoxContainer/MarginContainer/PageContainer" unique_id=755577266 instance=ExtResource("19_a6wm3")]
 unique_name_in_owner = true
 visible = false
 layout_mode = 2
-metadata/_tab_index = 4
 
 [node name="InfoPage" parent="HBoxContainer/ColorRect/VBoxContainer/MarginContainer/PageContainer" unique_id=1595657485 node_paths=PackedStringArray("_titleBar") instance=ExtResource("20_53u4p")]
 unique_name_in_owner = true
@@ -684,7 +712,6 @@ visible = false
 layout_mode = 2
 _buttonGroup = SubResource("ButtonGroup_08ol6")
 _titleBar = NodePath("../../../MarginContainer2/HBoxContainer")
-metadata/_tab_index = 5
 
 [node name="HBoxContainer2" type="HBoxContainer" parent="." unique_id=1999562561]
 layout_mode = 1

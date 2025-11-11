@@ -19,6 +19,7 @@
         <PackageReference Include="Downloader" Version="4.0.3" />
         <PackageReference Include="Flurl.Http" Version="4.0.2" />
         <PackageReference Include="Mono.Cecil" Version="0.11.6" />
+        <PackageReference Include="Nerdbank.MessagePack" Version="0.11.54-rc" />
         <PackageReference Include="NetMQ" Version="4.0.2.2" />
         <PackageReference Include="PublishAotCross.LinuxToWin" Version="1.0.0" />
         <PackageReference Include="SemVer2" Version="1.0.0" />

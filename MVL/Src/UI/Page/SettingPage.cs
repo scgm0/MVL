@@ -1,12 +1,10 @@
 using System.IO;
-using System.Text.Json;
 using Flurl.Http;
 using Godot;
 using MVL.UI.Window;
 using MVL.Utils;
 using MVL.Utils.Config;
 using MVL.Utils.Extensions;
-using MVL.Utils.GitHub;
 using MVL.Utils.Help;
 
 namespace MVL.UI.Page;

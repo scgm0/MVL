@@ -11,6 +11,7 @@ public static class Paths {
 	public static string LockFile { get; } = OS.GetTempDir().PathJoin("MVL-Lock").NormalizePath();
 	public static string PortFile { get; } = OS.GetTempDir().PathJoin("MVL-Port").NormalizePath();
 	public static string OverrideConfigPath { get; } = OS.GetUserDataDir().PathJoin("override.cfg").NormalizePath();
+	public static string EasyTierFolder { get; } = OS.GetUserDataDir().PathJoin("EasyTier").NormalizePath();
 	static Paths() { EnsureFolderExists(); }
 
 	static private void EnsureFolderExists() {
@@ -24,6 +25,10 @@ public static class Paths {
 
 		if (!DirAccess.DirExistsAbsolute(CacheFolder)) {
 			DirAccess.MakeDirRecursiveAbsolute(CacheFolder);
+		}
+
+		if (!DirAccess.DirExistsAbsolute(EasyTierFolder)) {
+			DirAccess.MakeDirRecursiveAbsolute(EasyTierFolder);
 		}
 	}
 }

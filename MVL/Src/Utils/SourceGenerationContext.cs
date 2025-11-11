@@ -7,6 +7,7 @@ using MVL.Utils.Config;
 using MVL.Utils.Game;
 using MVL.Utils.GitHub;
 using MVL.Utils.Multiplayer;
+using PolyType;
 using SharedLibrary;
 
 namespace MVL.Utils;
@@ -31,11 +32,13 @@ namespace MVL.Utils;
 [JsonSerializable(typeof(ApiStatusModTags))]
 [JsonSerializable(typeof(ApiStatusModsList))]
 [JsonSerializable(typeof(ApiRelease))]
-[JsonSerializable(typeof(AppEventData))]
+[JsonSerializable(typeof(ApiResponse))]
+[JsonSerializable(typeof(List<EasyTierPlayerInfo>))]
 [JsonSourceGenerationOptions(JsonSerializerDefaults.Web,
 	AllowTrailingCommas = true,
 	UseStringEnumConverter = true,
 	WriteIndented = true)]
+[GenerateShapeFor<List<RoomPlayerInfo>>]
 public partial class SourceGenerationContext : JsonSerializerContext {
 	static SourceGenerationContext() { Default = new(CreateJsonSerializerOptions(Default)); }
 

@@ -1,0 +1,58 @@
+[gd_scene load_steps=2 format=3 uid="uid://vbu26hqxpm53"]
+
+[ext_resource type="Script" uid="uid://cwlhl7ihjaxsm" path="res://Src/UI/Page/MultiplayerPage.cs" id="1_rwkqc"]
+
+[node name="MultiplayerPage" type="Control" unique_id=1452598718 node_paths=PackedStringArray("_createButton", "_joinButton", "_codeLineEdit", "_tooltip", "Main")]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_rwkqc")
+_createButton = NodePath("MarginContainer/PanelContainer/VBoxContainer/Button")
+_joinButton = NodePath("MarginContainer/PanelContainer/VBoxContainer/Button2")
+_codeLineEdit = NodePath("MarginContainer/PanelContainer/VBoxContainer/LineEdit")
+_tooltip = NodePath("MarginContainer/PanelContainer/VBoxContainer/RichTextLabel")
+Main = NodePath("MarginContainer")
+metadata/_tab_index = 4
+
+[node name="MarginContainer" type="MarginContainer" parent="." unique_id=1690515786]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset_ratio = Vector2(0.5, 0.5)
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="PanelContainer" type="PanelContainer" parent="MarginContainer" unique_id=753542490]
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/PanelContainer" unique_id=765070787]
+layout_mode = 2
+
+[node name="Button" type="Button" parent="MarginContainer/PanelContainer/VBoxContainer" unique_id=149122647]
+layout_mode = 2
+text = "创建房间"
+
+[node name="Button2" type="Button" parent="MarginContainer/PanelContainer/VBoxContainer" unique_id=954054952]
+layout_mode = 2
+text = "加入房间"
+
+[node name="LineEdit" type="LineEdit" parent="MarginContainer/PanelContainer/VBoxContainer" unique_id=137824308]
+layout_mode = 2
+placeholder_text = "分享码"
+
+[node name="RichTextLabel" type="RichTextLabel" parent="MarginContainer/PanelContainer/VBoxContainer" unique_id=1619313548]
+layout_mode = 2
+focus_mode = 2
+fit_content = true
+scroll_active = false
+context_menu_enabled = true
+horizontal_alignment = 1
+selection_enabled = true

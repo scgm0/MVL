@@ -6,12 +6,14 @@ using System.Net.Sockets;
 using System.Threading.Tasks;
 using Flurl.Http;
 using Godot;
+using Nerdbank.MessagePack;
 using FileAccess = Godot.FileAccess;
 using Process = System.Diagnostics.Process;
 
 namespace MVL.Utils;
 
 public static class Tools {
+	public static MessagePackSerializer PackSerializer { get; } = new();
 	public static bool IsEditorHint { get; } = Engine.IsEditorHint();
 
 	public static void RichTextOpenUrl(Variant url) { Task.Run(() => OS.ShellOpen(url.AsString())); }
