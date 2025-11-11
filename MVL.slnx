@@ -1,0 +1,14 @@
+<Solution>
+  <Configurations>
+    <BuildType Name="Debug" />
+    <BuildType Name="ExportDebug" />
+    <BuildType Name="ExportRelease" />
+  </Configurations>
+  <Project Path="./MVL/MVL.csproj" />
+  <Project Path="./VSRun/VSRun.csproj">
+    <BuildType Project="Debug" />
+  </Project>
+  <Project Path="MVLGenerator/MVLGenerator.csproj">
+    <BuildType Project="Debug" />
+  </Project>
+</Solution>
