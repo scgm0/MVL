@@ -145,7 +145,6 @@ func _ready() -> void:
 	scrollbar_hide_timer.timeout.connect(_scrollbar_hide_timer_timeout)
 	if hide_scrollbar_over_time:
 		scrollbar_hide_timer.start(scrollbar_hide_time)
-	get_tree().node_added.connect(_on_node_added)
 
 func _process(delta: float) -> void:
 	if Engine.is_editor_hint(): return
@@ -308,12 +307,6 @@ func _on_focus_changed(control: Control) -> void:
 func _draw() -> void:
 	if debug_mode:
 		draw_debug()
-
-# Sets default mouse filter for SmoothScroll children to MOUSE_FILTER_PASS
-func _on_node_added(node: Node) -> void:
-	if node is Control and Engine.is_editor_hint():
-		if is_ancestor_of(node):
-			node.mouse_filter = Control.MOUSE_FILTER_PASS
 
 func _scrollbar_hide_timer_timeout() -> void:
 	if !any_scroll_bar_dragged():

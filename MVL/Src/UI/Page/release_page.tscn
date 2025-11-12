@@ -128,7 +128,6 @@ material = ExtResource("6_gqxwp")
 custom_minimum_size = Vector2(145, 192)
 layout_mode = 2
 focus_mode = 0
-mouse_filter = 1
 theme_override_constants/icon_max_width = 80
 theme_override_styles/normal = SubResource("StyleBoxFlat_bmwv3")
 theme_override_styles/pressed = SubResource("StyleBoxFlat_gblyu")
