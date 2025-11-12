@@ -4,7 +4,6 @@ using System.Net;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Godot;
-using Nerdbank.MessagePack;
 using NetMQ;
 using RandomNumberGenerator = System.Security.Cryptography.RandomNumberGenerator;
 
@@ -58,7 +57,7 @@ public partial record Room : IDisposable {
 		_localPlayer = null;
 	}
 
-	public RoomPlayerInfo? GetPlayerByIdentity(long identity) {
+	public RoomPlayerInfo? GetPlayerByIdentity(uint identity) {
 		foreach (var playerInfo in Players) {
 			if (playerInfo.Identity == identity) {
 				return playerInfo;

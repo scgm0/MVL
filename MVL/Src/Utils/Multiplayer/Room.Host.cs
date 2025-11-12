@@ -67,7 +67,7 @@ public partial record Room {
 			return;
 		}
 
-		var clientIdentity = BitConverter.ToInt64(guestMessage[0].Buffer);
+		var clientIdentity = BitConverter.ToUInt32(guestMessage[0].Buffer);
 		var eventCode = (RoomEventEnum)BitConverter.ToInt32(guestMessage[1].Buffer);
 		GD.Print($"收到来自客户端的事件: {eventCode}");
 		var player = GetPlayerByIdentity(clientIdentity);

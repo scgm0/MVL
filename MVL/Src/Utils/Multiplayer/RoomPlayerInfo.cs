@@ -11,7 +11,7 @@ public partial record RoomPlayerInfo(
 	int Port,
 	string Address,
 	string Version) {
-	public long Identity { get; set; }
+	public uint Identity { get; set; }
 
 	[JsonIgnore]
 	[PropertyShape(Ignore = true)]

@@ -11,7 +11,7 @@ public record struct EasyTierPlayerInfo {
 	public string IpV4 { get; set; }
 
 	public string Version { get; set; }
-	public long Id { get; set; }
+	public uint Id { get; set; }
 	public string Cost { get; set; }
 	public override string ToString() => JsonSerializer.Serialize(this, SourceGenerationContext.Default.EasyTierPlayerInfo);
 
