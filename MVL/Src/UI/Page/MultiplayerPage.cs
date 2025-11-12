@@ -1,4 +1,6 @@
+using System.Threading.Tasks;
 using Godot;
+using MVL.Utils.GitHub;
 using MVL.Utils.Help;
 using MVL.Utils.Multiplayer;
 
@@ -48,7 +50,7 @@ public partial class MultiplayerPage : MenuPage {
 	}
 
 	private void HostButtonOnPressed() {
-		_room = Room.Create(42420);
+		_room = Room.Create(42420, "MVL");
 		_codeLineEdit!.Editable = false;
 		_room.StartHost();
 		_tooltip!.Text = "正在创建房间...";
@@ -62,5 +64,22 @@ public partial class MultiplayerPage : MenuPage {
 
 	private void OnExit() {
 		_room?.Dispose();
+	}
+
+	public static async Task<string?> GetEasyTierLatestFileAsync() {
+		var latestRelease = await GitHubTool.GetLatestReleaseAsync("EasyTier/EasyTier", GhProxyEnum.V6);
+		foreach (var asset in latestRelease.Assets) {
+#if GODOT_LINUXBSD
+			if (asset.Name.StartsWith("easytier-linux-x86_64")) {
+				return asset.BrowserDownloadUrl;
+			}
+#elif GODOT_WINDOWS
+			if (asset.Name.StartsWith("easytier-windows-x86_64")) {
+				return asset.BrowserDownloadUrl;
+			}
+#endif
+		}
+
+		return null;
 	}
 }

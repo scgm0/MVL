@@ -8,7 +8,7 @@ namespace MVL.Utils.Multiplayer;
 public partial record RoomPlayerInfo(
 	RoomType RoomType,
 	string Name,
-	int Port,
+	ushort Port,
 	string Address,
 	string Version) {
 	public uint Identity { get; set; }

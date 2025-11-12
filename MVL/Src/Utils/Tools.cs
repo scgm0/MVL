@@ -192,15 +192,15 @@ public static class Tools {
 		}
 	}
 
-	public static int GetAvailablePort() {
+	public static ushort GetAvailablePort() {
 		using var listener = new TcpListener(IPAddress.Loopback, 0);
 		listener.Start();
 		var port = ((IPEndPoint)listener.LocalEndpoint).Port;
 		listener.Stop();
-		return port;
+		return (ushort)port;
 	}
 
-	public static bool PortIsAvailable(int port) {
+	public static bool PortIsAvailable(ushort port) {
 		try {
 			using var listener = new TcpListener(IPAddress.Loopback, port);
 			listener.Start();
