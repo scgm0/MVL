@@ -1,5 +1,7 @@
 using System;
 using System.Diagnostics;
+using System.Threading;
+using System.Threading.Tasks;
 using Godot;
 
 namespace MVL.UI;
@@ -12,11 +14,8 @@ public partial class NativeWindowUtility : Control {
 	private bool _pressed;
 	private long _pressedLastTime;
 
-	private Timer _timer = new() {
-		WaitTime = 0.5f,
-		Autostart = false,
-		OneShot = true
-	};
+	private CancellationTokenSource? _dragDelayCts;
+	private Godot.Window? _window;
 
 	[Export]
 	public bool IsDraggable { get; set; }
@@ -54,18 +53,21 @@ public partial class NativeWindowUtility : Control {
 		}
 	}
 
-	public override void _Ready() {
-		Resized += OnResized;
-		_timer.Timeout += OnTimerOnTimeout;
-		AddChild(_timer, false, InternalMode.Back);
+	public override void _EnterTree() {
+		_window = GetWindow();
 		OnResized();
 	}
 
+	public override void _Ready() { Resized += OnResized; }
+
+	public override void _ExitTree() {
+		_dragDelayCts?.Cancel();
+		_dragDelayCts?.Dispose();
+	}
+
 	private void OnResized() {
-		if (GetWindow().Mode != Godot.Window.ModeEnum.Windowed && IsResizable) {
-			Visible = false;
-		} else {
-			Visible = true;
+		if (IsResizable) {
+			Visible = _window?.Mode != Godot.Window.ModeEnum.Windowed;
 		}
 	}
 
@@ -95,7 +97,7 @@ public partial class NativeWindowUtility : Control {
 
 		if (_pressedLastTime != 0 && Stopwatch.GetElapsedTime(_pressedLastTime) < DoubleClickInterval) {
 			_pressedLastTime = 0;
-			GetWindow().Mode = GetWindow().Mode == Godot.Window.ModeEnum.Windowed
+			_window?.Mode = _window.Mode == Godot.Window.ModeEnum.Windowed
 				? Godot.Window.ModeEnum.Maximized
 				: Godot.Window.ModeEnum.Windowed;
 		} else {
@@ -108,7 +110,7 @@ public partial class NativeWindowUtility : Control {
 			return;
 		}
 
-		GetWindow().StartResize(WindowEdge);
+		_window?.StartResize(WindowEdge);
 		using var mb = new InputEventMouseButton();
 		mb.ButtonIndex = MouseButton.Left;
 		mb.Pressed = false;
@@ -118,36 +120,56 @@ public partial class NativeWindowUtility : Control {
 	private void HandleDrag(InputEvent @event) {
 		if (@event is InputEventMouseButton { ButtonIndex: MouseButton.Left, Pressed: true }) {
 			_pressed = true;
-			_timer.Start();
+			StartDelayedDragTask();
 		}
 
 		if (@event is InputEventMouseButton { ButtonIndex: MouseButton.Left, Pressed: false }) {
-			StopTimer();
+			CancelDragDelay();
 		}
 
 		if (!_pressed || @event is not InputEventMouseMotion) {
 			return;
 		}
 
-		StopTimer();
-		GetWindow().StartDrag();
+		CancelDragDelay();
+		_window?.StartDrag();
 		using var mb = new InputEventMouseButton();
 		mb.ButtonIndex = MouseButton.Left;
 		mb.Pressed = false;
 		Input.ParseInputEvent(mb);
 	}
 
-	private void OnTimerOnTimeout() {
+	private async void StartDelayedDragTask() {
+		if (_dragDelayCts != null) {
+			await _dragDelayCts.CancelAsync();
+			_dragDelayCts.Dispose();
+			_dragDelayCts = null;
+		}
+
+		_dragDelayCts = new();
+		try {
+			await Task.Delay(TimeSpan.FromSeconds(0.5), _dragDelayCts.Token);
+			StartDragAfterDelay();
+		} catch (OperationCanceledException) { }
+	}
+
+	private void StartDragAfterDelay() {
+		if (!_pressed) {
+			return;
+		}
+
 		_pressed = false;
-		GetWindow().StartDrag();
+		_window?.StartDrag();
 		using var mb = new InputEventMouseButton();
 		mb.ButtonIndex = MouseButton.Left;
 		mb.Pressed = false;
 		Input.ParseInputEvent(mb);
 	}
 
-	private void StopTimer() {
-		_timer.Stop();
+	private void CancelDragDelay() {
+		_dragDelayCts?.Cancel();
+		_dragDelayCts?.Dispose();
+		_dragDelayCts = null;
 		_pressed = false;
 	}
 }
