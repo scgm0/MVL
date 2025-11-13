@@ -132,8 +132,10 @@ public class EasyTier : IDisposable {
 	public static readonly string CliPath = Paths.EasyTierFolder.PathJoin("easytier-cli.exe").Normalize();
 #endif
 
-	public static async Task<string> RunCli(List<string> args, bool print = true) {
-		var processStartInfo = new ProcessStartInfo(CliPath) {
+	public static async Task<string> RunCli(List<string> args, bool print = true, string? path = null) {
+		path ??= CliPath;
+		var processStartInfo = new ProcessStartInfo(path) {
+			WorkingDirectory = Paths.EasyTierFolder,
 			RedirectStandardOutput = true,
 			RedirectStandardError = true,
 			UseShellExecute = false,
@@ -151,7 +153,7 @@ public class EasyTier : IDisposable {
 		process.Start();
 		var output = await process.StandardOutput.ReadToEndAsync();
 		if (print) {
-			GD.Print($"EasyTier CLI:\n{output}\n");
+			GD.Print($"{output}");
 		}
 
 		await process.WaitForExitAsync();
@@ -197,5 +199,27 @@ public class EasyTier : IDisposable {
 
 		finalServers.AddRange(FallbackServers);
 		return finalServers;
+	}
+
+	public static async Task<string?> GetCoreVersion() {
+		try {
+			var output = await RunCli(["-V"], true, CorePath);
+			var version = output.Split(' ');
+			return version[0].Equals("easytier-core", StringComparison.OrdinalIgnoreCase) ? version[1] : null;
+		} catch (Exception ex) {
+			GD.PrintErr($"获取EasyTier Core版本失败: {ex.Message}");
+			return null;
+		}
+	}
+
+	public static async Task<string?> GetCliVersion() {
+		try {
+			var output = await RunCli(["-V"], true, CliPath);
+			var version = output.Split(' ');
+			return version[0].Equals("easytier-cli", StringComparison.OrdinalIgnoreCase) ? version[1] : null;
+		} catch (Exception ex) {
+			GD.PrintErr($"获取EasyTier CLI版本失败: {ex.Message}");
+			return null;
+		}
 	}
 }
