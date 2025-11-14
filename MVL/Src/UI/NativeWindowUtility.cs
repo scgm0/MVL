@@ -55,19 +55,25 @@ public partial class NativeWindowUtility : Control {
 
 	public override void _EnterTree() {
 		_window = GetWindow();
-		OnResized();
+		_window.SizeChanged += OnSizeChanged;
+		OnSizeChanged();
 	}
 
-	public override void _Ready() { Resized += OnResized; }
+	public override void _Ready() {
+		WindowEdge = _windowEdge;
+	}
 
 	public override void _ExitTree() {
 		_dragDelayCts?.Cancel();
 		_dragDelayCts?.Dispose();
+		_dragDelayCts = null;
+		_window?.SizeChanged -= OnSizeChanged;
+		_window = null;
 	}
 
-	private void OnResized() {
+	private void OnSizeChanged() {
 		if (IsResizable) {
-			Visible = _window?.Mode != Godot.Window.ModeEnum.Windowed;
+			Visible = _window?.Mode == Godot.Window.ModeEnum.Windowed;
 		}
 	}
 
