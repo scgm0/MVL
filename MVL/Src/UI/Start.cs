@@ -60,6 +60,7 @@ public partial class Start : Control {
 				client.Connect(IPAddress.Loopback, BitConverter.ToInt32(port));
 				using var stream = client.GetStream();
 				stream.Write(BitConverter.GetBytes((int)AppEventEnum.RepeatStartup));
+				GD.PrintErr("启动器已运行，无法重复启动");
 			} catch (Exception e) {
 				GD.PrintErr("发送通知失败: ", e);
 			}
@@ -84,8 +85,9 @@ public partial class Start : Control {
 		_subViewport.AddChild(main);
 
 		using var tween = CreateTween();
-		tween.TweenProperty(this, new(CanvasItem.PropertyName.Modulate), Colors.White, 0.25f);
-		tween.TweenProperty(this, new(Control.PropertyName.Scale), new Vector2(1, 1), 0.25f);
+		tween.SetTrans(Tween.TransitionType.Quad);
+		tween.Parallel().TweenProperty(this, new(CanvasItem.PropertyName.Modulate), Colors.White, 0.5f).Dispose();
+		tween.Parallel().TweenProperty(this, new(Control.PropertyName.Scale), new Vector2(1, 1), 0.5f).Dispose();
 		tween.Finished += main.Init;
 	}
 
