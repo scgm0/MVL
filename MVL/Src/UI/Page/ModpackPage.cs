@@ -65,6 +65,14 @@ public partial class ModpackPage : MenuPage {
 
 	private void OnVisibilityChanged() {
 		if (!Visible) {
+			foreach (var child in _list!.GetChildren()) {
+				if (child == _addModpackButton) {
+					continue;
+				}
+
+				child.QueueFree();
+			}
+
 			return;
 		}
 
@@ -72,14 +80,6 @@ public partial class ModpackPage : MenuPage {
 	}
 
 	public async void UpdateList() {
-		foreach (var child in _list!.GetChildren()) {
-			if (child == _addModpackButton) {
-				continue;
-			}
-
-			child.QueueFree();
-		}
-
 		await Task.Run(UI.Main.CheckModpackConfig);
 		var i = 1;
 		foreach (var path in UI.Main.BaseConfig.Modpack) {

@@ -34,6 +34,7 @@ public partial class ReleasePage : MenuPage {
 	}
 
 	private void ImportGame(string gamePath) { ImportGame([gamePath]); }
+
 	private async void ImportGame(string[] files) {
 		var list = new List<string>();
 		foreach (var path in files) {
@@ -73,6 +74,14 @@ public partial class ReleasePage : MenuPage {
 
 	private void OnVisibilityChanged() {
 		if (!Visible) {
+			foreach (var child in _grid!.GetChildren()) {
+				if (child == _addReleaseButton) {
+					continue;
+				}
+
+				child.QueueFree();
+			}
+
 			return;
 		}
 
@@ -80,14 +89,6 @@ public partial class ReleasePage : MenuPage {
 	}
 
 	public void UpdateList() {
-		foreach (var child in _grid!.GetChildren()) {
-			if (child == _addReleaseButton) {
-				continue;
-			}
-
-			child.QueueFree();
-		}
-
 		UI.Main.CheckReleaseInfo();
 		var list = UI.Main.ReleaseInfos.Values.OrderByDescending(info => info.Version, GameVersion.Comparer);
 
