@@ -4,11 +4,21 @@ using System.Net;
 using System.Net.Sockets;
 using Godot;
 using MVL.Utils;
+using MVL.Utils.Help;
 using FileAccess = System.IO.FileAccess;
 
 namespace MVL.UI;
 
 public partial class Start : Control {
+	[Export(PropertyHint.File, "*.tscn")]
+	private string? _mainSceneFile;
+
+	[Export]
+	private MarginContainer? _margin;
+
+	[Export]
+	private SubViewport? _subViewport;
+
 	static private TcpListener? _server;
 	static private FileStream? _lockFile;
 	public static bool IsRunning => _lockFile != null;
@@ -19,6 +29,9 @@ public partial class Start : Control {
 				FileMode.OpenOrCreate,
 				FileAccess.ReadWrite,
 				FileShare.None);
+
+			Modulate = Colors.Transparent;
+			Scale = Vector2.Zero;
 
 			_server = new(IPAddress.Loopback, 0);
 			_server.Start();
@@ -36,7 +49,10 @@ public partial class Start : Control {
 				File.Delete(Paths.PortFile);
 			};
 		} catch (Exception err) {
-			GD.PrintErr(err);
+			if (err is not IOException) {
+				GD.PrintErr(err);
+			}
+
 			_lockFile = null;
 			try {
 				var port = File.ReadAllBytes(Paths.PortFile);
@@ -52,6 +68,27 @@ public partial class Start : Control {
 		}
 	}
 
+	public override void _Ready() {
+		if (!IsRunning) {
+			return;
+		}
+
+		_mainSceneFile.NotNull();
+		_margin.NotNull();
+		_subViewport.NotNull();
+
+		using var mainScene = ResourceLoader.Load<PackedScene>(_mainSceneFile);
+		var main = mainScene.Instantiate<Main>();
+		main.Margin = _margin;
+		main.Viewport = _subViewport;
+		_subViewport.AddChild(main);
+
+		using var tween = CreateTween();
+		tween.TweenProperty(this, new(CanvasItem.PropertyName.Modulate), Colors.White, 0.25f);
+		tween.TweenProperty(this, new(Control.PropertyName.Scale), new Vector2(1, 1), 0.25f);
+		tween.Finished += main.Init;
+	}
+
 	static private async void ListenForMessagesAsync() {
 		try {
 			while (true) {
@@ -65,8 +102,7 @@ public partial class Start : Control {
 					case AppEventEnum.RepeatStartup:
 						Dispatcher.SynchronizationContext.Post(_ => {
 								OS.Alert(TranslationServer.Translate("启动器运行中，无法重复启动"), TranslationServer.Translate("警告"));
-								var window = Main.SceneTree.Root;
-								window.GrabFocus();
+								Main.SceneTree.Root.GrabFocus();
 							},
 							null);
 						break;

@@ -1,173 +1,13 @@
-[gd_scene load_steps=9 format=3 uid="uid://buuu4ls8t7l4u"]
+[gd_scene load_steps=5 format=3 uid="uid://buuu4ls8t7l4u"]
 
 [ext_resource type="Script" uid="uid://brx5vpy7jn37x" path="res://Src/UI/Start.cs" id="1_0eqgt"]
-[ext_resource type="PackedScene" uid="uid://514oox50h8yl" path="res://Src/UI/main.tscn" id="1_7ma3r"]
 [ext_resource type="Material" uid="uid://b881bblb2gtmo" path="res://Assets/Material/window.tres" id="2_874xg"]
 [ext_resource type="Script" uid="uid://dbies7u5fo4sh" path="res://Src/UI/NativeWindowUtility.cs" id="3_874xg"]
 
 [sub_resource type="ViewportTexture" id="ViewportTexture_0eqgt"]
 viewport_path = NodePath("MarginContainer/SubViewportContainer/SubViewport")
 
-[sub_resource type="Animation" id="Animation_0eqgt"]
-length = 0.001
-tracks/0/type = "bezier"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath(".:modulate:r")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"handle_modes": PackedInt32Array(0),
-"points": PackedFloat32Array(1, -0.25, 0, 0.25, 0),
-"times": PackedFloat32Array(0)
-}
-tracks/1/type = "bezier"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath(".:modulate:g")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"handle_modes": PackedInt32Array(0),
-"points": PackedFloat32Array(1, -0.25, 0, 0.25, 0),
-"times": PackedFloat32Array(0)
-}
-tracks/2/type = "bezier"
-tracks/2/imported = false
-tracks/2/enabled = true
-tracks/2/path = NodePath(".:modulate:b")
-tracks/2/interp = 1
-tracks/2/loop_wrap = true
-tracks/2/keys = {
-"handle_modes": PackedInt32Array(0),
-"points": PackedFloat32Array(1, -0.25, 0, 0.25, 0),
-"times": PackedFloat32Array(0)
-}
-tracks/3/type = "bezier"
-tracks/3/imported = false
-tracks/3/enabled = true
-tracks/3/path = NodePath(".:modulate:a")
-tracks/3/interp = 1
-tracks/3/loop_wrap = true
-tracks/3/keys = {
-"handle_modes": PackedInt32Array(0),
-"points": PackedFloat32Array(1, -0.25, 0, 0.25, 0),
-"times": PackedFloat32Array(0)
-}
-tracks/4/type = "bezier"
-tracks/4/imported = false
-tracks/4/enabled = true
-tracks/4/path = NodePath(".:scale:x")
-tracks/4/interp = 1
-tracks/4/loop_wrap = true
-tracks/4/keys = {
-"handle_modes": PackedInt32Array(0),
-"points": PackedFloat32Array(1, -0.25, 0, 0.25, 0),
-"times": PackedFloat32Array(0)
-}
-tracks/5/type = "bezier"
-tracks/5/imported = false
-tracks/5/enabled = true
-tracks/5/path = NodePath(".:scale:y")
-tracks/5/interp = 1
-tracks/5/loop_wrap = true
-tracks/5/keys = {
-"handle_modes": PackedInt32Array(0),
-"points": PackedFloat32Array(1, -0.25, 0, 0.25, 0),
-"times": PackedFloat32Array(0)
-}
-
-[sub_resource type="Animation" id="Animation_874xg"]
-resource_name = "boot"
-length = 0.5
-tracks/0/type = "bezier"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath(".:modulate:r")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"handle_modes": PackedInt32Array(0, 0),
-"points": PackedFloat32Array(0.25, -0.25, 0, 0.25, 0, 1, -0.25, 0, 0.25, 0),
-"times": PackedFloat32Array(0, 0.5)
-}
-tracks/1/type = "bezier"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath(".:modulate:g")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"handle_modes": PackedInt32Array(0, 0),
-"points": PackedFloat32Array(0.25, -0.25, 0, 0.25, 0, 1, -0.25, 0, 0.25, 0),
-"times": PackedFloat32Array(0, 0.5)
-}
-tracks/2/type = "bezier"
-tracks/2/imported = false
-tracks/2/enabled = true
-tracks/2/path = NodePath(".:modulate:b")
-tracks/2/interp = 1
-tracks/2/loop_wrap = true
-tracks/2/keys = {
-"handle_modes": PackedInt32Array(0, 0),
-"points": PackedFloat32Array(0.25, -0.25, 0, 0.25, 0, 1, -0.25, 0, 0.25, 0),
-"times": PackedFloat32Array(0, 0.5)
-}
-tracks/3/type = "bezier"
-tracks/3/imported = false
-tracks/3/enabled = true
-tracks/3/path = NodePath(".:modulate:a")
-tracks/3/interp = 1
-tracks/3/loop_wrap = true
-tracks/3/keys = {
-"handle_modes": PackedInt32Array(0, 0),
-"points": PackedFloat32Array(0, -0.25, 0, 0.25, 0, 1, -0.25, 0, 0.25, 0),
-"times": PackedFloat32Array(0, 0.5)
-}
-tracks/4/type = "bezier"
-tracks/4/imported = false
-tracks/4/enabled = true
-tracks/4/path = NodePath(".:scale:x")
-tracks/4/interp = 1
-tracks/4/loop_wrap = true
-tracks/4/keys = {
-"handle_modes": PackedInt32Array(0, 0),
-"points": PackedFloat32Array(0, -0.25, 0, 0.25, 0, 1, -0.25, 0, 0.25, 0),
-"times": PackedFloat32Array(0, 0.5)
-}
-tracks/5/type = "bezier"
-tracks/5/imported = false
-tracks/5/enabled = true
-tracks/5/path = NodePath(".:scale:y")
-tracks/5/interp = 1
-tracks/5/loop_wrap = true
-tracks/5/keys = {
-"handle_modes": PackedInt32Array(0, 0),
-"points": PackedFloat32Array(0, -0.25, 0, 0.25, 0, 1, -0.25, 0, 0.25, 0),
-"times": PackedFloat32Array(0, 0.5)
-}
-tracks/6/type = "method"
-tracks/6/imported = false
-tracks/6/enabled = true
-tracks/6/path = NodePath("MarginContainer/SubViewportContainer/SubViewport/Main")
-tracks/6/interp = 1
-tracks/6/loop_wrap = true
-tracks/6/keys = {
-"times": PackedFloat32Array(0.5),
-"transitions": PackedFloat32Array(1),
-"values": [{
-"args": [],
-"method": &"Init"
-}]
-}
-
-[sub_resource type="AnimationLibrary" id="AnimationLibrary_is28b"]
-_data = {
-&"RESET": SubResource("Animation_0eqgt"),
-&"boot": SubResource("Animation_874xg")
-}
-
-[node name="Start" type="Control" unique_id=485835331]
+[node name="Start" type="Control" unique_id=485835331 node_paths=PackedStringArray("_margin", "_subViewport")]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -176,6 +16,9 @@ grow_horizontal = 2
 grow_vertical = 2
 pivot_offset_ratio = Vector2(0.5, 0.5)
 script = ExtResource("1_0eqgt")
+_mainSceneFile = "uid://514oox50h8yl"
+_margin = NodePath("MarginContainer")
+_subViewport = NodePath("MarginContainer/SubViewportContainer/SubViewport")
 
 [node name="MarginContainer" type="MarginContainer" parent="." unique_id=2039637775]
 layout_mode = 1
@@ -198,15 +41,10 @@ stretch = true
 disable_3d = true
 transparent_bg = true
 handle_input_locally = false
-vrs_mode = 2
 canvas_item_default_texture_filter = 2
 size = Vector2i(1152, 648)
 size_2d_override_stretch = true
 render_target_update_mode = 4
-
-[node name="Main" parent="MarginContainer/SubViewportContainer/SubViewport" unique_id=1954405694 node_paths=PackedStringArray("_marginContainer", "_subViewport") instance=ExtResource("1_7ma3r")]
-_marginContainer = NodePath("../../..")
-_subViewport = NodePath("..")
 
 [node name="TextureRect" type="TextureRect" parent="." unique_id=1663254526]
 material = ExtResource("2_874xg")
@@ -337,9 +175,3 @@ script = ExtResource("3_874xg")
 IsResizable = true
 WindowEdge = 5
 metadata/_custom_type_script = "uid://dbies7u5fo4sh"
-
-[node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=883047749]
-libraries = {
-&"": SubResource("AnimationLibrary_is28b")
-}
-autoplay = &"boot"

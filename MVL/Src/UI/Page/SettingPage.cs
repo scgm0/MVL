@@ -100,7 +100,7 @@ public partial class SettingPage : MenuPage {
 		_releaseFolderButton.Pressed += ReleaseFolderButtonOnPressed;
 		_getLatestReleaseButton.Pressed += GetLatestReleaseButtonOnPressed;
 
-		var size = UI.Main.SceneTree.Root.Size;
+		var size = UI.Main.SceneTree.Root.Size = new (1162, 658);
 		UI.Main.SceneTree.Root.Size = new(Mathf.CeilToInt(size.X * UI.Main.BaseConfig.DisplayScale),
 			Mathf.CeilToInt(size.Y * UI.Main.BaseConfig.DisplayScale));
 		TranslationServer.SetLocale(UI.Main.BaseConfig.DisplayLanguage);
@@ -108,7 +108,7 @@ public partial class SettingPage : MenuPage {
 		DisplayScaleSpinboxOnValueChanged(_displayScaleSpinbox.Value);
 		UpdateLanguage();
 		UpdateRenderingDriver();
-		UI.Main.SceneTree.Root.Position -= (UI.Main.SceneTree.Root.Size - size) / 2;
+		UI.Main.SceneTree.Root.MoveToCenter();
 
 		_configFile.SetValue("rendering",
 			_renderingDriverKey,

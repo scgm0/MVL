@@ -42,12 +42,6 @@ public partial class Main : NativeWindowUtility {
 	private PackedScene? _confirmationWindowScene;
 
 	[Export]
-	private MarginContainer? _marginContainer;
-
-	[Export]
-	private SubViewport? _subViewport;
-
-	[Export]
 	private Button? _minButton;
 
 	[Export]
@@ -77,14 +71,20 @@ public partial class Main : NativeWindowUtility {
 	[Export]
 	public ShaderMaterial? WindowMaterial { get; set; }
 
+	[Export]
+	public MarginContainer? Margin { get; set; }
+
+	[Export]
+	public SubViewport? Viewport { get; set; }
+
 	public int ShadowSize {
 		get;
 		set {
 			field = value;
-			_marginContainer?.AddThemeConstantOverride(StringNames.MarginLeft, value);
-			_marginContainer?.AddThemeConstantOverride(StringNames.MarginRight, value);
-			_marginContainer?.AddThemeConstantOverride(StringNames.MarginTop, value);
-			_marginContainer?.AddThemeConstantOverride(StringNames.MarginBottom, value);
+			Margin?.AddThemeConstantOverride(StringNames.MarginLeft, value);
+			Margin?.AddThemeConstantOverride(StringNames.MarginRight, value);
+			Margin?.AddThemeConstantOverride(StringNames.MarginTop, value);
+			Margin?.AddThemeConstantOverride(StringNames.MarginBottom, value);
 			WindowMaterial?.SetShaderParameter(StringNames.WindowTopLeft, new Vector2(value, value));
 		}
 	} = 5;
@@ -117,8 +117,8 @@ public partial class Main : NativeWindowUtility {
 		_installedGamesImportScene.NotNull();
 		_accountSelectItemScene.NotNull();
 		_confirmationWindowScene.NotNull();
-		_marginContainer.NotNull();
-		_subViewport.NotNull();
+		Margin.NotNull();
+		Viewport.NotNull();
 		_minButton.NotNull();
 		_closeButton.NotNull();
 		_accountButton.NotNull();
@@ -174,6 +174,8 @@ public partial class Main : NativeWindowUtility {
 					: new WebProxy(BaseConfig.ProxyAddress);
 			});
 		});
+
+		EmitSignalReady();
 	}
 
 	private void AccountSelectButtonOnVisibilityChanged() {
@@ -397,7 +399,7 @@ public partial class Main : NativeWindowUtility {
 			WindowMaterial!.SetShaderParameter(StringNames.HasRoundCorners, false);
 		}
 
-		_subViewport!.Size2DOverride = new(Mathf.CeilToInt((SceneTree.Root.Size.X - ShadowSize * 2) / BaseConfig.DisplayScale),
+		Viewport!.Size2DOverride = new(Mathf.CeilToInt((SceneTree.Root.Size.X - ShadowSize * 2) / BaseConfig.DisplayScale),
 			Mathf.CeilToInt((SceneTree.Root.Size.Y - ShadowSize * 2) / BaseConfig.DisplayScale));
 	}
 
