@@ -1,4 +1,4 @@
-[gd_scene load_steps=65 format=3 uid="uid://514oox50h8yl"]
+[gd_scene load_steps=64 format=3 uid="uid://514oox50h8yl"]
 
 [ext_resource type="Script" uid="uid://cvyeyg8ttnwmu" path="res://Src/UI/Main.cs" id="1_1opgh"]
 [ext_resource type="Texture2D" uid="uid://bhh1jvyj73qxh" path="res://Assets/Gui/Background.png" id="2_1opgh"]
@@ -23,7 +23,6 @@
 [ext_resource type="PackedScene" uid="uid://bp02so1m0q7m0" path="res://Src/UI/Page/setting_page.tscn" id="19_a6wm3"]
 [ext_resource type="PackedScene" uid="uid://d0bdto738ug2l" path="res://Src/UI/Page/info_page.tscn" id="20_53u4p"]
 [ext_resource type="PackedScene" uid="uid://vbu26hqxpm53" path="res://Src/UI/Page/multiplayer_page.tscn" id="22_a6wm3"]
-[ext_resource type="Script" uid="uid://cwlhl7ihjaxsm" path="res://Src/UI/Page/MultiplayerPage.cs" id="23_53u4p"]
 [ext_resource type="FontFile" uid="uid://bmgx1vyg6bavd" path="res://Assets/Font/HarmonyOS_Sans_SC_Bold.ttf" id="24_365jr"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_p7a31"]
@@ -698,8 +697,8 @@ metadata/_tab_index = 3
 
 [node name="MultiplayerPage" parent="HBoxContainer/ColorRect/VBoxContainer/MarginContainer/PageContainer" unique_id=1452598718 instance=ExtResource("22_a6wm3")]
 unique_name_in_owner = true
+visible = false
 layout_mode = 2
-script = ExtResource("23_53u4p")
 
 [node name="SettingPage" parent="HBoxContainer/ColorRect/VBoxContainer/MarginContainer/PageContainer" unique_id=755577266 instance=ExtResource("19_a6wm3")]
 unique_name_in_owner = true
