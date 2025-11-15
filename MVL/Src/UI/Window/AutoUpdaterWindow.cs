@@ -17,12 +17,12 @@ public partial class AutoUpdaterWindow : BaseWindow {
 
 		_richTextLabel.MetaClicked += Tools.RichTextOpenUrl;
 		CancelButton!.Pressed += CancelButtonOnPressed;
-		Hidden +=  QueueFree;
+		Hidden += QueueFree;
 	}
 
 	public async Task GetLatestRelease() {
 		await Show();
-		var apiRelease = await AutoUpdater.GetLatestReleaseAsync(false);
+		var apiRelease = await GitHubTool.GetLatestReleaseAsync("scgm0/MVL", GhProxyEnum.V6);
 		var body = apiRelease.Body.SplitAndConvert().chinese;
 		_richTextLabel!.Text = body.ConvertMarkdownToBbcode();
 	}
