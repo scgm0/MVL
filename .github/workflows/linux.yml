@@ -1,0 +1,260 @@
+name: Build MVL Project for Linux
+
+on:
+  workflow_call:
+  workflow_dispatch:
+
+jobs:
+  build-linux:
+    runs-on: ubuntu-latest
+    name: ${{ matrix.name }}
+    timeout-minutes: 120
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - name: Linux-Mono
+            cache-name: linux-mono
+            bin: ./godot/bin/godot.linuxbsd.editor.x86_64.llvm.mono
+
+    steps:
+      - name: Checkout MVL Repository
+        uses: actions/checkout@v4
+        with:
+          path: mvl-repo
+
+      - name: 1. Setup Dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y build-essential gettext llvm mold scons pkg-config libx11-dev libxcursor-dev libxinerama-dev libgl1-mesa-dev libglu1-mesa-dev libasound2-dev libpulse-dev libudev-dev libxi-dev libxrandr-dev libwayland-dev
+
+      - name: 2.1. Setup .NET8 SDK
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x' 
+
+      - name: 2.2. Setup .NET10 SDK
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '10.0.x'
+
+      - name: 3. Download and Setup Vintage Story Clients
+        run: |
+          echo "Setting up Vintage Story environments..."
+          wget https://cdn.vintagestory.at/gamefiles/stable/vs_client_linux-x64_1.21.5.tar.gz
+          mkdir -p NET8
+          tar -xzf vs_client_linux-x64_1.21.5.tar.gz -C NET8
+          echo "VINTAGE_STORY_NET8=$(pwd)/NET8/vintagestory" >> $GITHUB_ENV
+
+          wget https://cdn.vintagestory.at/gamefiles/stable/vs_client_linux-x64_1.20.9.tar.gz
+          mkdir -p NET7
+          tar -xzf vs_client_linux-x64_1.20.9.tar.gz -C NET7
+          echo "VINTAGE_STORY_NET7=$(pwd)/NET7/vintagestory" >> $GITHUB_ENV
+
+          echo "Vintage Story paths set."
+
+      - name: 4.1. Clone Godot & Cache SCons
+        id: godot-build
+        run: |
+          git clone https://github.com/scgm0/godot.git --branch Fix-RenderingDevice-Opengl3
+
+      - name: 4.2. Restore Godot build cache
+        uses: ./mvl-repo/.github/actions/godot-cache-restore
+        with:
+          cache-name: ${{ matrix.cache-name }}
+        continue-on-error: true
+
+      - name: 4.3 Compilation Editor
+        uses: ./mvl-repo/.github/actions/godot-build
+        with:
+          scons-flags: >-
+            linker=mold
+            module_mono_enabled=yes
+            use_llvm=yes
+            accesskit=no
+            disable_xr=yes
+          platform: linuxbsd
+          target: editor
+
+      - name: 4.4 Compilation Release
+        uses: ./mvl-repo/.github/actions/godot-build
+        with:
+          scons-flags: >-
+            lto=full
+            production=yes
+            linker=mold
+            optimize=size
+            disable_3d=yes
+            disable_xr=yes
+            disable_navigation_2d=yes
+            disable_navigation_3d=yes
+            disable_physics_2d=yes
+            disable_physics_3d=yes
+            disable_overrides=no
+            disable_advanced_gui=no
+            speechd=no
+            fast_unsafe=yes
+            minizip=no
+            xaudio2=no
+            pulseaudio=no
+            accesskit=no
+            vulkan=yes
+            sdl=no
+            alsa=no
+            debug_symbols=no
+            brotli=no
+            module_basis_universal_enabled=no
+            module_bmp_enabled=no
+            module_camera_enabled=no
+            module_csg_enabled=no
+            module_dds_enabled=no
+            module_enet_enabled=no
+            module_fbx_enabled=no
+            module_gltf_enabled=no
+            module_godot_physics_2d_enabled=no
+            module_godot_physics_3d_enabled=no
+            module_gridmap_enabled=no
+            module_hdr_enabled=no
+            module_interactive_music_enabled=no
+            module_jsonrpc_enabled=no
+            module_ktx_enabled=no
+            module_jolt_physics_enabled=no
+            module_lightmapper_rd_enabled=no
+            module_mbedtls_enabled=no
+            module_meshoptimizer_enabled=no
+            module_miAppImagenimp3_enabled=no
+            module_mobile_vr_enabled=no
+            module_mono_enabled=yes
+            module_multiplayer_enabled=no
+            module_navigation_enabled=no
+            module_noise_enabled=no
+            module_ogg_enabled=no
+            module_openxr_enabled=no
+            module_raycast_enabled=no
+            module_regex_enabled=no
+            module_squish_enabled=no
+            module_tga_enabled=no
+            module_theora_enabled=no
+            module_upnp_enabled=no
+            module_vhacd_enabled=no
+            module_vorbis_enabled=no
+            module_webrtc_enabled=no
+            module_websocket_enabled=no
+            module_webxr_enabled=no
+            module_zip_enabled=no
+          platform: linuxbsd
+          target: template_release
+
+      - name: 4.5. Save Godot build cache
+        uses: ./mvl-repo/.github/actions/godot-cache-save
+        with:
+          cache-name: ${{ matrix.cache-name }}
+        continue-on-error: true
+
+      - name: 4.6 Generate C# glue
+        run: |
+          ${{ matrix.bin }} --headless --generate-mono-glue ./godot/modules/mono/glue
+          ./godot/modules/mono/build_scripts/build_assemblies.py --godot-output-dir=./godot/bin --push-nupkgs-local ./godot/bin/GodotSharp/Tools/nupkgs --godot-platform=linuxbsd
+          dotnet nuget add source $(pwd)/godot/bin/GodotSharp/Tools/nupkgs
+
+      - name: 5.1 Build and Export MVL Project
+        run: |
+          echo "Building MVL solution..."
+          dotnet build mvl-repo/MVL
+
+          echo "Importing assets with Godot..."
+          ${{ matrix.bin }} --path mvl-repo/MVL --import --headless
+
+          echo "Exporting project..."
+          cat > mvl-repo/MVL/export_presets.cfg <<EOF
+          [preset.0]
+
+          name="Linux"
+          platform="Linux"
+          runnable=true
+          dedicated_server=false
+          custom_features=""
+          export_filter="all_resources"
+          include_filter="Misc/*"
+          exclude_filter="Assets/Icon/MD/icons.json"
+          export_path="../../export_build/linux/MVL.x86_64"
+          patches=PackedStringArray()
+          encryption_include_filters=""
+          encryption_exclude_filters=""
+          seed=0
+          encrypt_pck=false
+          encrypt_directory=false
+          script_export_mode=2
+
+          [preset.0.options]
+
+          custom_template/debug=""
+          custom_template/release="$(pwd)/godot/bin/godot.linuxbsd.template_release.x86_64.mono"
+          debug/export_console_wrapper=1
+          binary_format/embed_pck=false
+          texture_format/s3tc_bptc=true
+          texture_format/etc2_astc=false
+          shader_baker/enabled=false
+          binary_format/architecture="x86_64"
+          dotnet/include_scripts_content=false
+          dotnet/include_debug_symbols=false
+          dotnet/embed_build_outputs=false
+
+          EOF
+
+          mkdir -p export_build
+          mkdir -p export_build/linux
+          ${{ matrix.bin }} --path mvl-repo/MVL --headless --export-release "Linux" $(pwd)/export_build/linux/MVL.x86_64
+
+          echo "Export finished."
+
+      - name: 5.2 Setup AppimageTool
+        uses: AnimMouse/setup-appimage@v2
+        with:
+          filename: appimagetool
+          url: https://github.com/AppImage/appimagetool/releases/download/continuous/appimagetool-x86_64.AppImage
+          cache_key: continuous
+
+      - name: 5.3 Package as AppImage
+        run: |
+          echo "Creating AppImage structure..."
+          mkdir -p AppDir
+
+          cp export_build/linux/MVL.x86_64 AppDir/
+          cp export_build/linux/MVL.pck AppDir/
+          cp -r export_build/linux/data_MVL_linuxbsd_x86_64 AppDir/
+
+          cat > AppDir/AppRun <<EOF
+          #!/bin/sh
+          set -e
+
+          this_dir="\$(readlink -f "\$(dirname "\$0")")"
+
+          export PATH="\$this_dir":"\$PATH"
+
+          exec "\$this_dir"/MVL.x86_64 "\$@"
+          EOF
+          chmod +x AppDir/AppRun
+
+          cat > AppDir/mvl.desktop <<EOF
+          [Desktop Entry]
+          Name=MVL
+          Name[zh_CN]=神麤詭末的复古物语启动器
+          Exec=MVL
+          Icon=icon
+          Type=Application
+          Comment=一个开源的复古物语启动器
+          Categories=Game;Utility;
+          EOF
+
+          cp mvl-repo/MVL/Assets/Icon/icon.svg AppDir/icon.svg
+
+          echo "Generating AppImage..."
+          appimagetool AppDir MVL-x86_64.AppImage
+
+      - name: 6. Upload AppImage Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: MVL-Linux-AppImage
+          path: MVL-x86_64.AppImage
+

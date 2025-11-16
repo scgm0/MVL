@@ -1,0 +1,16 @@
+name: 🔗 GHA
+on: [push, pull_request, merge_group, workflow_dispatch]
+
+concurrency:
+  group: ${{ github.workflow }}|${{ github.ref_name }}
+  cancel-in-progress: true
+
+jobs:
+
+  linux-build:
+    name: 🐧 Linux
+    uses: ./.github/workflows/linux.yml
+
+  windows-build:
+    name: 🏁 Windows
+    uses: ./.github/workflows/windows.yml
