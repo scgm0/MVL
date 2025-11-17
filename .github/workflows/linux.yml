@@ -64,7 +64,14 @@ jobs:
           cache-name: ${{ matrix.cache-name }}
         continue-on-error: true
 
-      - name: 4.3 Compilation Editor
+      - name: 4.3. Restore Godot bin cache
+        uses: ./mvl-repo/.github/actions/godot-cache-restore
+        with:
+          cache-name: ${{ matrix.cache-name }}-bin
+          cache-path: ./godot/bin/
+        continue-on-error: true
+
+      - name: 4.4 Compilation Editor
         uses: ./mvl-repo/.github/actions/godot-build
         with:
           scons-flags: >-
@@ -76,7 +83,7 @@ jobs:
           platform: linuxbsd
           target: editor
 
-      - name: 4.4 Compilation Release
+      - name: 4.5 Compilation Release
         uses: ./mvl-repo/.github/actions/godot-build
         with:
           scons-flags: >-
@@ -145,13 +152,20 @@ jobs:
           platform: linuxbsd
           target: template_release
 
-      - name: 4.5. Save Godot build cache
+      - name: 4.6. Save Godot build cache
         uses: ./mvl-repo/.github/actions/godot-cache-save
         with:
           cache-name: ${{ matrix.cache-name }}
         continue-on-error: true
 
-      - name: 4.6 Generate C# glue
+      - name: 4.7. Save Godot bin cache
+        uses: ./mvl-repo/.github/actions/godot-cache-save
+        with:
+          cache-name: ${{ matrix.cache-name }}-bin
+          cache-path: ./godot/bin/
+        continue-on-error: true
+
+      - name: 4.8 Generate C# glue
         run: |
           ${{ matrix.bin }} --headless --generate-mono-glue ./godot/modules/mono/glue
           ./godot/modules/mono/build_scripts/build_assemblies.py --godot-output-dir=./godot/bin --push-nupkgs-local ./godot/bin/GodotSharp/Tools/nupkgs --godot-platform=linuxbsd

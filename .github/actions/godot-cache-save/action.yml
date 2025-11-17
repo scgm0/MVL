@@ -4,7 +4,7 @@ inputs:
   cache-name:
     description: The cache base name (job name by default).
     default: ${{ github.job }}
-  scons-cache:
+  cache-path:
     description: The SCons cache path.
     default: ${{ github.workspace }}/.scons_cache/
 
@@ -13,10 +13,10 @@ runs:
   steps:
     - name: Purge files before timestamp
       shell: sh
-      run: godot/misc/scripts/purge_cache.py ${{ env.CACHE_TIMESTAMP }} "${{ inputs.scons-cache }}"
+      run: godot/misc/scripts/purge_cache.py ${{ env.CACHE_TIMESTAMP }} "${{ inputs.cache-path }}"
 
     - name: Save SCons cache directory
       uses: actions/cache/save@v4
       with:
-        path: ${{ inputs.scons-cache }}
+        path: ${{ inputs.cache-path }}
         key: ${{ inputs.cache-name }}|${{ github.ref_name }}|${{ github.sha }}
