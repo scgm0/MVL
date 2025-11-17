@@ -15,7 +15,7 @@ jobs:
         include:
           - name: Windows-Mono
             cache-name: windows-mono
-            bin: ./godot/bin/godot.windows.editor.x86_64.exe
+            bin: ./godot/bin/godot.windows.editor.x86_64.mono.console.exe
             compiler: msvc
 
     steps:
@@ -185,12 +185,11 @@ jobs:
       - name: 4.9 Generate C# glue
         shell: powershell
         run: |
-          ${{ matrix.bin }} --headless --generate-mono-glue ./godot/modules/mono/glue
-          ./godot/modules/mono/build_scripts/build_assemblies.py --godot-output-dir=./godot/bin --push-nupkgs-local ./godot/bin/GodotSharp/Tools/nupkgs --godot-platform=windows
-          dotnet nuget add source (Join-Path (Get-Location) "godot\bin\GodotSharp\Tools\nupkgs")
+          & ${{ matrix.bin }} --headless --generate-mono-glue ./godot/modules/mono/glue
+          python ./godot/modules/mono/build_scripts/build_assemblies.py --godot-output-dir=./godot/bin --push-nupkgs-local ./godot/bin/GodotSharp/Tools/nupkgs --godot-platform=windows
+          dotnet nuget add source "$((Get-Location).Path)\godot\bin\GodotSharp\Tools\nupkgs"
 
       - name: 5. Build and Export MVL Project
-        shell: powershell
         run: |
           echo "Building MVL solution..."
           dotnet build mvl-repo/MVL
@@ -199,6 +198,7 @@ jobs:
           ${{ matrix.bin }} --path mvl-repo/MVL --import --headless
 
           echo "Exporting project..."
+          $ReleaseTemplatePath = "$((Get-Location).Path)\godot\bin\godot.windows.template_release.x86_64.mono.exe".Replace("\", "/")
           $ExportPreset = @"
           [preset.0]
 
@@ -221,7 +221,8 @@ jobs:
 
           [preset.0.options]
 
-          custom_template/release="$(Join-Path (Get-Location) 'godot\bin\godot.windows.template_release.x86_64.mono.exe')"
+          custom_template/debug=""
+          custom_template/release="$ReleaseTemplatePath"
           debug/export_console_wrapper=1
           binary_format/embed_pck=true
           texture_format/s3tc_bptc=true
@@ -253,10 +254,13 @@ jobs:
           dotnet/embed_build_outputs=true
           "@
           $ExportPreset | Set-Content -Path "mvl-repo/MVL/export_presets.cfg"
+          echo "Content of export_presets.cfg:"
+          Get-Content -Path "mvl-repo/MVL/export_presets.cfg"
 
+          New-Item -ItemType Directory -Force -Path "export_build"
           New-Item -ItemType Directory -Force -Path "export_build/windows"
 
-          ${{ matrix.bin }} --path mvl-repo/MVL --headless --export-release "Windows Desktop" (Join-Path (Get-Location) "export_build\windows\MVL.exe")
+          ${{ matrix.bin }} --path mvl-repo/MVL --headless --export-release "Windows Desktop" "$((Get-Location).Path)\export_build\windows\MVL.exe"
 
           echo "Export finished."
 

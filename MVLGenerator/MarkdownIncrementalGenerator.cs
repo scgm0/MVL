@@ -75,7 +75,7 @@ public class MarkdownIncrementalGenerator : IIncrementalGenerator {
 	static private string GenerateSourceCode(string name, ImmutableList<(string Section, string Content)> data) {
 		var entries = new StringBuilder();
 		foreach (var item in data) {
-			var escapedValue = item.Content.Replace("\"", "\\\"").Replace("\n", "\\n");
+			var escapedValue = item.Content.Replace("\r", "").Replace("\"", "\\\"").Replace("\n", "\\n");
 			entries.AppendLine($"""        ("{item.Section}", "{escapedValue}"),""");
 		}
 
