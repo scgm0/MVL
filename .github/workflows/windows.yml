@@ -4,6 +4,10 @@ on:
   workflow_call:
   workflow_dispatch:
 
+env:
+  SCONS_CACHE_MSVC_CONFIG: true
+  PYTHONIOENCODING: utf8
+
 jobs:
   build-windows:
     runs-on: windows-latest
@@ -116,70 +120,11 @@ jobs:
         uses: ./mvl-repo/.github/actions/godot-build
         with:
           scons-flags: >-
-            lto=full
-            production=yes
             vsc=yes
-            optimize=size
-            disable_3d=yes
-            disable_xr=yes
-            disable_navigation_2d=yes
-            disable_navigation_3d=yes
-            disable_physics_2d=yes
-            disable_physics_3d=yes
-            disable_overrides=no
-            disable_advanced_gui=no
-            speechd=no
-            fast_unsafe=yes
-            minizip=no
-            xaudio2=no
-            pulseaudio=no
-            accesskit=no
-            vulkan=yes
-            sdl=no
-            alsa=no
-            debug_symbols=no
-            brotli=no
             d3d12=yes
             "angle_libs=${{ github.workspace }}/"
-            module_basis_universal_enabled=no
-            module_bmp_enabled=no
-            module_camera_enabled=no
-            module_csg_enabled=no
-            module_dds_enabled=no
-            module_enet_enabled=no
-            module_fbx_enabled=no
-            module_gltf_enabled=no
-            module_godot_physics_2d_enabled=no
-            module_godot_physics_3d_enabled=no
-            module_gridmap_enabled=no
-            module_hdr_enabled=no
-            module_interactive_music_enabled=no
-            module_jsonrpc_enabled=no
-            module_ktx_enabled=no
-            module_jolt_physics_enabled=no
-            module_lightmapper_rd_enabled=no
-            module_mbedtls_enabled=no
-            module_meshoptimizer_enabled=no
-            module_minimp3_enabled=no
-            module_mobile_vr_enabled=no
-            module_mono_enabled=yes
-            module_multiplayer_enabled=no
-            module_navigation_enabled=no
-            module_noise_enabled=no
-            module_ogg_enabled=no
-            module_openxr_enabled=no
-            module_raycast_enabled=no
-            module_regex_enabled=no
-            module_squish_enabled=no
-            module_tga_enabled=no
-            module_theora_enabled=no
-            module_upnp_enabled=no
-            module_vhacd_enabled=no
-            module_vorbis_enabled=no
-            module_webrtc_enabled=no
-            module_websocket_enabled=no
-            module_webxr_enabled=no
-            module_zip_enabled=no
+            profile=../mvl-repo/MVL/GodotBuildProfile/custom.py
+            build_profile=../mvl-repo/MVL/GodotBuildProfile/custom.build
           platform: windows
           target: template_release
 
@@ -213,61 +158,13 @@ jobs:
 
           echo "Exporting project..."
           $ReleaseTemplatePath = "$((Get-Location).Path)\godot\bin\godot.windows.template_release.x86_64.mono.exe".Replace("\", "/")
-          $ExportPreset = @"
-          [preset.0]
+          $ConfigFile = "mvl-repo/MVL/export_presets.cfg"
 
-          name="Windows Desktop"
-          platform="Windows Desktop"
-          runnable=true
-          dedicated_server=false
-          custom_features=""
-          export_filter="all_resources"
-          include_filter="Misc/*"
-          exclude_filter="Assets/Icon/MD/icons.json"
-          export_path="../../export_build/windows/MVL.exe"
-          patches=PackedStringArray()
-          encryption_include_filters=""
-          encryption_exclude_filters=""
-          seed=0
-          encrypt_pck=false
-          encrypt_directory=false
-          script_export_mode=2
+          (Get-Content -Path $ConfigFile -Raw) -replace 'custom_template/release=.*', "custom_template/release=`"$ReleaseTemplatePath`"" | Set-Content -Path $ConfigFile
 
-          [preset.0.options]
-
-          custom_template/debug=""
-          custom_template/release="$ReleaseTemplatePath"
-          debug/export_console_wrapper=1
-          binary_format/embed_pck=true
-          texture_format/s3tc_bptc=true
-          texture_format/etc2_astc=false
-          shader_baker/enabled=false
-          binary_format/architecture="x86_64"
-          codesign/enable=false
-          codesign/timestamp=true
-          codesign/timestamp_server_url=""
-          codesign/digest_algorithm=1
-          codesign/description=""
-          codesign/custom_options=PackedStringArray()
-          application/modify_resources=true
-          application/icon=""
-          application/console_wrapper_icon=""
-          application/icon_interpolation=4
-          application/file_version=""
-          application/product_version=""
-          application/company_name=""
-          application/product_name="神麤詭末的复古物语启动器"
-          application/file_description="一个开源的复古物语启动器"
-          application/copyright=""
-          application/trademarks=""
-          application/export_angle=0
-          application/export_d3d12=1
-          application/d3d12_agility_sdk_multiarch=false
-          dotnet/include_scripts_content=false
-          dotnet/include_debug_symbols=false
-          dotnet/embed_build_outputs=true
-          "@
-          $ExportPreset | Set-Content -Path "mvl-repo/MVL/export_presets.cfg"
+          echo "--- Verifying export_presets.cfg ---"
+          Get-Content $ConfigFile
+          echo "------------------------------------"
 
           New-Item -ItemType Directory -Force -Path "export_build"
           New-Item -ItemType Directory -Force -Path "export_build/windows"
