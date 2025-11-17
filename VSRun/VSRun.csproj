@@ -9,6 +9,7 @@
         <LangVersion>preview</LangVersion>
         <OutputType>Exe</OutputType>
         <TargetFrameworks>net7.0;net8.0</TargetFrameworks>
+        <CheckEolTargetFramework>false</CheckEolTargetFramework>
     </PropertyGroup>
 
     <PropertyGroup>
