@@ -46,6 +46,23 @@ jobs:
           $GETTEXT_PATH = (Get-Location).Path + "\gettext-tools\bin"
           echo $GETTEXT_PATH | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
 
+      - name: Install 7Z And NSIS
+        run: |
+          echo "Install 7Z And NSIS..."
+          choco install 7zip -y
+          choco install nsis -y
+
+          $PluginUrl = "https://nsis.sourceforge.io/mediawiki/images/9/93/Nsis7z.zip"
+          $ZipFile = "Nsis7z.zip"
+          Invoke-WebRequest -Uri $PluginUrl -OutFile $ZipFile
+          Expand-Archive -Path $ZipFile -DestinationPath "$((Get-Location).Path)\Nsis7z"
+          xcopy "$((Get-Location).Path)\Nsis7z\Plugins" "C:\Program Files (x86)\NSIS\Plugins" /E /I /Y
+
+          echo "C:\Program Files (x86)\NSIS" >> $env:GITHUB_PATH
+          echo "C:\ProgramData\chocolatey\lib\7zip" >> $env:GITHUB_PATH
+          echo "C:\ProgramData\chocolatey\lib\nsis" >> $env:GITHUB_PATH
+
+
       - name: 2.1. Setup .NET8 SDK
         uses: actions/setup-dotnet@v4
         with:
@@ -148,7 +165,7 @@ jobs:
           python ./godot/modules/mono/build_scripts/build_assemblies.py --godot-output-dir=./godot/bin --push-nupkgs-local ./godot/bin/GodotSharp/Tools/nupkgs --godot-platform=windows
           dotnet nuget add source "$((Get-Location).Path)\godot\bin\GodotSharp\Tools\nupkgs"
 
-      - name: 5. Build and Export MVL Project
+      - name: 5.1. Build and Export MVL Project
         run: |
           echo "Building MVL solution..."
           dotnet build mvl-repo/MVL
@@ -173,8 +190,68 @@ jobs:
 
           echo "Export finished."
 
+      - name: 5.2. Build portable EXE
+        run: |
+          echo "Building portable EXE..."
+          mkdir -p AppDir
+
+          xcopy /E /I /Y "export_build\windows" "AppDir"
+          7z a "$((Get-Location).Path)\app.7z" ./AppDir/*
+
+          $NsisTemplate = @'
+          !include "FileFunc.nsh"
+
+          OutFile "MVL.exe"
+          Icon ".\mvl-repo\MVL\Assets\Icon\icon.ico"
+
+          SilentInstall silent
+          SetCompress off
+          RequestExecutionLevel user
+
+          !addplugindir "C:\Program Files (x86)\NSIS\Plugins\x86-unicode"
+
+          Function .onInit
+            System::Call 'Kernel32::AttachConsole(i -1)'
+          FunctionEnd
+
+          Section
+            InitPluginsDir
+            ${GetParameters} $R0
+
+            SetOutPath $PLUGINSDIR
+            File /oname=app.7z "##APP7Z##"
+
+            Nsis7z::extract "app.7z"
+            Delete "app.7z"
+
+            ExecWait "$PLUGINSDIR\MVL.exe $R0"
+
+            SetOutPath "$TEMP"
+
+            CheckLock:
+              ClearErrors
+              FileOpen $0 "$PLUGINSDIR\MVL.exe" w
+              IfErrors MVLIsRunning MVLIsClosed
+
+            MVLIsRunning:
+              Sleep 1000
+              Goto CheckLock
+
+            MVLIsClosed:
+              FileClose $0
+              RMDir /r "$PLUGINSDIR"
+              SetErrorLevel 0
+          SectionEnd
+          '@
+
+          $NsisScript = $NsisTemplate -replace '##APP7Z##', "$((Get-Location).Path)\app.7z"
+          $NsisScript | Out-File -FilePath "generated-script.nsi" -Encoding utf8
+
+          makensis generated-script.nsi
+
+
       - name: 6. Upload Windows Build Artifact
         uses: actions/upload-artifact@v4
         with:
           name: MVL-Windows-Exe
-          path: export_build/windows/MVL.exe
+          path: MVL.exe

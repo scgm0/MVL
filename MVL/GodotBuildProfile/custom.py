@@ -1,5 +1,4 @@
 target = "template_release"
-lto = "full"
 production = "yes"
 optimize = "size_extra"
 disable_3d = "yes"
