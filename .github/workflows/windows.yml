@@ -99,17 +99,10 @@ jobs:
           cache-name: ${{ matrix.cache-name }}
         continue-on-error: true
 
-      - name: 4.3. Restore Godot bin cache
-        uses: ./mvl-repo/.github/actions/godot-cache-restore
-        with:
-          cache-name: ${{ matrix.cache-name }}-bin
-          cache-path: ./godot/bin/
-        continue-on-error: true
-
-      - name: 4.4 Download Direct3D 12 SDK components
+      - name: 4.3 Download Direct3D 12 SDK components
         run: python ./godot/misc/scripts/install_d3d12_sdk_windows.py
 
-      - name: 4.5 Download pre-built ANGLE static libraries
+      - name: 4.4 Download pre-built ANGLE static libraries
         uses: dsaltares/fetch-gh-release-asset@1.1.2
         with:
           repo: godotengine/godot-angle-static
@@ -117,10 +110,10 @@ jobs:
           file: godot-angle-static-x86_64-${{ matrix.compiler == 'gcc' && 'gcc' || 'msvc' }}-release.zip
           target: angle/angle.zip
 
-      - name: 4.6 Extract pre-built ANGLE static libraries
+      - name: 4.5 Extract pre-built ANGLE static libraries
         run: Expand-Archive -Force angle/angle.zip ${{ github.workspace }}/
 
-      - name: 4.7 Compilation Editor
+      - name: 4.6 Compilation Editor
         uses: ./mvl-repo/.github/actions/godot-build
         with:
           scons-flags: >-
@@ -133,7 +126,7 @@ jobs:
           platform: windows
           target: editor
 
-      - name: 4.8 Compilation Release Template
+      - name: 4.7 Compilation Release Template
         uses: ./mvl-repo/.github/actions/godot-build
         with:
           scons-flags: >-
@@ -145,20 +138,13 @@ jobs:
           platform: windows
           target: template_release
 
-      - name: 4.9. Save Godot build cache
+      - name: 4.8. Save Godot build cache
         uses: ./mvl-repo/.github/actions/godot-cache-save
         with:
           cache-name: ${{ matrix.cache-name }}
         continue-on-error: true
 
-      - name: 4.10. Save Godot bin cache
-        uses: ./mvl-repo/.github/actions/godot-cache-save
-        with:
-          cache-name: ${{ matrix.cache-name }}-bin
-          cache-path: ./godot/bin/
-        continue-on-error: true
-
-      - name: 4.11 Generate C# glue
+      - name: 4.9 Generate C# glue
         shell: powershell
         run: |
           & ${{ matrix.bin }} --headless --generate-mono-glue ./godot/modules/mono/glue
@@ -247,10 +233,17 @@ jobs:
           $NsisScript = $NsisTemplate -replace '##APP7Z##', "$((Get-Location).Path)\app.7z"
           $NsisScript | Out-File -FilePath "generated-script.nsi" -Encoding utf8
 
+          echo "Generating Portable..."
           makensis generated-script.nsi
 
-      - name: 6. Upload Windows Build Artifact
+      - name: 6.1. Upload Portable Artifact
         uses: actions/upload-artifact@v4
         with:
-          name: Windows-Portable
+          name: mvl-windows-portable
           path: MVL-x86_64.exe
+
+      - name: 6.2. Upload Raw Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: mvl-windows-raw
+          path: export_build/windows/*
