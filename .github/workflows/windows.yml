@@ -46,7 +46,7 @@ jobs:
           $GETTEXT_PATH = (Get-Location).Path + "\gettext-tools\bin"
           echo $GETTEXT_PATH | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
 
-      - name: Install 7Z And NSIS
+      - name: 1.4. Install 7Z And NSIS
         run: |
           echo "Install 7Z And NSIS..."
           choco install 7zip -y
@@ -190,18 +190,18 @@ jobs:
 
           echo "Export finished."
 
-      - name: 5.2. Build portable EXE
+      - name: 5.2. Package as Portable
         run: |
-          echo "Building portable EXE..."
+          echo "Package as Portable..."
           mkdir -p AppDir
 
           xcopy /E /I /Y "export_build\windows" "AppDir"
-          7z a "$((Get-Location).Path)\app.7z" ./AppDir/*
+          7z a "$((Get-Location).Path)\app.7z" ./AppDir/* -m0=lzma2
 
           $NsisTemplate = @'
           !include "FileFunc.nsh"
 
-          OutFile "MVL.exe"
+          OutFile "MVL-x86_64.exe"
           Icon ".\mvl-repo\MVL\Assets\Icon\icon.ico"
 
           SilentInstall silent
@@ -249,9 +249,8 @@ jobs:
 
           makensis generated-script.nsi
 
-
       - name: 6. Upload Windows Build Artifact
         uses: actions/upload-artifact@v4
         with:
-          name: MVL-Windows-Exe
-          path: MVL.exe
+          name: Windows-Portable
+          path: MVL-x86_64.exe

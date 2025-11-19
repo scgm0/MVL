@@ -23,7 +23,7 @@ jobs:
         with:
           path: mvl-repo
 
-      - name: 1.1. Setup Dependencies
+      - name: 1. Setup Dependencies
         run: |
           sudo apt-get update
           sudo apt-get install -y build-essential ccache gettext llvm mold scons pkg-config libx11-dev libxcursor-dev libxinerama-dev libgl1-mesa-dev libglu1-mesa-dev libasound2-dev libpulse-dev libudev-dev libxi-dev libxrandr-dev libwayland-dev
@@ -175,10 +175,10 @@ jobs:
           cp mvl-repo/MVL/Assets/Icon/icon.svg AppDir/icon.svg
 
           echo "Generating AppImage..."
-          appimagetool AppDir MVL-x86_64.AppImage
+          appimagetool AppDir MVL-x86_64.AppImage --comp zstd --mksquashfs-opt -Xcompression-level --mksquashfs-opt 22
 
       - name: 6. Upload AppImage Artifact
         uses: actions/upload-artifact@v4
         with:
-          name: MVL-Linux-AppImage
+          name: Linux-AppImage
           path: MVL-x86_64.AppImage
