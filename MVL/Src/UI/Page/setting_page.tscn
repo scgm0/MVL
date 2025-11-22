@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" uid="uid://er6sd5rjfnp5" path="res://Src/UI/Page/SettingPage.cs" id="1_f2m4w"]
 [ext_resource type="PackedScene" uid="uid://cx30yvsu80t6f" path="res://Src/UI/Window/confirmation_window.tscn" id="2_tr7nv"]
-[ext_resource type="Script" uid="uid://bgqglerkcylxx" path="res://addons/SmoothScroll/SmoothScrollContainer.gd" id="3_4s13v"]
+[ext_resource type="Script" uid="uid://bgqglerkcylxx" path="res://addons/SmoothScroll/smooth_scroll_container.gd" id="3_4s13v"]
 [ext_resource type="PackedScene" uid="uid://debbauyce0xia" path="res://Src/UI/Window/auto_updater_window.tscn" id="3_yoik7"]
 [ext_resource type="Material" uid="uid://c0sb2bjy16ljf" path="res://Assets/Material/button_blur.tres" id="4_tr7nv"]
 [ext_resource type="Script" uid="uid://b7h0k2h2qwlqv" path="res://addons/SmoothScroll/scroll_damper/expo_scroll_damper.gd" id="4_yoik7"]
