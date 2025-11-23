@@ -3,7 +3,6 @@
 [ext_resource type="Script" uid="uid://cvyeyg8ttnwmu" path="res://Src/UI/Main.cs" id="1_1opgh"]
 [ext_resource type="Texture2D" uid="uid://bhh1jvyj73qxh" path="res://Assets/Gui/Background.png" id="2_1opgh"]
 [ext_resource type="PackedScene" uid="uid://dwckxgkp7j0oc" path="res://Src/UI/Window/login_window.tscn" id="2_gblyu"]
-[ext_resource type="Texture2D" uid="uid://bqv5hbr6w0cu" path="res://Assets/Icon/icon.png" id="2_xnuua"]
 [ext_resource type="PackedScene" uid="uid://d21bm32gkwqcr" path="res://Src/UI/Window/installed_games_import.tscn" id="3_a5da0"]
 [ext_resource type="ButtonGroup" uid="uid://c644g3bgevb7h" path="res://Assets/Gui/menu_button_group.tres" id="4_megpf"]
 [ext_resource type="PackedScene" uid="uid://cns5w84qytq88" path="res://Src/UI/Item/account_select_item.tscn" id="5_365jr"]
@@ -17,6 +16,7 @@
 [ext_resource type="Script" uid="uid://bk3tot6c35bwu" path="res://Src/Utils/IconTexture2D.cs" id="13_7nt4r"]
 [ext_resource type="Shader" uid="uid://bw4cstfk8udci" path="res://Assets/Shader/blur.gdshader" id="14_gblyu"]
 [ext_resource type="PackedScene" uid="uid://wtrk0xtd36kj" path="res://Src/UI/Page/home_page.tscn" id="14_oarc7"]
+[ext_resource type="Texture2D" uid="uid://cg2dshwidpbbv" path="res://Assets/Icon/icon.svg" id="15_365jr"]
 [ext_resource type="PackedScene" uid="uid://colclcegjal1y" path="res://Src/UI/Page/modpack_page.tscn" id="16_bmwv3"]
 [ext_resource type="PackedScene" uid="uid://0qq618t18t61" path="res://Src/UI/Page/release_page.tscn" id="17_o4ctv"]
 [ext_resource type="PackedScene" uid="uid://dri1d4mt1w68c" path="res://Src/UI/Page/browse_page.tscn" id="18_365jr"]
@@ -517,9 +517,7 @@ Page = NodePath("../../../ColorRect/VBoxContainer/MarginContainer/PageContainer/
 metadata/_custom_type_script = "uid://dvjtigpqee0jw"
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="HBoxContainer/MenuPanel" unique_id=854001060]
-libraries = {
-&"": SubResource("AnimationLibrary_nxjuw")
-}
+libraries/ = SubResource("AnimationLibrary_nxjuw")
 
 [node name="VSeparator" type="VSeparator" parent="HBoxContainer" unique_id=858669517]
 layout_mode = 2
@@ -576,7 +574,7 @@ theme_override_styles/panel = SubResource("StyleBoxFlat_08ol6")
 use_parent_material = true
 custom_minimum_size = Vector2(40, 40)
 layout_mode = 2
-texture = ExtResource("2_xnuua")
+texture = ExtResource("15_365jr")
 expand_mode = 1
 stretch_mode = 6
 
@@ -651,9 +649,7 @@ size_flags_horizontal = 3
 size_flags_vertical = 3
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="HBoxContainer/ColorRect/VBoxContainer/MarginContainer2/HBoxContainer/Button/Button2/PanelContainer" unique_id=10945203]
-libraries = {
-&"": SubResource("AnimationLibrary_o4ctv")
-}
+libraries/ = SubResource("AnimationLibrary_o4ctv")
 
 [node name="MarginContainer" type="MarginContainer" parent="HBoxContainer/ColorRect/VBoxContainer" unique_id=1014273207]
 layout_mode = 2
