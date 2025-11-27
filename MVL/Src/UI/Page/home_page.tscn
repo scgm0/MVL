@@ -5,7 +5,7 @@
 [ext_resource type="Script" uid="uid://bk3tot6c35bwu" path="res://Src/Utils/IconTexture2D.cs" id="3_1jowr"]
 [ext_resource type="Shader" uid="uid://bw4cstfk8udci" path="res://Assets/Shader/blur.gdshader" id="3_j4kqc"]
 [ext_resource type="FontFile" uid="uid://bmgx1vyg6bavd" path="res://Assets/Font/HarmonyOS_Sans_SC_Bold.ttf" id="4_k556s"]
-[ext_resource type="Script" uid="uid://bgqglerkcylxx" path="res://addons/SmoothScroll/SmoothScrollContainer.gd" id="6_rwne7"]
+[ext_resource type="Script" uid="uid://bgqglerkcylxx" path="res://addons/SmoothScroll/smooth_scroll_container.gd" id="6_rwne7"]
 [ext_resource type="Script" uid="uid://b7h0k2h2qwlqv" path="res://addons/SmoothScroll/scroll_damper/expo_scroll_damper.gd" id="7_glb6t"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_glb6t"]
@@ -316,6 +316,4 @@ size_flags_vertical = 3
 theme_override_constants/separation = 5
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="Control/Button" unique_id=1338479077]
-libraries = {
-&"": SubResource("AnimationLibrary_vb8vt")
-}
+libraries/ = SubResource("AnimationLibrary_vb8vt")

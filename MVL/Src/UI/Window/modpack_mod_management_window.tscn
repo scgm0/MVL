@@ -1,7 +1,7 @@
-[gd_scene load_steps=19 format=3 uid="uid://bf8v1y2ikmx0h"]
+[gd_scene load_steps=22 format=3 uid="uid://bf8v1y2ikmx0h"]
 
 [ext_resource type="PackedScene" uid="uid://bu4hwijkbc8sm" path="res://Src/UI/Window/base_window.tscn" id="1_s26qc"]
-[ext_resource type="Script" uid="uid://bgqglerkcylxx" path="res://addons/SmoothScroll/SmoothScrollContainer.gd" id="2_d71qf"]
+[ext_resource type="Script" uid="uid://bgqglerkcylxx" path="res://addons/SmoothScroll/smooth_scroll_container.gd" id="2_d71qf"]
 [ext_resource type="Script" uid="uid://cpactxkkvxq3u" path="res://Src/UI/Window/ModpackModManagementWindow.cs" id="2_mbxli"]
 [ext_resource type="Script" uid="uid://b7h0k2h2qwlqv" path="res://addons/SmoothScroll/scroll_damper/expo_scroll_damper.gd" id="3_mbxli"]
 [ext_resource type="PackedScene" uid="uid://8k1twti5t7jp" path="res://Src/UI/Window/api_mod_releases_window.tscn" id="3_o3mfg"]
@@ -61,7 +61,86 @@ expand_margin_top = 4.0
 expand_margin_right = 4.0
 expand_margin_bottom = 4.0
 
-[node name="ModpackModManagementWindow" node_paths=PackedStringArray("_searchInput", "_searchButton", "_updateInfoButton", "_syncFileButton", "_downloadButton", "_scrollContainer", "_modInfoItemsContainer", "_loadingContainer") instance=ExtResource("1_s26qc")]
+[sub_resource type="Animation" id="Animation_x7vct"]
+length = 0.001
+tracks/0/type = "bezier"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("PanelContainer:scale:x")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"handle_modes": PackedInt32Array(0),
+"points": PackedFloat32Array(1, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0)
+}
+tracks/1/type = "bezier"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("PanelContainer:scale:y")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"handle_modes": PackedInt32Array(0),
+"points": PackedFloat32Array(1, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0)
+}
+tracks/2/type = "bezier"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath(".:modulate:a")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"handle_modes": PackedInt32Array(0),
+"points": PackedFloat32Array(1, -0.0005, 0, 0.0005, 0),
+"times": PackedFloat32Array(0)
+}
+
+[sub_resource type="Animation" id="Animation_mqeym"]
+resource_name = "show"
+length = 0.5
+tracks/0/type = "bezier"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("PanelContainer:scale:x")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"handle_modes": PackedInt32Array(0, 0),
+"points": PackedFloat32Array(0, -0.25, 0, 0.25, 0, 1, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0, 0.5)
+}
+tracks/1/type = "bezier"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("PanelContainer:scale:y")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"handle_modes": PackedInt32Array(0, 0),
+"points": PackedFloat32Array(0, -0.25, 0, 0.25, 0, 1, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0, 0.5)
+}
+tracks/2/type = "bezier"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath(".:modulate:a")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"handle_modes": PackedInt32Array(0, 0),
+"points": PackedFloat32Array(0, -0.25, 0, 0.25, 0, 1, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0, 0.5)
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_0mth8"]
+_data = {
+&"RESET": SubResource("Animation_x7vct"),
+&"show": SubResource("Animation_mqeym")
+}
+
+[node name="ModpackModManagementWindow" unique_id=649581050 node_paths=PackedStringArray("_searchInput", "_searchButton", "_updateInfoButton", "_syncFileButton", "_downloadButton", "_scrollContainer", "_modInfoItemsContainer", "_loadingContainer") instance=ExtResource("1_s26qc")]
 script = ExtResource("2_mbxli")
 _apiModReleasesWindowScene = ExtResource("3_o3mfg")
 _confirmationWindowScene = ExtResource("4_uhhmm")
@@ -76,28 +155,28 @@ _modInfoItemsContainer = NodePath("PanelContainer/VBoxContainer/MarginContainer/
 _loadingContainer = NodePath("PanelContainer/VBoxContainer/MarginContainer/Control")
 BackBufferCopy = false
 
-[node name="PanelContainer" parent="." index="2"]
+[node name="PanelContainer" parent="." index="2" unique_id=1939254484]
 anchors_preset = -1
 
-[node name="Label" parent="PanelContainer/VBoxContainer" index="0"]
+[node name="Label" parent="PanelContainer/VBoxContainer" parent_id_path=PackedInt32Array(1085092068) index="0" unique_id=45475559]
 text = "整合包模组管理"
 
-[node name="MarginContainer" type="MarginContainer" parent="PanelContainer/VBoxContainer" index="2"]
+[node name="MarginContainer" type="MarginContainer" parent="PanelContainer/VBoxContainer" parent_id_path=PackedInt32Array(1085092068) index="2" unique_id=573668706]
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer/VBoxContainer/MarginContainer" index="0"]
+[node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer/VBoxContainer/MarginContainer" index="0" unique_id=1775541955]
 layout_mode = 2
 
-[node name="HBoxContainer" type="HBoxContainer" parent="PanelContainer/VBoxContainer/MarginContainer/VBoxContainer" index="0"]
+[node name="HBoxContainer" type="HBoxContainer" parent="PanelContainer/VBoxContainer/MarginContainer/VBoxContainer" index="0" unique_id=55261842]
 layout_mode = 2
 size_flags_vertical = 0
 
-[node name="HBoxContainer" type="HBoxContainer" parent="PanelContainer/VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer" index="0"]
+[node name="HBoxContainer" type="HBoxContainer" parent="PanelContainer/VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer" index="0" unique_id=1227834612]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="LineEdit" type="LineEdit" parent="PanelContainer/VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer/HBoxContainer" index="0"]
+[node name="LineEdit" type="LineEdit" parent="PanelContainer/VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer/HBoxContainer" index="0" unique_id=728784132]
 layout_mode = 2
 size_flags_horizontal = 3
 placeholder_text = "输入模组名称"
@@ -105,35 +184,35 @@ clear_button_enabled = true
 draw_control_chars = true
 caret_blink = true
 
-[node name="Button" type="Button" parent="PanelContainer/VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer/HBoxContainer" index="1"]
+[node name="Button" type="Button" parent="PanelContainer/VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer/HBoxContainer" index="1" unique_id=1741326645]
 layout_mode = 2
 tooltip_text = "搜索模组"
 icon = SubResource("Texture2D_vsdyd")
 
-[node name="HBoxContainer2" type="HBoxContainer" parent="PanelContainer/VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer" index="1"]
+[node name="HBoxContainer2" type="HBoxContainer" parent="PanelContainer/VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer" index="1" unique_id=1166931164]
 layout_mode = 2
 size_flags_horizontal = 8
 size_flags_stretch_ratio = 2.0
 
-[node name="Button" type="Button" parent="PanelContainer/VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer/HBoxContainer2" index="0"]
+[node name="Button" type="Button" parent="PanelContainer/VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer/HBoxContainer2" index="0" unique_id=200299062]
 layout_mode = 2
 tooltip_text = "同步本地模组信息"
 icon = SubResource("Texture2D_8pyuv")
 
-[node name="Button2" type="Button" parent="PanelContainer/VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer/HBoxContainer2" index="1"]
+[node name="Button2" type="Button" parent="PanelContainer/VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer/HBoxContainer2" index="1" unique_id=909799687]
 layout_mode = 2
 size_flags_horizontal = 8
 tooltip_text = "同步模组在线信息"
 icon = SubResource("Texture2D_o3mfg")
 
-[node name="Button3" type="Button" parent="PanelContainer/VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer/HBoxContainer2" index="2"]
+[node name="Button3" type="Button" parent="PanelContainer/VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer/HBoxContainer2" index="2" unique_id=5841066]
 layout_mode = 2
 size_flags_horizontal = 8
 tooltip_text = "模组批量更新"
 disabled = true
 icon = SubResource("Texture2D_uhhmm")
 
-[node name="SmoothScrollContainer" type="ScrollContainer" parent="PanelContainer/VBoxContainer/MarginContainer/VBoxContainer" index="1"]
+[node name="SmoothScrollContainer" type="ScrollContainer" parent="PanelContainer/VBoxContainer/MarginContainer/VBoxContainer" index="1" unique_id=1744053960]
 custom_minimum_size = Vector2(800, 350)
 layout_mode = 2
 horizontal_scroll_mode = 0
@@ -143,7 +222,7 @@ dragging_scroll_damper = SubResource("Resource_vsdyd")
 allow_horizontal_scroll = false
 metadata/_custom_type_script = "uid://bgqglerkcylxx"
 
-[node name="MarginContainer" type="MarginContainer" parent="PanelContainer/VBoxContainer/MarginContainer/VBoxContainer/SmoothScrollContainer" index="0"]
+[node name="MarginContainer" type="MarginContainer" parent="PanelContainer/VBoxContainer/MarginContainer/VBoxContainer/SmoothScrollContainer" index="0" unique_id=1939856132]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
@@ -152,17 +231,17 @@ theme_override_constants/margin_top = 4
 theme_override_constants/margin_right = 4
 theme_override_constants/margin_bottom = 4
 
-[node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer/VBoxContainer/MarginContainer/VBoxContainer/SmoothScrollContainer/MarginContainer" index="0"]
+[node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer/VBoxContainer/MarginContainer/VBoxContainer/SmoothScrollContainer/MarginContainer" index="0" unique_id=2082473575]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_constants/separation = 8
 
-[node name="Control" type="Control" parent="PanelContainer/VBoxContainer/MarginContainer" index="1"]
+[node name="Control" type="Control" parent="PanelContainer/VBoxContainer/MarginContainer" index="1" unique_id=780265247]
 visible = false
 layout_mode = 2
 mouse_filter = 1
 
-[node name="Panel" type="Panel" parent="PanelContainer/VBoxContainer/MarginContainer/Control" index="0"]
+[node name="Panel" type="Panel" parent="PanelContainer/VBoxContainer/MarginContainer/Control" index="0" unique_id=248333088]
 material = SubResource("ShaderMaterial_o3v2t")
 layout_mode = 1
 anchors_preset = 15
@@ -173,7 +252,7 @@ grow_vertical = 2
 mouse_filter = 1
 theme_override_styles/panel = SubResource("StyleBoxFlat_0flki")
 
-[node name="ColorRect" type="ColorRect" parent="PanelContainer/VBoxContainer/MarginContainer/Control" index="1"]
+[node name="ColorRect" type="ColorRect" parent="PanelContainer/VBoxContainer/MarginContainer/Control" index="1" unique_id=1279628332]
 material = ExtResource("7_o3v2t")
 custom_minimum_size = Vector2(80, 80)
 layout_mode = 1
@@ -190,8 +269,11 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 1
 
-[node name="Button" parent="PanelContainer/VBoxContainer/HBoxContainer3" index="0"]
+[node name="Button" parent="PanelContainer/VBoxContainer/HBoxContainer3" parent_id_path=PackedInt32Array(522919472) index="0" unique_id=42009310]
 text = "关闭"
 
-[node name="Button2" parent="PanelContainer/VBoxContainer/HBoxContainer3" index="1"]
+[node name="Button2" parent="PanelContainer/VBoxContainer/HBoxContainer3" parent_id_path=PackedInt32Array(522919472) index="1" unique_id=1754640447]
 text = "浏览在线模组"
+
+[node name="AnimationPlayer" parent="." index="3" unique_id=1829304291]
+libraries/ = SubResource("AnimationLibrary_0mth8")

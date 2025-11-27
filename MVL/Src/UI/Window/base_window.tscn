@@ -251,6 +251,4 @@ size_flags_horizontal = 6
 text = "确定"
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=1829304291]
-libraries = {
-&"": SubResource("AnimationLibrary_0mth8")
-}
+libraries/ = SubResource("AnimationLibrary_0mth8")
