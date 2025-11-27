@@ -13,6 +13,7 @@ using Process = System.Diagnostics.Process;
 namespace MVL.Utils;
 
 public static class Tools {
+	public static Version Version { get; } = new (ProjectSettings.GetSetting("application/config/version").AsString());
 	public static MessagePackSerializer PackSerializer { get; } = new();
 	public static bool IsEditorHint { get; } = Engine.IsEditorHint();
 
