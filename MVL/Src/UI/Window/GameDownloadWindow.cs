@@ -294,10 +294,10 @@ public partial class GameDownloadWindow : BaseWindow {
 		EmitSignalInstallGame(Path.Combine(outputDir, name));
 	}
 
-	private void UpdateProgress(int percentage, double speed) {
+	private void UpdateProgress(int percentage, ulong speed) {
 		_progressBar!.Value = percentage;
-		var (fmtSpeed, unit) = FormatSpeed(speed);
-		_progressBar.GetNode<Label>("Label").Text = $"{fmtSpeed:0.00} {unit}/s";
+		var (fmtSpeed, unit) = Tools.GetSizeAndUnit(speed);
+		_progressBar.GetNode<Label>("Label").Text = $"{fmtSpeed:F2} {unit}/s";
 	}
 
 	private void ButtonGroupOnPressed(BaseButton button) {
@@ -377,19 +377,6 @@ public partial class GameDownloadWindow : BaseWindow {
 			GD.PrintErr(e.Message);
 			_lastException = e;
 		}
-	}
-
-	static private (double speed, string unit) FormatSpeed(double bytesPerSecond) {
-		string[] units = ["B", "KB", "MB", "GB"];
-		var unitIndex = 0;
-		var speed = bytesPerSecond;
-
-		while (speed >= 1024 && unitIndex < units.Length - 1) {
-			speed /= 1024;
-			unitIndex++;
-		}
-
-		return (speed, units[unitIndex]);
 	}
 
 	public static async Task ExtractTarGzAsync(string filePath, string outputDir, string name) {

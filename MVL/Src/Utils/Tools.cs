@@ -3,6 +3,7 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Sockets;
+using System.Numerics;
 using System.Threading.Tasks;
 using Flurl.Http;
 using Godot;
@@ -13,7 +14,8 @@ using Process = System.Diagnostics.Process;
 namespace MVL.Utils;
 
 public static class Tools {
-	public static Version Version { get; } = new (ProjectSettings.GetSetting("application/config/version").AsString());
+	static private readonly string[] Units = ["B", "KB", "MB", "GB", "TB", "PB", "EB"];
+	public static Version Version { get; } = new(ProjectSettings.GetSetting("application/config/version").AsString());
 	public static MessagePackSerializer PackSerializer { get; } = new();
 	public static bool IsEditorHint { get; } = Engine.IsEditorHint();
 
@@ -210,5 +212,21 @@ public static class Tools {
 		} catch {
 			return false;
 		}
+	}
+
+	public static (double Value, string Unit) GetSizeAndUnit(ulong bytes) {
+		if (bytes == 0) {
+			return (0, Units[0]);
+		}
+
+		var index = (64 - BitOperations.LeadingZeroCount(bytes) - 1) / 10;
+
+		if (index >= Units.Length) {
+			index = Units.Length - 1;
+		}
+
+		var value = (double)bytes / (1L << index * 10);
+
+		return (value, Units[index]);
 	}
 }
