@@ -221,7 +221,7 @@ public static class StringExtensions {
 		public (string chinese, string English) SplitAndConvert() {
 			var englishMarkerIndex = inputSpan.IndexOf("English:");
 			if (englishMarkerIndex == -1) {
-				return (ConvertMarkdownToBbcode(inputSpan[(inputSpan.IndexOf("中文:") + 3)..].Trim()), string.Empty);
+				return (inputSpan[(inputSpan.IndexOf("中文:") + 3)..].Trim().ConvertMarkdownToBbcode(), string.Empty);
 			}
 
 			var chineseMdSpan =

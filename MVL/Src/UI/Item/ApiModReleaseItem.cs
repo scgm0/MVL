@@ -1,9 +1,9 @@
-using Godot;
 using System;
 using System.IO;
 using System.Net;
 using System.Threading.Tasks;
 using Downloader;
+using Godot;
 using MVL.UI.Window;
 using MVL.Utils;
 using MVL.Utils.Config;
@@ -130,7 +130,7 @@ public partial class ApiModReleaseItem : PanelContainer {
 
 			_checkBox!.Disabled = _downloadButton!.Disabled;
 		} catch (Exception e) {
-			GD.PrintErr(e);
+			Log.Error(e);
 		}
 
 		_downloadButton!.Modulate = Colors.DarkRed;
@@ -181,7 +181,7 @@ public partial class ApiModReleaseItem : PanelContainer {
 		_checkBox!.Hide();
 		_progressLabel!.Show();
 		_progressBar!.Show();
-		GD.Print($"下载 {ApiModRelease!.Value.FileName}...");
+		Log.Info($"开始下载 {ApiModRelease!.Value.FileName}...");
 
 		using var downloadTmp = DirAccess.CreateTemp("MVL_Download");
 		var downloadDir = downloadTmp.GetCurrentDir();

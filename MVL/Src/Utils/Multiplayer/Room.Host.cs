@@ -39,7 +39,7 @@ public partial record Room {
 
 	private void OnEasyTierReadyByHost(bool ready) {
 		if (!ready) {
-			GD.PrintErr("EasyTier 启动失败。");
+			Log.Error("EasyTier 启动失败。");
 			Shutdown();
 			OnReady?.Invoke(false);
 			return;
@@ -52,7 +52,7 @@ public partial record Room {
 			Address: _easyTier.LocalPlayer.IpV4) { Identity = _easyTier.LocalPlayer.Id };
 
 		Players.Add(_localPlayer);
-		GD.Print($"已创建房间，房间号: {Code}");
+		Log.Info($"已创建房间，房间号: {Code}");
 
 		_clientCheckTimer = new(_clientCheckIntervalMs);
 		_clientCheckTimer.Elapsed += (_, _) => CheckDisconnectedGuests();
@@ -69,7 +69,7 @@ public partial record Room {
 
 		var clientIdentity = BitConverter.ToUInt32(guestMessage[0].Buffer);
 		var eventCode = (RoomEventEnum)BitConverter.ToInt32(guestMessage[1].Buffer);
-		GD.Print($"收到来自客户端的事件: {eventCode}");
+		Log.Info($"收到来自客户端的事件: {eventCode}");
 		var player = GetPlayerByIdentity(clientIdentity);
 		player?.LastHeartbeat = DateTimeOffset.UtcNow;
 
@@ -79,7 +79,7 @@ public partial record Room {
 				if (Players.All(p => p.Identity != player.Identity)) {
 					player.LastHeartbeat = DateTimeOffset.UtcNow;
 					Players.Add(player);
-					GD.Print($"玩家 {player.Name} 已加入房间。 当前玩家数: {Players.Count}");
+					Log.Info($"玩家 {player.Name} 已加入房间。 当前玩家数: {Players.Count}");
 				}
 
 				var responseMessage = new NetMQMessage();
@@ -88,7 +88,7 @@ public partial record Room {
 				responseMessage.Append(
 					Tools.PackSerializer.Serialize<List<RoomPlayerInfo>, SourceGenerationContext>(Players));
 				if (_routerSocket!.TrySendMultipartMessage(responseMessage)) {
-					GD.Print($"已向新访客 {player.Name} 发送房间信息。");
+					Log.Info($"已向新访客 {player.Name} 发送房间信息。");
 				}
 
 				foreach (var roomPlayerInfo in Players) {
@@ -102,7 +102,7 @@ public partial record Room {
 					responseMessage.Append(Tools.PackSerializer.Serialize(player));
 
 					if (_routerSocket!.TrySendMultipartMessage(responseMessage)) {
-						GD.Print($"已广播更新访客信息。");
+						Log.Info("已广播更新访客信息。");
 					}
 				}
 
@@ -126,7 +126,7 @@ public partial record Room {
 			case RoomEventEnum.HostShutdown:
 			case RoomEventEnum.Pong:
 			case RoomEventEnum.None: break;
-			default: GD.PrintErr($"未知事件: {eventCode}"); break;
+			default: Log.Warn($"未知事件: {eventCode}"); break;
 		}
 	}
 
@@ -135,7 +135,7 @@ public partial record Room {
 			return;
 		}
 
-		GD.Print($"玩家 {disconnectedPlayer.Name} 已离开房间。 当前玩家数: {Players.Count}");
+		Log.Info($"玩家 {disconnectedPlayer.Name} 已离开房间。 当前玩家数: {Players.Count}");
 
 		foreach (var player in Players.Where(p => p.RoomType == RoomType.Guest)) {
 			var message = new NetMQMessage();
@@ -143,7 +143,7 @@ public partial record Room {
 			message.Append(BitConverter.GetBytes((int)RoomEventEnum.GuestLeft));
 			message.Append(Tools.PackSerializer.Serialize(disconnectedPlayer));
 			if (_routerSocket!.TrySendMultipartMessage(message)) {
-				GD.Print($"已通知 {player.Name} 有玩家离开。");
+				Log.Debug($"已通知 {player.Name} 有玩家离开。");
 			}
 		}
 	}
@@ -163,7 +163,7 @@ public partial record Room {
 		}
 
 		foreach (var timedOutPlayer in timedOutPlayers) {
-			GD.Print($"检测到玩家 {timedOutPlayer.Name} 超时。");
+			Log.Info($"检测到玩家 {timedOutPlayer.Name} 超时。");
 			HandleClientDisconnect(timedOutPlayer);
 		}
 	}
@@ -173,7 +173,7 @@ public partial record Room {
 		_clientCheckTimer = null;
 
 		if (Players.Count > 1) {
-			GD.Print("主机正在关闭，通知所有客户端...");
+			Log.Info("主机正在关闭，通知所有客户端...");
 			foreach (var player in Players.Where(p => p.RoomType == RoomType.Guest)) {
 				var message = new NetMQMessage();
 				message.Append(BitConverter.GetBytes(player.Identity));
@@ -182,7 +182,7 @@ public partial record Room {
 			}
 		}
 
-		GD.Print("房间已关闭。");
+		Log.Info("房间已关闭。");
 		_routerSocket?.Close();
 		_routerSocket = null;
 	}

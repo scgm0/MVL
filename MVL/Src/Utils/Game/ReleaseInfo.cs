@@ -46,7 +46,7 @@ public record ReleaseInfo {
 				break;
 			}
 		} catch (Exception ex) {
-			GD.PrintErr($"无法从 {assemblyPath} 读取目标框架: {ex.Message}");
+			Log.Error($"无法从 {assemblyPath} 读取目标框架:", ex);
 		}
 
 		return (null, null);
@@ -88,7 +88,7 @@ public record ReleaseInfo {
 			return (finalName.ToString(), finalVersion);
 		}
 
-		GD.PrintErr($"无法从 {versionSpan} 解析版本");
+		Log.Error($"无法从 {versionSpan} 解析版本");
 		return (finalName.ToString(), null);
 	}
 

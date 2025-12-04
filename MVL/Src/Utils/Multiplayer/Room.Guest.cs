@@ -82,18 +82,18 @@ public partial record Room {
 					message.Append(Tools.PackSerializer.Serialize(_localPlayer));
 
 					if (_dealerSocket.TrySendMultipartMessage(message)) {
-						GD.Print("请求主机信息中...");
+						Log.Info("请求主机信息中...");
 						return;
 					}
 				}
 
-				GD.PrintErr("请求主机信息失败");
+				Log.Error("请求主机信息失败");
 				OnReady?.Invoke(false);
 				return;
 			}
 		}
 
-		GD.PrintErr("未找到主机");
+		Log.Error("未找到主机");
 		OnReady?.Invoke(false);
 	}
 
@@ -104,17 +104,17 @@ public partial record Room {
 		}
 
 		if (_hostEasyTierInfo is null) {
-			GD.PrintErr("收到来自主机的事件，但EasyTier主机信息丢失。");
+			Log.Error("收到来自主机的事件，但EasyTier主机信息丢失。");
 			return;
 		}
 
 		var eventCode = (RoomEventEnum)BitConverter.ToInt32(hostMessage[0].Buffer);
-		GD.Print($"收到来自主机的事件: {eventCode}");
+		Log.Info($"收到来自主机的事件: {eventCode}");
 		switch (eventCode) {
 			case RoomEventEnum.JoinAccepted: {
 				Players =
 					Tools.PackSerializer.Deserialize<List<RoomPlayerInfo>, SourceGenerationContext>(hostMessage[1].Buffer)!;
-				GD.Print("已从主机接受到房间信息，准备创建端口转发...");
+				Log.Info("已从主机接受到房间信息，准备创建端口转发...");
 
 				var local = $"{IPAddress.Any}:{LocalPort}";
 				var remote = $"{_hostEasyTierInfo.Value.IpV4}:{Players[0].Port}";
@@ -136,7 +136,7 @@ public partial record Room {
 				}
 
 				Players.Add(playerInfo);
-				GD.Print($"玩家 {playerInfo.Name} 已加入");
+				Log.Info($"玩家 {playerInfo.Name} 已加入");
 				return;
 			}
 			case RoomEventEnum.GuestLeft: {
@@ -144,13 +144,13 @@ public partial record Room {
 				var leftPlayer = GetPlayerByIdentity(playerInfo.Identity);
 				if (leftPlayer is not null) {
 					Players.Remove(leftPlayer);
-					GD.Print($"玩家 {playerInfo.Name} 已离开");
+					Log.Info($"玩家 {playerInfo.Name} 已离开");
 				}
 
 				break;
 			}
 			case RoomEventEnum.HostShutdown: {
-				GD.Print("主机已关闭房间。");
+				Log.Info("主机已关闭房间。");
 				_isHostAlive = false;
 				Shutdown();
 				OnReady?.Invoke(false);
@@ -164,7 +164,7 @@ public partial record Room {
 			case RoomEventEnum.GuestJoined:
 			case RoomEventEnum.Ping:
 			case RoomEventEnum.None: break;
-			default: GD.PrintErr($"未知事件: {eventCode}"); break;
+			default: Log.Warn($"未知事件: {eventCode}"); break;
 		}
 	}
 
@@ -184,7 +184,7 @@ public partial record Room {
 		}
 
 		_isHostAlive = false;
-		GD.PrintErr("主机连接超时。");
+		Log.Error("主机连接超时。");
 		Dispatcher.SynchronizationContext.Post(_ => {
 				Shutdown();
 				OnReady?.Invoke(false);
@@ -199,13 +199,13 @@ public partial record Room {
 		_timeoutTimer = null;
 
 		if (_isHostAlive) {
-			GD.Print("客机正在关闭，通知主机...");
+			Log.Info("客机正在关闭，通知主机...");
 			var message = new NetMQMessage();
 			message.Append(BitConverter.GetBytes((int)RoomEventEnum.GuestLeft));
 			_dealerSocket?.TrySendMultipartMessage(message);
 		}
 
-		GD.Print("已离开房间。");
+		Log.Info("已离开房间。");
 		_dealerSocket?.Close();
 		_dealerSocket = null;
 	}

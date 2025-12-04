@@ -352,7 +352,7 @@ public partial class GameDownloadWindow : BaseWindow {
 					vbox.AddThemeConstantOverride(StringNames.Separation, 10);
 
 					foreach (var (gameVersion, gameRelease) in group) {
-						GD.PrintS(gameVersion, gameRelease);
+						Log.Trace($"{gameVersion} {gameRelease}");
 
 						var item = _downloadItemScene!.Instantiate<InstalledGameItem>();
 						item.GameVersion = gameVersion;
@@ -374,7 +374,7 @@ public partial class GameDownloadWindow : BaseWindow {
 				}
 			}
 		} catch (FlurlHttpException e) {
-			GD.PrintErr(e.Message);
+			Log.Error(e.Message);
 			_lastException = e;
 		}
 	}
@@ -387,7 +387,7 @@ public partial class GameDownloadWindow : BaseWindow {
 
 			string? subDir = null;
 			while (reader.GetNextEntry() is { } entry) {
-				GD.Print(entry.Name);
+				Log.Trace(entry.Name);
 				subDir ??= entry.Name;
 				var path = Path.Combine(outputDir, entry.Name).NormalizePath();
 				path = path.Replace(Path.Combine(outputDir, subDir).NormalizePath(),
@@ -416,8 +416,8 @@ public partial class GameDownloadWindow : BaseWindow {
 			process.StartInfo.RedirectStandardOutput = true;
 			process.StartInfo.RedirectStandardError = true;
 			process.StartInfo.CreateNoWindow = true;
-			process.OutputDataReceived += (_, args) => GD.Print(args.Data);
-			process.ErrorDataReceived += (_, args) => GD.PrintErr(args.Data);
+			process.OutputDataReceived += (_, args) => Log.Trace(args.Data);
+			process.ErrorDataReceived += (_, args) => Log.Error(args.Data);
 			process.Start();
 			process.BeginOutputReadLine();
 			process.BeginErrorReadLine();

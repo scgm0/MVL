@@ -117,10 +117,10 @@ public readonly record struct GameVersion {
 				return gameVersion;
 			}
 
-			GD.PrintErr($"无法从游戏程序集 {assemblyPath} 获取游戏版本: 未找到 ShortGameVersion 字段");
+			Log.Error($"无法从游戏程序集 {assemblyPath} 获取游戏版本: 未找到 ShortGameVersion 字段");
 			return null;
 		} catch (Exception e) {
-			GD.PrintErr($"无法从游戏程序集 {assemblyPath} 获取游戏版本: {e.Message}");
+			Log.Error($"无法从游戏程序集 {assemblyPath} 获取游戏版本:", e);
 			return null;
 		}
 	}

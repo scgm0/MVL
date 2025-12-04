@@ -5,6 +5,7 @@ using System.Numerics;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using AsyncIO;
 using Godot;
 using NetMQ;
 using RandomNumberGenerator = System.Security.Cryptography.RandomNumberGenerator;
@@ -48,8 +49,8 @@ public partial record Room : IDisposable {
 		NetworkSecret = networkSecret;
 		HostPort = hostPort;
 		LocalPort = localPort;
-		AsyncIO.ForceDotNet.Force();
-		GD.Print(this);
+		ForceDotNet.Force();
+		Log.Debug($"房间已创建: {this}");
 	}
 
 	public void Shutdown() {

@@ -1,11 +1,12 @@
-using Godot;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.Json;
+using System.Text.Json.Serialization.Metadata;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Flurl.Http;
+using Godot;
 using MVL.UI.Item;
 using MVL.UI.Other;
 using MVL.UI.Window;
@@ -201,13 +202,13 @@ public partial class BrowsePage : MenuPage {
 
 		try {
 			var url = BuildModsApiUrl();
-			GD.Print($"获取模组列表: {url}");
+			Log.Debug($"获取模组列表: {url}");
 
 			await using var modListStream = await url.GetStreamAsync();
 			var modList =
 				await JsonSerializer.DeserializeAsync(modListStream, SourceGenerationContext.Default.ApiStatusModsList);
 
-			GD.Print($"模组列表获取完成，StatusCode: {modList.StatusCode}");
+			Log.Debug($"模组列表获取完成，StatusCode: {modList.StatusCode}");
 
 			if (modList.StatusCode is "200") {
 				var mods = modList.Mods ?? [];
@@ -227,7 +228,7 @@ public partial class BrowsePage : MenuPage {
 			}
 		} catch (Exception ex) {
 			_loadingControl?.Hide();
-			GD.PrintErr($"获取在线信息时发生错误: {ex.Message}");
+			Log.Error("获取在线信息时发生错误:", ex);
 			ShowMessageInContainer(_moduleListContainer!, "获取在线信息时发生错误，请检查网络连接", Colors.Red);
 		}
 	}
@@ -354,7 +355,7 @@ public partial class BrowsePage : MenuPage {
 					await using var result = await url.GetStreamAsync();
 					var status = await JsonSerializer.DeserializeAsync(result,
 						SourceGenerationContext.Default.ApiStatusModInfo);
-					GD.Print($"获取模组信息: {url} ({status.StatusCode})");
+					Log.Debug($"获取模组信息: {url} ({status.StatusCode})");
 					if (status.StatusCode != "200") {
 						confirmationWindow.Message = "获取模组信息失败";
 						confirmationWindow.CancelButton!.Disabled = false;
@@ -370,7 +371,7 @@ public partial class BrowsePage : MenuPage {
 					UI.Main.Instance?.AddChild(apiModReleasesWindow);
 					await apiModReleasesWindow.Show();
 				} catch (Exception ex) {
-					GD.Print($"获取模组信息时发生错误: {ex.Message}");
+					Log.Error("获取模组信息时发生错误: ", ex);
 					confirmationWindow.Message = "获取模组信息失败";
 					confirmationWindow.CancelButton!.Disabled = false;
 				}
@@ -424,27 +425,27 @@ public partial class BrowsePage : MenuPage {
 			await GetModsListAsync();
 		} catch (Exception ex) {
 			_loadingControl?.Hide();
-			GD.PrintErr($"获取在线信息时发生错误: {ex.Message}");
+			Log.Error("获取在线信息时发生错误:", ex);
 			ShowMessageInContainer(_moduleListContainer!, "获取在线信息时发生错误，请检查网络连接", Colors.Red);
 		}
 	}
 
 	private async Task<T?> FetchAndDeserializeAsync<T>(
 		string url,
-		System.Text.Json.Serialization.Metadata.JsonTypeInfo<T> typeInfo) {
+		JsonTypeInfo<T> typeInfo) {
 		await using var stream = await url.GetStreamAsync();
 		return await JsonSerializer.DeserializeAsync(stream, typeInfo);
 	}
 
 	private void ProcessAuthors(ApiStatusAuthors? apiAuthors) {
-		GD.PrintS("apiAuthors status:", apiAuthors?.StatusCode);
+		Log.Debug($"apiAuthors status: {apiAuthors?.StatusCode}");
 		if (apiAuthors?.StatusCode is "200") {
 			_modAuthorLineEdit!.Candidates = apiAuthors.Value.Authors ?? [];
 		}
 	}
 
 	private void ProcessGameVersions(ApiStatusGameVersions? apiGameVersions) {
-		GD.PrintS("apiGameVersions status:", apiGameVersions?.StatusCode);
+		Log.Debug($"apiGameVersions status: {apiGameVersions?.StatusCode}");
 		if (apiGameVersions?.StatusCode is not "200") {
 			return;
 		}
@@ -465,7 +466,7 @@ public partial class BrowsePage : MenuPage {
 	}
 
 	private void ProcessTags(ApiStatusModTags? apiTags) {
-		GD.PrintS("apiTags status:", apiTags?.StatusCode);
+		Log.Debug($"apiTags status: {apiTags?.StatusCode}");
 		if (apiTags?.StatusCode is not "200") {
 			return;
 		}

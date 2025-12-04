@@ -2,6 +2,7 @@ using System;
 using System.IO;
 using System.Net;
 using System.Net.Sockets;
+using System.Runtime.InteropServices;
 using Godot;
 using MVL.Utils;
 using MVL.Utils.Help;
@@ -25,6 +26,22 @@ public partial class Start : Control {
 
 	public Start() {
 		try {
+			Log.Info("正在启动...");
+			Log.Debug($"应用版本: {Tools.Version}");
+			Log.Debug($"引擎版本: {Engine.GetVersionInfo()["string"]}");
+			Log.Debug($"运行框架: {RuntimeInformation.FrameworkDescription}");
+			Log.Debug($"操作系统: {SystemInfo.OSDescription}");
+			Log.Debug($"处理器: {SystemInfo.ProcessorName}");
+			Log.Debug($"核心数量: {SystemInfo.ProcessorCount}");
+			Log.Debug($"显卡: {SystemInfo.GraphicsCardDescription}");
+			Log.Debug(
+				$"渲染驱动: {RenderingServer.GetCurrentRenderingDriverName()} {RenderingServer.GetVideoAdapterApiVersion()}");
+			var memoryInfo = OS.GetMemoryInfo();
+			var (totalPhysicalMemory, totalPhysicalMemoryUnit) = Tools.GetSizeAndUnit(memoryInfo["physical"].AsUInt64());
+			var (availablePhysicalMemory, availablePhysicalMemoryUnit) =
+				Tools.GetSizeAndUnit(memoryInfo["free"].AsUInt64());
+			Log.Debug(
+				$"物理内存: {totalPhysicalMemory:F2}{totalPhysicalMemoryUnit}(总计) {availablePhysicalMemory:F2}{availablePhysicalMemoryUnit}(可用)");
 			_lockFile = File.Open(Paths.LockFile,
 				FileMode.OpenOrCreate,
 				FileAccess.ReadWrite,
@@ -50,7 +67,7 @@ public partial class Start : Control {
 			};
 		} catch (Exception err) {
 			if (err is not IOException) {
-				GD.PrintErr(err);
+				Log.Error(err);
 			}
 
 			_lockFile = null;
@@ -60,9 +77,9 @@ public partial class Start : Control {
 				client.Connect(IPAddress.Loopback, BitConverter.ToInt32(port));
 				using var stream = client.GetStream();
 				stream.Write(BitConverter.GetBytes((int)AppEventEnum.RepeatStartup));
-				GD.PrintErr("启动器已运行，无法重复启动");
+				Log.Error("启动器已运行，无法重复启动");
 			} catch (Exception e) {
-				GD.PrintErr("发送通知失败: ", e);
+				Log.Error("发送通知失败: ", e);
 			}
 
 			Main.SceneTree.Quit();
@@ -89,6 +106,7 @@ public partial class Start : Control {
 		tween.Parallel().TweenProperty(this, new(CanvasItem.PropertyName.Modulate), Colors.White, 0.5f).Dispose();
 		tween.Parallel().TweenProperty(this, new(Control.PropertyName.Scale), new Vector2(1, 1), 0.5f).Dispose();
 		tween.Finished += main.Init;
+		Log.Info("启动完成");
 	}
 
 	static private async void ListenForMessagesAsync() {
@@ -110,12 +128,12 @@ public partial class Start : Control {
 						break;
 					case AppEventEnum.None:
 					default:
-						GD.PrintErr("收到未知的事件代码: ", eventCode);
+						Log.Error($"收到未知的事件代码: {eventCode}");
 						break;
 				}
 			}
 		} catch (Exception e) {
-			GD.PrintErr(e);
+			Log.Error(e);
 		}
 	}
 }

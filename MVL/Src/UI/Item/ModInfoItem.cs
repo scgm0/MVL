@@ -134,7 +134,7 @@ public partial class ModInfoItem : PanelContainer {
 	private async void UpdateButtonOnPressed() {
 		_updateButton!.Disabled = true;
 		_progressBar!.Show();
-		GD.Print($"下载 {ApiModRelease!.Value.FileName}...");
+		Log.Info($"开始下载 {ApiModRelease!.Value.FileName}...");
 
 		using var downloadTmp = DirAccess.CreateTemp("MVL_Download");
 		var downloadDir = downloadTmp.GetCurrentDir();
@@ -286,7 +286,7 @@ public partial class ModInfoItem : PanelContainer {
 					? Mod.Name
 					: $"{ApiModInfo.Value.Name} ({Mod.Name})";
 			} catch (Exception e) {
-				GD.PrintErr(e);
+				Log.Error(e);
 			}
 		}
 	}
@@ -310,7 +310,7 @@ public partial class ModInfoItem : PanelContainer {
 
 				HasNewVersion = true;
 				ApiModRelease = modInfoRelease;
-				GD.Print(
+				Log.Debug(
 					$"找到 {ApiModInfo.Value.Name} {modInfoRelease.ModVersion} ({Mod.Version}) ({modInfoRelease.Tags.Stringify()})");
 				if (!modInfoRelease.Tags.Any(gameVersion =>
 					GameVersion.ComparerVersion(Mod.ModpackConfig!.Version!.Value, new(gameVersion)) >= 0)) {
@@ -330,7 +330,7 @@ public partial class ModInfoItem : PanelContainer {
 					null);
 				return;
 			} catch (Exception e) {
-				GD.PrintErr(e.Message);
+				Log.Error(e.Message);
 			}
 		}
 	}

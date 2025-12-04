@@ -297,7 +297,7 @@ public partial class Main : NativeWindowUtility {
 
 	private async void AccountItemOnEdit(AccountSelectItem item) {
 		var editCurrent = item.Account?.PlayerName == BaseConfig.CurrentAccount;
-		GD.Print("editCurrent: " + editCurrent);
+		Log.Debug("editCurrent: " + editCurrent);
 		var loginWindow = await OpenAccountSelectWindow(item.Account);
 		loginWindow.Login += _ => {
 			foreach (var child in _accountSelectListContainer!.GetChildren()) {
@@ -369,7 +369,7 @@ public partial class Main : NativeWindowUtility {
 		}
 
 		var token = await response.GetStringAsync();
-		GD.Print(token);
+		Log.Debug(token);
 		var validateResponse = JsonSerializer.Deserialize(token, SourceGenerationContext.Default.ValidateResponse);
 		return validateResponse.Valid == 1;
 	}
@@ -380,6 +380,7 @@ public partial class Main : NativeWindowUtility {
 			CheckModpackConfig();
 		});
 		CheckAccount();
+		Log.Info("初始化完成");
 
 		if (BaseConfig.Release.Count != 0 || InstalledGamesImport.InstalledGamePaths.Length <= 0) {
 			return;
@@ -523,8 +524,8 @@ public partial class Main : NativeWindowUtility {
 	}
 
 	public static Process? VsRun(RunConfig runConfig, string command) {
-		GD.PrintS("Execute:", command);
-		GD.Print(runConfig);
+		Log.Debug($"执行命令: {command}");
+		Log.Debug($"运行配置: {runConfig}");
 
 		try {
 			var startInfo = new ProcessStartInfo {
@@ -552,14 +553,11 @@ public partial class Main : NativeWindowUtility {
 				EnableRaisingEvents = true
 			};
 
-			process.ErrorDataReceived += (_, args) => { GD.PrintErr(args.Data); };
-
 			process.OutputDataReceived += (_, args) => {
 				if (args.Data == null) {
 					return;
 				}
 
-				GD.Print(args.Data);
 				if (args.Data.EndsWith("Client logger started.")) {
 					Dispatcher.SynchronizationContext.Post(_ => { SceneTree.Root.Minimize(); }, null);
 				}
@@ -570,7 +568,7 @@ public partial class Main : NativeWindowUtility {
 			process.BeginErrorReadLine();
 			return process;
 		} catch (Exception e) {
-			GD.PrintErr(e.Message);
+			Log.Error(e);
 			return null;
 		}
 	}
@@ -589,7 +587,7 @@ public partial class Main : NativeWindowUtility {
 				await process.WaitForExitAsync();
 			}
 		} catch (Exception e) {
-			GD.PrintErr(e);
+			Log.Error(e);
 		}
 	}
 
@@ -599,7 +597,7 @@ public partial class Main : NativeWindowUtility {
 		if (releaseInfo is null) {
 			GameExitEvent?.Invoke();
 			CurrentModpack = null;
-			GD.PrintErr("ReleaseInfo is null");
+			Log.Error("ReleaseInfo is null");
 			return;
 		}
 
@@ -702,7 +700,7 @@ public partial class Main : NativeWindowUtility {
 			};
 		} catch (Exception e) {
 			GameExitEvent?.Invoke();
-			GD.PrintErr(e);
+			Log.Error(e);
 		}
 	}
 }

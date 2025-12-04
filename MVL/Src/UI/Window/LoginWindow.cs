@@ -231,7 +231,7 @@ public partial class LoginWindow : BaseWindow {
 			}
 
 			var token = await response.GetStringAsync();
-			GD.Print(token);
+			Log.Debug(token);
 			var loginResponse = JsonSerializer.Deserialize(token, SourceGenerationContext.Default.LoginResponse);
 			return loginResponse;
 		});

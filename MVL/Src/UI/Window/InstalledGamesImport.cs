@@ -44,7 +44,7 @@ public partial class InstalledGamesImport : BaseWindow {
 							   select installedGameItem.GamePath);
 			EmitSignalImport(gamePaths.ToArray());
 		} catch (Exception e) {
-			GD.PrintErr(e.ToString());
+			Log.Error(e);
 		}
 	}
 

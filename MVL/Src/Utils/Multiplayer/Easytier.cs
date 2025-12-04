@@ -46,8 +46,6 @@ public class EasyTier : IDisposable {
 		Process?.Dispose();
 		Process = new();
 		Process.StartInfo = processStartInfo;
-		// Process.OutputDataReceived += (_, eventArgs) => GD.Print(eventArgs.Data);
-		// Process.ErrorDataReceived += (_, eventArgs) => GD.PrintErr(eventArgs.Data);
 		Process.Start();
 		Process.BeginOutputReadLine();
 		Process.BeginErrorReadLine();
@@ -62,7 +60,7 @@ public class EasyTier : IDisposable {
 					}
 
 					LocalPlayer = await GetLocalPlayer();
-					GD.Print($"已连接EasyTier服务器");
+					Log.Info("已连接EasyTier服务器");
 					OnReady?.Invoke(true);
 					return;
 				} catch {
@@ -71,7 +69,7 @@ public class EasyTier : IDisposable {
 
 				i++;
 				if (i > 6) {
-					GD.PrintErr("EasyTier连接超时");
+					Log.Error("EasyTier连接超时");
 					Kill();
 					OnReady?.Invoke(false);
 					return;
@@ -105,11 +103,11 @@ public class EasyTier : IDisposable {
 			portForwarding.protocol, portForwarding.local, portForwarding.remote
 		]);
 		if (output.StartsWith("Port forward rule added", StringComparison.OrdinalIgnoreCase)) {
-			GD.Print($"已创建端口转发 {portForwarding.local} -> {portForwarding.remote}");
+			Log.Info($"已创建端口转发 {portForwarding.local} -> {portForwarding.remote}");
 			return true;
 		}
 
-		GD.PrintErr($"无法创建端口转发 {portForwarding.local} -> {portForwarding.remote}");
+		Log.Warn($"无法创建端口转发 {portForwarding.local} -> {portForwarding.remote}");
 		return false;
 	}
 
@@ -153,7 +151,7 @@ public class EasyTier : IDisposable {
 		process.Start();
 		var output = await process.StandardOutput.ReadToEndAsync();
 		if (print) {
-			GD.Print($"{output}");
+			Log.Debug(output.Trim());
 		}
 
 		await process.WaitForExitAsync();
@@ -184,7 +182,7 @@ public class EasyTier : IDisposable {
 				}
 			}
 		} catch (Exception ex) {
-			GD.PrintErr($"获取公共节点失败: {ex.Message}");
+			Log.Error("获取公共节点失败:", ex);
 		}
 
 		var count = activeServers.Count;
@@ -207,7 +205,7 @@ public class EasyTier : IDisposable {
 			var version = output.Split(' ');
 			return version[0].Equals("easytier-core", StringComparison.OrdinalIgnoreCase) ? version[1] : null;
 		} catch (Exception ex) {
-			GD.PrintErr($"获取EasyTier Core版本失败: {ex.Message}");
+			Log.Error("获取EasyTier Core版本失败:", ex);
 			return null;
 		}
 	}
@@ -218,7 +216,7 @@ public class EasyTier : IDisposable {
 			var version = output.Split(' ');
 			return version[0].Equals("easytier-cli", StringComparison.OrdinalIgnoreCase) ? version[1] : null;
 		} catch (Exception ex) {
-			GD.PrintErr($"获取EasyTier CLI版本失败: {ex.Message}");
+			Log.Error("获取EasyTier CLI版本失败:", ex);
 			return null;
 		}
 	}

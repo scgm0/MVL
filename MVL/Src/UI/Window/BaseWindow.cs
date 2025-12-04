@@ -56,7 +56,7 @@ public partial class BaseWindow : Control {
 			await Hide();
 			EmitSignalCancel();
 		} catch (Exception e) {
-			GD.PrintErr(e.ToString());
+			Log.Error(e);
 		}
 	}
 }

@@ -4,11 +4,12 @@ using System.Linq;
 using Godot;
 using Microsoft.Extensions.Logging;
 using MVL.UI;
+using Utf8StringInterpolation;
 using ZLogger;
 
 namespace MVL.Utils;
 
-public static partial class Log {
+public static class Log {
 	private const string LogName = "MVL";
 	static private string LogPath { get; } = Paths.LogFolder.PathJoin($"{LogName}.log");
 
@@ -51,14 +52,14 @@ public static partial class Log {
 									LogLevel.Warning => "\e[33m",
 									LogLevel.Error => "\e[31m",
 									LogLevel.Critical => "\e[35m",
-									_ => "\e[37m"
+									_ => "\e[0m"
 								};
 								t.Format(color);
 							});
 						formatter.SetSuffixFormatter($"{0}",
 							(in t, in _) => { t.Format("\e[0m"); });
 						formatter.SetExceptionFormatter((writer, ex) =>
-							Utf8StringInterpolation.Utf8String.Format(writer, $"\n\e[31m{ex}\e[0m"));
+							Utf8String.Format(writer, $"\n\e[31m{ex}\e[0m"));
 					});
 				}).AddZLoggerFile(LogPath,
 					options => { options.UsePlainTextFormatter(); });

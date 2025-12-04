@@ -106,7 +106,7 @@ public record ModInfo : IComparable<ModInfo> {
 
 			return modInfo;
 		} catch (Exception e) {
-			GD.PrintErr($"无法加载模组信息 {zipPath}: {e.Message}");
+			Log.Error($"无法加载模组信息 {zipPath}:", e);
 			return null;
 		}
 	}
@@ -125,7 +125,7 @@ public record ModInfo : IComparable<ModInfo> {
 
 			return modInfo;
 		} catch (Exception e) {
-			GD.PrintErr($"无法加载模组信息 {directoryPath}: {e.Message}");
+			Log.Error($"无法加载模组信息 {directoryPath}:", e);
 			return null;
 		}
 	}
@@ -175,7 +175,7 @@ public record ModInfo : IComparable<ModInfo> {
 
 			return modInfo;
 		} catch (Exception e) {
-			GD.PrintErr($"无法加载模组信息 {assemblyPath}: {e.Message}");
+			Log.Error($"无法加载模组信息 {assemblyPath}:", e);
 			return null;
 		}
 	}

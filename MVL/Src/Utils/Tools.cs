@@ -81,7 +81,7 @@ public static class Tools {
 			}
 
 			while (await process.StandardOutput.ReadLineAsync() is { } line) {
-				GD.Print(line);
+				Log.Debug(line);
 				if (!line.Contains(targetFrameworkName, StringComparison.OrdinalIgnoreCase)) {
 					continue;
 				}
@@ -100,7 +100,7 @@ public static class Tools {
 
 			return false;
 		} catch (Exception e) {
-			GD.PrintErr(e);
+			Log.Error(e);
 			return false;
 		}
 	}
@@ -173,7 +173,7 @@ public static class Tools {
 				return LoadTextureFromPath(path);
 			}
 
-			GD.Print(url);
+			Log.Debug($"正在从 {url} 下载纹理...");
 			var buffer = await url.GetBytesAsync();
 
 			var format = GetImageFormat(buffer);
@@ -190,7 +190,7 @@ public static class Tools {
 
 			return texture;
 		} catch (Exception e) {
-			GD.PrintErr(e);
+			Log.Error(e);
 			return null;
 		}
 	}

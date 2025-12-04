@@ -8,11 +8,11 @@ namespace MVL.Utils.GitHub;
 public static class GitHubTool {
 	public static string GetProxyRequestUrl(GhProxyEnum proxy) {
 		return proxy switch {
-			GhProxyEnum.Cloudflare => $"https://gh-proxy.com/",
-			GhProxyEnum.V6 => $"https://v6.gh-proxy.com/",
-			GhProxyEnum.Hk => $"https://hk.gh-proxy.com/",
-			GhProxyEnum.Fastly => $"https://cdn.gh-proxy.com/",
-			GhProxyEnum.EdgeOne => $"https://edgeone.gh-proxy.com/",
+			GhProxyEnum.Cloudflare => "https://gh-proxy.com/",
+			GhProxyEnum.V6 => "https://v6.gh-proxy.com/",
+			GhProxyEnum.Hk => "https://hk.gh-proxy.com/",
+			GhProxyEnum.Fastly => "https://cdn.gh-proxy.com/",
+			GhProxyEnum.EdgeOne => "https://edgeone.gh-proxy.com/",
 			_ => string.Empty,
 		};
 	}

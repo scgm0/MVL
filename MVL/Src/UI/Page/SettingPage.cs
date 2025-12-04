@@ -133,7 +133,7 @@ public partial class SettingPage : MenuPage {
 			_renderingDriverKey,
 			driver);
 		_configFile.Save(Paths.OverrideConfigPath);
-		GD.Print($"更改渲染驱动为: {driver}");
+		Log.Debug($"更改渲染驱动为: {driver}");
 		var confirmationWindow = _confirmationWindowScene!.Instantiate<ConfirmationWindow>();
 		confirmationWindow.Message = "更改渲染驱动需要重启才能生效\n是否立即重启？";
 		confirmationWindow.Confirm += () => {

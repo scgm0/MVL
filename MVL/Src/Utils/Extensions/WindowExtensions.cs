@@ -2,7 +2,7 @@ using Godot;
 
 namespace MVL.Utils.Extensions;
 
-public static partial class WindowExtensions {
+public static class WindowExtensions {
 
 	extension(Window window) {
 		public void Minimize() {
