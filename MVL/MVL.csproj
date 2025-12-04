@@ -23,6 +23,7 @@
         <PackageReference Include="NetMQ" Version="4.0.2.2" />
         <PackageReference Include="PublishAotCross.LinuxToWin" Version="1.0.0" />
         <PackageReference Include="SemVer2" Version="1.0.0" />
+        <PackageReference Include="ZLogger" Version="2.5.10" />
     </ItemGroup>
 
     <ItemGroup>
