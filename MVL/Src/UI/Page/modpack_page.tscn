@@ -5,7 +5,7 @@
 [ext_resource type="PackedScene" uid="uid://ccfq2fesgeykj" path="res://Src/UI/Window/add_modpack_window.tscn" id="3_j43t8"]
 [ext_resource type="Script" uid="uid://bk3tot6c35bwu" path="res://Src/Utils/IconTexture2D.cs" id="4_2dlc0"]
 [ext_resource type="Material" uid="uid://c0sb2bjy16ljf" path="res://Assets/Material/button_blur.tres" id="4_4t3ch"]
-[ext_resource type="Script" uid="uid://bgqglerkcylxx" path="res://addons/SmoothScroll/SmoothScrollContainer.gd" id="5_5cs1n"]
+[ext_resource type="Script" uid="uid://bgqglerkcylxx" path="res://addons/SmoothScroll/smooth_scroll_container.gd" id="5_5cs1n"]
 [ext_resource type="Script" uid="uid://b7h0k2h2qwlqv" path="res://addons/SmoothScroll/scroll_damper/expo_scroll_damper.gd" id="6_maqbw"]
 [ext_resource type="Script" uid="uid://dt2erdjo6w7pf" path="res://Src/UI/ReorderableContainer.cs" id="7_8fact"]
 

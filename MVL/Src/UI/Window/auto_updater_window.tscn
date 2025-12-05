@@ -1,7 +1,7 @@
 [gd_scene load_steps=7 format=3 uid="uid://debbauyce0xia"]
 
 [ext_resource type="PackedScene" uid="uid://bu4hwijkbc8sm" path="res://Src/UI/Window/base_window.tscn" id="1_hxpjc"]
-[ext_resource type="Script" uid="uid://bgqglerkcylxx" path="res://addons/SmoothScroll/SmoothScrollContainer.gd" id="2_b6e5b"]
+[ext_resource type="Script" uid="uid://bgqglerkcylxx" path="res://addons/SmoothScroll/smooth_scroll_container.gd" id="2_b6e5b"]
 [ext_resource type="Script" uid="uid://bdatr0tw01owg" path="res://Src/UI/Window/AutoUpdaterWindow.cs" id="2_ggv8p"]
 [ext_resource type="Script" uid="uid://b7h0k2h2qwlqv" path="res://addons/SmoothScroll/scroll_damper/expo_scroll_damper.gd" id="3_ggv8p"]
 

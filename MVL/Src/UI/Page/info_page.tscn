@@ -6,7 +6,7 @@
 [ext_resource type="Texture2D" uid="uid://cg2dshwidpbbv" path="res://Assets/Icon/icon.svg" id="4_cnlqv"]
 [ext_resource type="FontFile" uid="uid://bmgx1vyg6bavd" path="res://Assets/Font/HarmonyOS_Sans_SC_Bold.ttf" id="5_pb4g6"]
 [ext_resource type="Shader" uid="uid://bw4cstfk8udci" path="res://Assets/Shader/blur.gdshader" id="6_cnlqv"]
-[ext_resource type="Script" uid="uid://bgqglerkcylxx" path="res://addons/SmoothScroll/SmoothScrollContainer.gd" id="6_oec7v"]
+[ext_resource type="Script" uid="uid://bgqglerkcylxx" path="res://addons/SmoothScroll/smooth_scroll_container.gd" id="6_oec7v"]
 [ext_resource type="Script" uid="uid://b7h0k2h2qwlqv" path="res://addons/SmoothScroll/scroll_damper/expo_scroll_damper.gd" id="7_twkd0"]
 [ext_resource type="Material" uid="uid://c0sb2bjy16ljf" path="res://Assets/Material/button_blur.tres" id="8_gvx1g"]
 

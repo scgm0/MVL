@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" uid="uid://cp5ming0vipvb" path="res://Src/UI/Other/SelectionButton.cs" id="1_jewhb"]
 [ext_resource type="Material" uid="uid://c0sb2bjy16ljf" path="res://Assets/Material/button_blur.tres" id="2_p6n26"]
-[ext_resource type="Script" uid="uid://bgqglerkcylxx" path="res://addons/SmoothScroll/SmoothScrollContainer.gd" id="3_sggsl"]
+[ext_resource type="Script" uid="uid://bgqglerkcylxx" path="res://addons/SmoothScroll/smooth_scroll_container.gd" id="3_sggsl"]
 [ext_resource type="Script" uid="uid://b7h0k2h2qwlqv" path="res://addons/SmoothScroll/scroll_damper/expo_scroll_damper.gd" id="4_y2a4n"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_8jxxl"]

@@ -10,7 +10,7 @@
 [ext_resource type="PackedScene" uid="uid://don6xai5trupe" path="res://Src/UI/Item/select_modpack_item.tscn" id="8_salu6"]
 [ext_resource type="Texture2D" uid="uid://d3mq4tlr6rr01" path="res://Assets/Icon/VS/gameicon.png" id="9_erb6i"]
 [ext_resource type="Shader" uid="uid://bw4cstfk8udci" path="res://Assets/Shader/blur.gdshader" id="10_b5fxa"]
-[ext_resource type="Script" uid="uid://bgqglerkcylxx" path="res://addons/SmoothScroll/SmoothScrollContainer.gd" id="10_d3orq"]
+[ext_resource type="Script" uid="uid://bgqglerkcylxx" path="res://addons/SmoothScroll/smooth_scroll_container.gd" id="10_d3orq"]
 [ext_resource type="Script" uid="uid://b7h0k2h2qwlqv" path="res://addons/SmoothScroll/scroll_damper/expo_scroll_damper.gd" id="11_l2ewu"]
 [ext_resource type="PackedScene" uid="uid://buymc11h2tiu6" path="res://Src/UI/Other/authors_line_edit.tscn" id="12_v2jk5"]
 [ext_resource type="PackedScene" uid="uid://bh6diaqd7d326" path="res://Src/UI/Other/SelectionButton.tscn" id="13_mqq6l"]

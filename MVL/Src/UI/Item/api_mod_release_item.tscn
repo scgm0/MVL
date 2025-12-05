@@ -3,7 +3,7 @@
 [ext_resource type="Script" uid="uid://bk3tot6c35bwu" path="res://Src/Utils/IconTexture2D.cs" id="1_gmw30"]
 [ext_resource type="Script" uid="uid://8u88rd0kuw4h" path="res://Src/UI/Item/ApiModReleaseItem.cs" id="1_hdxw4"]
 [ext_resource type="FontFile" uid="uid://d0e3mw7yvdf0v" path="res://Assets/Font/HarmonyOS_Sans_SC_Regular.ttf" id="2_jxyip"]
-[ext_resource type="Script" uid="uid://bgqglerkcylxx" path="res://addons/SmoothScroll/SmoothScrollContainer.gd" id="3_guhl0"]
+[ext_resource type="Script" uid="uid://bgqglerkcylxx" path="res://addons/SmoothScroll/smooth_scroll_container.gd" id="3_guhl0"]
 [ext_resource type="Script" uid="uid://b7h0k2h2qwlqv" path="res://addons/SmoothScroll/scroll_damper/expo_scroll_damper.gd" id="4_mgo4i"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_iy5mg"]

@@ -4,7 +4,7 @@
 [ext_resource type="Script" uid="uid://baxitom4bklvu" path="res://Src/UI/Window/GameDownloadWindow.cs" id="2_x3qgb"]
 [ext_resource type="Material" uid="uid://b675ao2n7w53x" path="res://Assets/Material/loading.tres" id="3_k3web"]
 [ext_resource type="ButtonGroup" uid="uid://2vw3esfrb4oc" path="res://Assets/Gui/game_item_check_group.tres" id="3_x3qgb"]
-[ext_resource type="Script" uid="uid://bgqglerkcylxx" path="res://addons/SmoothScroll/SmoothScrollContainer.gd" id="4_mud0o"]
+[ext_resource type="Script" uid="uid://bgqglerkcylxx" path="res://addons/SmoothScroll/smooth_scroll_container.gd" id="4_mud0o"]
 [ext_resource type="PackedScene" uid="uid://cpbcd3vre7ii8" path="res://Src/UI/Item/installed_game_item.tscn" id="4_puokc"]
 [ext_resource type="Script" uid="uid://b7h0k2h2qwlqv" path="res://addons/SmoothScroll/scroll_damper/expo_scroll_damper.gd" id="5_x3qgb"]
 [ext_resource type="Script" uid="uid://bk3tot6c35bwu" path="res://Src/Utils/IconTexture2D.cs" id="6_endwm"]

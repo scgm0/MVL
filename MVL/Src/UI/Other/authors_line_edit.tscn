@@ -1,6 +1,6 @@
 [gd_scene load_steps=8 format=3 uid="uid://buymc11h2tiu6"]
 
-[ext_resource type="Script" uid="uid://bgqglerkcylxx" path="res://addons/SmoothScroll/SmoothScrollContainer.gd" id="1_h1lgt"]
+[ext_resource type="Script" uid="uid://bgqglerkcylxx" path="res://addons/SmoothScroll/smooth_scroll_container.gd" id="1_h1lgt"]
 [ext_resource type="Script" uid="uid://b8ajofry37b0t" path="res://Src/UI/Other/AuthorsLineEdit.cs" id="1_whbpg"]
 [ext_resource type="Material" uid="uid://c0sb2bjy16ljf" path="res://Assets/Material/button_blur.tres" id="2_uqc6p"]
 [ext_resource type="Script" uid="uid://b7h0k2h2qwlqv" path="res://addons/SmoothScroll/scroll_damper/expo_scroll_damper.gd" id="2_whbpg"]

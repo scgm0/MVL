@@ -1,4 +1,4 @@
-[gd_resource type="Theme" load_steps=29 format=3 uid="uid://26j2wsw1c43m"]
+[gd_resource type="Theme" format=3 uid="uid://26j2wsw1c43m"]
 
 [ext_resource type="Script" uid="uid://bk3tot6c35bwu" path="res://Src/Utils/IconTexture2D.cs" id="1_asgjk"]
 [ext_resource type="FontFile" uid="uid://bmgx1vyg6bavd" path="res://Assets/Font/HarmonyOS_Sans_SC_Bold.ttf" id="2_h252r"]
