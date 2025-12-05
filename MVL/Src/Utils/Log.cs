@@ -27,8 +27,13 @@ public static class Log {
 	public static void Info(ReadOnlySpan<char> message) => LogOutput(LogLevel.Information, message);
 	public static void Warn(ReadOnlySpan<char> message) => LogOutput(LogLevel.Warning, message);
 
-	public static void Error(ReadOnlySpan<char> message, Exception? exception = null) =>
-		LogOutput(LogLevel.Error, message, exception);
+	public static void Error(ReadOnlySpan<char> message, Exception? exception = null) {
+		if (exception != null) {
+			LogOutput(LogLevel.Error, $"{message} {exception.Message}", exception);
+		} else {
+			LogOutput(LogLevel.Error, message);
+		}
+	}
 
 	public static void Error(Exception exception) => LogOutput(LogLevel.Error, exception.Message, exception);
 
@@ -59,7 +64,7 @@ public static class Log {
 						formatter.SetSuffixFormatter($"{0}",
 							(in t, in _) => { t.Format("\e[0m"); });
 						formatter.SetExceptionFormatter((writer, ex) =>
-							Utf8String.Format(writer, $"\n\e[31m{ex}\e[0m"));
+							Utf8String.Format(writer, $"\n\e[90m{ex}\e[0m"));
 					});
 				}).AddZLoggerFile(LogPath,
 					options => { options.UsePlainTextFormatter(); });
