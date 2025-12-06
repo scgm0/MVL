@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Text.Json;
 using System.Text.Json.Serialization;
-using Godot;
+using CSemVer;
 using Mono.Cecil;
 using MVL.Utils.Config;
 
@@ -39,7 +39,7 @@ public record ModInfo : IComparable<ModInfo> {
 		}
 
 		var num = string.CompareOrdinal(ModId, other.ModId);
-		return num != 0 ? num : SemVer.Parse(Version).CompareTo(SemVer.Parse(other.Version));
+		return num != 0 ? num : SVersion.Parse(Version).CompareTo(SVersion.Parse(other.Version));
 	}
 
 	public static string? ToModId(string? name) {

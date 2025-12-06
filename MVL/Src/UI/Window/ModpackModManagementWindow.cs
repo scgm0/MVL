@@ -1,8 +1,8 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.Json;
 using System.Threading.Tasks;
+using CSemVer;
 using Flurl.Http;
 using Godot;
 using MVL.UI.Item;
@@ -226,14 +226,14 @@ public partial class ModpackModManagementWindow : BaseWindow {
 				var apiModInfo = status.Mod!;
 				apiModInfo = apiModInfo.Value with {
 					Releases = apiModInfo.Value.Releases.OrderByDescending(modRelease => {
-						var version = SemVer.TryParse(modRelease.ModVersion.Replace('*', '0'), out var m) ? m : SemVer.Zero;
+						var version = SVersion.TryParse(modRelease.ModVersion.Replace('*', '0'), out var m) ? m : SVersion.ZeroVersion;
 						return version;
 					}).ToArray()
 				};
 
 				var release = apiModInfo.Value.Releases.Cast<ApiModRelease?>().FirstOrDefault(r => {
-					var version = SemVer.TryParse(modDependency.Version.Replace('*', '0'), out var m) ? m : SemVer.Zero;
-					var releaseVersion = SemVer.TryParse(r?.ModVersion, out var v) ? v : SemVer.Zero;
+					var version = SVersion.TryParse(modDependency.Version.Replace('*', '0'), out var m) ? m : SVersion.ZeroVersion;
+					var releaseVersion = SVersion.TryParse(r?.ModVersion, out var v) ? v : SVersion.ZeroVersion;
 					return releaseVersion >= version && r!.Value.Tags.Any(gameVersion =>
 						GameVersion.ComparerVersion(ModpackItem!.ModpackConfig!.Version!.Value, new(gameVersion)) >= 0);
 				});
@@ -260,8 +260,8 @@ public partial class ModpackModManagementWindow : BaseWindow {
 	private void ModInfoItemOnNeedToDepend(ModDependency modDependency) {
 		var oldDependency = _modDependencies.Cast<ModDependency?>().FirstOrDefault(m => m?.ModId == modDependency.ModId);
 		if (oldDependency is not null) {
-			var newVersion = SemVer.TryParse(modDependency.Version.Replace('*', '0'), out var n) ? n : SemVer.Zero;
-			var oldVersion = SemVer.TryParse(oldDependency.Value.Version.Replace('*', '0'), out var o) ? o : SemVer.Zero;
+			var newVersion = SVersion.TryParse(modDependency.Version.Replace('*', '0'), out var n) ? n : SVersion.ZeroVersion;
+			var oldVersion = SVersion.TryParse(oldDependency.Value.Version.Replace('*', '0'), out var o) ? o : SVersion.ZeroVersion;
 			if (newVersion <= oldVersion) {
 				return;
 			}

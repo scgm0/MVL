@@ -5,7 +5,7 @@ using System.IO;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
-using Godot;
+using CSemVer;
 using MVL.UI;
 using MVL.Utils.Game;
 using FileAccess = Godot.FileAccess;
@@ -82,8 +82,8 @@ public class ModpackConfig {
 				while (!success) {
 					if (Mods.TryGetValue(modInfo.ModId, out var existingModInfo)) {
 						try {
-							var newVersion = SemVer.Parse(modInfo.Version);
-							var oldVersion = SemVer.Parse(existingModInfo.Version);
+							var newVersion = SVersion.Parse(modInfo.Version);
+							var oldVersion = SVersion.Parse(existingModInfo.Version);
 
 							if (newVersion > oldVersion) {
 								if (Mods.TryUpdate(modInfo.ModId, modInfo, existingModInfo)) {

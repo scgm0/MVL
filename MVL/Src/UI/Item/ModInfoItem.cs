@@ -6,6 +6,7 @@ using System.Linq;
 using System.Net;
 using System.Text.Json;
 using System.Threading.Tasks;
+using CSemVer;
 using Downloader;
 using Flurl.Http;
 using Godot;
@@ -187,14 +188,14 @@ public partial class ModInfoItem : PanelContainer {
 				continue;
 			}
 
-			if (!SemVer.TryParse(modDependency.Version.Replace('*', '0'), out var version)) {
-				version = SemVer.Zero;
+			if (!SVersion.TryParse(modDependency.Version.Replace('*', '0'), out var version)) {
+				version = SVersion.ZeroVersion;
 			}
 
 			var hasDependency = Mod.ModpackConfig!.Mods.Any(kv => {
 				var mod = kv.Value;
 				return mod.ModId.Equals(modId, StringComparison.OrdinalIgnoreCase) &&
-					SemVer.TryParse(mod.Version, out var ver) && ver >= version;
+					SVersion.TryParse(mod.Version, out var ver) && ver >= version;
 			});
 
 			if (!hasDependency) {
@@ -298,8 +299,8 @@ public partial class ModInfoItem : PanelContainer {
 					return;
 				}
 
-				var version1 = SemVer.Parse(Mod!.Version);
-				var version2 = SemVer.Parse(modInfoRelease.ModVersion);
+				var version1 = SVersion.Parse(Mod!.Version);
+				var version2 = SVersion.Parse(modInfoRelease.ModVersion);
 				if (version1 >= version2) {
 					continue;
 				}
@@ -330,7 +331,7 @@ public partial class ModInfoItem : PanelContainer {
 					null);
 				return;
 			} catch (Exception e) {
-				Log.Error(e.Message);
+				Log.Error($"解析失败 {Mod!.ModId} {Mod!.Version} {modInfoRelease.ModVersion}", e);
 			}
 		}
 	}

@@ -2,6 +2,7 @@ using System;
 using System.IO;
 using System.Net;
 using System.Threading.Tasks;
+using CSemVer;
 using Downloader;
 using Godot;
 using MVL.UI.Window;
@@ -125,7 +126,7 @@ public partial class ApiModReleaseItem : PanelContainer {
 
 		try {
 			if (ModInfo != null) {
-				_downloadButton!.Disabled = SemVer.Parse(ApiModRelease.Value.ModVersion) == SemVer.Parse(ModInfo.Version);
+				_downloadButton!.Disabled = SVersion.Parse(ApiModRelease.Value.ModVersion) == SVersion.Parse(ModInfo.Version);
 			}
 
 			_checkBox!.Disabled = _downloadButton!.Disabled;
