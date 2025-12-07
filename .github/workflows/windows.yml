@@ -46,11 +46,12 @@ jobs:
           $GETTEXT_PATH = (Get-Location).Path + "\gettext-tools\bin"
           echo $GETTEXT_PATH | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
 
-      - name: 1.4. Install 7Z And NSIS
+      - name: 1.4. Install 7Z And NSIS And CCache
         run: |
           echo "Install 7Z And NSIS..."
           choco install 7zip -y
           choco install nsis -y
+          choco install ccache -y
 
           $PluginUrl = "https://nsis.sourceforge.io/mediawiki/images/9/93/Nsis7z.zip"
           $ZipFile = "Nsis7z.zip"
@@ -61,6 +62,9 @@ jobs:
           echo "C:\Program Files (x86)\NSIS" >> $env:GITHUB_PATH
           echo "C:\ProgramData\chocolatey\lib\7zip" >> $env:GITHUB_PATH
           echo "C:\ProgramData\chocolatey\lib\nsis" >> $env:GITHUB_PATH
+          echo "C:\ProgramData\chocolatey\lib\ccache" >> $env:GITHUB_PATH
+          echo "CCACHE_DIR=${{ github.workspace }}\.scons_cache\" >> $env:GITHUB_ENV
+          ccache -p
 
 
       - name: 2.1. Setup .NET8 SDK
@@ -117,6 +121,8 @@ jobs:
         uses: ./mvl-repo/.github/actions/godot-build
         with:
           scons-flags: >-
+            c_compiler_launcher=ccache
+            cpp_compiler_launcher=ccache
             vsc=yes
             module_mono_enabled=yes
             accesskit=no
@@ -130,6 +136,8 @@ jobs:
         uses: ./mvl-repo/.github/actions/godot-build
         with:
           scons-flags: >-
+            c_compiler_launcher=ccache
+            cpp_compiler_launcher=ccache
             vsc=yes
             d3d12=yes
             "angle_libs=${{ github.workspace }}/"
