@@ -68,6 +68,7 @@ jobs:
           echo "C:\ProgramData\chocolatey\lib\ccache\tools" >> $env:GITHUB_PATH
           ccache --set-config=cache_dir="${{ github.workspace }}/.scons_cache/"
           ccache -p
+          ccache -z
 
       - name: 2.1. Setup .NET8 SDK
         uses: actions/setup-dotnet@v4
