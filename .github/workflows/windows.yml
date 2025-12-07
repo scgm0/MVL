@@ -9,6 +9,7 @@ env:
   PYTHONIOENCODING: utf8
   CCACHE_DIR: ${{ github.workspace }}/.scons_cache/
   CCACHE_CONFIGPATH: ${{ github.workspace }}/.scons_cache/ccache.conf
+  LOCALAPPDATA: "C:\\Users\\runneradmin\\AppData\\Local"
 
 jobs:
   build-windows:
