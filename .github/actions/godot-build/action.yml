@@ -24,7 +24,7 @@ runs:
     - name: SCons Build
       shell: sh
       run: |
-        ccache -p
+        export LOCALAPPDATA="$USERPROFILE/AppData/Local"
         mkdir -p ${{ inputs.scons-cache }}
         cd godot
         echo "Building with flags:" platform=${{ inputs.platform }} target=${{ inputs.target }} ${{ inputs.scons-flags }} "cache_path=${{ inputs.scons-cache }}" redirect_build_objects=no
