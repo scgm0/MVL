@@ -7,6 +7,8 @@ on:
 env:
   SCONS_CACHE_MSVC_CONFIG: true
   PYTHONIOENCODING: utf8
+  CCACHE_DIR: ${{ github.workspace }}/.scons_cache/
+  CCACHE_CONFIGPATH: ${{ github.workspace }}/.scons_cache/ccache.conf
 
 jobs:
   build-windows:
@@ -63,7 +65,6 @@ jobs:
           echo "C:\ProgramData\chocolatey\lib\7zip" >> $env:GITHUB_PATH
           echo "C:\ProgramData\chocolatey\lib\nsis" >> $env:GITHUB_PATH
           echo "C:\ProgramData\chocolatey\lib\ccache\tools" >> $env:GITHUB_PATH
-          ccache --set-config=cache_dir="${{ github.workspace }}\.scons_cache\"
           ccache -p
 
       - name: 2.1. Setup .NET8 SDK
