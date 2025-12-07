@@ -374,7 +374,7 @@ public partial class GameDownloadWindow : BaseWindow {
 				}
 			}
 		} catch (FlurlHttpException e) {
-			Log.Error(e.Message);
+			Log.Error(e);
 			_lastException = e;
 		}
 	}

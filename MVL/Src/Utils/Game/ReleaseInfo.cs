@@ -46,7 +46,7 @@ public record ReleaseInfo {
 				break;
 			}
 		} catch (Exception ex) {
-			Log.Error($"无法从 {assemblyPath} 读取目标框架:", ex);
+			Log.Error($"无法从 {assemblyPath} 读取目标框架", ex);
 		}
 
 		return (null, null);

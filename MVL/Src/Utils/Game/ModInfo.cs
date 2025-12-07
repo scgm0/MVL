@@ -106,7 +106,7 @@ public record ModInfo : IComparable<ModInfo> {
 
 			return modInfo;
 		} catch (Exception e) {
-			Log.Error($"无法加载模组信息 {zipPath}:", e);
+			Log.Error($"无法从 {zipPath} 加载模组信息", e);
 			return null;
 		}
 	}
@@ -125,7 +125,7 @@ public record ModInfo : IComparable<ModInfo> {
 
 			return modInfo;
 		} catch (Exception e) {
-			Log.Error($"无法加载模组信息 {directoryPath}:", e);
+			Log.Error($"无法从 {directoryPath} 加载模组信息", e);
 			return null;
 		}
 	}
@@ -175,7 +175,7 @@ public record ModInfo : IComparable<ModInfo> {
 
 			return modInfo;
 		} catch (Exception e) {
-			Log.Error($"无法加载模组信息 {assemblyPath}:", e);
+			Log.Error($"无法从 {assemblyPath} 加载模组信息", e);
 			return null;
 		}
 	}

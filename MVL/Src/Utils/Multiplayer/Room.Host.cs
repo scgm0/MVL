@@ -38,7 +38,7 @@ public partial record Room {
 
 	private void OnEasyTierReadyByHost(bool ready) {
 		if (!ready) {
-			Log.Error("EasyTier 启动失败。");
+			Log.Error("EasyTier启动失败");
 			Shutdown();
 			OnReady?.Invoke(false);
 			return;

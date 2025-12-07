@@ -79,7 +79,7 @@ public partial class Start : Control {
 				stream.Write(BitConverter.GetBytes((int)AppEventEnum.RepeatStartup));
 				Log.Error("启动器已运行，无法重复启动");
 			} catch (Exception e) {
-				Log.Error("发送通知失败: ", e);
+				Log.Error("发送通知失败", e);
 			}
 
 			Main.SceneTree.Quit();

@@ -182,7 +182,7 @@ public class EasyTier : IDisposable {
 				}
 			}
 		} catch (Exception ex) {
-			Log.Error("获取公共节点失败:", ex);
+			Log.Error("获取公共节点失败", ex);
 		}
 
 		var count = activeServers.Count;
@@ -205,7 +205,7 @@ public class EasyTier : IDisposable {
 			var version = output.Split(' ');
 			return version[0].Equals("easytier-core", StringComparison.OrdinalIgnoreCase) ? version[1] : null;
 		} catch (Exception ex) {
-			Log.Error("获取EasyTier Core版本失败:", ex);
+			Log.Error("获取EasyTier Core版本失败", ex);
 			return null;
 		}
 	}
@@ -216,7 +216,7 @@ public class EasyTier : IDisposable {
 			var version = output.Split(' ');
 			return version[0].Equals("easytier-cli", StringComparison.OrdinalIgnoreCase) ? version[1] : null;
 		} catch (Exception ex) {
-			Log.Error("获取EasyTier CLI版本失败:", ex);
+			Log.Error("获取EasyTier CLI版本失败", ex);
 			return null;
 		}
 	}

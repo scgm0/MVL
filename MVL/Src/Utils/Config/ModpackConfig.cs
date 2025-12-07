@@ -93,7 +93,7 @@ public class ModpackConfig {
 								success = true;
 							}
 						} catch (Exception ex) {
-							Log.Error($"比较 {modInfo.ModId} 版本时出错:", ex);
+							Log.Error($"比较 {modInfo.ModId} 版本时出错", ex);
 							success = true;
 						}
 					} else {
@@ -136,7 +136,7 @@ public class ModpackConfig {
 
 			return newModInfo;
 		} catch (Exception ex) {
-			Log.Error($"从 {entryPath} 加载 mod 时出错:", ex);
+			Log.Error($"从 {entryPath} 加载 mod 时出错", ex);
 			_modInfoCache.TryRemove(entryPath, out _);
 			return null;
 		}

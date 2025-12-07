@@ -104,7 +104,7 @@ public partial record Room {
 		}
 
 		if (_hostEasyTierInfo is null) {
-			Log.Error("收到来自主机的事件，但EasyTier主机信息丢失。");
+			Log.Error("收到来自主机的事件，但EasyTier主机信息丢失");
 			return;
 		}
 
@@ -184,7 +184,7 @@ public partial record Room {
 		}
 
 		_isHostAlive = false;
-		Log.Error("主机连接超时。");
+		Log.Error("主机连接超时");
 		Dispatcher.SynchronizationContext.Post(_ => {
 				Shutdown();
 				OnReady?.Invoke(false);

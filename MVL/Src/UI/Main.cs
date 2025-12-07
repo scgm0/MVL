@@ -597,7 +597,7 @@ public partial class Main : NativeWindowUtility {
 		if (releaseInfo is null) {
 			GameExitEvent?.Invoke();
 			CurrentModpack = null;
-			Log.Error("ReleaseInfo is null");
+			Log.Error("ReleaseInfo为空");
 			return;
 		}
 

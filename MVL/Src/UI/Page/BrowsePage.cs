@@ -228,7 +228,7 @@ public partial class BrowsePage : MenuPage {
 			}
 		} catch (Exception ex) {
 			_loadingControl?.Hide();
-			Log.Error("获取在线信息时发生错误:", ex);
+			Log.Error("获取在线信息时发生错误", ex);
 			ShowMessageInContainer(_moduleListContainer!, "获取在线信息时发生错误，请检查网络连接", Colors.Red);
 		}
 	}
@@ -371,7 +371,7 @@ public partial class BrowsePage : MenuPage {
 					UI.Main.Instance?.AddChild(apiModReleasesWindow);
 					await apiModReleasesWindow.Show();
 				} catch (Exception ex) {
-					Log.Error("获取模组信息时发生错误: ", ex);
+					Log.Error("获取模组信息时发生错误", ex);
 					confirmationWindow.Message = "获取模组信息失败";
 					confirmationWindow.CancelButton!.Disabled = false;
 				}
@@ -425,7 +425,7 @@ public partial class BrowsePage : MenuPage {
 			await GetModsListAsync();
 		} catch (Exception ex) {
 			_loadingControl?.Hide();
-			Log.Error("获取在线信息时发生错误:", ex);
+			Log.Error("获取在线信息时发生错误", ex);
 			ShowMessageInContainer(_moduleListContainer!, "获取在线信息时发生错误，请检查网络连接", Colors.Red);
 		}
 	}
