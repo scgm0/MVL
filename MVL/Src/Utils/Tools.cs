@@ -168,21 +168,24 @@ public static class Tools {
 
 	public static async Task<ImageTexture?> LoadTextureFromUrl(string url) {
 		try {
-			var path = Path.Join(Paths.CacheFolder, $"{new Guid(url.Sha256Buffer().Take(16).ToArray())}.png");
+			var name = $"{new Guid(url.Sha256Buffer().Take(16).ToArray())}.png";
+			var path = Path.Join(Paths.CacheFolder, name);
 			if (File.Exists(path)) {
 				return LoadTextureFromPath(path);
 			}
 
-			Log.Debug($"正在从 {url} 下载纹理...");
+			Log.Debug($"正在从 {url} 下载贴图...");
 			var buffer = await url.GetBytesAsync();
 
 			var format = GetImageFormat(buffer);
 			if (format == ImageFormat.Unknown) {
+				Log.Warn($"无法识别 {url} 的格式");
 				return null;
 			}
 
 			var texture = CreateTextureFromBytes(buffer, format);
 			texture.GetImage().SavePng(path);
+			Log.Debug($"已保存 {url} 为 {name}");
 
 			var fileSha256 = FileAccess.GetSha256(path);
 			var shaPath = $"{path}.{fileSha256}";
@@ -190,7 +193,7 @@ public static class Tools {
 
 			return texture;
 		} catch (Exception e) {
-			Log.Error(e);
+			Log.Error("下载贴图失败", e);
 			return null;
 		}
 	}
