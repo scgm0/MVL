@@ -25,6 +25,7 @@ public partial class Start : Control {
 	public static bool IsRunning => _lockFile != null;
 
 	public Start() {
+		Main.SceneTree.Root.TreeExiting += OnRootOnTreeExiting;
 		try {
 			Log.Info("正在启动...");
 			Log.Debug($"应用版本: {Tools.Version}");
@@ -56,15 +57,6 @@ public partial class Start : Control {
 			ListenForMessagesAsync();
 
 			File.WriteAllBytesAsync(Paths.PortFile, BitConverter.GetBytes(mvlPort));
-			Main.SceneTree.Root.TreeExiting += () => {
-				_lockFile?.Close();
-				_lockFile?.Dispose();
-				_lockFile = null;
-				_server.Stop();
-				_server?.Dispose();
-				_server = null;
-				File.Delete(Paths.PortFile);
-			};
 		} catch (Exception err) {
 			if (err is not IOException) {
 				Log.Error(err);
@@ -84,6 +76,21 @@ public partial class Start : Control {
 
 			Main.SceneTree.Quit();
 		}
+	}
+
+	static private void OnRootOnTreeExiting() {
+		Log.Info("正在退出...");
+		if (_server == null) {
+			return;
+		}
+
+		_lockFile?.Close();
+		_lockFile?.Dispose();
+		_lockFile = null;
+		_server.Stop();
+		_server.Dispose();
+		_server = null;
+		File.Delete(Paths.PortFile);
 	}
 
 	public override void _Ready() {
