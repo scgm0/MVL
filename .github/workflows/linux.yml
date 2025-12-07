@@ -4,10 +4,6 @@ on:
   workflow_call:
   workflow_dispatch:
 
-env:
-  CCACHE_DIR: ${{ github.workspace }}/.scons_cache/
-  CCACHE_CONFIGPATH: ${{ github.workspace }}/.scons_cache/ccache.conf
-
 jobs:
   build-linux:
     runs-on: ubuntu-latest
@@ -30,9 +26,7 @@ jobs:
       - name: 1. Setup Dependencies
         run: |
           sudo apt-get update
-          sudo apt-get install -y build-essential ccache gettext llvm mold scons pkg-config libx11-dev libxcursor-dev libxinerama-dev libgl1-mesa-dev libglu1-mesa-dev libasound2-dev libpulse-dev libudev-dev libxi-dev libxrandr-dev libwayland-dev
-          ccache --set-config=cache_dir="${{ github.workspace }}/.scons_cache/"
-          ccache -p
+          sudo apt-get install -y build-essential gettext llvm mold scons pkg-config libx11-dev libxcursor-dev libxinerama-dev libgl1-mesa-dev libglu1-mesa-dev libasound2-dev libpulse-dev libudev-dev libxi-dev libxrandr-dev libwayland-dev
 
       - name: 2.1. Setup .NET8 SDK
         uses: actions/setup-dotnet@v4
@@ -74,8 +68,6 @@ jobs:
         uses: ./mvl-repo/.github/actions/godot-build
         with:
           scons-flags: >-
-            c_compiler_launcher=ccache
-            cpp_compiler_launcher=ccache
             linker=mold
             module_mono_enabled=yes
             use_llvm=yes
@@ -88,8 +80,6 @@ jobs:
         uses: ./mvl-repo/.github/actions/godot-build
         with:
           scons-flags: >-
-            c_compiler_launcher=ccache
-            cpp_compiler_launcher=ccache
             linker=mold
             lto=full
             profile=../mvl-repo/MVL/GodotBuildProfile/custom.py

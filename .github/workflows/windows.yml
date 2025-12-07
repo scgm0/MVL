@@ -7,9 +7,6 @@ on:
 env:
   SCONS_CACHE_MSVC_CONFIG: true
   PYTHONIOENCODING: utf8
-  CCACHE_DIR: ${{ github.workspace }}/.scons_cache/
-  CCACHE_CONFIGPATH: ${{ github.workspace }}/.scons_cache/ccache.conf
-  LOCALAPPDATA: "C:\\Users\\runneradmin\\AppData\\Local"
 
 jobs:
   build-windows:
@@ -54,7 +51,6 @@ jobs:
           echo "Install 7Z And NSIS..."
           choco install 7zip -y
           choco install nsis -y
-          choco install ccache -y
 
           $PluginUrl = "https://nsis.sourceforge.io/mediawiki/images/9/93/Nsis7z.zip"
           $ZipFile = "Nsis7z.zip"
@@ -65,10 +61,6 @@ jobs:
           echo "C:\Program Files (x86)\NSIS" >> $env:GITHUB_PATH
           echo "C:\ProgramData\chocolatey\lib\7zip" >> $env:GITHUB_PATH
           echo "C:\ProgramData\chocolatey\lib\nsis" >> $env:GITHUB_PATH
-          echo "C:\ProgramData\chocolatey\lib\ccache\tools" >> $env:GITHUB_PATH
-          ccache --set-config=cache_dir="${{ github.workspace }}/.scons_cache/"
-          ccache -p
-          ccache -z
 
       - name: 2.1. Setup .NET8 SDK
         uses: actions/setup-dotnet@v4
@@ -124,8 +116,6 @@ jobs:
         uses: ./mvl-repo/.github/actions/godot-build
         with:
           scons-flags: >-
-            c_compiler_launcher=ccache
-            cpp_compiler_launcher=ccache
             vsc=yes
             module_mono_enabled=yes
             accesskit=no
@@ -139,8 +129,6 @@ jobs:
         uses: ./mvl-repo/.github/actions/godot-build
         with:
           scons-flags: >-
-            c_compiler_launcher=ccache
-            cpp_compiler_launcher=ccache
             vsc=yes
             d3d12=yes
             "angle_libs=${{ github.workspace }}/"
