@@ -62,10 +62,9 @@ jobs:
           echo "C:\Program Files (x86)\NSIS" >> $env:GITHUB_PATH
           echo "C:\ProgramData\chocolatey\lib\7zip" >> $env:GITHUB_PATH
           echo "C:\ProgramData\chocolatey\lib\nsis" >> $env:GITHUB_PATH
-          echo "C:\ProgramData\chocolatey\lib\ccache" >> $env:GITHUB_PATH
-          echo "CCACHE_DIR=${{ github.workspace }}\.scons_cache\" >> $env:GITHUB_ENV
+          echo "C:\ProgramData\chocolatey\lib\ccache\tools" >> $env:GITHUB_PATH
+          ccache --set-config=cache_dir="${{ github.workspace }}\.scons_cache\"
           ccache -p
-
 
       - name: 2.1. Setup .NET8 SDK
         uses: actions/setup-dotnet@v4
