@@ -15,6 +15,7 @@ general/accessibility_support=2
 [application]
 
 config/name="神麤詭末的复古物语启动器"
+config/description="一个免费、开源且由社区驱动的复古物语启动器"
 config/version="0.5.3"
 run/main_scene="uid://buuu4ls8t7l4u"
 config/use_custom_user_dir=true
