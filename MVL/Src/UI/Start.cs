@@ -28,9 +28,9 @@ public partial class Start : Control {
 		Main.SceneTree.Root.TreeExiting += OnRootOnTreeExiting;
 		try {
 			Log.Info("正在启动...");
-			Log.Debug($"应用版本: {Tools.Version}");
+			Log.Debug($"应用版本: {BuildInfo.InformationalVersion} {BuildInfo.CommitHash} {BuildInfo.BuildTime:u}");
 			Log.Debug($"引擎版本: {Engine.GetVersionInfo()["string"]}");
-			Log.Debug($"运行框架: {RuntimeInformation.FrameworkDescription}");
+			Log.Debug($"框架版本: {RuntimeInformation.FrameworkDescription}");
 			Log.Debug($"操作系统: {SystemInfo.OSDescription}");
 			Log.Debug($"处理器: {SystemInfo.ProcessorName}");
 			Log.Debug($"核心数量: {SystemInfo.ProcessorCount}");

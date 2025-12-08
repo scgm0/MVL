@@ -8,23 +8,24 @@
         <LangVersion>preview</LangVersion>
         <InvariantGlobalization>true</InvariantGlobalization>
         <OptimizationPreference>Size</OptimizationPreference>
+        <InformationalVersion>0.5.3</InformationalVersion>
     </PropertyGroup>
 
     <ItemGroup>
-        <TrimmerRootAssembly Include="GodotSharp" />
-        <TrimmerRootAssembly Include="$(TargetName)" />
+        <TrimmerRootAssembly Include="GodotSharp"/>
+        <TrimmerRootAssembly Include="$(TargetName)"/>
     </ItemGroup>
 
     <ItemGroup>
-        <PackageReference Include="ComputerInfo" Version="0.2.0" />
-        <PackageReference Include="CSemVer" Version="13.0.0" />
-        <PackageReference Include="Downloader" Version="4.0.3" />
-        <PackageReference Include="Flurl.Http" Version="4.0.2" />
-        <PackageReference Include="Mono.Cecil" Version="0.11.6" />
-        <PackageReference Include="Nerdbank.MessagePack" Version="0.11.54-rc" />
-        <PackageReference Include="NetMQ" Version="4.0.2.2" />
-        <PackageReference Include="PublishAotCross.LinuxToWin" Version="1.0.0" />
-        <PackageReference Include="ZLogger" Version="2.5.10" />
+        <PackageReference Include="ComputerInfo" Version="0.2.0"/>
+        <PackageReference Include="CSemVer" Version="13.0.0"/>
+        <PackageReference Include="Downloader" Version="4.0.3"/>
+        <PackageReference Include="Flurl.Http" Version="4.0.2"/>
+        <PackageReference Include="Mono.Cecil" Version="0.11.6"/>
+        <PackageReference Include="Nerdbank.MessagePack" Version="0.11.54-rc"/>
+        <PackageReference Include="NetMQ" Version="4.0.2.2"/>
+        <PackageReference Include="PublishAotCross.LinuxToWin" Version="1.0.0"/>
+        <PackageReference Include="ZLogger" Version="2.5.10"/>
     </ItemGroup>
 
     <ItemGroup>
@@ -34,34 +35,37 @@
     </ItemGroup>
 
     <ItemGroup>
-        <Content Include="**/*.gd" />
-        <Content Include="**/*.uid" DependentUpon="%(Filename)" />
-        <Content Include="**/*.json" DependentUpon="%(Filename).cs" />
-        <Content Include="**/*.txt" DependentUpon="%(Filename).cs" />
-        <Compile Update="**/*.*.cs" DependentUpon="$([System.IO.Path]::GetFileNameWithoutExtension('%(Filename)')).cs" />
-        <Content Remove=".godot\**" />
+        <Content Include="**/*.gd"/>
+        <Content Include="**/*.uid" DependentUpon="%(Filename)"/>
+        <Content Include="**/*.json" DependentUpon="%(Filename).cs"/>
+        <Content Include="**/*.txt" DependentUpon="%(Filename).cs"/>
+        <Compile Update="**/*.*.cs" DependentUpon="$([System.IO.Path]::GetFileNameWithoutExtension('%(Filename)')).cs"/>
+        <Content Remove=".godot\**"/>
     </ItemGroup>
 
     <ItemGroup>
-        <AdditionalFiles Include="Assets/Icon/MD/icons.json" />
-        <AdditionalFiles Include="../AUTHORS.md" />
-        <AdditionalFiles Include="../DONORS.md" />
-        <AdditionalFiles Include="../LICENSE" />
-        <AdditionalFiles Include="License/**/LICENSE.txt" />
-        <AdditionalFiles Include="License/**/WEBSITE.txt" />
+        <AdditionalFiles Include="Assets/Icon/MD/icons.json"/>
+        <AdditionalFiles Include="../AUTHORS.md"/>
+        <AdditionalFiles Include="../DONORS.md"/>
+        <AdditionalFiles Include="../LICENSE"/>
+        <AdditionalFiles Include="License/**/LICENSE.txt"/>
+        <AdditionalFiles Include="License/**/WEBSITE.txt"/>
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="../MVLGenerator/MVLGenerator.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
+        <CompilerVisibleProperty Include="InformationalVersion"/>
+        <CompilerVisibleProperty Include="AppCommitHash"/>
+        <CompilerVisibleProperty Include="AppBuildTime"/>
+        <ProjectReference Include="../MVLGenerator/MVLGenerator.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false"/>
     </ItemGroup>
 
     <Target Name="PreBuild" BeforeTargets="Build">
         <ItemGroup>
-            <FilesToDelete Include="Misc/VSRun/**/*" />
+            <FilesToDelete Include="Misc/VSRun/**/*"/>
         </ItemGroup>
-        <Delete Files="@(FilesToDelete)" />
+        <Delete Files="@(FilesToDelete)"/>
 
-        <Exec Command="dotnet build &quot;../VSRun/VSRun.csproj&quot; /p:Configuration=Release /p:Platform=$(Platform)" />
+        <Exec Command="dotnet build &quot;../VSRun/VSRun.csproj&quot; /p:Configuration=Release /p:Platform=$(Platform)"/>
 
         <PropertyGroup>
             <_VSRunOutputPath>../VSRun/bin/Release/net*.0</_VSRunOutputPath>
@@ -69,11 +73,23 @@
         </PropertyGroup>
 
         <ItemGroup>
-            <FilesToCopy Include="$(_VSRunOutputPath)/*.dll" />
-            <FilesToCopy Include="$(_VSRunOutputPath)/*.json" />
-            <FilesToCopy Include="$(_VSRunOutputPath)/*.pdb" />
+            <FilesToCopy Include="$(_VSRunOutputPath)/*.dll"/>
+            <FilesToCopy Include="$(_VSRunOutputPath)/*.json"/>
+            <FilesToCopy Include="$(_VSRunOutputPath)/*.pdb"/>
         </ItemGroup>
 
-        <Copy SourceFiles="@(FilesToCopy)" DestinationFolder="Misc/VSRun/%(RecursiveDir)" />
+        <Copy SourceFiles="@(FilesToCopy)" DestinationFolder="Misc/VSRun/%(RecursiveDir)"/>
+    </Target>
+
+    <Target Name="SetBuildInfoProperties" BeforeTargets="GenerateMSBuildEditorConfigFileShouldRun">
+        <Exec Command="git rev-parse HEAD" ConsoleToMsBuild="true" StandardOutputImportance="low" IgnoreExitCode="true">
+            <Output TaskParameter="ConsoleOutput" PropertyName="GitShortHash"/>
+        </Exec>
+
+        <PropertyGroup>
+            <GitShortHash Condition="'$(GitShortHash)' == ''">LocalDev</GitShortHash>
+            <AppCommitHash>$(GitShortHash)</AppCommitHash>
+            <AppBuildTime>$([System.DateTimeOffset]::UtcNow)</AppBuildTime>
+        </PropertyGroup>
     </Target>
 </Project>

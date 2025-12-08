@@ -1,21 +1,21 @@
 using System;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Sockets;
 using System.Numerics;
 using System.Threading.Tasks;
+using CSemVer;
 using Flurl.Http;
 using Godot;
 using Nerdbank.MessagePack;
 using FileAccess = Godot.FileAccess;
-using Process = System.Diagnostics.Process;
 
 namespace MVL.Utils;
 
 public static class Tools {
 	static private readonly string[] Units = ["B", "KB", "MB", "GB", "TB", "PB", "EB"];
-	public static Version Version { get; } = new(ProjectSettings.GetSetting("application/config/version").AsString());
 	public static MessagePackSerializer PackSerializer { get; } = new();
 	public static bool IsEditorHint { get; } = Engine.IsEditorHint();
 
@@ -92,7 +92,7 @@ public static class Tools {
 				}
 
 				var versionString = runtimeInfo[1];
-				if (Version.TryParse(versionString, out var installedVersion) &&
+				if (SVersion.TryParse(versionString, out var installedVersion) &&
 					installedVersion.Major == targetFrameworkVersion.Major) {
 					return true;
 				}

@@ -50,7 +50,7 @@ public partial class InfoPage : MenuPage {
 		_richText.NotNull();
 		_richText2.NotNull();
 
-		_versionLabel.Text = $"v{Tools.Version}";
+		_versionLabel.Text = $"v{BuildInfo.InformationalVersion}";
 		VisibilityChanged += OnVisibilityChanged;
 		_buttonGroup.Pressed += ButtonGroupOnPressed;
 		_richText.MetaClicked += Tools.RichTextOpenUrl;
