@@ -25,8 +25,6 @@ public abstract partial class CandidateLineEdit<T> : LineEdit {
 
 	public int MaxShow { get; set; } = 5;
 
-	protected string SelfText = string.Empty;
-
 	public override void _Ready() {
 		Bg.NotNull();
 		_scrollContainer.NotNull();
@@ -37,7 +35,7 @@ public abstract partial class CandidateLineEdit<T> : LineEdit {
 		Bg.Pressed += Bg.Hide;
 		Bg.VisibilityChanged += BgOnVisibilityChanged;
 
-		TextChanged += _ => { _timer.Start(0.2); };
+		TextChanged += _ => { _timer.Start(0.25); };
 
 		_timer.Timeout += UpdateCandidates;
 	}
@@ -51,15 +49,22 @@ public abstract partial class CandidateLineEdit<T> : LineEdit {
 		}
 	}
 
-	public abstract Span<(T data, int ratio)> GetCandidate();
+	public abstract ReadOnlySpan<T> GetCandidate();
 
-	public abstract Button GetItemContainer((T data, int ratio) candidate);
-
-	public abstract void Sorted();
+	public abstract Button GetItemContainer(T candidate);
 
 	public void UpdateCandidates() {
 		Selected = default;
-		SelfText = Text;
+
+		foreach (var child in _vboxContainer!.GetChildren()) {
+			child.Free();
+		}
+
+		var list = GetCandidate();
+		if (list.Length == 0) {
+			Bg!.Hide();
+			return;
+		}
 
 		Bg!.Show();
 
@@ -68,19 +73,9 @@ public abstract partial class CandidateLineEdit<T> : LineEdit {
 		_panelContainer!.Size = _panelContainer!.Size with { X = rect.Size.X };
 		_panelContainer.GlobalPosition = rect.Position;
 
-		foreach (var child in _vboxContainer!.GetChildren()) {
-			child.Free();
-		}
-
-		var list = GetCandidate();
-
 		var i = 0;
 		var maxHeight = 0f;
 		foreach (var item in list) {
-			if (item.ratio <= 0) {
-				continue;
-			}
-
 			var button = GetItemContainer(item);
 			_vboxContainer!.AddChild(button);
 
@@ -89,8 +84,6 @@ public abstract partial class CandidateLineEdit<T> : LineEdit {
 				maxHeight = _vboxContainer!.GetCombinedMinimumSize().Y;
 			}
 		}
-
-		Sorted();
 
 		var maxWidth = _vboxContainer!.GetCombinedMinimumSize().X;
 		if (maxWidth > _panelContainer!.Size.X) {
