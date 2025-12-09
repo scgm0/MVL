@@ -8,7 +8,7 @@
         <LangVersion>preview</LangVersion>
         <InvariantGlobalization>true</InvariantGlobalization>
         <OptimizationPreference>Size</OptimizationPreference>
-        <InformationalVersion>0.5.3</InformationalVersion>
+        <InformationalVersion>1.0.0-dev</InformationalVersion>
     </PropertyGroup>
 
     <ItemGroup>
