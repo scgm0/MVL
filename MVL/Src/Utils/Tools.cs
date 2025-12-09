@@ -122,7 +122,7 @@ public static class Tools {
 				break;
 			case ImageFormat.Unknown:
 			default:
-				throw new NotSupportedException($"Unsupported image format: {format}");
+				throw new NotSupportedException($"不支持的图像格式: {format}");
 		}
 
 		return ImageTexture.CreateFromImage(image);
@@ -174,7 +174,7 @@ public static class Tools {
 				return LoadTextureFromPath(path);
 			}
 
-			Log.Debug($"正在从 {url} 下载贴图...");
+			Log.Trace($"正在从 {url} 下载贴图...");
 			var buffer = await url.GetBytesAsync();
 
 			var format = GetImageFormat(buffer);
@@ -185,7 +185,7 @@ public static class Tools {
 
 			var texture = CreateTextureFromBytes(buffer, format);
 			texture.GetImage().SavePng(path);
-			Log.Debug($"已保存 {url} 为 {name}");
+			Log.Trace($"已保存 {url} 为 {name}");
 
 			var fileSha256 = FileAccess.GetSha256(path);
 			var shaPath = $"{path}.{fileSha256}";
@@ -193,7 +193,7 @@ public static class Tools {
 
 			return texture;
 		} catch (Exception e) {
-			Log.Error("下载贴图失败", e);
+			Log.Warn("下载贴图失败", e);
 			return null;
 		}
 	}

@@ -30,10 +30,17 @@ public static class Log {
 		}
 	}
 
-	public static void Trace(ReadOnlySpan<char> message) => LogOutput(LogLevel.Trace, message);
-	public static void Debug(ReadOnlySpan<char> message) => LogOutput(LogLevel.Debug, message);
-	public static void Info(ReadOnlySpan<char> message) => LogOutput(LogLevel.Information, message);
-	public static void Warn(ReadOnlySpan<char> message) => LogOutput(LogLevel.Warning, message);
+	public static void Trace(ReadOnlySpan<char> message, Exception? exception = null) =>
+		LogOutput(LogLevel.Trace, message, exception);
+
+	public static void Debug(ReadOnlySpan<char> message, Exception? exception = null) =>
+		LogOutput(LogLevel.Debug, message, exception);
+
+	public static void Info(ReadOnlySpan<char> message, Exception? exception = null) =>
+		LogOutput(LogLevel.Information, message, exception);
+
+	public static void Warn(ReadOnlySpan<char> message, Exception? exception = null) =>
+		LogOutput(LogLevel.Warning, message, exception);
 
 	public static void Error(ReadOnlySpan<char> message, Exception? exception = null) =>
 		LogOutput(LogLevel.Error, message, exception);
@@ -48,7 +55,7 @@ public static class Log {
 	static private void Init() {
 		try {
 			_factory = LoggerFactory.Create(builder => {
-				builder.SetMinimumLevel(LogLevel.Trace)
+				builder.SetMinimumLevel(LogLevel.Debug)
 					.AddZLoggerConsole(options => {
 						options.ConfigureEnableAnsiEscapeCode = true;
 						options.UsePlainTextFormatter(formatter => {
