@@ -23,7 +23,8 @@ public static class GitHubTool {
 		var requestUrl = $"{proxyUrl}{releaseUrl}";
 
 		var stream = await new Url(requestUrl)
-			.WithHeader("User-Agent", "Mozilla/5.0")
+			.WithHeader("User-Agent", "MVL")
+			.WithHeader("Accept", "application/vnd.github+json")
 			.GetStreamAsync();
 
 		var latestRelease = await JsonSerializer.DeserializeAsync(stream, SourceGenerationContext.Default.ApiRelease);

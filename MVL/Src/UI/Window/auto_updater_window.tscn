@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=3 uid="uid://debbauyce0xia"]
+[gd_scene format=3 uid="uid://debbauyce0xia"]
 
 [ext_resource type="PackedScene" uid="uid://bu4hwijkbc8sm" path="res://Src/UI/Window/base_window.tscn" id="1_hxpjc"]
 [ext_resource type="Script" uid="uid://bgqglerkcylxx" path="res://addons/SmoothScroll/smooth_scroll_container.gd" id="2_b6e5b"]
@@ -31,6 +31,7 @@ size_flags_horizontal = 3
 size_flags_vertical = 3
 focus_mode = 2
 mouse_filter = 1
+theme_override_constants/paragraph_separation = 5
 theme_override_constants/text_highlight_v_padding = 0
 bbcode_enabled = true
 fit_content = true

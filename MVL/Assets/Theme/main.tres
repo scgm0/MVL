@@ -282,6 +282,7 @@ PopupMenu/icons/unchecked = SubResource("Texture2D_vje8o")
 PopupMenu/styles/hover = SubResource("StyleBoxFlat_7eosv")
 PopupMenu/styles/panel = SubResource("StyleBoxFlat_8ilox")
 RichTextLabel/colors/selection_color = Color(0.6, 0.6, 0.6, 0.6)
+RichTextLabel/fonts/bold_font = ExtResource("2_h252r")
 SettingItemPanel/base_type = &"PanelContainer"
 SettingItemPanel/styles/panel = SubResource("StyleBoxFlat_bgbrj")
 SettingItemTitle/base_type = &"Label"
