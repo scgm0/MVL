@@ -8,7 +8,6 @@ using System.Threading.Tasks;
 using CSemVer;
 using MVL.UI;
 using MVL.Utils.Game;
-using FileAccess = Godot.FileAccess;
 
 namespace MVL.Utils.Config;
 
@@ -164,8 +163,6 @@ public class ModpackConfig {
 	}
 
 	public static void Save(ModpackConfig modPackConfig) {
-		using var file = FileAccess.Open(modPackConfig._configPath, FileAccess.ModeFlags.Write);
-		file.StoreString(JsonSerializer.Serialize(modPackConfig, SourceGenerationContext.Default.ModpackConfig));
-		file.Flush();
+		File.WriteAllBytes(modPackConfig._configPath, JsonSerializer.SerializeToUtf8Bytes(modPackConfig, SourceGenerationContext.Default.ModpackConfig));
 	}
 }

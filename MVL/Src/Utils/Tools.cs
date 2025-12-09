@@ -155,7 +155,7 @@ public static class Tools {
 			return ResourceLoader.Load<ImageTexture>(shaPath);
 		}
 
-		var buffer = FileAccess.GetFileAsBytes(path);
+		var buffer = File.ReadAllBytes(path);
 		var format = GetImageFormat(buffer);
 		if (format == ImageFormat.Unknown) {
 			return null;

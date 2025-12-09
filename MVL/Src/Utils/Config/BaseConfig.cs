@@ -4,7 +4,6 @@ using System.Text.Json;
 using Godot;
 using SharedLibrary;
 using Environment = System.Environment;
-using FileAccess = Godot.FileAccess;
 
 namespace MVL.Utils.Config;
 
@@ -44,8 +43,6 @@ public class BaseConfig {
 	}
 
 	public static void Save(BaseConfig baseConfig) {
-		using var file = FileAccess.Open(baseConfig._configPath, FileAccess.ModeFlags.Write);
-		file.StoreString(JsonSerializer.Serialize(baseConfig, SourceGenerationContext.Default.BaseConfig));
-		file.Flush();
+		File.WriteAllBytes(baseConfig._configPath, JsonSerializer.SerializeToUtf8Bytes(baseConfig, SourceGenerationContext.Default.BaseConfig));
 	}
 }
