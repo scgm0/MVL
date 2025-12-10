@@ -46,11 +46,12 @@ jobs:
           $GETTEXT_PATH = (Get-Location).Path + "\gettext-tools\bin"
           echo $GETTEXT_PATH | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
 
-      - name: 1.4. Install 7Z And NSIS And CCache
+      - name: 1.4. Install 7Z And NSIS And CCache And Mingw
         run: |
-          echo "Install 7Z And NSIS..."
+          echo "Install 7Z And NSIS And CCache And Mingw..."
           choco install 7zip -y
           choco install nsis -y
+          scoop install mingw llvm-mingw
 
           $PluginUrl = "https://nsis.sourceforge.io/mediawiki/images/9/93/Nsis7z.zip"
           $ZipFile = "Nsis7z.zip"
@@ -116,7 +117,9 @@ jobs:
         uses: ./mvl-repo/.github/actions/godot-build
         with:
           scons-flags: >-
-            vsc=yes
+            use_mingw=yes
+            use_llvm=yes
+            linker=lld
             module_mono_enabled=yes
             accesskit=no
             disable_xr=yes
@@ -129,9 +132,12 @@ jobs:
         uses: ./mvl-repo/.github/actions/godot-build
         with:
           scons-flags: >-
-            vsc=yes
+            use_mingw=yes
+            use_llvm=yes
+            linker=lld
             d3d12=yes
             "angle_libs=${{ github.workspace }}/"
+            lto=full
             profile=../mvl-repo/MVL/GodotBuildProfile/custom.py
             build_profile=../mvl-repo/MVL/GodotBuildProfile/custom.build
           platform: windows
