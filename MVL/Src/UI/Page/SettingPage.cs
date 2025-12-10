@@ -100,10 +100,9 @@ public partial class SettingPage : MenuPage {
 		_releaseFolderButton.Pressed += ReleaseFolderButtonOnPressed;
 		_getLatestReleaseButton.Pressed += GetLatestReleaseButtonOnPressed;
 
-		var size = UI.Main.SceneTree.Root.Size = new (1162, 658);
+		var size = UI.Main.SceneTree.Root.Size = new(1162, 658);
 		UI.Main.SceneTree.Root.Size = new(Mathf.CeilToInt(size.X * UI.Main.BaseConfig.DisplayScale),
 			Mathf.CeilToInt(size.Y * UI.Main.BaseConfig.DisplayScale));
-		TranslationServer.SetLocale(UI.Main.BaseConfig.DisplayLanguage);
 
 		DisplayScaleSpinboxOnValueChanged(_displayScaleSpinbox.Value);
 		UpdateLanguage();
@@ -235,18 +234,27 @@ public partial class SettingPage : MenuPage {
 		UI.Main.BaseConfig.DisplayLanguage = _languages[(int)index];
 		TranslationServer.SetLocale(UI.Main.BaseConfig.DisplayLanguage);
 		BaseConfig.Save(UI.Main.BaseConfig);
+		Log.Debug($"更改语言为: {UI.Main.BaseConfig.DisplayLanguage}");
 	}
 
 	public void UpdateLanguage() {
+		var language = TranslationServer.HasTranslationForLocale(UI.Main.BaseConfig.DisplayLanguage, false)
+			? TranslationServer.FindTranslations(UI.Main.BaseConfig.DisplayLanguage, false)[0].Locale
+			: TranslationServer.GetLocale();
+
 		_displayLanguageOptionButton!.Clear();
 		var i = 0;
 		foreach (var locale in _languages) {
 			_displayLanguageOptionButton.AddItem(TranslationServer.GetLocaleName(locale), i);
-			if (locale == UI.Main.BaseConfig.DisplayLanguage) {
+			if (locale == language) {
 				_displayLanguageOptionButton.Select(i);
 			}
 
 			i++;
+		}
+
+		if (language != UI.Main.BaseConfig.DisplayLanguage) {
+			LanguageOptionButtonOnItemSelected(_displayLanguageOptionButton.Selected);
 		}
 	}
 
