@@ -46,7 +46,7 @@ jobs:
           $GETTEXT_PATH = (Get-Location).Path + "\gettext-tools\bin"
           echo $GETTEXT_PATH | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
 
-      - name: 1.4. Install 7Z And NSIS And CCache
+      - name: 1.4. Install 7Z And NSIS
         run: |
           echo "Install 7Z And NSIS And CCache And Mingw..."
           choco install 7zip -y
@@ -62,11 +62,12 @@ jobs:
           echo "C:\ProgramData\chocolatey\lib\7zip" >> $env:GITHUB_PATH
           echo "C:\ProgramData\chocolatey\lib\nsis" >> $env:GITHUB_PATH
 
-      - name: 1.5. Install MinGw
+      - name: 1.5. Setup Scoop
         uses: MinoruSekine/setup-scoop@v3
-        with:
-          install: llvm-mingw
-  
+
+      - name: 1.6. Install MinGw
+        run: scoop install llvm-mingw4
+
       - name: 2.1. Setup .NET8 SDK
         uses: actions/setup-dotnet@v4
         with:
