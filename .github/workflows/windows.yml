@@ -34,7 +34,7 @@ jobs:
           python-version: '3.x'
 
       - name: 1.2. Install SCons
-        run: pip install scons scoop
+        run: pip install scons
 
       - name: 1.3. Install gettext
         shell: powershell
@@ -62,13 +62,11 @@ jobs:
           echo "C:\ProgramData\chocolatey\lib\7zip" >> $env:GITHUB_PATH
           echo "C:\ProgramData\chocolatey\lib\nsis" >> $env:GITHUB_PATH
 
-      - name: 1.5. Setup Scoop
-        uses: MinoruSekine/setup-scoop@v3
+      - name: 1.5. Install MinGw
+        uses: mstorsjo/setup-mingw@v1
         with:
-          add_extras_bucket: true
-
-      - name: 1.6. Install MinGw
-        run: scoop install llvm-mingw
+          compiler: clang
+          platform: x64
 
       - name: 2.1. Setup .NET8 SDK
         uses: actions/setup-dotnet@v4
