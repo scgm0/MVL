@@ -63,13 +63,9 @@ jobs:
           echo "C:\ProgramData\chocolatey\lib\nsis" >> $env:GITHUB_PATH
 
       - name: 1.5. Install MinGw
-        uses: msys2/setup-msys2@v2
+        uses: MinoruSekine/setup-scoop@v3
         with:
-          msystem: CLANG64
-          update: true
-          install: >-
-            mingw-w64-clang-x86_64-toolchain
-            mingw-w64-clang-x86_64-scons
+          install: llvm-mingw
   
       - name: 2.1. Setup .NET8 SDK
         uses: actions/setup-dotnet@v4
