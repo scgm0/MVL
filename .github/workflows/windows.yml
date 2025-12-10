@@ -64,6 +64,8 @@ jobs:
 
       - name: 1.5. Setup Scoop
         uses: MinoruSekine/setup-scoop@v3
+        with:
+          add_extras_bucket: true
 
       - name: 1.6. Install MinGw
         run: scoop install llvm-mingw
