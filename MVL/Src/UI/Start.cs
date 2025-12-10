@@ -6,6 +6,7 @@ using System.Runtime.InteropServices;
 using Godot;
 using MVL.Utils;
 using MVL.Utils.Help;
+using NickStrupat;
 using FileAccess = System.IO.FileAccess;
 
 namespace MVL.UI;
@@ -37,10 +38,9 @@ public partial class Start : Control {
 			Log.Debug($"显卡: {SystemInfo.GraphicsCardDescription}");
 			Log.Debug(
 				$"渲染驱动: {RenderingServer.GetCurrentRenderingDriverName()} {RenderingServer.GetVideoAdapterApiVersion()}");
-			var memoryInfo = OS.GetMemoryInfo();
-			var (totalPhysicalMemory, totalPhysicalMemoryUnit) = Tools.GetSizeAndUnit(memoryInfo["physical"].AsUInt64());
+			var (totalPhysicalMemory, totalPhysicalMemoryUnit) = Tools.GetSizeAndUnit(SystemInfo.TotalPhysicalMemory);
 			var (availablePhysicalMemory, availablePhysicalMemoryUnit) =
-				Tools.GetSizeAndUnit(memoryInfo["free"].AsUInt64());
+				Tools.GetSizeAndUnit(SystemInfo.AvailablePhysicalMemory);
 			Log.Debug(
 				$"物理内存: {totalPhysicalMemory:F2}{totalPhysicalMemoryUnit}(总计) {availablePhysicalMemory:F2}{availablePhysicalMemoryUnit}(可用)");
 			_lockFile = File.Open(Paths.LockFile,
