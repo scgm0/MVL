@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using System.Threading;
 using System.Threading.Tasks;
 using CSemVer;
 using MVL.UI;
@@ -141,6 +142,8 @@ public class ModpackConfig {
 		}
 	}
 
+	static private readonly Lock Lock = new();
+
 	public static ModpackConfig Load(string modpackPath) {
 		var configPath = System.IO.Path.Combine(modpackPath, "modpack.json");
 		ModpackConfig modPackConfig;
@@ -163,6 +166,9 @@ public class ModpackConfig {
 	}
 
 	public static void Save(ModpackConfig modPackConfig) {
-		File.WriteAllBytes(modPackConfig._configPath, JsonSerializer.SerializeToUtf8Bytes(modPackConfig, SourceGenerationContext.Default.ModpackConfig));
+		var data = JsonSerializer.SerializeToUtf8Bytes(modPackConfig, SourceGenerationContext.Default.ModpackConfig);
+		lock (Lock) {
+			File.WriteAllBytes(modPackConfig._configPath, data);
+		}
 	}
 }

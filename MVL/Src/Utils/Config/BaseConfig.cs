@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Text.Json;
+using System.Threading;
 using Godot;
 using SharedLibrary;
 using Environment = System.Environment;
@@ -23,6 +24,8 @@ public class BaseConfig {
 	public List<string> Modpack { get; set; } = [];
 	public List<Account> Account { get; set; } = [];
 
+	static private readonly Lock Lock = new();
+
 	public static BaseConfig Load(string configPath) {
 		BaseConfig baseConfig;
 		try {
@@ -43,6 +46,9 @@ public class BaseConfig {
 	}
 
 	public static void Save(BaseConfig baseConfig) {
-		File.WriteAllBytes(baseConfig._configPath, JsonSerializer.SerializeToUtf8Bytes(baseConfig, SourceGenerationContext.Default.BaseConfig));
+		var data = JsonSerializer.SerializeToUtf8Bytes(baseConfig, SourceGenerationContext.Default.BaseConfig);
+		lock (Lock) {
+			File.WriteAllBytes(baseConfig._configPath, data);
+		}
 	}
 }
