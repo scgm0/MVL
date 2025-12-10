@@ -33,8 +33,8 @@ jobs:
         with:
           python-version: '3.x'
 
-      - name: 1.2. Install SCons
-        run: pip install scons
+      - name: 1.2. Install SCons And Scoop
+        run: pip install scons scoop
 
       - name: 1.3. Install gettext
         shell: powershell
