@@ -20,7 +20,7 @@ jobs:
           - name: Windows-Mono
             cache-name: windows-mono
             bin: ./godot/bin/godot.windows.editor.x86_64.mono.console.exe
-            compiler: llvm
+            compiler: gcc
 
     steps:
       - name: Checkout MVL Repository
@@ -69,7 +69,7 @@ jobs:
 
       - name: 1.6. Install MinGw
         run: |
-          scoop install main/mingw-mstorsjo-llvm-ucrt
+          scoop install mingw
 
       - name: 2.1. Setup .NET8 SDK
         uses: actions/setup-dotnet@v4
@@ -126,8 +126,6 @@ jobs:
         with:
           scons-flags: >-
             use_mingw=yes
-            use_llvm=yes
-            linker=lld
             module_mono_enabled=yes
             accesskit=no
             disable_xr=yes
@@ -141,8 +139,6 @@ jobs:
         with:
           scons-flags: >-
             use_mingw=yes
-            use_llvm=yes
-            linker=lld
             d3d12=yes
             "angle_libs=${{ github.workspace }}/"
             lto=full
