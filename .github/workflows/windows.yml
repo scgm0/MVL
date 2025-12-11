@@ -139,6 +139,7 @@ jobs:
         with:
           scons-flags: >-
             use_mingw=yes
+            lto=full
             d3d12=yes
             "angle_libs=${{ github.workspace }}/"
             lto=full
