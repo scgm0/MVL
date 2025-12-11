@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=3 uid="uid://bn4c1jkcya1ys"]
+[gd_scene format=3 uid="uid://bn4c1jkcya1ys"]
 
 [ext_resource type="Script" uid="uid://bk3tot6c35bwu" path="res://Src/Utils/IconTexture2D.cs" id="1_gmw30"]
 [ext_resource type="Script" uid="uid://8u88rd0kuw4h" path="res://Src/UI/Item/ApiModReleaseItem.cs" id="1_hdxw4"]
@@ -48,8 +48,8 @@ script = ExtResource("1_gmw30")
 IconName = "file-download-outline"
 metadata/_custom_type_script = "uid://bk3tot6c35bwu"
 
-[node name="ApiModReleaseItem" type="PanelContainer" node_paths=PackedStringArray("_modName", "_version", "_dateLabel", "_downloadCountLabel", "_downloadButton", "_checkBox", "_tagsContainer", "_progressBar", "_progressLabel")]
-anchors_preset = -1
+[node name="ApiModReleaseItem" type="PanelContainer" unique_id=2082879741 node_paths=PackedStringArray("_modName", "_version", "_dateLabel", "_downloadCountLabel", "_downloadButton", "_checkBox", "_tagsContainer", "_progressBar", "_progressLabel")]
+anchors_preset = 10
 anchor_right = 1.0
 offset_bottom = 56.0
 grow_horizontal = 2
@@ -66,26 +66,26 @@ _tagsContainer = NodePath("MarginContainer/HBoxContainer/VBoxContainer/HBoxConta
 _progressBar = NodePath("ProgressBar")
 _progressLabel = NodePath("MarginContainer/HBoxContainer/MarginContainer/Label")
 
-[node name="MarginContainer" type="MarginContainer" parent="."]
+[node name="MarginContainer" type="MarginContainer" parent="." unique_id=2076339461]
 layout_mode = 2
 theme_override_constants/margin_left = 4
 theme_override_constants/margin_top = 8
 theme_override_constants/margin_right = 4
 theme_override_constants/margin_bottom = 8
 
-[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer" unique_id=1025311707]
 layout_mode = 2
 theme_override_constants/separation = 10
 
-[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/HBoxContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/HBoxContainer" unique_id=972950827]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/HBoxContainer/VBoxContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/HBoxContainer/VBoxContainer" unique_id=771122015]
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="RichTextLabel" type="RichTextLabel" parent="MarginContainer/HBoxContainer/VBoxContainer/HBoxContainer"]
+[node name="RichTextLabel" type="RichTextLabel" parent="MarginContainer/HBoxContainer/VBoxContainer/HBoxContainer" unique_id=1560575719]
 layout_mode = 2
 focus_mode = 2
 theme_override_fonts/normal_font = SubResource("FontVariation_jxyip")
@@ -96,14 +96,14 @@ scroll_active = false
 autowrap_mode = 0
 selection_enabled = true
 
-[node name="Label" type="Label" parent="MarginContainer/HBoxContainer/VBoxContainer/HBoxContainer"]
+[node name="Label" type="Label" parent="MarginContainer/HBoxContainer/VBoxContainer/HBoxContainer" unique_id=1091074326]
 layout_mode = 2
 size_flags_vertical = 0
 mouse_filter = 1
 theme_override_font_sizes/font_size = 12
 text = "模组版本"
 
-[node name="Button" type="Button" parent="MarginContainer/HBoxContainer/VBoxContainer/HBoxContainer"]
+[node name="Button" type="Button" parent="MarginContainer/HBoxContainer/VBoxContainer/HBoxContainer" unique_id=1239581175]
 layout_mode = 2
 size_flags_horizontal = 10
 mouse_filter = 2
@@ -114,10 +114,10 @@ icon = SubResource("Texture2D_guhl0")
 flat = true
 icon_alignment = 2
 
-[node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer/HBoxContainer/VBoxContainer"]
+[node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer/HBoxContainer/VBoxContainer" unique_id=955765765]
 layout_mode = 2
 
-[node name="SmoothScrollContainer" type="ScrollContainer" parent="MarginContainer/HBoxContainer/VBoxContainer/HBoxContainer2"]
+[node name="SmoothScrollContainer" type="ScrollContainer" parent="MarginContainer/HBoxContainer/VBoxContainer/HBoxContainer2" unique_id=617049790]
 layout_mode = 2
 size_flags_horizontal = 3
 horizontal_scroll_mode = 3
@@ -126,14 +126,15 @@ script = ExtResource("3_guhl0")
 wheel_scroll_damper = SubResource("Resource_8273f")
 dragging_scroll_damper = SubResource("Resource_47be0")
 allow_vertical_scroll = false
+handle_input = false
 metadata/_custom_type_script = "uid://bgqglerkcylxx"
 
-[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/HBoxContainer/VBoxContainer/HBoxContainer2/SmoothScrollContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/HBoxContainer/VBoxContainer/HBoxContainer2/SmoothScrollContainer" unique_id=1133785187]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
-[node name="Button" type="Button" parent="MarginContainer/HBoxContainer/VBoxContainer/HBoxContainer2"]
+[node name="Button" type="Button" parent="MarginContainer/HBoxContainer/VBoxContainer/HBoxContainer2" unique_id=830069607]
 layout_mode = 2
 size_flags_horizontal = 8
 size_flags_vertical = 10
@@ -145,24 +146,24 @@ icon = SubResource("Texture2D_mgo4i")
 flat = true
 icon_alignment = 2
 
-[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/HBoxContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/HBoxContainer" unique_id=648982919]
 custom_minimum_size = Vector2(32, 0)
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="Button" type="Button" parent="MarginContainer/HBoxContainer/MarginContainer"]
+[node name="Button" type="Button" parent="MarginContainer/HBoxContainer/MarginContainer" unique_id=1065020153]
 layout_mode = 2
 size_flags_horizontal = 4
 mouse_filter = 1
 icon = SubResource("Texture2D_yort3")
 flat = true
 
-[node name="CheckBox" type="CheckBox" parent="MarginContainer/HBoxContainer/MarginContainer"]
+[node name="CheckBox" type="CheckBox" parent="MarginContainer/HBoxContainer/MarginContainer" unique_id=148795094]
 visible = false
 layout_mode = 2
 size_flags_horizontal = 4
 
-[node name="Label" type="Label" parent="MarginContainer/HBoxContainer/MarginContainer"]
+[node name="Label" type="Label" parent="MarginContainer/HBoxContainer/MarginContainer" unique_id=474446046]
 visible = false
 layout_mode = 2
 size_flags_vertical = 1
@@ -171,7 +172,7 @@ text = "0%"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="ProgressBar" type="ProgressBar" parent="."]
+[node name="ProgressBar" type="ProgressBar" parent="." unique_id=592085313]
 visible = false
 layout_mode = 2
 size_flags_vertical = 8
