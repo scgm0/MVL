@@ -125,9 +125,7 @@ jobs:
         uses: ./mvl-repo/.github/actions/godot-build
         with:
           scons-flags: >-
-            use_mingw=yes
-            use_llvm=yes
-            linker=lld
+            vsc=yes
             module_mono_enabled=yes
             accesskit=no
             disable_xr=yes

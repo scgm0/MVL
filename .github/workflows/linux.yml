@@ -108,7 +108,7 @@ jobs:
           echo "Importing assets with Godot..."
           ${{ matrix.bin }} --path mvl-repo/MVL --import --headless
 
-          sed -i "s|custom_template/release=.*|custom_template/release=\"$(pwd)/godot/bin/godot.linuxbsd.template_release.x86_64.mono\"|" mvl-repo/MVL/export_presets.cfg
+          sed -i "s|custom_template/release=.*|custom_template/release=\"$(pwd)/godot/bin/godot.linuxbsd.template_release.x86_64.llvm.mono\"|" mvl-repo/MVL/export_presets.cfg
 
           echo "--- Verifying export_presets.cfg ---"
           cat mvl-repo/MVL/export_presets.cfg
