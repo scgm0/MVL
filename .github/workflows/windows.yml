@@ -20,7 +20,7 @@ jobs:
           - name: Windows-Mono
             cache-name: windows-mono
             bin: ./godot/bin/godot.windows.editor.x86_64.mono.console.exe
-            compiler: msvc
+            compiler: llvm
 
     steps:
       - name: Checkout MVL Repository
@@ -69,7 +69,7 @@ jobs:
 
       - name: 1.6. Install MinGw
         run: |
-          scoop install mingw
+          scoop install main/mingw-mstorsjo-llvm-ucrt
 
       - name: 2.1. Setup .NET8 SDK
         uses: actions/setup-dotnet@v4
@@ -115,7 +115,7 @@ jobs:
         with:
           repo: godotengine/godot-angle-static
           version: tags/chromium/6601.2
-          file: godot-angle-static-x86_64-${{ matrix.compiler == 'gcc' && 'gcc' || 'msvc' }}-release.zip
+          file: godot-angle-static-x86_64-${{ matrix.compiler == 'gcc' && 'gcc' || (matrix.compiler == 'llvm' && 'llvm' || 'msvc') }}-release.zip
           target: angle/angle.zip
 
       - name: 4.5 Extract pre-built ANGLE static libraries
@@ -139,6 +139,8 @@ jobs:
         with:
           scons-flags: >-
             use_mingw=yes
+            use_llvm=yes
+            linker=lld
             d3d12=yes
             "angle_libs=${{ github.workspace }}/"
             lto=full

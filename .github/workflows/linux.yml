@@ -80,8 +80,7 @@ jobs:
         uses: ./mvl-repo/.github/actions/godot-build
         with:
           scons-flags: >-
-            use_llvm=yes
-            linker=lld
+            linker=mold
             lto=full
             profile=../mvl-repo/MVL/GodotBuildProfile/custom.py
             build_profile=../mvl-repo/MVL/GodotBuildProfile/custom.build
