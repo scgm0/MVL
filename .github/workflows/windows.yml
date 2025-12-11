@@ -20,7 +20,7 @@ jobs:
           - name: Windows-Mono
             cache-name: windows-mono
             bin: ./godot/bin/godot.windows.editor.x86_64.mono.console.exe
-            compiler: gcc
+            compiler: msvc
 
     steps:
       - name: Checkout MVL Repository
@@ -61,15 +61,6 @@ jobs:
           echo "C:\Program Files (x86)\NSIS" >> $env:GITHUB_PATH
           echo "C:\ProgramData\chocolatey\lib\7zip" >> $env:GITHUB_PATH
           echo "C:\ProgramData\chocolatey\lib\nsis" >> $env:GITHUB_PATH
-
-      - name: 1.5. Setup Scoop
-        uses: MinoruSekine/setup-scoop@v3
-        with:
-          add_extras_bucket: true
-
-      - name: 1.6. Install MinGw
-        run: |
-          scoop install mingw
 
       - name: 2.1. Setup .NET8 SDK
         uses: actions/setup-dotnet@v4
@@ -125,7 +116,7 @@ jobs:
         uses: ./mvl-repo/.github/actions/godot-build
         with:
           scons-flags: >-
-            use_mingw=yes
+            vsc=yes
             module_mono_enabled=yes
             accesskit=no
             disable_xr=yes
@@ -138,8 +129,7 @@ jobs:
         uses: ./mvl-repo/.github/actions/godot-build
         with:
           scons-flags: >-
-            use_mingw=yes
-            lto=full
+            vsc=yes
             d3d12=yes
             "angle_libs=${{ github.workspace }}/"
             lto=full
