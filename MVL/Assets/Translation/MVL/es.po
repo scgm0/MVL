@@ -458,14 +458,11 @@ msgstr "Importar juego instalado"
 msgid "渲染驱动"
 msgstr "Controlador de Renderizado"
 
-msgid "更改渲染驱动需要重启才能生效\n是否立即重启？"
-msgstr ""
-"Para cambiar el controlador de renderizado es necesario reiniciar el "
-"sistema.\n"
-"¿Quieres reiniciar ahora?"
-
 msgid "浏览在线模组"
 msgstr "Buscar Mods Online"
 
 msgid "菜单展开"
+msgstr ""
+
+msgid "已将渲染驱动更改为 [color=#3c7fe1]{0}[/color]\n需要重启才能生效，是否立即重启？"
 msgstr ""

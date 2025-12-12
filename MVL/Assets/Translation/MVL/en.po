@@ -458,13 +458,11 @@ msgstr "Import installed game"
 msgid "渲染驱动"
 msgstr "Rendering Driver"
 
-msgid "更改渲染驱动需要重启才能生效\n是否立即重启？"
-msgstr ""
-"Changing the rendering driver requires a restart to take effect\n"
-"Would you like to restart now?"
-
 msgid "浏览在线模组"
 msgstr "Browse Online Mods"
 
 msgid "菜单展开"
 msgstr "Menu Expand"
+
+msgid "已将渲染驱动更改为 [color=#3c7fe1]{0}[/color]\n需要重启才能生效，是否立即重启？"
+msgstr "The rendering driver has been changed to [color=#3c7fe1]{0}[/color]\nA restart is required for the changes to take effect. Would you like to restart now?"

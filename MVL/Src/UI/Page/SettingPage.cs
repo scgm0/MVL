@@ -53,17 +53,22 @@ public partial class SettingPage : MenuPage {
 
 	private ConfigFile _configFile = new();
 
-	private string[] _renderingDrivers = [
+	private readonly (string InternalName, string DisplayName)[] _renderingDrivers = [
 #if GODOT_WINDOWS
-		"d3d12",
+		("d3d12", "Direct3D 12"),
 #endif
-		"vulkan",
-		"opengl3"
+		("vulkan", "Vulkan"),
+		("opengl3", "OpenGL 3"),
+#if GODOT_WINDOWS
+		("opengl3_angle", "OpenGL ANGLE"),
+#elif GODOT_LINUXBSD
+		("opengl3_es", "OpenGL ES"),
+#endif
 	];
+
 #if GODOT_WINDOWS
 	private string _renderingDriverKey = "rendering_device/driver.windows";
-#else
-
+#elif GODOT_LINUXBSD
 	private string _renderingDriverKey = "rendering_device/driver.linuxbsd";
 #endif
 
@@ -127,14 +132,22 @@ public partial class SettingPage : MenuPage {
 	}
 
 	private void RenderingDriverOptionButtonOnItemSelected(long index) {
-		var driver = _renderingDrivers[index];
-		_configFile.SetValue("rendering",
-			_renderingDriverKey,
-			driver);
+		if (index < 0 || index >= _renderingDrivers.Length) {
+			return;
+		}
+
+		var currentDriver =
+			_configFile.GetValue("rendering", _renderingDriverKey, RenderingServer.GetCurrentRenderingDriverName());
+		var (driverKey, driverDisplayName) = _renderingDrivers[index];
+
+		_configFile.SetValue("rendering", _renderingDriverKey, driverKey);
 		_configFile.Save(Paths.OverrideConfigPath);
-		Log.Debug($"更改渲染驱动为: {driver}");
+
+		Log.Debug($"已更改渲染驱动: {currentDriver} -> {driverKey}");
+
 		var confirmationWindow = _confirmationWindowScene!.Instantiate<ConfirmationWindow>();
-		confirmationWindow.Message = "更改渲染驱动需要重启才能生效\n是否立即重启？";
+		confirmationWindow.Message = string.Format(Tr("已将渲染驱动更改为 [color=#3c7fe1]{0}[/color]\n需要重启才能生效，是否立即重启？"), driverDisplayName);
+
 		confirmationWindow.Confirm += () => {
 			OS.SetRestartOnExit(true);
 			UI.Main.SceneTree.Quit();
@@ -261,14 +274,19 @@ public partial class SettingPage : MenuPage {
 
 	public void UpdateRenderingDriver() {
 		_renderingDriverOptionButton!.Clear();
-		var i = 0;
-		foreach (var renderingDriver in _renderingDrivers) {
-			_renderingDriverOptionButton.AddItem(renderingDriver, i);
-			if (renderingDriver == RenderingServer.GetCurrentRenderingDriverName()) {
+
+		var currentDriver = RenderingServer.GetCurrentRenderingDriverName();
+
+		for (var i = 0; i < _renderingDrivers.Length; i++) {
+			var (internalName, displayName) = _renderingDrivers[i];
+
+			_renderingDriverOptionButton.AddItem(displayName, i);
+
+			_renderingDriverOptionButton.SetItemMetadata(i, internalName);
+
+			if (internalName == currentDriver) {
 				_renderingDriverOptionButton.Select(i);
 			}
-
-			i++;
 		}
 	}
 }
