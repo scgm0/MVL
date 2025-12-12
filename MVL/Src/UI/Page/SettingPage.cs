@@ -241,6 +241,7 @@ public partial class SettingPage : MenuPage {
 		var language = TranslationServer.HasTranslationForLocale(UI.Main.BaseConfig.DisplayLanguage, false)
 			? TranslationServer.FindTranslations(UI.Main.BaseConfig.DisplayLanguage, false)[0].Locale
 			: TranslationServer.GetLocale();
+		TranslationServer.SetLocale(language);
 
 		_displayLanguageOptionButton!.Clear();
 		var i = 0;
