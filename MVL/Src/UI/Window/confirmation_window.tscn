@@ -1,33 +1,29 @@
-[gd_scene load_steps=5 format=3 uid="uid://cx30yvsu80t6f"]
+[gd_scene format=3 uid="uid://cx30yvsu80t6f"]
 
 [ext_resource type="PackedScene" uid="uid://bu4hwijkbc8sm" path="res://Src/UI/Window/base_window.tscn" id="1_1pirl"]
 [ext_resource type="Script" uid="uid://ogdhc35ro4is" path="res://Src/UI/Window/ConfirmationWindow.cs" id="2_bqihl"]
-[ext_resource type="FontFile" uid="uid://d0e3mw7yvdf0v" path="res://Assets/Font/HarmonyOS_Sans_SC_Regular.ttf" id="3_sqebh"]
-[ext_resource type="FontFile" uid="uid://bmgx1vyg6bavd" path="res://Assets/Font/HarmonyOS_Sans_SC_Bold.ttf" id="4_gsg14"]
 
-[node name="ConfirmationWindow" node_paths=PackedStringArray("_messageLabel") instance=ExtResource("1_1pirl")]
+[node name="ConfirmationWindow" unique_id=2006810559 node_paths=PackedStringArray("_messageLabel") instance=ExtResource("1_1pirl")]
 script = ExtResource("2_bqihl")
 _messageLabel = NodePath("PanelContainer/VBoxContainer/RichTextLabel")
 BackBufferCopy = false
 
-[node name="PanelContainer" parent="." index="2"]
+[node name="PanelContainer" parent="." index="2" unique_id=1939254484]
 offset_left = -134.5
 offset_top = -69.0
 offset_right = 134.5
 offset_bottom = 69.0
 
-[node name="Label" parent="PanelContainer/VBoxContainer" index="0"]
+[node name="Label" parent="PanelContainer/VBoxContainer" parent_id_path=PackedInt32Array(1085092068) index="0" unique_id=45475559]
 visible = false
 
-[node name="HSeparator" parent="PanelContainer/VBoxContainer" index="1"]
+[node name="HSeparator" parent="PanelContainer/VBoxContainer" parent_id_path=PackedInt32Array(1085092068) index="1" unique_id=434749734]
 visible = false
 
-[node name="RichTextLabel" type="RichTextLabel" parent="PanelContainer/VBoxContainer" index="2"]
+[node name="RichTextLabel" type="RichTextLabel" parent="PanelContainer/VBoxContainer" parent_id_path=PackedInt32Array(1085092068) index="2" unique_id=1239710729]
 layout_mode = 2
 focus_mode = 2
 theme_override_constants/text_highlight_v_padding = 0
-theme_override_fonts/normal_font = ExtResource("3_sqebh")
-theme_override_fonts/bold_font = ExtResource("4_gsg14")
 theme_override_font_sizes/normal_font_size = 20
 theme_override_font_sizes/bold_font_size = 24
 bbcode_enabled = true
