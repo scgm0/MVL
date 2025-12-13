@@ -160,9 +160,7 @@ func _ready() -> void:
 	
 	if hide_scrollbar_over_time:
 		scrollbar_animator.start_hide_timer()
-	
-	if is_editor_hint:
-		get_tree().node_added.connect(_on_node_added)
+
 	# Default to idle state until needed
 	set_process(false)
 
@@ -213,14 +211,6 @@ func _on_focus_changed(control: Control) -> void:
 ## Draws debug information when debug mode is enabled.
 func _draw() -> void:
 	if debug_mode: ScrollDebugger.draw_debug(self)
-
-
-## Sets default mouse filter for SmoothScroll children to [constant Control.MOUSE_FILTER_PASS]. [br]
-## Called when a [param node] is added to the tree.
-func _on_node_added(node: Node) -> void:
-	if node is Control:
-		if is_ancestor_of(node):
-			node.mouse_filter = Control.MOUSE_FILTER_PASS
 
 
 ## Called when the scrollbar hide timer times out. Hides scrollbars when neither scrollbar is being dragged.
