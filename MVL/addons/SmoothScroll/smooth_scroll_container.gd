@@ -107,7 +107,7 @@ var scrollbar_animator: ScrollbarAnimator
 ## Input handler for all user input events
 var input_handler: ScrollInputHandler
 ## Detect whether the script is running on an editor
-var is_editor_hint = Engine.is_editor_hint()
+var _is_editor_hint = Engine.is_editor_hint()
 #endregion
 
 #endregion
@@ -167,7 +167,7 @@ func _ready() -> void:
 
 ## Called every frame. Updates scroll position, velocity, and scrollbar state.
 func _process(delta: float) -> void:
-	if Engine.is_editor_hint(): return
+	if _is_editor_hint: return
 	if _initializing_margins: return
 
 	scroll(true, velocity.y, pos.y, delta)
@@ -176,7 +176,7 @@ func _process(delta: float) -> void:
 	update_is_scrolling()
 
 	if debug_mode: queue_redraw()
-	
+
 	# Optimization: Check if we can sleep
 	if not is_scrolling:
 		set_process(false)
