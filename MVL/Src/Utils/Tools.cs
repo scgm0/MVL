@@ -16,6 +16,7 @@ namespace MVL.Utils;
 
 public static class Tools {
 	static private readonly string[] Units = ["B", "KB", "MB", "GB", "TB", "PB", "EB"];
+	public static SceneTree SceneTree { get; } = (SceneTree)Engine.GetMainLoop();
 	public static MessagePackSerializer PackSerializer { get; } = new();
 	public static bool IsEditorHint { get; } = Engine.IsEditorHint();
 

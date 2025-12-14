@@ -3,7 +3,6 @@ using Flurl.Http;
 using Godot;
 using MVL.UI.Window;
 using MVL.Utils;
-using MVL.Utils.Config;
 using MVL.Utils.Extensions;
 using MVL.Utils.Help;
 
@@ -105,14 +104,14 @@ public partial class SettingPage : MenuPage {
 		_releaseFolderButton.Pressed += ReleaseFolderButtonOnPressed;
 		_getLatestReleaseButton.Pressed += GetLatestReleaseButtonOnPressed;
 
-		var size = UI.Main.SceneTree.Root.Size = new(1162, 658);
-		UI.Main.SceneTree.Root.Size = new(Mathf.CeilToInt(size.X * UI.Main.BaseConfig.DisplayScale),
+		var size = Tools.SceneTree.Root.Size = new(1162, 658);
+		Tools.SceneTree.Root.Size = new(Mathf.CeilToInt(size.X * UI.Main.BaseConfig.DisplayScale),
 			Mathf.CeilToInt(size.Y * UI.Main.BaseConfig.DisplayScale));
 
 		DisplayScaleSpinboxOnValueChanged(_displayScaleSpinbox.Value);
 		UpdateLanguage();
 		UpdateRenderingDriver();
-		UI.Main.SceneTree.Root.MoveToCenter();
+		Tools.SceneTree.Root.MoveToCenter();
 
 		_configFile.SetValue("rendering",
 			_renderingDriverKey,
@@ -128,7 +127,7 @@ public partial class SettingPage : MenuPage {
 
 	private void MenuExpandCheckButtonOnToggled(bool toggledOn) {
 		UI.Main.BaseConfig.MenuExpand = toggledOn;
-		BaseConfig.Save(UI.Main.BaseConfig);
+		UI.Main.BaseConfig.Save();
 	}
 
 	private void RenderingDriverOptionButtonOnItemSelected(long index) {
@@ -150,7 +149,7 @@ public partial class SettingPage : MenuPage {
 
 		confirmationWindow.Confirm += () => {
 			OS.SetRestartOnExit(true);
-			UI.Main.SceneTree.Quit();
+			Tools.SceneTree.Quit();
 		};
 		confirmationWindow.Hidden += confirmationWindow.QueueFree;
 		UI.Main.Instance!.AddChild(confirmationWindow);
@@ -200,7 +199,7 @@ public partial class SettingPage : MenuPage {
 		}
 
 		UI.Main.BaseConfig.ReleaseFolder = _releaseFolderLineEdit!.Text = path;
-		BaseConfig.Save(UI.Main.BaseConfig);
+		UI.Main.BaseConfig.Save();
 	}
 
 	private void ModpackFolderLineEditOnEditingToggled(bool toggledOn) {
@@ -214,12 +213,12 @@ public partial class SettingPage : MenuPage {
 		}
 
 		UI.Main.BaseConfig.ModpackFolder = _modpackFolderLineEdit!.Text = path;
-		BaseConfig.Save(UI.Main.BaseConfig);
+		UI.Main.BaseConfig.Save();
 	}
 
 	private void DownloadThreadSpinboxOnValueChanged(double value) {
 		UI.Main.BaseConfig.DownloadThreads = (int)_downloadThreadSpinbox!.Value;
-		BaseConfig.Save(UI.Main.BaseConfig);
+		UI.Main.BaseConfig.Save();
 	}
 
 	private void ProxyAddressLineEditOnEditingToggled(bool toggledOn) {
@@ -229,24 +228,24 @@ public partial class SettingPage : MenuPage {
 
 		UI.Main.BaseConfig.ProxyAddress = _proxyAddressLineEdit!.Text;
 		FlurlHttp.Clients.Clear();
-		BaseConfig.Save(UI.Main.BaseConfig);
+		UI.Main.BaseConfig.Save();
 	}
 
 	private void DisplayScaleSpinboxOnValueChanged(double value) {
 		UI.Main.BaseConfig.DisplayScale = _displayScaleSpinbox!.Value / 100;
-		UI.Main.SceneTree.Root.MinSize = new(Mathf.CeilToInt(1122 * UI.Main.BaseConfig.DisplayScale),
+		Tools.SceneTree.Root.MinSize = new(Mathf.CeilToInt(1122 * UI.Main.BaseConfig.DisplayScale),
 			Mathf.CeilToInt(618 * UI.Main.BaseConfig.DisplayScale));
 
 		UI.Main.Instance?.WindowMaterial?.SetShaderParameter(StringNames.Radius, 10 * UI.Main.BaseConfig.DisplayScale);
 		UI.Main.Instance?.RootOnSizeChanged();
 
-		BaseConfig.Save(UI.Main.BaseConfig);
+		UI.Main.BaseConfig.Save();
 	}
 
 	private void LanguageOptionButtonOnItemSelected(long index) {
 		UI.Main.BaseConfig.DisplayLanguage = _languages[(int)index];
 		TranslationServer.SetLocale(UI.Main.BaseConfig.DisplayLanguage);
-		BaseConfig.Save(UI.Main.BaseConfig);
+		UI.Main.BaseConfig.Save();
 		Log.Debug($"更改语言为: {UI.Main.BaseConfig.DisplayLanguage}");
 	}
 

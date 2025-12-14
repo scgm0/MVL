@@ -3,7 +3,6 @@ using System.IO;
 using System.Linq;
 using Godot;
 using Microsoft.Extensions.Logging;
-using MVL.UI;
 using Utf8StringInterpolation;
 using ZLogger;
 
@@ -81,14 +80,16 @@ public static class Log {
 						options => { options.UsePlainTextFormatter(); });
 			});
 			_logger = _factory.CreateLogger("MVL");
-			Main.SceneTree.Root.TreeExiting += () => {
-				_factory?.Dispose();
-				_factory = null;
-				_logger = null;
-			};
+			Tools.SceneTree.Root.TreeExiting += OnRootOnTreeExiting;
 		} catch (Exception e) {
 			GD.PrintErr(e);
 		}
+	}
+
+	static private void OnRootOnTreeExiting() {
+		_factory?.Dispose();
+		_factory = null;
+		_logger = null;
 	}
 
 	static private void LogRotator() {

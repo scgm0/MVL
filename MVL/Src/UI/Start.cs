@@ -6,7 +6,6 @@ using System.Runtime.InteropServices;
 using Godot;
 using MVL.Utils;
 using MVL.Utils.Help;
-using NickStrupat;
 using FileAccess = System.IO.FileAccess;
 
 namespace MVL.UI;
@@ -26,7 +25,7 @@ public partial class Start : Control {
 	public static bool IsRunning => _lockFile != null;
 
 	public Start() {
-		Main.SceneTree.Root.TreeExiting += OnRootOnTreeExiting;
+		Tools.SceneTree.Root.TreeExiting += OnRootOnTreeExiting;
 		try {
 			Log.Info("正在启动...");
 			Log.Debug($"应用版本: {BuildInfo.InformationalVersion} {BuildInfo.CommitHash} {BuildInfo.BuildTime:u}");
@@ -74,7 +73,7 @@ public partial class Start : Control {
 				Log.Error("发送通知失败", e);
 			}
 
-			Main.SceneTree.Quit();
+			Tools.SceneTree.Quit();
 		}
 	}
 
@@ -129,7 +128,7 @@ public partial class Start : Control {
 					case AppEventEnum.RepeatStartup:
 						Dispatcher.SynchronizationContext.Post(_ => {
 								OS.Alert(TranslationServer.Translate("启动器运行中，无法重复启动"), TranslationServer.Translate("警告"));
-								Main.SceneTree.Root.GrabFocus();
+								Tools.SceneTree.Root.GrabFocus();
 							},
 							null);
 						break;

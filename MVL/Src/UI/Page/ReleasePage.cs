@@ -3,6 +3,7 @@ using System.Linq;
 using Godot;
 using MVL.UI.Item;
 using MVL.UI.Window;
+using MVL.Utils;
 using MVL.Utils.Game;
 using MVL.Utils.Help;
 
@@ -30,7 +31,7 @@ public partial class ReleasePage : MenuPage {
 		_grid.NotNull();
 		VisibilityChanged += OnVisibilityChanged;
 		_addReleaseButton.Pressed += AddReleaseButtonOnPressed;
-		UI.Main.SceneTree.Root.FilesDropped += ImportGame;
+		Tools.SceneTree.Root.FilesDropped += ImportGame;
 	}
 
 	private void ImportGame(string gamePath) { ImportGame([gamePath]); }

@@ -2,7 +2,6 @@ using System.Threading.Tasks;
 using Godot;
 using MVL.UI.Item;
 using MVL.Utils;
-using MVL.Utils.Config;
 using MVL.Utils.Help;
 
 namespace MVL.UI.Page;
@@ -100,7 +99,7 @@ public partial class HomePage : MenuPage {
 			item.ModpackConfig = modpackConfig;
 			item.ButtonPressed += () => {
 				UI.Main.BaseConfig.CurrentModpack = modpackConfig.Path!;
-				BaseConfig.Save(UI.Main.BaseConfig);
+				UI.Main.BaseConfig.Save();
 			};
 
 			if (path == UI.Main.BaseConfig.CurrentModpack) {
@@ -187,7 +186,7 @@ public partial class HomePage : MenuPage {
 			_releaseNameLabel!.Text = "";
 			_selectModpackButton.Text = "请先选择一个整合包";
 			UI.Main.BaseConfig.CurrentModpack = string.Empty;
-			BaseConfig.Save(UI.Main.BaseConfig);
+			await UI.Main.BaseConfig.SaveAsync();
 			if (UI.Main.ModpackConfigs.Count == 0) {
 				_selectModpackButton.Text = "请先在整合界面添加一个整合包";
 				_selectModpackButton.Disabled = true;

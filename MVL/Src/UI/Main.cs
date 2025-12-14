@@ -100,8 +100,6 @@ public partial class Main : NativeWindowUtility {
 
 	public static ConcurrentDictionary<string, Account> Accounts { get; } = new();
 
-	public static SceneTree SceneTree { get; } = (SceneTree)Engine.GetMainLoop();
-
 	public static event Action? GameExitEvent;
 	public Main() { Instance = this; }
 
@@ -129,7 +127,7 @@ public partial class Main : NativeWindowUtility {
 		_accountSelectListContainer.NotNull();
 		_accountSelectAnimationPlayer.NotNull();
 
-		SceneTree.Root.SizeChanged += RootOnSizeChanged;
+		Tools.SceneTree.Root.SizeChanged += RootOnSizeChanged;
 
 		Tween? shadowTween = null;
 		var shadowColor = Colors.Black;
@@ -137,7 +135,7 @@ public partial class Main : NativeWindowUtility {
 			shadowColor = color;
 			WindowMaterial!.SetShaderParameter(StringNames.ShadowColor, color);
 		});
-		SceneTree.Root.FocusEntered += () => {
+		Tools.SceneTree.Root.FocusEntered += () => {
 			shadowTween?.Stop();
 			shadowTween?.Dispose();
 			shadowTween = CreateTween();
@@ -148,7 +146,7 @@ public partial class Main : NativeWindowUtility {
 				0.3f
 			);
 		};
-		SceneTree.Root.FocusExited += () => {
+		Tools.SceneTree.Root.FocusExited += () => {
 			shadowTween?.Stop();
 			shadowTween?.Dispose();
 			shadowTween = CreateTween();
@@ -160,8 +158,8 @@ public partial class Main : NativeWindowUtility {
 			);
 		};
 
-		_minButton.Pressed += SceneTree.Root.Minimize;
-		_closeButton.Pressed += () => SceneTree.Quit();
+		_minButton.Pressed += Tools.SceneTree.Root.Minimize;
+		_closeButton.Pressed += () => Tools.SceneTree.Quit();
 		_accountButton.Pressed += AccountButtonOnPressed;
 		_accountSelectButton.Pressed += AccountSelectButtonOnPressed;
 		_accountSelectButton.VisibilityChanged += AccountSelectButtonOnVisibilityChanged;
@@ -351,7 +349,7 @@ public partial class Main : NativeWindowUtility {
 			_accountButton!.Text = BaseConfig.CurrentAccount;
 		}
 
-		BaseConfig.Save(BaseConfig);
+		BaseConfig.Save();
 	}
 
 	public async Task<bool> ValidateSessionKeyWithServer(Account account) {
@@ -391,8 +389,8 @@ public partial class Main : NativeWindowUtility {
 	}
 
 	public void RootOnSizeChanged() {
-		WindowMaterial!.SetShaderParameter(StringNames.WindowExpandedSize, SceneTree.Root.Size);
-		if (SceneTree.Root.Mode != Godot.Window.ModeEnum.Maximized) {
+		WindowMaterial!.SetShaderParameter(StringNames.WindowExpandedSize, Tools.SceneTree.Root.Size);
+		if (Tools.SceneTree.Root.Mode != Godot.Window.ModeEnum.Maximized) {
 			ShadowSize = 5;
 			WindowMaterial!.SetShaderParameter(StringNames.HasRoundCorners, true);
 		} else {
@@ -400,8 +398,8 @@ public partial class Main : NativeWindowUtility {
 			WindowMaterial!.SetShaderParameter(StringNames.HasRoundCorners, false);
 		}
 
-		Viewport!.Size2DOverride = new(Mathf.CeilToInt((SceneTree.Root.Size.X - ShadowSize * 2) / BaseConfig.DisplayScale),
-			Mathf.CeilToInt((SceneTree.Root.Size.Y - ShadowSize * 2) / BaseConfig.DisplayScale));
+		Viewport!.Size2DOverride = new(Mathf.CeilToInt((Tools.SceneTree.Root.Size.X - ShadowSize * 2) / BaseConfig.DisplayScale),
+			Mathf.CeilToInt((Tools.SceneTree.Root.Size.Y - ShadowSize * 2) / BaseConfig.DisplayScale));
 	}
 
 	public InstalledGamesImport InstantiateInstalledGamesImport() {
@@ -445,7 +443,7 @@ public partial class Main : NativeWindowUtility {
 			}
 		}
 
-		BaseConfig.Save(BaseConfig);
+		BaseConfig.Save();
 	}
 
 
@@ -489,7 +487,7 @@ public partial class Main : NativeWindowUtility {
 			ModpackConfig.Save(modPack);
 		}
 
-		BaseConfig.Save(BaseConfig);
+		BaseConfig.Save();
 	}
 
 	static private void RemoveModpack(string path) {
@@ -559,7 +557,7 @@ public partial class Main : NativeWindowUtility {
 				}
 
 				if (args.Data.EndsWith("Client logger started.")) {
-					Dispatcher.SynchronizationContext.Post(_ => { SceneTree.Root.Minimize(); }, null);
+					Dispatcher.SynchronizationContext.Post(_ => { Tools.SceneTree.Root.Minimize(); }, null);
 				}
 			};
 

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Godot;
+using MVL.Utils;
 using MVL.Utils.Help;
 
 namespace MVL.UI.Other;
@@ -116,7 +117,7 @@ public partial class SelectionButton : Button {
 			};
 
 			_vboxContainer!.AddChild(button);
-			await ToSignal(Main.SceneTree, SceneTree.SignalName.ProcessFrame);
+			await ToSignal(Tools.SceneTree, SceneTree.SignalName.ProcessFrame);
 			i++;
 			if (i <= MaxShow) {
 				_maxHeight = _vboxContainer!.GetCombinedMinimumSize().Y;

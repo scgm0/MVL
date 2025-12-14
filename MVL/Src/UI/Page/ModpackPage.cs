@@ -35,7 +35,7 @@ public partial class ModpackPage : MenuPage {
 		var fromPath = UI.Main.BaseConfig.Modpack[from];
 		UI.Main.BaseConfig.Modpack.RemoveAt(from);
 		UI.Main.BaseConfig.Modpack.Insert(to, fromPath);
-		BaseConfig.Save(UI.Main.BaseConfig);
+		UI.Main.BaseConfig.Save();
 	}
 
 	private void AddModpackButtonOnPressed() {

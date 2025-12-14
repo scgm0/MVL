@@ -15,6 +15,7 @@ namespace MVL.Utils;
 [JsonSerializable(typeof(Dictionary<GameVersion, GameRelease>))]
 [JsonSerializable(typeof(Dictionary<string, string>))]
 [JsonSerializable(typeof(RunConfig))]
+[JsonSerializable(typeof(BaseConfig.V0))]
 [JsonSerializable(typeof(BaseConfig))]
 [JsonSerializable(typeof(ModpackConfig))]
 [JsonSerializable(typeof(GameRelease))]

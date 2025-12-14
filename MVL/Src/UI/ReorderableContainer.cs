@@ -164,7 +164,7 @@ public partial class ReorderableContainer : Container {
 	}
 
 	private void _OnStartDragging() {
-		_control.Size = Main.SceneTree.Root.Size;
+		_control.Size = Tools.SceneTree.Root.Size;
 		_control.Visible = true;
 		MouseDefaultCursorShape = CursorShape.Drag;
 		_isUsingProcess = true;
