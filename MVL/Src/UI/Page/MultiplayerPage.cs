@@ -1,5 +1,6 @@
 using System.Threading.Tasks;
 using Godot;
+using MVL.Utils;
 using MVL.Utils.GitHub;
 using MVL.Utils.Help;
 using MVL.Utils.Multiplayer;
@@ -30,7 +31,7 @@ public partial class MultiplayerPage : MenuPage {
 		_createButton.Pressed += HostButtonOnPressed;
 		_joinButton.Pressed += JoinButtonOnPressed;
 
-		UI.Main.SceneTree.Root.TreeExiting += OnExit;
+		Tools.SceneTree.Root.TreeExiting += OnExit;
 	}
 
 	private void JoinButtonOnPressed() {
