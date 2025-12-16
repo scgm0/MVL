@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=3 uid="uid://buymc11h2tiu6"]
+[gd_scene format=3 uid="uid://buymc11h2tiu6"]
 
 [ext_resource type="Script" uid="uid://bgqglerkcylxx" path="res://addons/SmoothScroll/smooth_scroll_container.gd" id="1_h1lgt"]
 [ext_resource type="Script" uid="uid://b8ajofry37b0t" path="res://Src/UI/Other/AuthorsLineEdit.cs" id="1_whbpg"]
@@ -27,7 +27,7 @@ script = ExtResource("2_whbpg")
 [sub_resource type="Resource" id="Resource_ceq8m"]
 script = ExtResource("2_whbpg")
 
-[node name="AuthorsLineEdit" type="LineEdit" node_paths=PackedStringArray("Bg", "_panelContainer", "_scrollContainer", "_vboxContainer", "_timer")]
+[node name="AuthorsLineEdit" type="LineEdit" unique_id=241637665 node_paths=PackedStringArray("Bg", "_panelContainer", "_scrollContainer", "_vboxContainer")]
 size_flags_horizontal = 3
 caret_blink = true
 script = ExtResource("1_whbpg")
@@ -35,9 +35,8 @@ Bg = NodePath("Button")
 _panelContainer = NodePath("Button/PanelContainer")
 _scrollContainer = NodePath("Button/PanelContainer/SmoothScrollContainer")
 _vboxContainer = NodePath("Button/PanelContainer/SmoothScrollContainer/VBoxContainer")
-_timer = NodePath("Timer")
 
-[node name="Button" type="Button" parent="."]
+[node name="Button" type="Button" parent="." unique_id=968617189]
 visible = false
 top_level = true
 layout_mode = 1
@@ -49,7 +48,7 @@ grow_vertical = 2
 focus_mode = 0
 flat = true
 
-[node name="PanelContainer" type="PanelContainer" parent="Button"]
+[node name="PanelContainer" type="PanelContainer" parent="Button" unique_id=1834039742]
 material = ExtResource("2_uqc6p")
 layout_mode = 1
 anchors_preset = -1
@@ -60,19 +59,15 @@ offset_right = -581.0
 grow_horizontal = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_uqc6p")
 
-[node name="SmoothScrollContainer" type="ScrollContainer" parent="Button/PanelContainer"]
+[node name="SmoothScrollContainer" type="ScrollContainer" parent="Button/PanelContainer" unique_id=1868394835]
 layout_mode = 2
 script = ExtResource("1_h1lgt")
 wheel_scroll_damper = SubResource("Resource_u5j2m")
 dragging_scroll_damper = SubResource("Resource_ceq8m")
 metadata/_custom_type_script = "uid://bgqglerkcylxx"
 
-[node name="VBoxContainer" type="VBoxContainer" parent="Button/PanelContainer/SmoothScrollContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="Button/PanelContainer/SmoothScrollContainer" unique_id=379458215]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 theme_override_constants/separation = 0
-
-[node name="Timer" type="Timer" parent="."]
-one_shot = true
-ignore_time_scale = true

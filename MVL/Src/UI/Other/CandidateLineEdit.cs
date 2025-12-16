@@ -1,4 +1,6 @@
 using System;
+using System.Threading;
+using System.Threading.Tasks;
 using Godot;
 using MVL.Utils.Help;
 
@@ -16,8 +18,7 @@ public abstract partial class CandidateLineEdit<T> : LineEdit {
 	[Export]
 	private VBoxContainer? _vboxContainer;
 
-	[Export]
-	private Timer? _timer;
+	private CancellationTokenSource? _cts;
 
 	public T[] Candidates { get; set; } = [];
 
@@ -25,19 +26,46 @@ public abstract partial class CandidateLineEdit<T> : LineEdit {
 
 	public int MaxShow { get; set; } = 5;
 
+	public int Delay { get; set; } = 150;
+
 	public override void _Ready() {
 		Bg.NotNull();
 		_scrollContainer.NotNull();
 		_vboxContainer.NotNull();
-		_timer.NotNull();
 
 		Bg.MouseFilter = MouseFilterEnum.Stop;
 		Bg.Pressed += Bg.Hide;
 		Bg.VisibilityChanged += BgOnVisibilityChanged;
 
-		TextChanged += _ => { _timer.Start(0.25); };
+		TextChanged += OnTextChanged;
+	}
 
-		_timer.Timeout += UpdateCandidates;
+	public override void _ExitTree() {
+		base._ExitTree();
+		_cts?.Cancel();
+		_cts?.Dispose();
+	}
+
+	private async void OnTextChanged(string newText) {
+		if (_cts != null) {
+			await _cts.CancelAsync();
+			_cts.Dispose();
+		}
+
+		_cts = new();
+		var token = _cts.Token;
+
+		try {
+			await Task.Delay(Delay, token);
+
+			if (!IsInstanceValid(this)) {
+				return;
+			}
+
+			UpdateCandidates();
+		} catch (TaskCanceledException) { } catch (Exception e) {
+			Log.Error(e);
+		}
 	}
 
 	private void BgOnVisibilityChanged() {

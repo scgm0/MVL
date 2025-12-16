@@ -1,4 +1,5 @@
 using System;
+using System.Buffers;
 using System.Collections.Generic;
 using Godot;
 using MVL.Utils;
@@ -7,6 +8,7 @@ using MVL.Utils.Game;
 namespace MVL.UI.Other;
 
 public partial class AuthorsLineEdit : CandidateLineEdit<ApiAuthor?> {
+	private ApiAuthor?[] _resultCache = [];
 	public int MaxCandidates { get; set; } = 10;
 
 	public override void _Ready() {
@@ -27,28 +29,54 @@ public partial class AuthorsLineEdit : CandidateLineEdit<ApiAuthor?> {
 			return [];
 		}
 
-		List<(ApiAuthor? data, int ratio)> cachedCandidatesWithRatio = [];
-		foreach (var data in Candidates) {
-			var name = data?.Name ?? data?.UserId.ToString() ?? string.Empty;
-			var ratio = Fuzzy.Ratio(name, Text);
-			if (ratio > 0) {
-				cachedCandidatesWithRatio.Add((data, ratio));
+		var pool = ArrayPool<(ApiAuthor? data, int ratio)>.Shared;
+		var pooledArray = pool.Rent(Candidates.Length);
+
+		var matchCount = 0;
+		try {
+			var searchText = Text;
+			ReadOnlySpan<ApiAuthor?> candidatesSpan = Candidates;
+
+			foreach (var data in candidatesSpan) {
+				if (data == null) {
+					continue;
+				}
+
+				var name = data.Value.Name;
+				if (string.IsNullOrEmpty(name)) {
+					name = data.Value.UserId.ToString();
+				}
+
+				var ratio = Fuzzy.Ratio(name, searchText);
+
+				if (ratio <= 0) {
+					continue;
+				}
+
+				pooledArray[matchCount] = (data, ratio);
+				matchCount++;
 			}
+
+			if (matchCount == 0) {
+				return [];
+			}
+
+			var validSlice = pooledArray.AsSpan(0, matchCount);
+			validSlice.Sort((a, b) => b.ratio - a.ratio);
+
+			var finalCount = Math.Min(matchCount, MaxCandidates);
+			if (_resultCache.Length < finalCount) {
+				Array.Resize(ref _resultCache, Math.Max(finalCount, _resultCache.Length * 2));
+			}
+
+			for (var i = 0; i < finalCount; i++) {
+				_resultCache[i] = validSlice[i].data;
+			}
+
+			return _resultCache.AsSpan(0, finalCount);
+		} finally {
+			pool.Return(pooledArray, clearArray: true);
 		}
-
-		if (cachedCandidatesWithRatio.Count == 0) {
-			return [];
-		}
-
-		cachedCandidatesWithRatio.Sort((a, b) => b.ratio - a.ratio);
-
-		var count = Math.Min(cachedCandidatesWithRatio.Count, MaxCandidates);
-		var result = new ApiAuthor?[count];
-		for (var i = 0; i < count; i++) {
-			result[i] = cachedCandidatesWithRatio[i].data;
-		}
-
-		return result;
 	}
 
 	public override Button GetItemContainer(ApiAuthor? item) {
