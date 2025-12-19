@@ -64,15 +64,15 @@ public partial class ModpackPage : MenuPage {
 	}
 
 	private void OnVisibilityChanged() {
-		if (!Visible) {
-			foreach (var child in _list!.GetChildren()) {
-				if (child == _addModpackButton) {
-					continue;
-				}
-
-				child.QueueFree();
+		foreach (var child in _list!.GetChildren()) {
+			if (child == _addModpackButton) {
+				continue;
 			}
 
+			child.QueueFree();
+		}
+
+		if (!Visible) {
 			return;
 		}
 

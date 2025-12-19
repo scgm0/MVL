@@ -74,15 +74,15 @@ public partial class ReleasePage : MenuPage {
 	}
 
 	private void OnVisibilityChanged() {
-		if (!Visible) {
-			foreach (var child in _grid!.GetChildren()) {
-				if (child == _addReleaseButton) {
-					continue;
-				}
-
-				child.QueueFree();
+		foreach (var child in _grid!.GetChildren()) {
+			if (child == _addReleaseButton) {
+				continue;
 			}
 
+			child.QueueFree();
+		}
+
+		if (!Visible) {
 			return;
 		}
 
