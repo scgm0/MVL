@@ -236,7 +236,7 @@ public partial class SettingPage : MenuPage {
 		Tools.SceneTree.Root.MinSize = new(Mathf.CeilToInt(1122 * UI.Main.BaseConfig.DisplayScale),
 			Mathf.CeilToInt(618 * UI.Main.BaseConfig.DisplayScale));
 
-		UI.Main.Instance?.WindowMaterial?.SetShaderParameter(StringNames.Radius, 10 * UI.Main.BaseConfig.DisplayScale);
+		UI.Main.Instance?.WindowMaterial?.SetShaderParameter(StringNames.OuterOutlineThickness, UI.Main.BaseConfig.DisplayScale);
 		UI.Main.Instance?.RootOnSizeChanged();
 
 		UI.Main.BaseConfig.Save();

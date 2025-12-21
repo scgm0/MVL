@@ -3,7 +3,6 @@ shader_type canvas_item;
 uniform float radius = 10.0;
 uniform vec2 windowTopLeft = vec2(5);
 uniform vec2 windowExpandedSize = vec2(1162, 658);
-uniform bool hasRoundCorners = true;
 
 uniform vec4 shadowColor: source_color = vec4(0.0, 0.0, 0.0, 1.0);
 
@@ -45,7 +44,7 @@ float roundedBoxSDF(vec2 p, vec2 b, float r) {
 }
 
 vec4 getShadow() {
-	float distance = roundedBoxSDF(fragCoord - rectCenter, halfSize, hasRoundCorners ? radius : 0.0);
+	float distance = roundedBoxSDF(fragCoord - rectCenter, halfSize, radius);
 	float shadowAlpha = 1.0 - smoothstep(-windowTopLeft.x * 0.5, windowTopLeft.x, distance);
 	return mix(vec4(0), shadowColor, shadowAlpha);
 }
