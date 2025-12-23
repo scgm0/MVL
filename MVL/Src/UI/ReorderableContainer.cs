@@ -18,12 +18,13 @@ public partial class ReorderableContainer : Container {
 	public int Separation {
 		get;
 		set {
-			if (value == field || value < 0) {
+			if (field == value || value < 0) {
 				return;
 			}
 
 			field = value;
-			_OnSortChildren();
+			_layoutDirty = true;
+			QueueSort();
 		}
 	} = 10;
 
@@ -31,21 +32,21 @@ public partial class ReorderableContainer : Container {
 	public bool IsVertical {
 		get;
 		set {
-			if (value == field) {
+			if (field == value) {
 				return;
 			}
 
 			field = value;
-
-			if (value) {
+			if (field) {
 				CustomMinimumSize = CustomMinimumSize with { X = 0 };
 			} else {
 				CustomMinimumSize = CustomMinimumSize with { Y = 0 };
 			}
 
-			_OnSortChildren();
+			_layoutDirty = true;
+			QueueSort();
 		}
-	} = false;
+	}
 
 	[Export]
 	public ScrollContainer? ScrollContainer { get; set; }
@@ -64,9 +65,14 @@ public partial class ReorderableContainer : Container {
 
 	private float _scrollStartingPoint;
 	private bool _isSmoothScroll;
+
 	private readonly List<Rect2> _dropZones = [];
-	private int _dropZoneIndex = -1;
 	private readonly List<Rect2> _expectChildRect = [];
+	private readonly List<Control> _visibleChildrenBuffer = [];
+
+	private int _dropZoneIndex = -1;
+	private int _lastDropZoneIndex = -1;
+	private bool _layoutDirty = true;
 
 	private Control _control = new();
 	private Control? _focusChild;
@@ -85,39 +91,66 @@ public partial class ReorderableContainer : Container {
 		_control.TopLevel = true;
 		_control.MouseFilter = MouseFilterEnum.Pass;
 		AddChild(_control, false, InternalMode.Back);
+
 		if (ScrollContainer == null && GetParent() is ScrollContainer parentScrollContainer) {
 			ScrollContainer = parentScrollContainer;
 		}
 
-		if (ScrollContainer != null && ScrollContainer.HasMethod("handle_overdrag")) {
+		if (ScrollContainer?.GetScript().As<Script?>()?.GetGlobalName() == "SmoothScrollContainer") {
 			_isSmoothScroll = true;
 		}
 
 		ProcessMode = ProcessModeEnum.Pausable;
-		_AdjustExpectedChildRect();
-		SortChildren += () => _OnSortChildren();
-		ChildEnteredTree += _OnChildEnteredTree;
+
+		SortChildren += OnSortChildrenCallback;
+		ChildEnteredTree += _OnChildTreeChanged;
+		ChildExitingTree += _OnChildTreeChanged;
+		Resized += _OnResized;
+
+		_layoutDirty = true;
+		OnSortChildrenCallback();
 	}
+
+	private void _OnChildTreeChanged(Node node) {
+		if (node is Control control && !Tools.IsEditorHint) {
+			control.MouseFilter = MouseFilterEnum.Pass;
+		}
+
+		_layoutDirty = true;
+		QueueSort();
+	}
+
+	private void _OnResized() { _layoutDirty = true; }
+
+	private void OnSortChildrenCallback() { _OnSortChildren(); }
 
 	public override void _GuiInput(InputEvent @event) {
 		if (@event is not InputEventMouseButton { ButtonIndex: MouseButton.Left } mouseEvent) {
 			return;
 		}
 
-		foreach (var node in GetChildren()) {
-			if (node is not Control child) {
+		var count = GetChildCount();
+		for (var i = 0; i < count; i++) {
+			if (GetChild(i) is not Control child) {
 				continue;
 			}
 
-			if (child.GetRect().HasPoint(GetLocalMousePosition()) && mouseEvent.IsPressed()) {
-				_focusChild = child;
-				_isPress = true;
-				AcceptEvent();
-			} else if (!mouseEvent.IsPressed()) {
-				_isPress = false;
-				_isHold = false;
+			if (!child.GetRect().HasPoint(GetLocalMousePosition()) || !mouseEvent.IsPressed()) {
+				continue;
 			}
+
+			_focusChild = child;
+			_isPress = true;
+			AcceptEvent();
+			return;
 		}
+
+		if (!mouseEvent.IsPressed()) {
+			_isPress = false;
+			_isHold = false;
+		}
+
+		@event.Dispose();
 	}
 
 	public override void _Process(double delta) {
@@ -126,6 +159,7 @@ public partial class ReorderableContainer : Container {
 		}
 
 		_HandleInput(delta);
+
 		if (_currentDuration >= HoldDuration != _isHold) {
 			_isHold = _currentDuration >= HoldDuration;
 			if (_isHold) {
@@ -142,7 +176,10 @@ public partial class ReorderableContainer : Container {
 
 				break;
 			}
-			case false when _dropZoneIndex != -1: _OnStopDragging(); break;
+			case false when _dropZoneIndex != -1: {
+				_OnStopDragging();
+				break;
+			}
 		}
 
 		if (_isUsingProcess) {
@@ -164,14 +201,31 @@ public partial class ReorderableContainer : Container {
 	}
 
 	private void _OnStartDragging() {
-		_control.Size = Tools.SceneTree.Root.Size;
+		_control.Size = GetTree().Root.Size;
 		_control.Visible = true;
 		MouseDefaultCursorShape = CursorShape.Drag;
 		_isUsingProcess = true;
 		_focusChild!.ZIndex = 1;
+
 		if (_isSmoothScroll) {
 			ScrollContainer!.ProcessMode = ProcessModeEnum.Disabled;
 		}
+
+		var currentIndex = 0;
+		var childCount = GetChildCount();
+		for (var i = 0; i < childCount; i++) {
+			var node = GetChild(i);
+			if (node == _focusChild) break;
+			if (node is Control { Visible: true } c && c != _control) {
+				currentIndex++;
+			}
+		}
+
+		_dropZoneIndex = currentIndex;
+
+		_layoutDirty = true;
+		_UpdateVisibleChildrenBuffer();
+		_OnSortChildren();
 	}
 
 	private void _OnStopDragging() {
@@ -179,48 +233,73 @@ public partial class ReorderableContainer : Container {
 		MouseDefaultCursorShape = CursorShape.Arrow;
 		_focusChild!.ZIndex = 0;
 		var focusChildIndex = _focusChild.GetIndex();
+
 		MoveChild(_focusChild, _dropZoneIndex);
 		EmitSignalReordered(focusChildIndex, _dropZoneIndex);
+
 		_focusChild = null;
 		_dropZoneIndex = -1;
+		_lastDropZoneIndex = -1;
+
+		_layoutDirty = true;
+
 		if (!_isSmoothScroll) {
 			return;
 		}
 
-		ScrollContainer!.Set("pos", -new Vector2(ScrollContainer.ScrollHorizontal, ScrollContainer.ScrollVertical));
-		ScrollContainer.ProcessMode = ProcessModeEnum.Inherit;
-	}
-
-	private void _OnChildEnteredTree(Node node) {
-		if (node is Control control && !Engine.IsEditorHint()) {
-			control.MouseFilter = MouseFilterEnum.Pass;
-		}
+		ScrollContainer?.Set("pos", -new Vector2(ScrollContainer.ScrollHorizontal, ScrollContainer.ScrollVertical));
+		ScrollContainer?.ProcessMode = ProcessModeEnum.Inherit;
 	}
 
 	private void _HandleDraggingChildPos(double delta) {
 		float targetPos;
+		var mouseLocalPos = GetLocalMousePosition();
+
 		if (IsVertical) {
-			targetPos = GetLocalMousePosition().Y - _focusChild!.Size.Y / 2.0f;
-			_focusChild.Position =
-				new(_focusChild.Position.X, (float)Mathf.Lerp(_focusChild.Position.Y, targetPos, delta * Speed));
+			targetPos = mouseLocalPos.Y - _focusChild!.Size.Y / 2.0f;
 		} else {
-			targetPos = GetLocalMousePosition().X - _focusChild!.Size.X / 2.0f;
-			_focusChild.Position =
-				new((float)Mathf.Lerp(_focusChild.Position.X, targetPos, delta * Speed), _focusChild.Position.Y);
+			targetPos = mouseLocalPos.X - _focusChild!.Size.X / 2.0f;
+		}
+
+		if (ClipContents) {
+			float limitMax;
+			if (IsVertical) {
+				limitMax = Size.Y - _focusChild.Size.Y;
+			} else {
+				limitMax = Size.X - _focusChild.Size.X;
+			}
+
+			limitMax = Math.Max(0, limitMax); 
+
+			targetPos = Mathf.Clamp(targetPos, 0, limitMax);
+		}
+
+		if (IsVertical) {
+			_focusChild.Position = new(_focusChild.Position.X, 
+				(float)Mathf.Lerp(_focusChild.Position.Y, targetPos, delta * Speed));
+		} else {
+			_focusChild.Position = new((float)Mathf.Lerp(_focusChild.Position.X, targetPos, delta * Speed), 
+				_focusChild.Position.Y);
 		}
 
 		var childCenterPos = _focusChild.GetRect().GetCenter();
+		
+		var newDropIndex = -1;
 		for (var i = 0; i < _dropZones.Count; i++) {
-			var dropZone = _dropZones[i];
-			if (dropZone.HasPoint(childCenterPos)) {
-				_dropZoneIndex = i;
-				break;
+			if (!_dropZones[i].HasPoint(childCenterPos)) {
+				continue;
 			}
 
-			if (i == _dropZones.Count - 1) {
-				_dropZoneIndex = -1;
-			}
+			newDropIndex = i;
+			break;
 		}
+
+		if (newDropIndex == -1 || newDropIndex == _dropZoneIndex) {
+			return;
+		}
+
+		_dropZoneIndex = newDropIndex;
+		_layoutDirty = true;
 	}
 
 	private void _HandleAutoScroll(double delta) {
@@ -236,8 +315,6 @@ public partial class ReorderableContainer : Container {
 			} else if (lower < mouseGPos.Y) {
 				var factor = (mouseGPos.Y - lower) / (scrollGRect.End.Y - lower);
 				ScrollContainer.ScrollVertical += (int)(delta * AutoScrollSpeed * 150.0 * factor);
-			} else {
-				ScrollContainer.ScrollVertical = ScrollContainer.ScrollVertical;
 			}
 		} else {
 			var left = scrollGRect.Position.X + scrollGRect.Size.X * AutoScrollRange;
@@ -249,33 +326,69 @@ public partial class ReorderableContainer : Container {
 			} else if (right < mouseGPos.X) {
 				var factor = (mouseGPos.X - right) / (scrollGRect.End.X - right);
 				ScrollContainer.ScrollHorizontal += (int)(delta * AutoScrollSpeed * 150.0 * factor);
-			} else {
-				ScrollContainer.ScrollHorizontal = ScrollContainer.ScrollHorizontal;
 			}
 		}
 	}
 
 	private void _OnSortChildren(double delta = -1.0) {
-		if (_isUsingProcess && Math.Abs(delta - -1.0) < 0.0001) {
+		var isManualSort = Math.Abs(delta - -1.0) < 0.0001;
+
+		if (isManualSort) {
+			_layoutDirty = true;
+		} else if (!_isUsingProcess && !isManualSort) {
 			return;
 		}
 
-		_AdjustExpectedChildRect();
+		_UpdateVisibleChildrenBuffer();
+
+		if (_layoutDirty) {
+			_AdjustExpectedChildRect();
+			_AdjustDropZoneRect();
+			_layoutDirty = false;
+		}
+
 		_AdjustChildRect(delta);
-		_AdjustDropZoneRect();
 	}
 
-	private void _AdjustExpectedChildRect() {
-		_expectChildRect.Clear();
-		var children = _GetVisibleChildren();
-		var endPoint = 0.0f;
-		for (var i = 0; i < children.Count; i++) {
-			var node = children[i];
+	private void _UpdateVisibleChildrenBuffer() {
+		_visibleChildrenBuffer.Clear();
+		var count = GetChildCount();
+		for (var i = 0; i < count; i++) {
+			var node = GetChild(i);
 			if (node is not Control child) {
 				continue;
 			}
 
+			if (!child.Visible) {
+				continue;
+			}
+
+			if (node == _focusChild && _isHold) {
+				continue;
+			}
+
+			if (child == _control) {
+				continue;
+			}
+
+			_visibleChildrenBuffer.Add(child);
+		}
+	}
+
+	private void _AdjustExpectedChildRect() {
+		_expectChildRect.Clear();
+
+		var endPoint = 0.0f;
+
+		if (_expectChildRect.Capacity < _visibleChildrenBuffer.Count + 1) {
+			_expectChildRect.Capacity = _visibleChildrenBuffer.Count + 1;
+		}
+
+		for (var i = 0; i < _visibleChildrenBuffer.Count; i++) {
+			var child = _visibleChildrenBuffer[i];
+
 			var minSize = child.GetCombinedMinimumSize();
+
 			if (IsVertical) {
 				if (i == _dropZoneIndex) {
 					endPoint += _focusChild!.Size.Y + Separation;
@@ -295,138 +408,132 @@ public partial class ReorderableContainer : Container {
 	}
 
 	private void _AdjustChildRect(double delta = -1.0f) {
-		var children = _GetVisibleChildren();
-		if (children.Count == 0) {
-			return;
-		}
-
-		var isAnimating = false;
-		for (var i = 0; i < children.Count; i++) {
-			var node = children[i];
-			if (node is not Control child) {
-				continue;
+		if (_visibleChildrenBuffer.Count > 0) {
+			if (_expectChildRect.Count != _visibleChildrenBuffer.Count) {
+				_layoutDirty = true;
+				return;
 			}
 
-			if (child.Position == _expectChildRect[i].Position && child.Size == _expectChildRect[i].Size) {
-				continue;
-			}
+			var isAnimating = false;
+			var fDelta = (float)delta;
+			var useProcess = _isUsingProcess && fDelta > 0;
 
-			if (_isUsingProcess) {
-				isAnimating = true;
-				child.Position = child.Position.Lerp(_expectChildRect[i].Position, (float)(delta * Speed));
-				child.Size = _expectChildRect[i].Size;
-				if ((child.Position - _expectChildRect[i].Position).Length() <= 1.0) {
-					child.Position = _expectChildRect[i].Position;
+			for (var i = 0; i < _visibleChildrenBuffer.Count; i++) {
+				var child = _visibleChildrenBuffer[i];
+				var targetRect = _expectChildRect[i];
+
+				if (child.Position == targetRect.Position && child.Size == targetRect.Size) {
+					continue;
 				}
-			} else {
-				child.Position = _expectChildRect[i].Position;
-				child.Size = _expectChildRect[i].Size;
-			}
-		}
 
-		var lastNode = children[^1];
-		if (lastNode is Control lastChild) {
-			if (IsVertical) {
-				if (_isUsingProcess && _dropZoneIndex == children.Count) {
-					CustomMinimumSize = new(CustomMinimumSize.X,
-						_expectChildRect[^1].End.Y + _focusChild!.Size.Y + Separation);
+				if (useProcess) {
+					isAnimating = true;
+					child.Position = child.Position.Lerp(targetRect.Position, fDelta * Speed);
+					child.Size = targetRect.Size;
+					if (child.Position.DistanceSquaredTo(targetRect.Position) <= 1.0f) {
+						child.Position = targetRect.Position;
+					}
 				} else {
-					CustomMinimumSize = new(CustomMinimumSize.X, lastChild.GetRect().End.Y);
+					child.Position = targetRect.Position;
+					child.Size = targetRect.Size;
 				}
-			} else {
-				if (_isUsingProcess && _dropZoneIndex == children.Count) {
-					CustomMinimumSize =
-						new(_expectChildRect[^1].End.X + _focusChild!.Size.X + Separation,
-							CustomMinimumSize.Y);
-				} else {
-					CustomMinimumSize = new(lastChild.GetRect().End.X, CustomMinimumSize.Y);
-				}
+			}
+
+			if (!isAnimating && _focusChild == null) {
+				_isUsingProcess = false;
 			}
 		}
 
-		if (!isAnimating && _focusChild == null) {
-			_isUsingProcess = false;
+		float contentSize;
+		float lastEnd = 0;
+
+		if (_visibleChildrenBuffer.Count > 0) {
+			lastEnd = IsVertical ? _expectChildRect[^1].End.Y : _expectChildRect[^1].End.X;
+		}
+
+		if (IsVertical) {
+			if (_isUsingProcess && _dropZoneIndex == _visibleChildrenBuffer.Count) {
+				float sep = _visibleChildrenBuffer.Count > 0 ? Separation : 0;
+				contentSize = lastEnd + sep + _focusChild!.Size.Y;
+			} else {
+				contentSize = lastEnd;
+			}
+
+			CustomMinimumSize = new(CustomMinimumSize.X, contentSize);
+		} else {
+			if (_isUsingProcess && _dropZoneIndex == _visibleChildrenBuffer.Count) {
+				float sep = _visibleChildrenBuffer.Count > 0 ? Separation : 0;
+				contentSize = lastEnd + sep + _focusChild!.Size.X;
+			} else {
+				contentSize = lastEnd;
+			}
+
+			CustomMinimumSize = new(contentSize, CustomMinimumSize.Y);
 		}
 	}
 
 	private void _AdjustDropZoneRect() {
 		_dropZones.Clear();
-		var children = _GetVisibleChildren();
-		for (var i = 0; i < children.Count; i++) {
-			var node = children[i];
-			if (node is not Control child) {
-				continue;
+
+		if (_visibleChildrenBuffer.Count == 0 || _expectChildRect.Count != _visibleChildrenBuffer.Count) {
+			if (_visibleChildrenBuffer.Count == 0) {
+				_dropZones.Add(new(Vector2.Zero, Size));
 			}
 
+			return;
+		}
+
+		for (var i = 0; i < _visibleChildrenBuffer.Count; i++) {
+			var targetRect = _expectChildRect[i];
+			var targetCenter = targetRect.GetCenter();
+
 			Rect2 dropZoneRect = new();
+
 			if (IsVertical) {
 				if (i == 0) {
-					dropZoneRect.Position = new(child.Position.X, child.Position.Y - DropZoneExtend);
-					dropZoneRect.End = new(child.Size.X, child.GetRect().GetCenter().Y);
-					_dropZones.Add(dropZoneRect);
+					dropZoneRect.Position = new(targetRect.Position.X, targetRect.Position.Y - DropZoneExtend);
 				} else {
-					if (children[i - 1] is Control prevChild) {
-						dropZoneRect.Position = new(prevChild.Position.X,
-							prevChild.GetRect().GetCenter().Y);
-						dropZoneRect.End = new(child.Size.X, child.GetRect().GetCenter().Y);
-						_dropZones.Add(dropZoneRect);
-					}
+					var prevRect = _expectChildRect[i - 1];
+					var prevCenter = prevRect.GetCenter();
+
+					dropZoneRect.Position = new(prevRect.Position.X, prevCenter.Y);
 				}
 
-				if (i != children.Count - 1) {
+				dropZoneRect.End = new(targetRect.Size.X, targetCenter.Y);
+				_dropZones.Add(dropZoneRect);
+
+				if (i != _visibleChildrenBuffer.Count - 1) {
 					continue;
 				}
 
-				dropZoneRect.Position = new(child.Position.X, child.GetRect().GetCenter().Y);
-				dropZoneRect.End = new(child.Size.X, child.GetRect().End.Y + DropZoneExtend);
+				dropZoneRect = new() {
+					Position = new(targetRect.Position.X, targetCenter.Y),
+					End = new(targetRect.Size.X, targetRect.End.Y + DropZoneExtend)
+				};
 			} else {
 				if (i == 0) {
-					dropZoneRect.Position = new(child.Position.X - DropZoneExtend, child.Position.Y);
-					dropZoneRect.End = new(child.GetRect().GetCenter().X, child.Size.Y);
-					_dropZones.Add(dropZoneRect);
+					dropZoneRect.Position = new(targetRect.Position.X - DropZoneExtend, targetRect.Position.Y);
 				} else {
-					if (children[i - 1] is Control prevChild) {
-						dropZoneRect.Position = new(prevChild.GetRect().GetCenter().X,
-							prevChild.Position.Y);
-						dropZoneRect.End = new(child.GetRect().GetCenter().X, child.Size.Y);
-						_dropZones.Add(dropZoneRect);
-					}
+					var prevRect = _expectChildRect[i - 1];
+					var prevCenter = prevRect.GetCenter();
+
+					dropZoneRect.Position = new(prevCenter.X, prevRect.Position.Y);
 				}
 
-				if (i != children.Count - 1) {
+				dropZoneRect.End = new(targetCenter.X, targetRect.Size.Y);
+				_dropZones.Add(dropZoneRect);
+
+				if (i != _visibleChildrenBuffer.Count - 1) {
 					continue;
 				}
 
-				dropZoneRect.Position = new(child.GetRect().GetCenter().X, child.Position.Y);
-				dropZoneRect.End = new(child.GetRect().End.X + DropZoneExtend, child.Size.Y);
+				dropZoneRect = new() {
+					Position = new(targetCenter.X, targetRect.Position.Y),
+					End = new(targetRect.End.X + DropZoneExtend, targetRect.Size.Y)
+				};
 			}
 
 			_dropZones.Add(dropZoneRect);
 		}
-	}
-
-	private List<Node> _GetVisibleChildren() {
-		var visibleControls = new List<Node>();
-		foreach (var node in GetChildren()) {
-			if (node is not Control child) {
-				continue;
-			}
-
-			if (!child.Visible) {
-				continue;
-			}
-
-			if (node == _focusChild && _isHold) {
-				continue;
-			}
-
-			if (child == _control) {
-				continue;
-			}
-
-			visibleControls.Add(child);
-		}
-
-		return visibleControls;
 	}
 }
