@@ -160,7 +160,9 @@ public class EasyTier : IDisposable {
 
 	static private readonly string[] FallbackServers = [
 		"tcp://public.easytier.top:11010",
-		"tcp://public2.easytier.cn:54321"
+		"tcp://public2.easytier.cn:54321",
+		"https://etnode.zkitefly.eu.org/node1",
+		"https://etnode.zkitefly.eu.org/node2"
 	];
 
 	public static async Task<List<string>> FetchPublicNodes(int limit = 5) {
