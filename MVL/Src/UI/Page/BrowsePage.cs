@@ -433,8 +433,10 @@ public partial class BrowsePage : MenuPage {
 	private async Task<T?> FetchAndDeserializeAsync<T>(
 		string url,
 		JsonTypeInfo<T> typeInfo) {
+		Log.Debug($"正在获取: {url}");
 		await using var stream = await url.GetStreamAsync();
-		return await JsonSerializer.DeserializeAsync(stream, typeInfo);
+		var result = await JsonSerializer.DeserializeAsync(stream, typeInfo);
+		return result;
 	}
 
 	private void ProcessAuthors(ApiStatusAuthors? apiAuthors) {
