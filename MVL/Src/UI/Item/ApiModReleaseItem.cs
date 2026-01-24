@@ -1,5 +1,6 @@
 using System;
 using System.IO;
+using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using CSemVer;
@@ -143,8 +144,7 @@ public partial class ApiModReleaseItem : PanelContainer {
 			child.QueueFree();
 		}
 
-		ApiModRelease.Value.Tags.Reverse();
-		foreach (var tag in ApiModRelease.Value.Tags) {
+		foreach (var tag in ApiModRelease.Value.Tags.Reverse()) {
 			var label = new Label { Text = tag };
 			label.Modulate = Colors.DarkRed;
 			label.ThemeTypeVariation = "ModReleaseTag";
