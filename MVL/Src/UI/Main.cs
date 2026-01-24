@@ -553,14 +553,26 @@ public partial class Main : NativeWindowUtility {
 				EnableRaisingEvents = true
 			};
 
+			var hide = false;
 			process.OutputDataReceived += (_, args) => {
 				if (args.Data == null) {
 					return;
 				}
 
-				if (args.Data.EndsWith("Client logger started.")) {
-					Dispatcher.SynchronizationContext.Post(_ => { Tools.SceneTree.Root.Minimize(); }, null);
+				Console.Out.WriteLine(args.Data);
+				if (hide) {
+					return;
 				}
+
+				Dispatcher.SynchronizationContext.Post(_ => { Tools.SceneTree.Root.Minimize(); }, null);
+				hide = true;
+			};
+			process.ErrorDataReceived += (_, args) => {
+				if (args.Data == null) {
+					return;
+				}
+
+				Console.Error.WriteLine(args.Data);
 			};
 
 			process.Start();
