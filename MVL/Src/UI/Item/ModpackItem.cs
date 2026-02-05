@@ -74,8 +74,6 @@ public partial class ModpackItem : PanelContainer {
 			Main.GameExitEvent += MainOnGameExitEvent;
 		}
 
-		
-
 		_versionButton.Pressed += VersionButtonOnPressed;
 		_playButton.Pressed += PlayButtonOnPressed;
 
@@ -99,7 +97,11 @@ public partial class ModpackItem : PanelContainer {
 
 	private void MainOnGameExitEvent() {
 		Dispatcher.SynchronizationContext.Post(_ => {
-				var icon = (IconTexture2D)_playButton!.Icon;
+				if (_playButton is null || !IsInstanceValid(_playButton)) {
+					return;
+				}
+
+				var icon = (IconTexture2D)_playButton.Icon;
 				icon.IconName = "play";
 				_playButton.Modulate = Colors.White;
 			},
