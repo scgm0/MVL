@@ -514,7 +514,7 @@ public partial class Main : NativeWindowUtility {
 	public static DirAccess CopyVsRun() {
 		var tmp = DirAccess.CreateTemp("VSRun");
 		var tmpRunPath = tmp.GetCurrentDir();
-		var vsRunPath = $"res://Misc/VSRun/net{CurrentModpack!.ReleaseInfo!.TargetFrameworkVersion}";
+		var vsRunPath = $"res://Misc/VSRun/net{Tools.VSRunTargetFramework}";
 		foreach (var file in DirAccess.GetFilesAt(vsRunPath)) {
 			var fromPath = vsRunPath.PathJoin(file);
 			tmp.Copy(fromPath, tmpRunPath.PathJoin(file).NormalizePath());
@@ -613,9 +613,7 @@ public partial class Main : NativeWindowUtility {
 			return;
 		}
 
-		var hasDotnet =
-			await Tools.HasRequiredDotNetVersionInstalled(releaseInfo.TargetFrameworkName!,
-				releaseInfo.TargetFrameworkVersion!);
+		var hasDotnet = await Tools.HasRequiredDotNetVersionInstalledAsync(Tools.VSRunTargetFramework);
 		if (!hasDotnet) {
 			var confirmationWindow = _confirmationWindowScene!.Instantiate<ConfirmationWindow>();
 			confirmationWindow.Modulate = Colors.Transparent;
@@ -623,14 +621,13 @@ public partial class Main : NativeWindowUtility {
 				string.Format(
 					Tr(
 						"""
-						[b]{0}[/b] 需要安装 [b].NET {1} 运行时[/b]
+						需要安装 [b].NET {1} (x64)[/b] 运行时
 						请点击链接下载并安装：
-						[color=#3c7fe1][url]https://dotnet.microsoft.com/download/dotnet/{2}[/url][/color]
+						[color=#3c7fe1][url]https://dotnet.microsoft.com/download/dotnet/{1}[/url][/color]
 						是否尝试强制启动游戏？
 						"""),
 					releaseInfo.Version.ShortGameVersion,
-					releaseInfo.TargetFrameworkVersion,
-					releaseInfo.TargetFrameworkVersion);
+					Tools.VSRunTargetFramework);
 			confirmationWindow.Hidden += confirmationWindow.QueueFree;
 			confirmationWindow.Confirm += async () => {
 				await confirmationWindow.Hide();

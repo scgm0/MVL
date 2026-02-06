@@ -44,12 +44,7 @@ jobs:
           wget https://cdn.vintagestory.at/gamefiles/stable/vs_client_linux-x64_1.21.5.tar.gz
           mkdir -p NET8
           tar -xzf vs_client_linux-x64_1.21.5.tar.gz -C NET8
-          echo "VINTAGE_STORY_NET8=$(pwd)/NET8/vintagestory" >> $GITHUB_ENV
-
-          wget https://cdn.vintagestory.at/gamefiles/stable/vs_client_linux-x64_1.20.9.tar.gz
-          mkdir -p NET7
-          tar -xzf vs_client_linux-x64_1.20.9.tar.gz -C NET7
-          echo "VINTAGE_STORY_NET7=$(pwd)/NET7/vintagestory" >> $GITHUB_ENV
+          echo "VINTAGE_STORY=$(pwd)/NET8/vintagestory" >> $GITHUB_ENV
 
           echo "Vintage Story paths set."
 

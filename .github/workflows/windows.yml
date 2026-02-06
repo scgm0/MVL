@@ -80,12 +80,7 @@ jobs:
           Invoke-WebRequest -Uri "https://cdn.vintagestory.at/gamefiles/stable/vs_client_linux-x64_1.21.5.tar.gz" -OutFile "vs_client_net8.tar.gz"
           New-Item -ItemType Directory -Force -Path NET8
           tar -xzf vs_client_net8.tar.gz -C NET8
-          echo "VINTAGE_STORY_NET8=$((Get-Location).Path)\NET8\vintagestory" >> $env:GITHUB_ENV
-
-          Invoke-WebRequest -Uri "https://cdn.vintagestory.at/gamefiles/stable/vs_client_linux-x64_1.20.9.tar.gz" -OutFile "vs_client_net7.tar.gz"
-          New-Item -ItemType Directory -Force -Path NET7
-          tar -xzf vs_client_net7.tar.gz -C NET7
-          echo "VINTAGE_STORY_NET7=$((Get-Location).Path)\NET7\vintagestory" >> $env:GITHUB_ENV
+          echo "VINTAGE_STORY=$((Get-Location).Path)\NET8\vintagestory" >> $env:GITHUB_ENV
 
           echo "Vintage Story paths set."
 

@@ -15,6 +15,7 @@ using FileAccess = Godot.FileAccess;
 namespace MVL.Utils;
 
 public static class Tools {
+	public static readonly Version VSRunTargetFramework = Version.Parse("10.0");
 	static private readonly string[] Units = ["B", "KB", "MB", "GB", "TB", "PB", "EB"];
 	public static SceneTree SceneTree { get; } = (SceneTree)Engine.GetMainLoop();
 	public static MessagePackSerializer PackSerializer { get; } = new();
@@ -60,50 +61,89 @@ public static class Tools {
 		return value - Math.Floor(value);
 	}
 
-	public static async Task<bool> HasRequiredDotNetVersionInstalled(
-		string targetFrameworkName,
-		Version targetFrameworkVersion) {
+	public static async Task<bool> HasRequiredDotNetVersionInstalledAsync(Version targetFrameworkVersion) {
 		try {
-			using var process = new Process();
-			process.StartInfo = new() {
+			if (await IsDotNetX64Async()) {
+				return await HasMatchingRuntimeAsync(targetFrameworkVersion);
+			}
+
+			Log.Info("检测到DotNet，但其架构不是x64");
+			return false;
+
+		} catch (Exception e) {
+			Log.Error("检查DotNet环境失败", e);
+			return false;
+		}
+	}
+
+	static private async Task<bool> IsDotNetX64Async() {
+		var output = await ExecuteDotNetCommandAsync("--info");
+
+		return !string.IsNullOrEmpty(output) && output.Contains("Architecture: x64", StringComparison.OrdinalIgnoreCase);
+	}
+
+	static private async Task<bool> HasMatchingRuntimeAsync(Version targetFrameworkVersion) {
+		using var process = CreateDotNetProcess("--list-runtimes");
+		process.Start();
+
+		while (await process.StandardOutput.ReadLineAsync() is { } line) {
+			Log.Debug($"检测到运行时: {line}");
+			if (!line.Contains("Microsoft.NETCore.App", StringComparison.OrdinalIgnoreCase)) {
+				continue;
+			}
+
+			var parts = line.Trim().Split(' ', StringSplitOptions.RemoveEmptyEntries);
+			if (parts.Length < 2) {
+				continue;
+			}
+
+			var versionString = parts[1];
+
+			if (!SVersion.TryParse(versionString, out var installedVersion)) {
+				continue;
+			}
+
+			if (installedVersion.Major != targetFrameworkVersion.Major) {
+				continue;
+			}
+
+			Log.Debug($"检测到匹配的运行时: {parts[0]} {versionString}");
+			await process.WaitForExitAsync();
+			return true;
+		}
+
+		await process.WaitForExitAsync();
+		return false;
+	}
+
+	static private async Task<string?> ExecuteDotNetCommandAsync(string arguments) {
+		using var process = CreateDotNetProcess(arguments);
+		process.Start();
+
+		var output = await process.StandardOutput.ReadToEndAsync();
+		await process.WaitForExitAsync();
+
+		if (process.ExitCode == 0) {
+			return output;
+		}
+
+		Log.Debug($"'dotnet {arguments}'返回了退出代码 {process.ExitCode}");
+		return null;
+
+	}
+
+	static private Process CreateDotNetProcess(string arguments) {
+		return new() {
+			StartInfo = new() {
 				FileName = "dotnet",
-				Arguments = "--list-runtimes",
+				Arguments = arguments,
 				RedirectStandardOutput = true,
 				RedirectStandardError = true,
 				UseShellExecute = false,
-				CreateNoWindow = true
-			};
-
-			process.Start();
-			await process.WaitForExitAsync();
-
-			if (process.ExitCode != 0) {
-				return false;
+				CreateNoWindow = true,
+				WindowStyle = ProcessWindowStyle.Hidden
 			}
-
-			while (await process.StandardOutput.ReadLineAsync() is { } line) {
-				Log.Debug(line);
-				if (!line.Contains(targetFrameworkName, StringComparison.OrdinalIgnoreCase)) {
-					continue;
-				}
-
-				var runtimeInfo = line.Trim().Split(' ', StringSplitOptions.RemoveEmptyEntries);
-				if (runtimeInfo.Length < 2) {
-					continue;
-				}
-
-				var versionString = runtimeInfo[1];
-				if (SVersion.TryParse(versionString, out var installedVersion) &&
-					installedVersion.Major == targetFrameworkVersion.Major) {
-					return true;
-				}
-			}
-
-			return false;
-		} catch (Exception e) {
-			Log.Error(e);
-			return false;
-		}
+		};
 	}
 
 	public static ImageTexture CreateTextureFromBytes(byte[] iconBytes, ImageFormat format = ImageFormat.Png) {
