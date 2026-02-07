@@ -182,7 +182,7 @@ public partial class ApiModReleaseItem : PanelContainer {
 		_checkBox!.Hide();
 		_progressLabel!.Show();
 		_progressBar!.Show();
-		Log.Info($"开始下载 {ApiModRelease!.Value.FileName}...");
+		Log.Info($"开始下载: {ApiModRelease!.Value.FileName}...");
 
 		using var downloadTmp = DirAccess.CreateTemp("MVL_Download");
 		var downloadDir = downloadTmp.GetCurrentDir();
@@ -214,14 +214,25 @@ public partial class ApiModReleaseItem : PanelContainer {
 		_download.Dispose();
 		_download = null;
 
-		if (!IsInstanceValid(this)) {
+		var modFile = Path.Combine(downloadDir, ApiModRelease.Value.FileName);
+		if (!File.Exists(modFile)) {
+			Log.Error($"下载失败: {modFile} 不存在");
+			if (!IsInstanceValid(this)) {
+				return;
+			}
+
+			_progressBar.Hide();
+			_progressLabel.SetText("下载失败");
 			return;
 		}
 
 		var path = Path.Combine(ModpackConfig!.Path!, "Mods", ApiModRelease.Value.FileName);
-		File.Move(Path.Combine(downloadDir, ApiModRelease.Value.FileName), path);
-		if (ModInfo != null) {
+		File.Move(modFile, path);
+		Log.Info($"下载完成: {ApiModRelease.Value.FileName}");
+
+		if (ModInfo != null && File.Exists(ModInfo.ModPath) && !path.Equals(ModInfo.ModPath, StringComparison.OrdinalIgnoreCase)) {
 			File.Delete(ModInfo.ModPath);
+			Log.Debug($"删除旧文件: {ModInfo.ModPath.GetFile()}");
 		}
 
 		var mod = ModInfo.FromZip(path);
@@ -233,6 +244,8 @@ public partial class ApiModReleaseItem : PanelContainer {
 			Window!.UpdateApiModInfo(this);
 		}
 
-		_progressBar.Hide();
+		if (IsInstanceValid(this)) {
+			_progressBar.Hide();
+		}
 	}
 }

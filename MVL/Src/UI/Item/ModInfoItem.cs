@@ -135,7 +135,7 @@ public partial class ModInfoItem : PanelContainer {
 	private async void UpdateButtonOnPressed() {
 		_updateButton!.Disabled = true;
 		_progressBar!.Show();
-		Log.Info($"开始下载 {ApiModRelease!.Value.FileName}...");
+		Log.Info($"开始下载: {ApiModRelease!.Value.FileName}...");
 
 		using var downloadTmp = DirAccess.CreateTemp("MVL_Download");
 		var downloadDir = downloadTmp.GetCurrentDir();
@@ -160,15 +160,24 @@ public partial class ModInfoItem : PanelContainer {
 		await download.StartAsync();
 		download.Dispose();
 
-		if (!IsInstanceValid(this)) {
-			return;
+		var modFile = Path.Combine(downloadDir, ApiModRelease!.Value.FileName);
+		if (!File.Exists(modFile)) {
+			Log.Error($"下载失败: {modFile} 不存在");
+			if (IsInstanceValid(this)) {
+				_progressBar.Hide();
+				await UpdateApiModInfo();
+				return;
+			}
 		}
 
-		_progressBar.Hide();
+		var path = Path.Combine(Mod!.ModPath.GetBaseDir(), ApiModRelease.Value.FileName);
+		File.Move(modFile, path);
+		Log.Info($"下载完成: {ApiModRelease.Value.FileName}");
 
-		var path = Path.Combine(Mod!.ModPath.GetBaseDir(), ApiModRelease!.Value.FileName);
-		File.Move(Path.Combine(downloadDir, ApiModRelease.Value.FileName), path);
-		File.Delete(Mod!.ModPath);
+		if (File.Exists(Mod.ModPath) && !path.Equals(Mod.ModPath, StringComparison.OrdinalIgnoreCase)) {
+			File.Delete(Mod.ModPath);
+			Log.Debug($"删除旧文件: {Mod.ModPath.GetFile()}");
+		}
 
 		var mod = ModInfo.FromZip(path);
 		if (mod != null) {
@@ -177,6 +186,11 @@ public partial class ModInfoItem : PanelContainer {
 			Mod = mod;
 		}
 
+		if (!IsInstanceValid(this)) {
+			return;
+		}
+
+		_progressBar.Hide();
 		await UpdateApiModInfo();
 	}
 
@@ -312,7 +326,7 @@ public partial class ModInfoItem : PanelContainer {
 				HasNewVersion = true;
 				ApiModRelease = modInfoRelease;
 				Log.Debug(
-					$"找到 {ApiModInfo.Value.Name} {modInfoRelease.ModVersion} ({Mod.Version}) ({modInfoRelease.Tags.Stringify()})");
+					$"找到可更新版本: {ApiModInfo.Value.Name} {modInfoRelease.ModVersion} (现有版本: {Mod.Version}) (兼容的游戏版本: {modInfoRelease.Tags.Stringify()})");
 				if (!modInfoRelease.Tags.Any(gameVersion =>
 					GameVersion.ComparerVersion(Mod.ModpackConfig!.Version!.Value, new(gameVersion)) >= 0)) {
 					continue;
