@@ -1,4 +1,4 @@
-[gd_scene load_steps=22 format=3 uid="uid://bf8v1y2ikmx0h"]
+[gd_scene format=3 uid="uid://bf8v1y2ikmx0h"]
 
 [ext_resource type="PackedScene" uid="uid://bu4hwijkbc8sm" path="res://Src/UI/Window/base_window.tscn" id="1_s26qc"]
 [ext_resource type="Script" uid="uid://bgqglerkcylxx" path="res://addons/SmoothScroll/smooth_scroll_container.gd" id="2_d71qf"]

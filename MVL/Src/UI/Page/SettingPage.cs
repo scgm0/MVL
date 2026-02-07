@@ -1,10 +1,15 @@
+using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
+using System.Text.RegularExpressions;
 using Flurl.Http;
 using Godot;
 using MVL.UI.Window;
 using MVL.Utils;
 using MVL.Utils.Extensions;
 using MVL.Utils.Help;
+using FileAccess = Godot.FileAccess;
 
 namespace MVL.UI.Page;
 
@@ -48,7 +53,7 @@ public partial class SettingPage : MenuPage {
 	[Export]
 	private Button? _getLatestReleaseButton;
 
-	private string[] _languages = TranslationServer.GetLoadedLocales();
+	private string[] _languages = [];
 
 	private ConfigFile _configFile = new();
 
@@ -70,6 +75,11 @@ public partial class SettingPage : MenuPage {
 #elif GODOT_LINUXBSD
 	private string _renderingDriverKey = "rendering_device/driver.linuxbsd";
 #endif
+
+	private List<Translation> _localTranslations = [];
+
+	[GeneratedRegex(@"msgid\s+""((?:[^""\\]|\\.)*)""")]
+	static private partial Regex PotRegex();
 
 	public override void _Ready() {
 		base._Ready();
@@ -109,6 +119,7 @@ public partial class SettingPage : MenuPage {
 			Mathf.CeilToInt(size.Y * UI.Main.BaseConfig.DisplayScale));
 
 		DisplayScaleSpinboxOnValueChanged(_displayScaleSpinbox.Value);
+		LoadDefaultZHTranslation();
 		UpdateLanguage();
 		UpdateRenderingDriver();
 		Tools.SceneTree.Root.MoveToCenter();
@@ -145,7 +156,8 @@ public partial class SettingPage : MenuPage {
 		Log.Debug($"已更改渲染驱动: {currentDriver} -> {driverKey}");
 
 		var confirmationWindow = _confirmationWindowScene!.Instantiate<ConfirmationWindow>();
-		confirmationWindow.Message = string.Format(Tr("已将渲染驱动更改为 [color=#3c7fe1]{0}[/color]\n需要重启才能生效，是否立即重启？"), driverDisplayName);
+		confirmationWindow.Message =
+			string.Format(Tr("已将渲染驱动更改为 [color=#3c7fe1]{0}[/color]\n需要重启才能生效，是否立即重启？"), driverDisplayName);
 
 		confirmationWindow.Confirm += () => {
 			OS.SetRestartOnExit(true);
@@ -236,7 +248,8 @@ public partial class SettingPage : MenuPage {
 		Tools.SceneTree.Root.MinSize = new(Mathf.CeilToInt(1122 * UI.Main.BaseConfig.DisplayScale),
 			Mathf.CeilToInt(618 * UI.Main.BaseConfig.DisplayScale));
 
-		UI.Main.Instance?.WindowMaterial?.SetShaderParameter(StringNames.OuterOutlineThickness, UI.Main.BaseConfig.DisplayScale);
+		UI.Main.Instance?.WindowMaterial?.SetShaderParameter(StringNames.OuterOutlineThickness,
+			UI.Main.BaseConfig.DisplayScale);
 		UI.Main.Instance?.RootOnSizeChanged();
 
 		UI.Main.BaseConfig.Save();
@@ -250,12 +263,38 @@ public partial class SettingPage : MenuPage {
 	}
 
 	public void UpdateLanguage() {
+		DirAccess.CopyAbsolute("res://Assets/Translation/MVL/mvl.pot", Path.Join(Paths.TranslationFolder, "mvl.pot"));
+
+		foreach (var localTranslation in _localTranslations.ToList()) {
+			TranslationServer.RemoveTranslation(localTranslation);
+			_localTranslations.Remove(localTranslation);
+			localTranslation.Free();
+			localTranslation.Dispose();
+		}
+
+		foreach (var poFile in Directory.GetFiles(Paths.TranslationFolder, "*.po")) {
+			try {
+				if (!ResourceLoader.Exists(poFile)) {
+					continue;
+				}
+
+				var translation = ResourceLoader.Load<Translation>(poFile, null, ResourceLoader.CacheMode.Ignore);
+				TranslationServer.AddTranslation(translation);
+				_localTranslations.Add(translation);
+				Log.Debug($"加载本地翻译: {poFile.GetFile()}({translation.Locale})");
+			} catch (Exception e) {
+				Log.Error($"加载本地翻译失败: {poFile.GetFile()}", e);
+			}
+		}
+
 		var language = TranslationServer.HasTranslationForLocale(UI.Main.BaseConfig.DisplayLanguage, false)
 			? TranslationServer.FindTranslations(UI.Main.BaseConfig.DisplayLanguage, false)[0].Locale
 			: TranslationServer.GetLocale();
 		TranslationServer.SetLocale(language);
 
 		_displayLanguageOptionButton!.Clear();
+
+		_languages = TranslationServer.GetLoadedLocales();
 		var i = 0;
 		foreach (var locale in _languages) {
 			_displayLanguageOptionButton.AddItem(TranslationServer.GetLocaleName(locale), i);
@@ -269,6 +308,23 @@ public partial class SettingPage : MenuPage {
 		if (language != UI.Main.BaseConfig.DisplayLanguage) {
 			LanguageOptionButtonOnItemSelected(_displayLanguageOptionButton.Selected);
 		}
+	}
+
+	public void LoadDefaultZHTranslation() {
+		var zhTranslation = new Translation {
+			Locale = "zh_Hans"
+		};
+		var matches = PotRegex().Matches(FileAccess.GetFileAsString("res://Assets/Translation/MVL/mvl.pot"));
+		foreach (Match match in matches) {
+			var id = match.Groups[1].Value;
+			if (string.IsNullOrEmpty(id)) {
+				continue;
+			}
+
+			zhTranslation.AddMessage(id, id);
+		}
+
+		TranslationServer.AddTranslation(zhTranslation);
 	}
 
 	public void UpdateRenderingDriver() {

@@ -14,6 +14,7 @@ public static class Paths {
 	public static string PortFile { get; } = OS.GetTempDir().PathJoin("MVL-Port").NormalizePath();
 	public static string OverrideConfigPath { get; } = AppDataFolder.PathJoin("override.cfg").NormalizePath();
 	public static string EasyTierFolder { get; } = AppDataFolder.PathJoin("EasyTier").NormalizePath();
+	public static string TranslationFolder { get; } = AppDataFolder.PathJoin("Translation").NormalizePath();
 	static Paths() { EnsureFolderExists(); }
 
 	static private void EnsureFolderExists() {
@@ -35,6 +36,10 @@ public static class Paths {
 
 		if (!DirAccess.DirExistsAbsolute(EasyTierFolder)) {
 			DirAccess.MakeDirRecursiveAbsolute(EasyTierFolder);
+		}
+
+		if (!DirAccess.DirExistsAbsolute(TranslationFolder)) {
+			DirAccess.MakeDirRecursiveAbsolute(TranslationFolder);
 		}
 	}
 }
