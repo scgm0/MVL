@@ -278,7 +278,11 @@ public partial class SettingPage : MenuPage {
 					continue;
 				}
 
-				var translation = ResourceLoader.Load<Translation>(poFile, null, ResourceLoader.CacheMode.Ignore);
+				var translation = ResourceLoader.Load<Translation?>(poFile, null, ResourceLoader.CacheMode.Ignore);
+				if (translation is null) {
+					continue;
+				}
+
 				TranslationServer.AddTranslation(translation);
 				_localTranslations.Add(translation);
 				Log.Debug($"加载本地翻译: {poFile.GetFile()}({translation.Locale})");
@@ -311,19 +315,7 @@ public partial class SettingPage : MenuPage {
 	}
 
 	public void LoadDefaultZHTranslation() {
-		var zhTranslation = new Translation {
-			Locale = "zh_Hans"
-		};
-		var matches = PotRegex().Matches(FileAccess.GetFileAsString("res://Assets/Translation/MVL/mvl.pot"));
-		foreach (Match match in matches) {
-			var id = match.Groups[1].Value;
-			if (string.IsNullOrEmpty(id)) {
-				continue;
-			}
-
-			zhTranslation.AddMessage(id, id);
-		}
-
+		using var zhTranslation = GD.Load<Translation>("uid://crk0pgc2qwfi");
 		TranslationServer.AddTranslation(zhTranslation);
 	}
 

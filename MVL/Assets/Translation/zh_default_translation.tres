@@ -1,0 +1,8 @@
+[gd_resource type="Translation" script_class="DefaultTranslation" format=3 uid="uid://crk0pgc2qwfi"]
+
+[ext_resource type="Script" uid="uid://cv2pnx1ma7wfw" path="res://Assets/Gds/default_translation.gd" id="1_5kb13"]
+
+[resource]
+locale = "zh_Hans"
+script = ExtResource("1_5kb13")
+metadata/_custom_type_script = "uid://cv2pnx1ma7wfw"
