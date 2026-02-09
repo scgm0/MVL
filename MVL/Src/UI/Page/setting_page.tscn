@@ -28,7 +28,15 @@ IconName = "file-settings-outline"
 IconSize = 18
 metadata/_custom_type_script = "uid://bk3tot6c35bwu"
 
-[node name="SettingPage" type="Control" unique_id=718450851 node_paths=PackedStringArray("_displayLanguageOptionButton", "_displayScaleSpinbox", "_renderingDriverOptionButton", "_menuExpandCheckButton", "_proxyAddressLineEdit", "_downloadThreadSpinbox", "_modpackFolderLineEdit", "_modpackFolderButton", "_releaseFolderLineEdit", "_releaseFolderButton", "_getLatestReleaseButton", "Main")]
+[sub_resource type="Texture2D" id="Texture2D_yoik7"]
+resource_local_to_scene = false
+resource_name = ""
+script = ExtResource("8_axk81")
+IconName = "reload"
+IconSize = 18
+metadata/_custom_type_script = "uid://bk3tot6c35bwu"
+
+[node name="SettingPage" type="Control" unique_id=718450851 node_paths=PackedStringArray("_displayLanguageOptionButton", "_displayScaleSpinbox", "_renderingDriverOptionButton", "_menuExpandCheckButton", "_proxyAddressLineEdit", "_downloadThreadSpinbox", "_modpackFolderLineEdit", "_modpackFolderButton", "_releaseFolderLineEdit", "_releaseFolderButton", "_localTranslationFolderLabel", "_localTranslationReloadButton", "_getLatestReleaseButton", "Main")]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -49,6 +57,8 @@ _modpackFolderLineEdit = NodePath("MarginContainer/ScrollContainer/VBoxContainer
 _modpackFolderButton = NodePath("MarginContainer/ScrollContainer/VBoxContainer/PanelContainer3/VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer/Button")
 _releaseFolderLineEdit = NodePath("MarginContainer/ScrollContainer/VBoxContainer/PanelContainer3/VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer2/LineEdit")
 _releaseFolderButton = NodePath("MarginContainer/ScrollContainer/VBoxContainer/PanelContainer3/VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer2/Button")
+_localTranslationFolderLabel = NodePath("MarginContainer/ScrollContainer/VBoxContainer/PanelContainer3/VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer3/RichTextLabel")
+_localTranslationReloadButton = NodePath("MarginContainer/ScrollContainer/VBoxContainer/PanelContainer3/VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer3/Button")
 _getLatestReleaseButton = NodePath("MarginContainer/ScrollContainer/VBoxContainer/PanelContainer4/VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer/Button")
 Main = NodePath("MarginContainer")
 metadata/_tab_index = 5
@@ -296,6 +306,29 @@ expand_to_text_length = true
 [node name="Button" type="Button" parent="MarginContainer/ScrollContainer/VBoxContainer/PanelContainer3/VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer2" unique_id=1467238128]
 layout_mode = 2
 icon = SubResource("Texture2D_yaaqs")
+flat = true
+
+[node name="HBoxContainer3" type="HBoxContainer" parent="MarginContainer/ScrollContainer/VBoxContainer/PanelContainer3/VBoxContainer/MarginContainer/VBoxContainer" unique_id=1597859533]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/ScrollContainer/VBoxContainer/PanelContainer3/VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer3" unique_id=1780642531]
+layout_mode = 2
+text = "翻译目录"
+
+[node name="RichTextLabel" type="RichTextLabel" parent="MarginContainer/ScrollContainer/VBoxContainer/PanelContainer3/VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer3" unique_id=1891356868]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/normal_font_size = 14
+bbcode_enabled = true
+scroll_active = false
+autowrap_mode = 0
+shortcut_keys_enabled = false
+horizontal_alignment = 2
+vertical_alignment = 1
+
+[node name="Button" type="Button" parent="MarginContainer/ScrollContainer/VBoxContainer/PanelContainer3/VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer3" unique_id=1046239786]
+layout_mode = 2
+icon = SubResource("Texture2D_yoik7")
 flat = true
 
 [node name="PanelContainer4" type="PanelContainer" parent="MarginContainer/ScrollContainer/VBoxContainer" unique_id=1665360904]

@@ -51,6 +51,12 @@ public partial class SettingPage : MenuPage {
 	private Button? _releaseFolderButton;
 
 	[Export]
+	private RichTextLabel? _localTranslationFolderLabel;
+
+	[Export]
+	private Button? _localTranslationReloadButton;
+
+	[Export]
 	private Button? _getLatestReleaseButton;
 
 	private string[] _languages = [];
@@ -93,6 +99,8 @@ public partial class SettingPage : MenuPage {
 		_modpackFolderButton.NotNull();
 		_releaseFolderLineEdit.NotNull();
 		_releaseFolderButton.NotNull();
+		_localTranslationFolderLabel.NotNull();
+		_localTranslationReloadButton.NotNull();
 		_getLatestReleaseButton.NotNull();
 
 		_displayScaleSpinbox.Value = UI.Main.BaseConfig.DisplayScale * 100;
@@ -101,6 +109,7 @@ public partial class SettingPage : MenuPage {
 		_downloadThreadSpinbox.Value = UI.Main.BaseConfig.DownloadThreads;
 		_modpackFolderLineEdit.Text = UI.Main.BaseConfig.ModpackFolder;
 		_releaseFolderLineEdit.Text = UI.Main.BaseConfig.ReleaseFolder;
+		_localTranslationFolderLabel.Text = $"[url]{Paths.TranslationFolder}[/url]";
 
 		_displayLanguageOptionButton.ItemSelected += LanguageOptionButtonOnItemSelected;
 		_displayScaleSpinbox.ValueChanged += DisplayScaleSpinboxOnValueChanged;
@@ -112,6 +121,7 @@ public partial class SettingPage : MenuPage {
 		_releaseFolderLineEdit.EditingToggled += ReleaseFolderLineEditOnEditingToggled;
 		_modpackFolderButton.Pressed += ModpackFolderButtonOnPressed;
 		_releaseFolderButton.Pressed += ReleaseFolderButtonOnPressed;
+		_localTranslationReloadButton.Pressed += UpdateLanguage;
 		_getLatestReleaseButton.Pressed += GetLatestReleaseButtonOnPressed;
 
 		var size = Tools.SceneTree.Root.Size = new(1162, 658);
@@ -268,7 +278,6 @@ public partial class SettingPage : MenuPage {
 		foreach (var localTranslation in _localTranslations.ToList()) {
 			TranslationServer.RemoveTranslation(localTranslation);
 			_localTranslations.Remove(localTranslation);
-			localTranslation.Free();
 			localTranslation.Dispose();
 		}
 
@@ -292,7 +301,9 @@ public partial class SettingPage : MenuPage {
 		}
 
 		var language = TranslationServer.HasTranslationForLocale(UI.Main.BaseConfig.DisplayLanguage, false)
-			? TranslationServer.FindTranslations(UI.Main.BaseConfig.DisplayLanguage, false)[0].Locale
+			? TranslationServer.FindTranslations(UI.Main.BaseConfig.DisplayLanguage, false)
+				.OrderByDescending(t => TranslationServer.CompareLocales(t.Locale, UI.Main.BaseConfig.DisplayLanguage)).First()
+				.Locale
 			: TranslationServer.GetLocale();
 		TranslationServer.SetLocale(language);
 
@@ -311,6 +322,9 @@ public partial class SettingPage : MenuPage {
 
 		if (language != UI.Main.BaseConfig.DisplayLanguage) {
 			LanguageOptionButtonOnItemSelected(_displayLanguageOptionButton.Selected);
+		} else {
+			Tools.SceneTree.Notification((int)MainLoop.NotificationTranslationChanged);
+			Log.Info("已重载翻译");
 		}
 	}
 
