@@ -1,4 +1,4 @@
-[gd_scene load_steps=4 format=3 uid="uid://bxgudtdder0na"]
+[gd_scene format=3 uid="uid://bxgudtdder0na"]
 
 [ext_resource type="FontFile" uid="uid://bmgx1vyg6bavd" path="res://Assets/Font/HarmonyOS_Sans_SC_Bold.ttf" id="1_3v3c8"]
 [ext_resource type="Script" uid="uid://b3uwvqsdvp3gb" path="res://Src/UI/Item/InfoItem.cs" id="1_4vinm"]
@@ -14,7 +14,7 @@ corner_radius_top_right = 5
 corner_radius_bottom_right = 5
 corner_radius_bottom_left = 5
 
-[node name="InfoItem" type="VBoxContainer" node_paths=PackedStringArray("_title", "_content")]
+[node name="InfoItem" type="VBoxContainer" unique_id=1786966538 node_paths=PackedStringArray("_title", "_content")]
 anchors_preset = 10
 anchor_right = 1.0
 offset_bottom = 68.0
@@ -26,13 +26,13 @@ script = ExtResource("1_4vinm")
 _title = NodePath("Label")
 _content = NodePath("RichTextLabel")
 
-[node name="Label" type="Label" parent="."]
+[node name="Label" type="Label" parent="." unique_id=988884207]
 layout_mode = 2
 mouse_filter = 1
 theme_override_fonts/font = ExtResource("1_3v3c8")
 text = "标题"
 
-[node name="RichTextLabel" type="RichTextLabel" parent="."]
+[node name="RichTextLabel" type="RichTextLabel" parent="." unique_id=163417886]
 layout_mode = 2
 size_flags_vertical = 0
 focus_mode = 2
