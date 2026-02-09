@@ -121,6 +121,7 @@ public partial class SettingPage : MenuPage {
 		_releaseFolderLineEdit.EditingToggled += ReleaseFolderLineEditOnEditingToggled;
 		_modpackFolderButton.Pressed += ModpackFolderButtonOnPressed;
 		_releaseFolderButton.Pressed += ReleaseFolderButtonOnPressed;
+		_localTranslationFolderLabel.MetaClicked += Tools.RichTextOpenUrl;
 		_localTranslationReloadButton.Pressed += UpdateLanguage;
 		_getLatestReleaseButton.Pressed += GetLatestReleaseButtonOnPressed;
 
