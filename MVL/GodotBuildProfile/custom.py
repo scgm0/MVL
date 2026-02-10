@@ -19,7 +19,6 @@ vulkan = "yes"
 sdl = "no"
 alsa = "no"
 debug_symbols = "no"
-brotli = "no"
 
 module_basis_universal_enabled = "no"
 module_bmp_enabled = "no"

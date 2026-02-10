@@ -3,7 +3,7 @@
 [ext_resource type="Material" uid="uid://c0sb2bjy16ljf" path="res://Assets/Material/button_blur.tres" id="1_iu184"]
 [ext_resource type="Texture2D" uid="uid://d3mq4tlr6rr01" path="res://Assets/Icon/VS/gameicon.png" id="1_pwx7m"]
 [ext_resource type="Script" uid="uid://d3pr8a1ki4qjs" path="res://Src/UI/Item/ReleaseItem.cs" id="1_wntvq"]
-[ext_resource type="FontFile" uid="uid://bmgx1vyg6bavd" path="res://Assets/Font/HarmonyOS_Sans_SC_Bold.ttf" id="2_wntvq"]
+[ext_resource type="FontFile" uid="uid://bmgx1vyg6bavd" path="res://Assets/Font/HarmonyOS_Sans_SC_Bold.woff2" id="2_wntvq"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_g8snm"]
 content_margin_left = 10.0

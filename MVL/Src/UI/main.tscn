@@ -23,7 +23,7 @@
 [ext_resource type="PackedScene" uid="uid://bp02so1m0q7m0" path="res://Src/UI/Page/setting_page.tscn" id="19_a6wm3"]
 [ext_resource type="PackedScene" uid="uid://d0bdto738ug2l" path="res://Src/UI/Page/info_page.tscn" id="20_53u4p"]
 [ext_resource type="PackedScene" uid="uid://vbu26hqxpm53" path="res://Src/UI/Page/multiplayer_page.tscn" id="22_a6wm3"]
-[ext_resource type="FontFile" uid="uid://bmgx1vyg6bavd" path="res://Assets/Font/HarmonyOS_Sans_SC_Bold.ttf" id="24_365jr"]
+[ext_resource type="FontFile" uid="uid://bmgx1vyg6bavd" path="res://Assets/Font/HarmonyOS_Sans_SC_Bold.woff2" id="24_365jr"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_p7a31"]
 content_margin_left = 10.0

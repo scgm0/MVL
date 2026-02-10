@@ -3,7 +3,7 @@
 [ext_resource type="Script" uid="uid://cbiguj28po1y0" path="res://Src/UI/Window/BaseWindow.cs" id="1_r1ufi"]
 [ext_resource type="Script" uid="uid://dbies7u5fo4sh" path="res://Src/UI/NativeWindowUtility.cs" id="2_1nfmj"]
 [ext_resource type="Shader" uid="uid://bw4cstfk8udci" path="res://Assets/Shader/blur.gdshader" id="2_wrq3t"]
-[ext_resource type="FontFile" uid="uid://bmgx1vyg6bavd" path="res://Assets/Font/HarmonyOS_Sans_SC_Bold.ttf" id="3_1nfmj"]
+[ext_resource type="FontFile" uid="uid://bmgx1vyg6bavd" path="res://Assets/Font/HarmonyOS_Sans_SC_Bold.woff2" id="3_1nfmj"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_v4xgt"]
 shader = ExtResource("2_wrq3t")

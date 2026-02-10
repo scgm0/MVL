@@ -3,7 +3,7 @@
 [ext_resource type="PackedScene" uid="uid://bu4hwijkbc8sm" path="res://Src/UI/Window/base_window.tscn" id="1_fvt7b"]
 [ext_resource type="Script" uid="uid://dstnk40xqjp6x" path="res://Src/UI/Window/AddModpackWindow.cs" id="1_vgayu"]
 [ext_resource type="Script" uid="uid://bk3tot6c35bwu" path="res://Src/Utils/IconTexture2D.cs" id="3_i7wln"]
-[ext_resource type="FontFile" uid="uid://bmgx1vyg6bavd" path="res://Assets/Font/HarmonyOS_Sans_SC_Bold.ttf" id="4_vgayu"]
+[ext_resource type="FontFile" uid="uid://bmgx1vyg6bavd" path="res://Assets/Font/HarmonyOS_Sans_SC_Bold.woff2" id="4_vgayu"]
 
 [sub_resource type="Texture2D" id="Texture2D_5jy5j"]
 resource_local_to_scene = false

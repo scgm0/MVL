@@ -2,7 +2,7 @@
 
 [ext_resource type="PackedScene" uid="uid://bu4hwijkbc8sm" path="res://Src/UI/Window/base_window.tscn" id="1_i8gr8"]
 [ext_resource type="Script" uid="uid://do20m8d4641ws" path="res://Src/UI/Window/LoginWindow.cs" id="2_l4pum"]
-[ext_resource type="FontFile" uid="uid://bmgx1vyg6bavd" path="res://Assets/Font/HarmonyOS_Sans_SC_Bold.ttf" id="2_ta73y"]
+[ext_resource type="FontFile" uid="uid://bmgx1vyg6bavd" path="res://Assets/Font/HarmonyOS_Sans_SC_Bold.woff2" id="2_ta73y"]
 [ext_resource type="Script" uid="uid://bk3tot6c35bwu" path="res://Src/Utils/IconTexture2D.cs" id="3_l4pum"]
 [ext_resource type="Material" uid="uid://b675ao2n7w53x" path="res://Assets/Material/loading.tres" id="5_c76y0"]
 
