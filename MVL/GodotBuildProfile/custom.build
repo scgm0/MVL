@@ -1,6 +1,5 @@
 {
 	"disabled_build_options": {
-		"brotli": false,
 		"disable_3d": true,
 		"disable_navigation_2d": true,
 		"disable_navigation_3d": true,
