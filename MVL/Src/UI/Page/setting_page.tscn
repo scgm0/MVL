@@ -4,6 +4,7 @@
 [ext_resource type="PackedScene" uid="uid://cx30yvsu80t6f" path="res://Src/UI/Window/confirmation_window.tscn" id="2_tr7nv"]
 [ext_resource type="Script" uid="uid://bgqglerkcylxx" path="res://addons/SmoothScroll/smooth_scroll_container.gd" id="3_4s13v"]
 [ext_resource type="PackedScene" uid="uid://debbauyce0xia" path="res://Src/UI/Window/auto_updater_window.tscn" id="3_yoik7"]
+[ext_resource type="Translation" uid="uid://crk0pgc2qwfi" path="res://Assets/Translation/zh_default_translation.tres" id="4_axk81"]
 [ext_resource type="Material" uid="uid://c0sb2bjy16ljf" path="res://Assets/Material/button_blur.tres" id="4_tr7nv"]
 [ext_resource type="Script" uid="uid://b7h0k2h2qwlqv" path="res://addons/SmoothScroll/scroll_damper/expo_scroll_damper.gd" id="4_yoik7"]
 [ext_resource type="Script" uid="uid://bk3tot6c35bwu" path="res://Src/Utils/IconTexture2D.cs" id="8_axk81"]
@@ -60,6 +61,7 @@ _releaseFolderButton = NodePath("MarginContainer/ScrollContainer/VBoxContainer/P
 _localTranslationFolderLabel = NodePath("MarginContainer/ScrollContainer/VBoxContainer/PanelContainer3/VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer3/RichTextLabel")
 _localTranslationReloadButton = NodePath("MarginContainer/ScrollContainer/VBoxContainer/PanelContainer3/VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer3/Button")
 _getLatestReleaseButton = NodePath("MarginContainer/ScrollContainer/VBoxContainer/PanelContainer4/VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer/Button")
+_zhTranslation = ExtResource("4_axk81")
 Main = NodePath("MarginContainer")
 metadata/_tab_index = 5
 

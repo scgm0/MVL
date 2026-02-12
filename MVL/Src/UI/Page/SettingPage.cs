@@ -59,6 +59,9 @@ public partial class SettingPage : MenuPage {
 	[Export]
 	private Button? _getLatestReleaseButton;
 
+	[Export]
+	private Translation? _zhTranslation;
+
 	private string[] _languages = [];
 
 	private ConfigFile _configFile = new();
@@ -82,10 +85,7 @@ public partial class SettingPage : MenuPage {
 	private string _renderingDriverKey = "rendering_device/driver.linuxbsd";
 #endif
 
-	private List<Translation> _localTranslations = [];
-
-	[GeneratedRegex(@"msgid\s+""((?:[^""\\]|\\.)*)""")]
-	static private partial Regex PotRegex();
+	private readonly List<Translation> _localTranslations = [];
 
 	public override void _Ready() {
 		base._Ready();
@@ -139,6 +139,12 @@ public partial class SettingPage : MenuPage {
 			_renderingDriverKey,
 			RenderingServer.GetCurrentRenderingDriverName());
 		_configFile.Save(Paths.OverrideConfigPath);
+	}
+
+	public override void _ExitTree() {
+		TranslationServer.RemoveTranslation(_zhTranslation);
+		_zhTranslation?.Dispose();
+		_zhTranslation = null;
 	}
 
 	private async void GetLatestReleaseButtonOnPressed() {
@@ -330,8 +336,7 @@ public partial class SettingPage : MenuPage {
 	}
 
 	public void LoadDefaultZHTranslation() {
-		using var zhTranslation = GD.Load<Translation>("uid://crk0pgc2qwfi");
-		TranslationServer.AddTranslation(zhTranslation);
+		TranslationServer.AddTranslation(_zhTranslation);
 	}
 
 	public void UpdateRenderingDriver() {
