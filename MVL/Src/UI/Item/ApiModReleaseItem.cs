@@ -227,7 +227,7 @@ public partial class ApiModReleaseItem : PanelContainer {
 		}
 
 		var path = Path.Combine(ModpackConfig!.Path!, "Mods", ApiModRelease.Value.FileName);
-		File.Move(modFile, path);
+		File.Move(modFile, path, true);
 		Log.Info($"下载完成: {ApiModRelease.Value.FileName}");
 
 		if (ModInfo != null && File.Exists(ModInfo.ModPath) && !path.Equals(ModInfo.ModPath, StringComparison.OrdinalIgnoreCase)) {
