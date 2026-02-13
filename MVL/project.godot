@@ -88,7 +88,7 @@ texture={
 
 [internationalization]
 
-locale/translations=PackedStringArray("res://Assets/Translation/Extractable/zh_Hans.po", "res://Assets/Translation/Extractable/es.po", "res://Assets/Translation/Extractable/fr.po", "res://Assets/Translation/Extractable/ru.po", "res://Assets/Translation/MVL/en.po", "res://Assets/Translation/MVL/es.po", "res://Assets/Translation/MVL/fr.po", "res://Assets/Translation/MVL/ru.po", "res://Assets/Translation/locale_name.po")
+locale/translations=PackedStringArray("res://Assets/Translation/Extractable/zh_Hans.po", "res://Assets/Translation/Extractable/en.po", "res://Assets/Translation/Extractable/es.po", "res://Assets/Translation/Extractable/fr.po", "res://Assets/Translation/Extractable/ru.po", "res://Assets/Translation/MVL/en.po", "res://Assets/Translation/MVL/es.po", "res://Assets/Translation/MVL/fr.po", "res://Assets/Translation/MVL/ru.po", "res://Assets/Translation/locale_name.po")
 locale/fallback="zh_Hans"
 rendering/text_driver="ICU / HarfBuzz / Graphite (Built-in)"
 
