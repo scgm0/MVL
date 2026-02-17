@@ -247,25 +247,40 @@ public partial class GameDownloadWindow : BaseWindow {
 			.Build();
 
 		_download.DownloadProgressChanged += (_, args) => {
-			CallDeferred(nameof(UpdateProgress), args.ProgressPercentage, args.BytesPerSecondSpeed);
+			Dispatcher.SynchronizationContext.Post(_ => {
+					UpdateProgress(args.ProgressPercentage, (ulong)args.BytesPerSecondSpeed);
+				},
+				null);
 		};
 
 		_download.DownloadFileCompleted += (_, args) => {
-			if (!args.Cancelled && args.Error is null) {
-				var path = _releasePath!.Text.NormalizePath();
-				var name = _releaseName!.Text;
+			switch (args) {
+				case { Cancelled: true, Error: OperationCanceledException }: {
+					Log.Info($"下载取消 {downloadInfo.FileName}");
+					break;
+				}
+				case { Cancelled: false, Error: null }: {
+					Log.Info($"下载完成 {downloadInfo.FileName}");
+					var path = _releasePath!.Text.NormalizePath();
+					var name = _releaseName!.Text;
 
-				CallDeferred(nameof(ExtractGame),
-				[
-					downloadDir.PathJoin(downloadInfo.FileName),
-					path,
-					name
-				]);
+					Dispatcher.SynchronizationContext.Post(_ => {
+							ExtractGame(downloadDir.PathJoin(downloadInfo.FileName), path, name);
+						},
+						null);
+					break;
+				}
+				case { Cancelled: false, Error: not null }: {
+					Log.Error("下载失败", args.Error);
+					break;
+				}
 			}
 
 			_download.Dispose();
 			_download = null;
 		};
+
+		UpdateProgress(0, 0);
 		await _download.StartAsync();
 	}
 
@@ -283,6 +298,7 @@ public partial class GameDownloadWindow : BaseWindow {
 			}
 		}
 
+		Log.Info($"开始提取游戏");
 #if GODOT_WINDOWS
 		await ExtractInnoSetupAsync(filePath, outputDir, name);
 #elif GODOT_LINUXBSD
@@ -294,7 +310,7 @@ public partial class GameDownloadWindow : BaseWindow {
 		EmitSignalInstallGame(Path.Combine(outputDir, name));
 	}
 
-	private void UpdateProgress(int percentage, ulong speed) {
+	private void UpdateProgress(double percentage, ulong speed) {
 		_progressBar!.Value = percentage;
 		var (fmtSpeed, unit) = Tools.GetSizeAndUnit(speed);
 		_progressBar.GetNode<Label>("Label").Text = $"{fmtSpeed:F2} {unit}/s";
