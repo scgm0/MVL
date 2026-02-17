@@ -1,38 +1,24 @@
 using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Text.Json;
 using System.Text.Json.Nodes;
 using System.Text.Json.Serialization;
 using System.Threading;
 using System.Threading.Tasks;
-using Godot;
-using SharedLibrary;
-using Environment = System.Environment;
+using MVL.Utils.GitHub;
 
 namespace MVL.Utils.Config;
 
-public partial class BaseConfig {
+public class BaseConfig : BaseConfigV0 {
 	private const int LastVersion = 1;
 	private string _configPath = string.Empty;
 	private readonly Lock _syncLock = new();
 
+	[JsonPropertyOrder(-1)]
 	public int Version { get; set; }
-	public string CurrentModpack { get; set; } = "";
-	public string CurrentAccount { get; set; } = "";
-	public string DisplayLanguage { get; set; } = OS.GetLocale();
-	public double DisplayScale { get; set; } = Tools.GetAutoDisplayScale();
-	public bool MenuExpand { get; set; } = true;
-	public string ProxyAddress { get; set; } = "";
-	public int DownloadThreads { get; set; } = Environment.ProcessorCount;
-	public string ModpackFolder { get; set; } = Paths.ModpackFolder;
-	public string ReleaseFolder { get; set; } = Paths.ReleaseFolder;
-	public List<string> Release { get; set; } = [];
-	public List<string> Modpack { get; set; } = [];
-	public List<Account> Account { get; set; } = [];
 
-	[JsonExtensionData]
-	public Dictionary<string, JsonElement>? ExtensionData { get; set; }
+	[JsonPropertyOrder(4)]
+	public GhProxyEnum GitHubProxy { get; set; } = GhProxyEnum.None;
 
 	public void Save() {
 		lock (_syncLock) {
@@ -86,7 +72,7 @@ public partial class BaseConfig {
 			}
 
 			if (fileVersion == 0) {
-				baseConfig = Migrate(jsonObj.Deserialize(SourceGenerationContext.Default.V0) ?? new V0());
+				baseConfig = Migrate(jsonObj.Deserialize(SourceGenerationContext.Default.BaseConfigV0) ?? new BaseConfigV0());
 			} else {
 				baseConfig = jsonObj.Deserialize(SourceGenerationContext.Default.BaseConfig);
 			}
@@ -102,9 +88,9 @@ public partial class BaseConfig {
 		return baseConfig;
 	}
 
-	static private BaseConfig Migrate(V0 config) {
-		Log.Info($"正在迁移配置文件 0 -> {LastVersion}");
-		return new() {
+	static private BaseConfig Migrate(BaseConfigV0 config) {
+		Log.Info($"正在迁移配置文件 v0 -> v{LastVersion}");
+		var baseConfig = new BaseConfig {
 			Version = LastVersion,
 			CurrentModpack = config.CurrentModpack,
 			CurrentAccount = config.CurrentAccount,
@@ -119,5 +105,31 @@ public partial class BaseConfig {
 			Modpack = [..config.Modpack],
 			Account = [..config.Account]
 		};
+		if (config.ExtensionData == null) {
+			return baseConfig;
+		}
+
+		try {
+			foreach (var (key, value) in config.ExtensionData) {
+				switch (key) {
+					case "Version" or "version": {
+						continue;
+					}
+					case "GitHubProxy" or "gitHubProxy": {
+						baseConfig.GitHubProxy = value.Deserialize(SourceGenerationContext.Default.GhProxyEnum);
+						continue;
+					}
+					default: {
+						Log.Debug($"未知配置项: {key}");
+						baseConfig.ExtensionData[key] = value;
+						break;
+					}
+				}
+			}
+		} catch (Exception e) {
+			Log.Error("迁移配置文件发生错误", e);
+		}
+
+		return baseConfig;
 	}
 }

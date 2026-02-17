@@ -15,7 +15,7 @@ namespace MVL.Utils;
 [JsonSerializable(typeof(Dictionary<GameVersion, GameRelease>))]
 [JsonSerializable(typeof(Dictionary<string, string>))]
 [JsonSerializable(typeof(RunConfig))]
-[JsonSerializable(typeof(BaseConfig.V0))]
+[JsonSerializable(typeof(BaseConfigV0))]
 [JsonSerializable(typeof(BaseConfig))]
 [JsonSerializable(typeof(ModpackConfig))]
 [JsonSerializable(typeof(GameRelease))]
@@ -35,6 +35,7 @@ namespace MVL.Utils;
 [JsonSerializable(typeof(ApiRelease))]
 [JsonSerializable(typeof(ApiResponse))]
 [JsonSerializable(typeof(List<EasyTierPlayerInfo>))]
+[JsonSerializable(typeof(GhProxyEnum))]
 [JsonSourceGenerationOptions(JsonSerializerDefaults.Web,
 	AllowTrailingCommas = true,
 	UseStringEnumConverter = true,
