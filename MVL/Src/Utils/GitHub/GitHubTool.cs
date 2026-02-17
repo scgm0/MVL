@@ -1,4 +1,5 @@
 using System.Text.Json;
+using System.Threading;
 using System.Threading.Tasks;
 using Flurl;
 using Flurl.Http;
@@ -17,7 +18,7 @@ public static class GitHubTool {
 		};
 	}
 
-	public static async Task<ApiRelease> GetLatestReleaseAsync(string gitHubApiUrl, GhProxyEnum proxy = GhProxyEnum.None) {
+	public static async Task<ApiRelease> GetLatestReleaseAsync(string gitHubApiUrl, GhProxyEnum proxy = GhProxyEnum.None, CancellationToken cancellationToken = default) {
 		var releaseUrl = $"https://api.github.com/repos/{gitHubApiUrl}/releases/latest";
 		var proxyUrl = GetProxyRequestUrl(proxy);
 		var requestUrl = $"{proxyUrl}{releaseUrl}";
@@ -25,9 +26,9 @@ public static class GitHubTool {
 		var stream = await new Url(requestUrl)
 			.WithHeader("User-Agent", "MVL")
 			.WithHeader("Accept", "application/vnd.github+json")
-			.GetStreamAsync();
+			.GetStreamAsync(cancellationToken: cancellationToken);
 
-		var latestRelease = await JsonSerializer.DeserializeAsync(stream, SourceGenerationContext.Default.ApiRelease);
+		var latestRelease = await JsonSerializer.DeserializeAsync(stream, SourceGenerationContext.Default.ApiRelease, cancellationToken);
 
 		if (proxy != GhProxyEnum.None) {
 			latestRelease.Body = latestRelease.Body.Replace(proxyUrl, string.Empty);

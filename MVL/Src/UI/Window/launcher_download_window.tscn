@@ -1,0 +1,172 @@
+[gd_scene format=3 uid="uid://debbauyce0xia"]
+
+[ext_resource type="PackedScene" uid="uid://bu4hwijkbc8sm" path="res://Src/UI/Window/base_window.tscn" id="1_tva2i"]
+[ext_resource type="Script" uid="uid://bdatr0tw01owg" path="res://Src/UI/Window/LauncherDownloadWindow.cs" id="2_tva2i"]
+[ext_resource type="Script" uid="uid://bgqglerkcylxx" path="res://addons/SmoothScroll/smooth_scroll_container.gd" id="3_1v1wq"]
+[ext_resource type="Script" uid="uid://b7h0k2h2qwlqv" path="res://addons/SmoothScroll/scroll_damper/expo_scroll_damper.gd" id="4_dnnrg"]
+[ext_resource type="Material" uid="uid://b675ao2n7w53x" path="res://Assets/Material/loading.tres" id="5_xg2fu"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_hoqgx"]
+content_margin_top = 10.0
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_ru5v0"]
+
+[sub_resource type="Resource" id="Resource_hoqgx"]
+script = ExtResource("4_dnnrg")
+
+[sub_resource type="Resource" id="Resource_ru5v0"]
+script = ExtResource("4_dnnrg")
+
+[sub_resource type="Resource" id="Resource_6tcqc"]
+script = ExtResource("4_dnnrg")
+
+[sub_resource type="Resource" id="Resource_ysv8w"]
+script = ExtResource("4_dnnrg")
+
+[node name="LauncherDownloadWindow" unique_id=1615714322 node_paths=PackedStringArray("_tabContainer", "_chineseRichTextLabel", "_englishRichTextLabel", "_loadingColorRect", "_errorLabel", "_refreshButton", "_fileDialog", "_progressBar", "_progressLabel", "_usePortableCheckButton") instance=ExtResource("1_tva2i")]
+script = ExtResource("2_tva2i")
+_tabContainer = NodePath("PanelContainer/VBoxContainer/MarginContainer/TabContainer")
+_chineseRichTextLabel = NodePath("PanelContainer/VBoxContainer/MarginContainer/TabContainer/中文/ScrollContainer/RichTextLabel")
+_englishRichTextLabel = NodePath("PanelContainer/VBoxContainer/MarginContainer/TabContainer/English/ScrollContainer/RichTextLabel")
+_loadingColorRect = NodePath("PanelContainer/VBoxContainer/MarginContainer/ColorRect")
+_errorLabel = NodePath("PanelContainer/VBoxContainer/MarginContainer/Label")
+_refreshButton = NodePath("PanelContainer/VBoxContainer/HBoxContainer3/Button3")
+_fileDialog = NodePath("FileDialog")
+_progressBar = NodePath("PanelContainer/VBoxContainer/MarginContainer/ProgressBar")
+_progressLabel = NodePath("PanelContainer/VBoxContainer/MarginContainer/ProgressBar/Label")
+_usePortableCheckButton = NodePath("PanelContainer/VBoxContainer/MarginContainer/CheckButton")
+BackBufferCopy = false
+
+[node name="Label" parent="PanelContainer/VBoxContainer" parent_id_path=PackedInt32Array(1085092068) index="0" unique_id=45475559]
+text = "正在获取最新版本"
+
+[node name="MarginContainer" type="MarginContainer" parent="PanelContainer/VBoxContainer" parent_id_path=PackedInt32Array(1085092068) index="2" unique_id=1822302972]
+custom_minimum_size = Vector2(520, 270)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="TabContainer" type="TabContainer" parent="PanelContainer/VBoxContainer/MarginContainer" index="0" unique_id=525233977]
+visible = false
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/side_margin = 0
+theme_override_constants/tab_separation = 10
+theme_override_styles/panel = SubResource("StyleBoxEmpty_hoqgx")
+theme_override_styles/tab_unselected = SubResource("StyleBoxEmpty_ru5v0")
+theme_override_styles/tab_hovered = SubResource("StyleBoxEmpty_ru5v0")
+theme_override_styles/tab_selected = SubResource("StyleBoxEmpty_ru5v0")
+theme_override_styles/tab_disabled = SubResource("StyleBoxEmpty_ru5v0")
+theme_override_styles/tab_focus = SubResource("StyleBoxEmpty_ru5v0")
+current_tab = 0
+
+[node name="中文" type="MarginContainer" parent="PanelContainer/VBoxContainer/MarginContainer/TabContainer" index="1" unique_id=532242783]
+layout_mode = 2
+metadata/_tab_index = 0
+
+[node name="ScrollContainer" type="ScrollContainer" parent="PanelContainer/VBoxContainer/MarginContainer/TabContainer/中文" index="0" unique_id=1143068399]
+layout_mode = 2
+script = ExtResource("3_1v1wq")
+wheel_scroll_damper = SubResource("Resource_hoqgx")
+dragging_scroll_damper = SubResource("Resource_ru5v0")
+drag_with_mouse = false
+drag_with_touch = false
+metadata/_custom_type_script = "uid://bgqglerkcylxx"
+
+[node name="RichTextLabel" type="RichTextLabel" parent="PanelContainer/VBoxContainer/MarginContainer/TabContainer/中文/ScrollContainer" index="0" unique_id=153986097]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+focus_mode = 2
+theme_override_constants/paragraph_separation = 5
+theme_override_constants/text_highlight_v_padding = 0
+bbcode_enabled = true
+fit_content = true
+scroll_active = false
+context_menu_enabled = true
+selection_enabled = true
+
+[node name="English" type="MarginContainer" parent="PanelContainer/VBoxContainer/MarginContainer/TabContainer" index="2" unique_id=1470009722]
+visible = false
+layout_mode = 2
+metadata/_tab_index = 1
+
+[node name="ScrollContainer" type="ScrollContainer" parent="PanelContainer/VBoxContainer/MarginContainer/TabContainer/English" index="0" unique_id=562348041]
+layout_mode = 2
+script = ExtResource("3_1v1wq")
+wheel_scroll_damper = SubResource("Resource_6tcqc")
+dragging_scroll_damper = SubResource("Resource_ysv8w")
+drag_with_mouse = false
+drag_with_touch = false
+metadata/_custom_type_script = "uid://bgqglerkcylxx"
+
+[node name="RichTextLabel" type="RichTextLabel" parent="PanelContainer/VBoxContainer/MarginContainer/TabContainer/English/ScrollContainer" index="0" unique_id=987643538]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+focus_mode = 2
+theme_override_constants/paragraph_separation = 5
+theme_override_constants/text_highlight_v_padding = 0
+bbcode_enabled = true
+fit_content = true
+scroll_active = false
+context_menu_enabled = true
+selection_enabled = true
+
+[node name="CheckButton" type="CheckButton" parent="PanelContainer/VBoxContainer/MarginContainer" index="1" unique_id=1496049785]
+visible = false
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 0
+button_pressed = true
+text = "便捷式可执行文件"
+alignment = 2
+
+[node name="ColorRect" type="ColorRect" parent="PanelContainer/VBoxContainer/MarginContainer" index="2" unique_id=1242209070]
+material = ExtResource("5_xg2fu")
+custom_minimum_size = Vector2(50, 50)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+
+[node name="Label" type="Label" parent="PanelContainer/VBoxContainer/MarginContainer" index="3" unique_id=1448456633]
+visible = false
+modulate = Color(1, 0, 0, 1)
+layout_mode = 2
+size_flags_horizontal = 4
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="ProgressBar" type="ProgressBar" parent="PanelContainer/VBoxContainer/MarginContainer" index="4" unique_id=1682021916]
+visible = false
+layout_mode = 2
+size_flags_vertical = 8
+
+[node name="Label" type="Label" parent="PanelContainer/VBoxContainer/MarginContainer/ProgressBar" index="0" unique_id=1412514776]
+layout_mode = 1
+anchors_preset = 6
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = -40.0
+offset_top = -9.5
+offset_bottom = 9.5
+grow_horizontal = 0
+grow_vertical = 2
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Button3" type="Button" parent="PanelContainer/VBoxContainer/HBoxContainer3" parent_id_path=PackedInt32Array(522919472) index="1" unique_id=980878839]
+layout_mode = 2
+disabled = true
+text = "重新获取"
+
+[node name="Button2" parent="PanelContainer/VBoxContainer/HBoxContainer3" parent_id_path=PackedInt32Array(522919472) index="2" unique_id=1754640447]
+disabled = true
+text = "下载"
+
+[node name="FileDialog" type="FileDialog" parent="." index="4" unique_id=488526513]
+access = 2
+use_native_dialog = true

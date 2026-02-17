@@ -2,14 +2,13 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text.RegularExpressions;
 using Flurl.Http;
 using Godot;
 using MVL.UI.Window;
 using MVL.Utils;
 using MVL.Utils.Extensions;
+using MVL.Utils.GitHub;
 using MVL.Utils.Help;
-using FileAccess = Godot.FileAccess;
 
 namespace MVL.UI.Page;
 
@@ -18,7 +17,10 @@ public partial class SettingPage : MenuPage {
 	private PackedScene? _confirmationWindowScene;
 
 	[Export]
-	private PackedScene? _autoUpdaterWindowScene;
+	private PackedScene? _launcherDownloadWindowScene;
+
+	[Export]
+	private Translation? _zhTranslation;
 
 	[Export]
 	private OptionButton? _displayLanguageOptionButton;
@@ -57,10 +59,10 @@ public partial class SettingPage : MenuPage {
 	private Button? _localTranslationReloadButton;
 
 	[Export]
-	private Button? _getLatestReleaseButton;
+	private OptionButton? _gitHubProxyOptionButton;
 
 	[Export]
-	private Translation? _zhTranslation;
+	private LinkButton? _lastVersionLinkButton;
 
 	private string[] _languages = [];
 
@@ -87,6 +89,8 @@ public partial class SettingPage : MenuPage {
 
 	private readonly List<Translation> _localTranslations = [];
 
+	private ApiRelease? _lastVersion;
+
 	public override void _Ready() {
 		base._Ready();
 		_displayLanguageOptionButton.NotNull();
@@ -101,7 +105,8 @@ public partial class SettingPage : MenuPage {
 		_releaseFolderButton.NotNull();
 		_localTranslationFolderLabel.NotNull();
 		_localTranslationReloadButton.NotNull();
-		_getLatestReleaseButton.NotNull();
+		_gitHubProxyOptionButton.NotNull();
+		_lastVersionLinkButton.NotNull();
 
 		_displayScaleSpinbox.Value = UI.Main.BaseConfig.DisplayScale * 100;
 		_menuExpandCheckButton.ButtonPressed = UI.Main.BaseConfig.MenuExpand;
@@ -123,7 +128,8 @@ public partial class SettingPage : MenuPage {
 		_releaseFolderButton.Pressed += ReleaseFolderButtonOnPressed;
 		_localTranslationFolderLabel.MetaClicked += Tools.RichTextOpenUrl;
 		_localTranslationReloadButton.Pressed += UpdateLanguage;
-		_getLatestReleaseButton.Pressed += GetLatestReleaseButtonOnPressed;
+		_gitHubProxyOptionButton.ItemSelected += GitHubProxyOptionButtonOnItemSelected;
+		_lastVersionLinkButton.Pressed += LastVersionLinkButtonOnPressed;
 
 		var size = Tools.SceneTree.Root.Size = new(1162, 658);
 		Tools.SceneTree.Root.Size = new(Mathf.CeilToInt(size.X * UI.Main.BaseConfig.DisplayScale),
@@ -133,6 +139,7 @@ public partial class SettingPage : MenuPage {
 		LoadDefaultZHTranslation();
 		UpdateLanguage();
 		UpdateRenderingDriver();
+		UpdateLastVersion();
 		Tools.SceneTree.Root.MoveToCenter();
 
 		_configFile.SetValue("rendering",
@@ -145,12 +152,6 @@ public partial class SettingPage : MenuPage {
 		TranslationServer.RemoveTranslation(_zhTranslation);
 		_zhTranslation?.Dispose();
 		_zhTranslation = null;
-	}
-
-	private async void GetLatestReleaseButtonOnPressed() {
-		var autoUpdaterWindow = _autoUpdaterWindowScene!.Instantiate<AutoUpdaterWindow>();
-		UI.Main.Instance!.AddChild(autoUpdaterWindow);
-		await autoUpdaterWindow.GetLatestRelease();
 	}
 
 	private void MenuExpandCheckButtonOnToggled(bool toggledOn) {
@@ -335,9 +336,7 @@ public partial class SettingPage : MenuPage {
 		}
 	}
 
-	public void LoadDefaultZHTranslation() {
-		TranslationServer.AddTranslation(_zhTranslation);
-	}
+	public void LoadDefaultZHTranslation() { TranslationServer.AddTranslation(_zhTranslation); }
 
 	public void UpdateRenderingDriver() {
 		_renderingDriverOptionButton!.Clear();
@@ -355,5 +354,33 @@ public partial class SettingPage : MenuPage {
 				_renderingDriverOptionButton.Select(i);
 			}
 		}
+	}
+
+	private void GitHubProxyOptionButtonOnItemSelected(long index) {
+		var e = (GhProxyEnum)index;
+		UI.Main.BaseConfig.GitHubProxy = e;
+		UI.Main.BaseConfig.Save();
+		Log.Debug($"更改GitHub代理为: {e}");
+	}
+
+	private async void LastVersionLinkButtonOnPressed() {
+		var window = _launcherDownloadWindowScene!.Instantiate<LauncherDownloadWindow>();
+		window.OnGetLatestRelease += release => {
+			_lastVersion = release;
+			_lastVersionLinkButton!.Text = release.TagName;
+		};
+		UI.Main.Instance?.AddChild(window);
+		window.GetLatestRelease(_lastVersion);
+		await window.Show();
+	}
+
+	public void UpdateLastVersion() {
+		_gitHubProxyOptionButton!.Clear();
+		var array = Enum.GetValuesAsUnderlyingType<GhProxyEnum>().Cast<GhProxyEnum>();
+		foreach (var e in array) {
+			_gitHubProxyOptionButton.AddItem(e.ToString(), (int)e);
+		}
+
+		_gitHubProxyOptionButton.Select((int)UI.Main.BaseConfig.GitHubProxy);
 	}
 }

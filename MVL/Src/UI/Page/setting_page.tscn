@@ -3,7 +3,7 @@
 [ext_resource type="Script" uid="uid://er6sd5rjfnp5" path="res://Src/UI/Page/SettingPage.cs" id="1_f2m4w"]
 [ext_resource type="PackedScene" uid="uid://cx30yvsu80t6f" path="res://Src/UI/Window/confirmation_window.tscn" id="2_tr7nv"]
 [ext_resource type="Script" uid="uid://bgqglerkcylxx" path="res://addons/SmoothScroll/smooth_scroll_container.gd" id="3_4s13v"]
-[ext_resource type="PackedScene" uid="uid://debbauyce0xia" path="res://Src/UI/Window/auto_updater_window.tscn" id="3_yoik7"]
+[ext_resource type="PackedScene" uid="uid://debbauyce0xia" path="res://Src/UI/Window/launcher_download_window.tscn" id="3_yoik7"]
 [ext_resource type="Translation" uid="uid://crk0pgc2qwfi" path="res://Assets/Translation/zh_default_translation.tres" id="4_axk81"]
 [ext_resource type="Material" uid="uid://c0sb2bjy16ljf" path="res://Assets/Material/button_blur.tres" id="4_tr7nv"]
 [ext_resource type="Script" uid="uid://b7h0k2h2qwlqv" path="res://addons/SmoothScroll/scroll_damper/expo_scroll_damper.gd" id="4_yoik7"]
@@ -37,7 +37,7 @@ IconName = "reload"
 IconSize = 18
 metadata/_custom_type_script = "uid://bk3tot6c35bwu"
 
-[node name="SettingPage" type="Control" unique_id=718450851 node_paths=PackedStringArray("_displayLanguageOptionButton", "_displayScaleSpinbox", "_renderingDriverOptionButton", "_menuExpandCheckButton", "_proxyAddressLineEdit", "_downloadThreadSpinbox", "_modpackFolderLineEdit", "_modpackFolderButton", "_releaseFolderLineEdit", "_releaseFolderButton", "_localTranslationFolderLabel", "_localTranslationReloadButton", "_getLatestReleaseButton", "Main")]
+[node name="SettingPage" type="Control" unique_id=718450851 node_paths=PackedStringArray("_displayLanguageOptionButton", "_displayScaleSpinbox", "_renderingDriverOptionButton", "_menuExpandCheckButton", "_proxyAddressLineEdit", "_downloadThreadSpinbox", "_modpackFolderLineEdit", "_modpackFolderButton", "_releaseFolderLineEdit", "_releaseFolderButton", "_localTranslationFolderLabel", "_localTranslationReloadButton", "_gitHubProxyOptionButton", "_lastVersionLinkButton", "Main")]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -47,7 +47,8 @@ grow_vertical = 2
 mouse_filter = 2
 script = ExtResource("1_f2m4w")
 _confirmationWindowScene = ExtResource("2_tr7nv")
-_autoUpdaterWindowScene = ExtResource("3_yoik7")
+_launcherDownloadWindowScene = ExtResource("3_yoik7")
+_zhTranslation = ExtResource("4_axk81")
 _displayLanguageOptionButton = NodePath("MarginContainer/ScrollContainer/VBoxContainer/PanelContainer/VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer/OptionButton")
 _displayScaleSpinbox = NodePath("MarginContainer/ScrollContainer/VBoxContainer/PanelContainer/VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer2/SpinBox")
 _renderingDriverOptionButton = NodePath("MarginContainer/ScrollContainer/VBoxContainer/PanelContainer/VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer3/OptionButton")
@@ -60,8 +61,8 @@ _releaseFolderLineEdit = NodePath("MarginContainer/ScrollContainer/VBoxContainer
 _releaseFolderButton = NodePath("MarginContainer/ScrollContainer/VBoxContainer/PanelContainer3/VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer2/Button")
 _localTranslationFolderLabel = NodePath("MarginContainer/ScrollContainer/VBoxContainer/PanelContainer3/VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer3/RichTextLabel")
 _localTranslationReloadButton = NodePath("MarginContainer/ScrollContainer/VBoxContainer/PanelContainer3/VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer3/Button")
-_getLatestReleaseButton = NodePath("MarginContainer/ScrollContainer/VBoxContainer/PanelContainer4/VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer/Button")
-_zhTranslation = ExtResource("4_axk81")
+_gitHubProxyOptionButton = NodePath("MarginContainer/ScrollContainer/VBoxContainer/PanelContainer4/VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer/OptionButton")
+_lastVersionLinkButton = NodePath("MarginContainer/ScrollContainer/VBoxContainer/PanelContainer4/VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer3/LinkButton")
 Main = NodePath("MarginContainer")
 metadata/_tab_index = 5
 
@@ -77,7 +78,6 @@ pivot_offset_ratio = Vector2(0.5, 0.5)
 [node name="ScrollContainer" type="ScrollContainer" parent="MarginContainer" unique_id=801318537]
 layout_mode = 2
 horizontal_scroll_mode = 3
-vertical_scroll_mode = 3
 script = ExtResource("3_4s13v")
 wheel_scroll_damper = SubResource("Resource_axk81")
 dragging_scroll_damper = SubResource("Resource_yaaqs")
@@ -119,6 +119,7 @@ theme_override_constants/margin_bottom = 10
 layout_mode = 2
 
 [node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/ScrollContainer/VBoxContainer/PanelContainer/VBoxContainer/MarginContainer/VBoxContainer" unique_id=609050846]
+custom_minimum_size = Vector2(0, 32)
 layout_mode = 2
 
 [node name="Label" type="Label" parent="MarginContainer/ScrollContainer/VBoxContainer/PanelContainer/VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer" unique_id=1137761791]
@@ -135,6 +136,7 @@ flat = true
 alignment = 2
 
 [node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer/ScrollContainer/VBoxContainer/PanelContainer/VBoxContainer/MarginContainer/VBoxContainer" unique_id=1983860907]
+custom_minimum_size = Vector2(0, 32)
 layout_mode = 2
 
 [node name="Label" type="Label" parent="MarginContainer/ScrollContainer/VBoxContainer/PanelContainer/VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer2" unique_id=183219891]
@@ -149,11 +151,12 @@ theme = SubResource("Theme_yaaqs")
 min_value = 50.0
 max_value = 200.0
 value = 100.0
-alignment = 1
+alignment = 2
 suffix = "%"
 custom_arrow_step = 25.0
 
 [node name="HBoxContainer3" type="HBoxContainer" parent="MarginContainer/ScrollContainer/VBoxContainer/PanelContainer/VBoxContainer/MarginContainer/VBoxContainer" unique_id=1343521547]
+custom_minimum_size = Vector2(0, 32)
 layout_mode = 2
 
 [node name="Label" type="Label" parent="MarginContainer/ScrollContainer/VBoxContainer/PanelContainer/VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer3" unique_id=853135524]
@@ -169,6 +172,7 @@ flat = true
 alignment = 2
 
 [node name="HBoxContainer4" type="HBoxContainer" parent="MarginContainer/ScrollContainer/VBoxContainer/PanelContainer/VBoxContainer/MarginContainer/VBoxContainer" unique_id=1416362925]
+custom_minimum_size = Vector2(0, 32)
 layout_mode = 2
 
 [node name="Label" type="Label" parent="MarginContainer/ScrollContainer/VBoxContainer/PanelContainer/VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer4" unique_id=686878235]
@@ -208,6 +212,7 @@ theme_override_constants/margin_bottom = 10
 layout_mode = 2
 
 [node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/ScrollContainer/VBoxContainer/PanelContainer2/VBoxContainer/MarginContainer/VBoxContainer" unique_id=183209813]
+custom_minimum_size = Vector2(0, 32)
 layout_mode = 2
 
 [node name="Label" type="Label" parent="MarginContainer/ScrollContainer/VBoxContainer/PanelContainer2/VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer" unique_id=1328923009]
@@ -225,6 +230,7 @@ expand_to_text_length = true
 clear_button_enabled = true
 
 [node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer/ScrollContainer/VBoxContainer/PanelContainer2/VBoxContainer/MarginContainer/VBoxContainer" unique_id=1979940946]
+custom_minimum_size = Vector2(0, 32)
 layout_mode = 2
 theme_override_constants/separation = 10
 
@@ -269,6 +275,7 @@ theme_override_constants/margin_bottom = 10
 layout_mode = 2
 
 [node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/ScrollContainer/VBoxContainer/PanelContainer3/VBoxContainer/MarginContainer/VBoxContainer" unique_id=489026833]
+custom_minimum_size = Vector2(0, 32)
 layout_mode = 2
 
 [node name="Label" type="Label" parent="MarginContainer/ScrollContainer/VBoxContainer/PanelContainer3/VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer" unique_id=534887327]
@@ -290,6 +297,7 @@ icon = SubResource("Texture2D_yaaqs")
 flat = true
 
 [node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer/ScrollContainer/VBoxContainer/PanelContainer3/VBoxContainer/MarginContainer/VBoxContainer" unique_id=967821305]
+custom_minimum_size = Vector2(0, 32)
 layout_mode = 2
 
 [node name="Label" type="Label" parent="MarginContainer/ScrollContainer/VBoxContainer/PanelContainer3/VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer2" unique_id=355657099]
@@ -311,6 +319,7 @@ icon = SubResource("Texture2D_yaaqs")
 flat = true
 
 [node name="HBoxContainer3" type="HBoxContainer" parent="MarginContainer/ScrollContainer/VBoxContainer/PanelContainer3/VBoxContainer/MarginContainer/VBoxContainer" unique_id=1597859533]
+custom_minimum_size = Vector2(0, 32)
 layout_mode = 2
 
 [node name="Label" type="Label" parent="MarginContainer/ScrollContainer/VBoxContainer/PanelContainer3/VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer3" unique_id=1780642531]
@@ -319,9 +328,10 @@ text = "翻译目录"
 
 [node name="RichTextLabel" type="RichTextLabel" parent="MarginContainer/ScrollContainer/VBoxContainer/PanelContainer3/VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer3" unique_id=1891356868]
 layout_mode = 2
-size_flags_horizontal = 3
+size_flags_horizontal = 10
 theme_override_font_sizes/normal_font_size = 14
 bbcode_enabled = true
+fit_content = true
 scroll_active = false
 autowrap_mode = 0
 shortcut_keys_enabled = false
@@ -347,7 +357,7 @@ theme_override_constants/separation = 0
 layout_mode = 2
 mouse_filter = 1
 theme_type_variation = &"SettingItemTitle"
-text = "其他"
+text = "更新"
 
 [node name="MarginContainer" type="MarginContainer" parent="MarginContainer/ScrollContainer/VBoxContainer/PanelContainer4/VBoxContainer" unique_id=1106868759]
 layout_mode = 2
@@ -360,15 +370,41 @@ theme_override_constants/margin_bottom = 10
 layout_mode = 2
 
 [node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/ScrollContainer/VBoxContainer/PanelContainer4/VBoxContainer/MarginContainer/VBoxContainer" unique_id=250487908]
+custom_minimum_size = Vector2(0, 32)
 layout_mode = 2
 
 [node name="Label" type="Label" parent="MarginContainer/ScrollContainer/VBoxContainer/PanelContainer4/VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer" unique_id=767036948]
 layout_mode = 2
 size_flags_horizontal = 3
 mouse_filter = 1
-text = "启动器版本:"
+text = "GitHub代理"
 
-[node name="Button" type="Button" parent="MarginContainer/ScrollContainer/VBoxContainer/PanelContainer4/VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer" unique_id=1676693385]
+[node name="OptionButton" type="OptionButton" parent="MarginContainer/ScrollContainer/VBoxContainer/PanelContainer4/VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer" unique_id=1339619312]
 layout_mode = 2
-text = "最新版本"
 flat = true
+alignment = 2
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer/ScrollContainer/VBoxContainer/PanelContainer4/VBoxContainer/MarginContainer/VBoxContainer" unique_id=155165118]
+custom_minimum_size = Vector2(0, 32)
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/ScrollContainer/VBoxContainer/PanelContainer4/VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer2" unique_id=1294960854]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "自动检查"
+
+[node name="CheckButton" type="CheckButton" parent="MarginContainer/ScrollContainer/VBoxContainer/PanelContainer4/VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer2" unique_id=480715572]
+layout_mode = 2
+
+[node name="HBoxContainer3" type="HBoxContainer" parent="MarginContainer/ScrollContainer/VBoxContainer/PanelContainer4/VBoxContainer/MarginContainer/VBoxContainer" unique_id=330068939]
+custom_minimum_size = Vector2(0, 32)
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/ScrollContainer/VBoxContainer/PanelContainer4/VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer3" unique_id=443542714]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "最新版本"
+
+[node name="LinkButton" type="LinkButton" parent="MarginContainer/ScrollContainer/VBoxContainer/PanelContainer4/VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer3" unique_id=1350044222]
+layout_mode = 2
+text = "点击获取"

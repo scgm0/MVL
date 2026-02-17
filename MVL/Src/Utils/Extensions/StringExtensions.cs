@@ -218,7 +218,7 @@ public static class StringExtensions {
 	}
 
 	extension(ReadOnlySpan<char> inputSpan) {
-		public (string chinese, string English) SplitAndConvert() {
+		public (string Chinese, string English) SplitAndConvert() {
 			var englishMarkerIndex = inputSpan.IndexOf("English:");
 			if (englishMarkerIndex == -1) {
 				return (inputSpan[(inputSpan.IndexOf("中文:") + 3)..].Trim().ConvertMarkdownToBbcode(), string.Empty);
