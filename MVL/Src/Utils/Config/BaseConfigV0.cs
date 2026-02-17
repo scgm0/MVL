@@ -45,5 +45,5 @@ public class BaseConfigV0 {
 	public List<Account> Account { get; set; } = [];
 
 	[JsonExtensionData]
-	public Dictionary<string, JsonElement>? ExtensionData { get; set; }
+	public Dictionary<string, JsonElement> ExtensionData { get; set; } = [];
 }
