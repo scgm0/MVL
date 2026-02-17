@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=3 uid="uid://bu4hwijkbc8sm"]
+[gd_scene format=3 uid="uid://bu4hwijkbc8sm"]
 
 [ext_resource type="Script" uid="uid://cbiguj28po1y0" path="res://Src/UI/Window/BaseWindow.cs" id="1_r1ufi"]
 [ext_resource type="Script" uid="uid://dbies7u5fo4sh" path="res://Src/UI/NativeWindowUtility.cs" id="2_1nfmj"]
