@@ -126,6 +126,10 @@ public partial class SelectionButton : Button {
 	}
 
 	public void ShowList() {
+		if (SelectionList.Length == 0) {
+			return;
+		}
+
 		Bg!.Modulate = Colors.Transparent;
 		Bg!.Show();
 
