@@ -427,6 +427,8 @@ public partial class BrowsePage : MenuPage {
 			_loadingControl?.Hide();
 			Log.Error("获取在线信息时发生错误", ex);
 			ShowMessageInContainer(_moduleListContainer!, "获取在线信息时发生错误，请检查网络连接", Colors.Red);
+		} finally {
+			_loadingControl?.Hide();
 		}
 	}
 

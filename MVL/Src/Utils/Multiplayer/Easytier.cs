@@ -174,7 +174,6 @@ public class EasyTier : IDisposable {
 					page = "1",
 					per_page = "200"
 				})
-				.WithTimeout(TimeSpan.FromSeconds(10))
 				.GetStreamAsync();
 
 			var apiResponse = await JsonSerializer.DeserializeAsync(response, SourceGenerationContext.Default.ApiResponse);

@@ -166,7 +166,8 @@ public partial class Main : NativeWindowUtility {
 		_accountSelectAddButton.Pressed += AccountSelectAddButtonOnPressed;
 
 		FlurlHttp.Clients.WithDefaults(builder => {
-			builder.ConfigureInnerHandler(handler => {
+			builder.WithTimeout(10)
+				.ConfigureInnerHandler(handler => {
 				handler.Proxy = string.IsNullOrWhiteSpace(BaseConfig.ProxyAddress)
 					? HttpClient.DefaultProxy
 					: new WebProxy(BaseConfig.ProxyAddress);
