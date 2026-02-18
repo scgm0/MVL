@@ -9,6 +9,9 @@
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_hoqgx"]
 content_margin_top = 10.0
 
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_l213i"]
+content_margin_top = 4.0
+
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_ru5v0"]
 
 [sub_resource type="Resource" id="Resource_hoqgx"]
@@ -41,7 +44,7 @@ BackBufferCopy = false
 text = "正在获取最新版本"
 
 [node name="MarginContainer" type="MarginContainer" parent="PanelContainer/VBoxContainer" parent_id_path=PackedInt32Array(1085092068) index="2" unique_id=1822302972]
-custom_minimum_size = Vector2(520, 270)
+custom_minimum_size = Vector2(520, 275)
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
@@ -54,6 +57,7 @@ size_flags_vertical = 3
 theme_override_constants/side_margin = 0
 theme_override_constants/tab_separation = 10
 theme_override_styles/panel = SubResource("StyleBoxEmpty_hoqgx")
+theme_override_styles/tabbar_background = SubResource("StyleBoxEmpty_l213i")
 theme_override_styles/tab_unselected = SubResource("StyleBoxEmpty_ru5v0")
 theme_override_styles/tab_hovered = SubResource("StyleBoxEmpty_ru5v0")
 theme_override_styles/tab_selected = SubResource("StyleBoxEmpty_ru5v0")
@@ -119,6 +123,7 @@ visible = false
 layout_mode = 2
 size_flags_horizontal = 8
 size_flags_vertical = 0
+theme_override_constants/icon_max_width = 18
 button_pressed = true
 text = "便捷式可执行文件"
 alignment = 2
