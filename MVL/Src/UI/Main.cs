@@ -544,6 +544,7 @@ public partial class Main : NativeWindowUtility {
 				CreateNoWindow = true,
 				WorkingDirectory = runConfig.VintageStoryPath,
 				Environment = {
+					["VINTAGE_STORY"] = runConfig.VintageStoryPath,
 					["VINTAGE_STORY_PATH"] = runConfig.VintageStoryPath,
 					["RUN_CONFIG"] = JsonSerializer.Serialize(runConfig, SourceGenerationContext.Default.RunConfig)
 				}
