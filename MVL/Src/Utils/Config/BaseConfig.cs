@@ -20,6 +20,9 @@ public class BaseConfig : BaseConfigV0 {
 	[JsonPropertyOrder(4)]
 	public GhProxyEnum GitHubProxy { get; set; } = GhProxyEnum.None;
 
+	[JsonPropertyOrder(4)]
+	public bool AutoCheckVersion { get; set; } = true;
+
 	public void Save() {
 		lock (_syncLock) {
 			if (string.IsNullOrEmpty(_configPath)) {

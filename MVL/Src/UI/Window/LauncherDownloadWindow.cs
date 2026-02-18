@@ -192,7 +192,7 @@ public partial class LauncherDownloadWindow : BaseWindow {
 		_fileDialog.Popup();
 	}
 
-	public async void GetLatestRelease(ApiRelease? apiRelease = null) {
+	public async void GetLatestRelease(ApiRelease? apiRelease = null, bool onlyCheck = false) {
 		TitleLabel!.Text = "正在获取最新版本";
 		_tabContainer!.Visible = false;
 		_loadingColorRect!.Visible = true;
@@ -212,11 +212,16 @@ public partial class LauncherDownloadWindow : BaseWindow {
 		_cancellationTokenSource = new();
 
 		try {
-			_apiRelease = apiRelease ?? await GitHubTool.GetLatestReleaseAsync("scgm0/MVL",
-				Main.BaseConfig.GitHubProxy,
-				_cancellationTokenSource.Token);
+			_apiRelease = apiRelease;
+			if (_apiRelease is null) {
+				Log.Debug("正在获取最新版本");
+				_apiRelease = await GitHubTool.GetLatestReleaseAsync("scgm0/MVL",
+					Main.BaseConfig.GitHubProxy,
+					_cancellationTokenSource.Token);
+			}
+
 			OnGetLatestRelease?.Invoke(_apiRelease.Value);
-			UpdateContent();
+			UpdateContent(onlyCheck);
 		} catch (Exception e) {
 			if (_cancellationTokenSource.IsCancellationRequested ||
 				e is { InnerException: TaskCanceledException } or TaskCanceledException) {
@@ -238,17 +243,24 @@ public partial class LauncherDownloadWindow : BaseWindow {
 		}
 	}
 
-	private void UpdateContent() {
+	private void UpdateContent(bool onlyCheck = false) {
 		if (_cancellationTokenSource?.IsCancellationRequested is true || !IsInstanceValid(this)) {
 			return;
 		}
+
+		var version = CSVersion.Parse(_apiRelease!.Value.TagName);
+		Log.Debug($"最新版本: {version} 当前版本: {BuildInfo.InformationalVersion}");
+		if (onlyCheck && version <= BuildInfo.InformationalVersion) {
+			CancelButtonOnPressed();
+			return;
+		}
+
+		TitleLabel!.Text = $"MVL {version} ({Tr(version > BuildInfo.InformationalVersion ? "发现新版本" : "无新版本")})";
 
 		var body = _apiRelease!.Value.Body.SplitAndConvert();
 		_chineseRichTextLabel!.AppendText(body.Chinese.ConvertMarkdownToBbcode());
 		_englishRichTextLabel!.AppendText(body.English.ConvertMarkdownToBbcode());
 
-		var version = CSVersion.Parse(_apiRelease!.Value.TagName);
-		TitleLabel!.Text = $"MVL {version} ({Tr(version > BuildInfo.InformationalVersion ? "发现新版本" : "无新版本")})";
 		_tabContainer!.Visible = true;
 		_loadingColorRect!.Visible = false;
 		_refreshButton!.Disabled = false;

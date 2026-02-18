@@ -62,6 +62,9 @@ public partial class SettingPage : MenuPage {
 	private OptionButton? _gitHubProxyOptionButton;
 
 	[Export]
+	private CheckButton? _autoCheckVersionCheckButton;
+
+	[Export]
 	private LinkButton? _lastVersionLinkButton;
 
 	private string[] _languages = [];
@@ -106,6 +109,7 @@ public partial class SettingPage : MenuPage {
 		_localTranslationFolderLabel.NotNull();
 		_localTranslationReloadButton.NotNull();
 		_gitHubProxyOptionButton.NotNull();
+		_autoCheckVersionCheckButton.NotNull();
 		_lastVersionLinkButton.NotNull();
 
 		_displayScaleSpinbox.Value = UI.Main.BaseConfig.DisplayScale * 100;
@@ -129,6 +133,7 @@ public partial class SettingPage : MenuPage {
 		_localTranslationFolderLabel.MetaClicked += Tools.RichTextOpenUrl;
 		_localTranslationReloadButton.Pressed += UpdateLanguage;
 		_gitHubProxyOptionButton.ItemSelected += GitHubProxyOptionButtonOnItemSelected;
+		_autoCheckVersionCheckButton.Toggled += AutoCheckVersionCheckButtonOnToggled;
 		_lastVersionLinkButton.Pressed += LastVersionLinkButtonOnPressed;
 
 		var size = Tools.SceneTree.Root.Size = new(1162, 658);
@@ -363,15 +368,27 @@ public partial class SettingPage : MenuPage {
 		Log.Debug($"更改GitHub代理为: {e}");
 	}
 
-	private async void LastVersionLinkButtonOnPressed() {
+	private void AutoCheckVersionCheckButtonOnToggled(bool toggled) {
+		UI.Main.BaseConfig.AutoCheckVersion = toggled;
+		UI.Main.BaseConfig.Save();
+	}
+
+	private void LastVersionLinkButtonOnPressed() { GetLastVersion(); }
+
+	private async void GetLastVersion(bool onlyCheck = false) {
 		var window = _launcherDownloadWindowScene!.Instantiate<LauncherDownloadWindow>();
 		window.OnGetLatestRelease += release => {
 			_lastVersion = release;
 			_lastVersionLinkButton!.Text = release.TagName;
 		};
 		UI.Main.Instance?.AddChild(window);
-		window.GetLatestRelease(_lastVersion);
-		await window.Show();
+		if (_lastVersion != null) {
+			window.GetLatestRelease(_lastVersion);
+			await window.Show();
+		} else {
+			await window.Show();
+			window.GetLatestRelease(null, onlyCheck);
+		}
 	}
 
 	public void UpdateLastVersion() {
@@ -382,5 +399,10 @@ public partial class SettingPage : MenuPage {
 		}
 
 		_gitHubProxyOptionButton.Select((int)UI.Main.BaseConfig.GitHubProxy);
+		_autoCheckVersionCheckButton!.ButtonPressed = UI.Main.BaseConfig.AutoCheckVersion;
+
+		if (UI.Main.BaseConfig.AutoCheckVersion) {
+			Dispatcher.SynchronizationContext.Post(_ => { GetLastVersion(true); }, null);
+		}
 	}
 }

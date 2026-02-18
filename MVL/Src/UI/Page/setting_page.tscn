@@ -37,7 +37,7 @@ IconName = "reload"
 IconSize = 18
 metadata/_custom_type_script = "uid://bk3tot6c35bwu"
 
-[node name="SettingPage" type="Control" unique_id=718450851 node_paths=PackedStringArray("_displayLanguageOptionButton", "_displayScaleSpinbox", "_renderingDriverOptionButton", "_menuExpandCheckButton", "_proxyAddressLineEdit", "_downloadThreadSpinbox", "_modpackFolderLineEdit", "_modpackFolderButton", "_releaseFolderLineEdit", "_releaseFolderButton", "_localTranslationFolderLabel", "_localTranslationReloadButton", "_gitHubProxyOptionButton", "_lastVersionLinkButton", "Main")]
+[node name="SettingPage" type="Control" unique_id=718450851 node_paths=PackedStringArray("_displayLanguageOptionButton", "_displayScaleSpinbox", "_renderingDriverOptionButton", "_menuExpandCheckButton", "_proxyAddressLineEdit", "_downloadThreadSpinbox", "_modpackFolderLineEdit", "_modpackFolderButton", "_releaseFolderLineEdit", "_releaseFolderButton", "_localTranslationFolderLabel", "_localTranslationReloadButton", "_gitHubProxyOptionButton", "_autoCheckVersionCheckButton", "_lastVersionLinkButton", "Main")]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -62,6 +62,7 @@ _releaseFolderButton = NodePath("MarginContainer/ScrollContainer/VBoxContainer/P
 _localTranslationFolderLabel = NodePath("MarginContainer/ScrollContainer/VBoxContainer/PanelContainer3/VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer3/RichTextLabel")
 _localTranslationReloadButton = NodePath("MarginContainer/ScrollContainer/VBoxContainer/PanelContainer3/VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer3/Button")
 _gitHubProxyOptionButton = NodePath("MarginContainer/ScrollContainer/VBoxContainer/PanelContainer4/VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer/OptionButton")
+_autoCheckVersionCheckButton = NodePath("MarginContainer/ScrollContainer/VBoxContainer/PanelContainer4/VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer2/CheckButton")
 _lastVersionLinkButton = NodePath("MarginContainer/ScrollContainer/VBoxContainer/PanelContainer4/VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer3/LinkButton")
 Main = NodePath("MarginContainer")
 metadata/_tab_index = 5
@@ -184,6 +185,8 @@ vertical_alignment = 1
 [node name="CheckButton" type="CheckButton" parent="MarginContainer/ScrollContainer/VBoxContainer/PanelContainer/VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer4" unique_id=1458010795]
 layout_mode = 2
 size_flags_horizontal = 10
+theme_override_font_sizes/font_size = 14
+text = "启动时展开菜单"
 
 [node name="PanelContainer2" type="PanelContainer" parent="MarginContainer/ScrollContainer/VBoxContainer" unique_id=2046627463]
 material = ExtResource("4_tr7nv")
@@ -395,6 +398,9 @@ text = "自动检查"
 
 [node name="CheckButton" type="CheckButton" parent="MarginContainer/ScrollContainer/VBoxContainer/PanelContainer4/VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer2" unique_id=480715572]
 layout_mode = 2
+theme_override_font_sizes/font_size = 14
+button_pressed = true
+text = "启动时检查版本"
 
 [node name="HBoxContainer3" type="HBoxContainer" parent="MarginContainer/ScrollContainer/VBoxContainer/PanelContainer4/VBoxContainer/MarginContainer/VBoxContainer" unique_id=330068939]
 custom_minimum_size = Vector2(0, 32)
