@@ -125,7 +125,7 @@ size_flags_horizontal = 8
 size_flags_vertical = 0
 theme_override_constants/icon_max_width = 18
 button_pressed = true
-text = "便捷式可执行文件"
+text = "便携式可执行文件"
 alignment = 2
 
 [node name="ColorRect" type="ColorRect" parent="PanelContainer/VBoxContainer/MarginContainer" index="2" unique_id=1242209070]

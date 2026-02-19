@@ -151,7 +151,7 @@ public partial class LauncherDownloadWindow : BaseWindow {
 						Log.Info($"下载完成 {ApiAsset!.Value.Name}");
 						Dispatcher.SynchronizationContext.Post(_ => {
 								OS.ShellOpen(path.GetBaseDir());
-								CancelButtonOnPressed();
+								CancelButton?.EmitSignal(BaseButton.SignalName.Pressed);
 							},
 							null);
 						return;
@@ -163,7 +163,7 @@ public partial class LauncherDownloadWindow : BaseWindow {
 					case { Cancelled: false, Error: not null }: {
 						Log.Error("下载失败", args.Error);
 						Dispatcher.SynchronizationContext.Post(_ => {
-								_errorLabel!.Text = "网络请求失败，请重试";
+								_errorLabel!.Text = "发生错误，请检查网络连接";
 								_errorLabel!.Visible = true;
 								_progressBar!.Visible = false;
 								_loadingColorRect!.Visible = false;
