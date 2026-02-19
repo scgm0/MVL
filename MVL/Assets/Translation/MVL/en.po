@@ -304,12 +304,11 @@ msgstr "Vintage Story"
 msgid "一个免费、开源且由社区驱动的复古物语启动器"
 msgstr "A free, open source, and community-driven Vintage Story Launcher"
 
-msgid "[b]{0}[/b] 需要安装 [b].NET {1} 运行时[/b]\n请点击链接下载并安装：\n[color=#3c7fe1][url]https://dotnet.microsoft.com/download/dotnet/{2}[/url][/color]\n是否尝试强制启动游戏？"
+msgid "需要安装 [b].NET {1} (x64)[/b] 运行时\n请点击链接下载并安装：\n[color=#3c7fe1][url]https://dotnet.microsoft.com/download/dotnet/{1}[/url][/color]\n是否尝试强制启动游戏？"
 msgstr ""
-"[b]{0}[/b] requires the [b].NET {1} runtime[/b] to be installed.\n"
-"Please click the link below to download and install it:\n"
-"[color=#3c7fe1][url]https://dotnet.microsoft.com/download/dotnet/{2}[/url][/"
-"color]\n"
+"Requires installation of [b].NET {1} (x64)[/b] runtime"
+"Please click the link to download and install:"
+"[color=#3c7fe1][url]https://dotnet.microsoft.com/download/dotnet/{1}[/url][/color]"
 "Would you like to attempt to force start the game?"
 
 msgid "无法登录？检查您的游戏账号"
@@ -440,7 +439,7 @@ msgstr "Not Installed"
 
 msgid "获取在线信息时发生错误，请检查网络连接"
 msgstr ""
-"An error occurred while retrieving online information. Please check your "
+"An error occurred while retrieving online information, Please check your "
 "network connection"
 
 msgid "请先创建整合包"
@@ -466,3 +465,51 @@ msgstr "Menu Expand"
 
 msgid "已将渲染驱动更改为 [color=#3c7fe1]{0}[/color]\n需要重启才能生效，是否立即重启？"
 msgstr "The rendering driver has been changed to [color=#3c7fe1]{0}[/color]\nA restart is required for the changes to take effect. Would you like to restart now?"
+
+msgid "启动时展开菜单"
+msgstr "Expand menu on startup"
+
+msgid "翻译目录"
+msgstr "Translate Folder"
+
+msgid "更新"
+msgstr "Update"
+
+msgid "GitHub代理"
+msgstr "GitHub Proxy"
+
+msgid "自动检查"
+msgstr "Automatic Check"
+
+msgid "最新版本"
+msgstr "Latest Version"
+
+msgid "启动时检查版本"
+msgstr "Check version on startup"
+
+msgid "正在获取最新版本"
+msgstr "Fetching the latest version"
+
+msgid "重新获取"
+msgstr "Retrieving again"
+
+msgid "下载"
+msgstr "Download"
+
+msgid "便携式可执行文件"
+msgstr "Portable executable"
+
+msgid "无新版本"
+msgstr "No new version"
+
+msgid "发现新版本"
+msgstr "New version found"
+
+msgid "没有找到可用的下载文件"
+msgstr "No available download files found"
+
+msgid "发生错误，请检查网络连接"
+msgstr "An error occurred, please check your network connection"
+
+msgid "获取最新版本失败"
+msgstr "Failed to get latest version"

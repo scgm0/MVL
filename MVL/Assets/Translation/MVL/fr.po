@@ -303,13 +303,8 @@ msgstr "Vintage Story"
 msgid "一个免费、开源且由社区驱动的复古物语启动器"
 msgstr "Un launcher pour Vintage Story gratuit, open source et communautaire"
 
-msgid "[b]{0}[/b] 需要安装 [b].NET {1} 运行时[/b]\n请点击链接下载并安装：\n[color=#3c7fe1][url]https://dotnet.microsoft.com/download/dotnet/{2}[/url][/color]\n是否尝试强制启动游戏？"
+msgid "需要安装 [b].NET {1} (x64)[/b] 运行时\n请点击链接下载并安装：\n[color=#3c7fe1][url]https://dotnet.microsoft.com/download/dotnet/{1}[/url][/color]\n是否尝试强制启动游戏？"
 msgstr ""
-"[b]{0}[/b] nécessite l'installation de [b]runtime .NET {1}[/b]\n"
-"Veuillez cliquer sur ce lien pour le télécharger et l’installer :\n"
-"[color=#3c7fe1][url]https://dotnet.microsoft.com/download/dotnet/{2}[/url][/"
-"color]\n"
-"Souhaitez-vous tenter de forcer le lancement du jeu ?"
 
 msgid "无法登录？检查您的游戏账号"
 msgstr "Impossible de se connecter ? Vérifiez votre compte."
@@ -463,3 +458,52 @@ msgstr ""
 
 msgid "已将渲染驱动更改为 [color=#3c7fe1]{0}[/color]\n需要重启才能生效，是否立即重启？"
 msgstr ""
+
+msgid "启动时展开菜单"
+msgstr ""
+
+msgid "翻译目录"
+msgstr ""
+
+msgid "更新"
+msgstr ""
+
+msgid "GitHub代理"
+msgstr ""
+
+msgid "自动检查"
+msgstr ""
+
+msgid "最新版本"
+msgstr ""
+
+msgid "启动时检查版本"
+msgstr ""
+
+msgid "正在获取最新版本"
+msgstr ""
+
+msgid "重新获取"
+msgstr ""
+
+msgid "下载"
+msgstr ""
+
+msgid "便携式可执行文件"
+msgstr ""
+
+msgid "无新版本"
+msgstr ""
+
+msgid "发现新版本"
+msgstr ""
+
+msgid "没有找到可用的下载文件"
+msgstr ""
+
+msgid "发生错误，请检查网络连接"
+msgstr ""
+
+msgid "获取最新版本失败"
+msgstr ""
+
