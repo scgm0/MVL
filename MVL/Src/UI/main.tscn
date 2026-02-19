@@ -1,4 +1,4 @@
-[gd_scene load_steps=64 format=3 uid="uid://514oox50h8yl"]
+[gd_scene format=3 uid="uid://514oox50h8yl"]
 
 [ext_resource type="Script" uid="uid://cvyeyg8ttnwmu" path="res://Src/UI/Main.cs" id="1_1opgh"]
 [ext_resource type="Texture2D" uid="uid://bhh1jvyj73qxh" path="res://Assets/Gui/Background.png" id="2_1opgh"]
@@ -304,7 +304,7 @@ _data = {
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_kq46g"]
 
-[sub_resource type="ButtonGroup" id="ButtonGroup_08ol6"]
+[sub_resource type="ButtonGroup" id="ButtonGroup_365jr"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_08ol6"]
 
@@ -476,6 +476,7 @@ size_flags_vertical = 3
 mouse_filter = 2
 
 [node name="MultiplayerButton" type="Button" parent="HBoxContainer/MenuPanel/VBoxContainer" unique_id=1816883485 node_paths=PackedStringArray("Page")]
+visible = false
 layout_mode = 2
 toggle_mode = true
 button_group = ExtResource("4_megpf")
@@ -705,7 +706,7 @@ layout_mode = 2
 unique_name_in_owner = true
 visible = false
 layout_mode = 2
-_buttonGroup = SubResource("ButtonGroup_08ol6")
+_buttonGroup = SubResource("ButtonGroup_365jr")
 _titleBar = NodePath("../../../MarginContainer2/HBoxContainer")
 
 [node name="HBoxContainer2" type="HBoxContainer" parent="." unique_id=1999562561]
