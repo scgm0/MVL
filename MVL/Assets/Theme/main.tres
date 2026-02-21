@@ -112,6 +112,30 @@ bg_color = Color(0, 0, 0, 1)
 corner_radius_top_left = 5
 corner_radius_top_right = 5
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_belqv"]
+content_margin_left = 4.0
+content_margin_top = 4.0
+content_margin_right = 8.0
+content_margin_bottom = 4.0
+bg_color = Color(0.225, 0.225, 0.225, 0.6)
+corner_radius_top_left = 3
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_7hr8s"]
+content_margin_left = 4.0
+content_margin_top = 4.0
+content_margin_right = 8.0
+content_margin_bottom = 4.0
+bg_color = Color(0.1, 0.1, 0.1, 0.6)
+corner_radius_top_left = 3
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_hypud"]
+content_margin_left = 4.0
+content_margin_top = 4.0
+content_margin_right = 8.0
+content_margin_bottom = 4.0
+bg_color = Color(0, 0, 0, 0.6)
+corner_radius_top_left = 3
+
 [sub_resource type="Texture2D" id="Texture2D_4tsj6"]
 resource_local_to_scene = false
 resource_name = ""
@@ -267,6 +291,11 @@ FoldableContainer/styles/title_collapsed_hover_panel = SubResource("StyleBoxFlat
 FoldableContainer/styles/title_collapsed_panel = SubResource("StyleBoxFlat_4tsj6")
 FoldableContainer/styles/title_hover_panel = SubResource("StyleBoxFlat_pur85")
 FoldableContainer/styles/title_panel = SubResource("StyleBoxFlat_0rg2h")
+HotTopicButton/base_type = &"Button"
+HotTopicButton/constants/h_separation = 0
+HotTopicButton/styles/hover = SubResource("StyleBoxFlat_belqv")
+HotTopicButton/styles/normal = SubResource("StyleBoxFlat_7hr8s")
+HotTopicButton/styles/pressed = SubResource("StyleBoxFlat_hypud")
 LineEdit/font_sizes/font_size = 14
 LineEdit/icons/clear = SubResource("Texture2D_4tsj6")
 LineEdit/styles/normal = SubResource("StyleBoxFlat_i7wln")

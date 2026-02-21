@@ -1,4 +1,4 @@
-[gd_scene load_steps=17 format=3 uid="uid://by3fewq1gv8si"]
+[gd_scene format=3 uid="uid://by3fewq1gv8si"]
 
 [ext_resource type="Texture2D" uid="uid://dcoju08mvjqim" path="res://Assets/Icon/VS/modicon.png" id="1_72o6q"]
 [ext_resource type="Script" uid="uid://bejxli2tpo7q5" path="res://Src/UI/Item/BrowseItem.cs" id="1_d27ek"]
@@ -31,6 +31,14 @@ shadow_size = 2
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_blyna"]
 corner_radius_top_left = 3
 corner_radius_top_right = 3
+
+[sub_resource type="Texture2D" id="Texture2D_rdwit"]
+resource_local_to_scene = false
+resource_name = ""
+script = ExtResource("3_ii6d5")
+IconName = "fire"
+IconSize = 18
+metadata/_custom_type_script = "uid://bk3tot6c35bwu"
 
 [sub_resource type="StyleBoxLine" id="StyleBoxLine_u5j2m"]
 content_margin_left = 4.0
@@ -97,7 +105,7 @@ IconName = "message-reply-text-outline"
 IconSize = 18
 metadata/_custom_type_script = "uid://bk3tot6c35bwu"
 
-[node name="ModuleItem" type="Button" node_paths=PackedStringArray("_modIconTextureRect", "_modNameLabel", "_modDescriptionLabel", "_modAuthorButton", "_modDownloadsButton", "_modFollowsButton", "_modCommentsButton")]
+[node name="ModuleItem" type="Button" unique_id=1778333492 node_paths=PackedStringArray("_modIconTextureRect", "_modNameLabel", "_modDescriptionLabel", "_modAuthorButton", "_modDownloadsButton", "_modFollowsButton", "_modCommentsButton", "_modHotPointButton")]
 custom_minimum_size = Vector2(250, 350)
 size_flags_horizontal = 4
 mouse_filter = 1
@@ -112,8 +120,9 @@ _modAuthorButton = NodePath("VBoxContainer/HBoxContainer/Button")
 _modDownloadsButton = NodePath("VBoxContainer/HBoxContainer/Button2")
 _modFollowsButton = NodePath("VBoxContainer/HBoxContainer/Button3")
 _modCommentsButton = NodePath("VBoxContainer/HBoxContainer/Button5")
+_modHotPointButton = NodePath("VBoxContainer/PanelContainer/TextureRect/MarginContainer/Button")
 
-[node name="VBoxContainer" type="VBoxContainer" parent="."]
+[node name="VBoxContainer" type="VBoxContainer" parent="." unique_id=1890859707]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -122,27 +131,41 @@ grow_horizontal = 2
 grow_vertical = 2
 theme_override_constants/separation = 0
 
-[node name="PanelContainer" type="PanelContainer" parent="VBoxContainer"]
+[node name="PanelContainer" type="PanelContainer" parent="VBoxContainer" unique_id=1903259207]
 clip_children = 1
 layout_mode = 2
 size_flags_vertical = 3
 mouse_filter = 1
 theme_override_styles/panel = SubResource("StyleBoxFlat_blyna")
 
-[node name="TextureRect" type="TextureRect" parent="VBoxContainer/PanelContainer"]
+[node name="TextureRect" type="TextureRect" parent="VBoxContainer/PanelContainer" unique_id=2127710944]
 custom_minimum_size = Vector2(250, 167)
 layout_mode = 2
 texture = ExtResource("1_72o6q")
 expand_mode = 1
 stretch_mode = 6
 
-[node name="HSeparator2" type="HSeparator" parent="VBoxContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/PanelContainer/TextureRect" unique_id=1696189308]
+layout_mode = 1
+offset_right = 68.0
+offset_bottom = 29.0
+
+[node name="Button" type="Button" parent="VBoxContainer/PanelContainer/TextureRect/MarginContainer" unique_id=1933672590]
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme_type_variation = &"HotTopicButton"
+text = "555k"
+icon = SubResource("Texture2D_rdwit")
+alignment = 0
+
+[node name="HSeparator2" type="HSeparator" parent="VBoxContainer" unique_id=1042603870]
 layout_mode = 2
 mouse_filter = 1
 theme_override_constants/separation = 0
 theme_override_styles/separator = SubResource("StyleBoxLine_u5j2m")
 
-[node name="Label" type="Label" parent="VBoxContainer"]
+[node name="Label" type="Label" parent="VBoxContainer" unique_id=1576047951]
 layout_mode = 2
 size_flags_vertical = 3
 mouse_filter = 1
@@ -154,7 +177,7 @@ autowrap_mode = 1
 clip_text = true
 text_overrun_behavior = 3
 
-[node name="Label2" type="Label" parent="VBoxContainer"]
+[node name="Label2" type="Label" parent="VBoxContainer" unique_id=1612457683]
 layout_mode = 2
 size_flags_vertical = 3
 size_flags_stretch_ratio = 2.0
@@ -167,19 +190,19 @@ autowrap_mode = 1
 clip_text = true
 text_overrun_behavior = 3
 
-[node name="HSeparator" type="HSeparator" parent="VBoxContainer"]
+[node name="HSeparator" type="HSeparator" parent="VBoxContainer" unique_id=1796878831]
 layout_mode = 2
 mouse_filter = 1
 theme_override_constants/separation = 0
 theme_override_styles/separator = SubResource("StyleBoxLine_ceq8m")
 
-[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer" unique_id=1221289766]
 layout_mode = 2
 size_flags_vertical = 0
 mouse_default_cursor_shape = 2
 theme_override_constants/separation = 0
 
-[node name="Button" type="Button" parent="VBoxContainer/HBoxContainer"]
+[node name="Button" type="Button" parent="VBoxContainer/HBoxContainer" unique_id=1068187905]
 layout_mode = 2
 size_flags_horizontal = 3
 focus_mode = 0
@@ -194,7 +217,7 @@ alignment = 0
 text_overrun_behavior = 1
 clip_text = true
 
-[node name="Button2" type="Button" parent="VBoxContainer/HBoxContainer"]
+[node name="Button2" type="Button" parent="VBoxContainer/HBoxContainer" unique_id=915210673]
 layout_mode = 2
 size_flags_horizontal = 4
 focus_mode = 0
@@ -206,7 +229,7 @@ text = "622K"
 icon = SubResource("Texture2D_wrfr1")
 flat = true
 
-[node name="Button3" type="Button" parent="VBoxContainer/HBoxContainer"]
+[node name="Button3" type="Button" parent="VBoxContainer/HBoxContainer" unique_id=1012363830]
 layout_mode = 2
 focus_mode = 0
 mouse_filter = 1
@@ -217,7 +240,7 @@ text = "100"
 icon = SubResource("Texture2D_u5j2m")
 flat = true
 
-[node name="Button5" type="Button" parent="VBoxContainer/HBoxContainer"]
+[node name="Button5" type="Button" parent="VBoxContainer/HBoxContainer" unique_id=246939130]
 layout_mode = 2
 focus_mode = 0
 mouse_filter = 1

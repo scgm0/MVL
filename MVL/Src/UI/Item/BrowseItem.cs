@@ -29,6 +29,9 @@ public partial class BrowseItem : Button {
 	[Export]
 	private Button? _modCommentsButton;
 
+	[Export]
+	private Button? _modHotPointButton;
+	
 	public ApiModSummary? ModSummary { get; set; }
 
 	public override void _Ready() {
@@ -39,6 +42,7 @@ public partial class BrowseItem : Button {
 		_modDownloadsButton.NotNull();
 		_modFollowsButton.NotNull();
 		_modCommentsButton.NotNull();
+		_modHotPointButton.NotNull();
 		ModSummary.NotNull();
 
 		_modAuthorButton.GetParent<Container>().MouseFilter = MouseFilterEnum.Stop;
@@ -48,11 +52,13 @@ public partial class BrowseItem : Button {
 		_modDownloadsButton.Text = ModSummary.Value.Downloads.FormatNumber();
 		_modFollowsButton.Text = ModSummary.Value.Follows.FormatNumber();
 		_modCommentsButton.Text = ModSummary.Value.Comments.FormatNumber();
+		_modHotPointButton.Text = ModSummary.Value.TrendingPoints.FormatNumber();
 
 		_modAuthorButton.Pressed += OpenModDbPage;
 		_modDownloadsButton.Pressed += OpenModDbPage;
 		_modFollowsButton.Pressed += OpenModDbPage;
 		_modCommentsButton.Pressed += OpenModDbPage;
+		_modHotPointButton.Pressed += OpenModDbPage;
 
 		GetLogoTexture();
 	}
