@@ -173,7 +173,7 @@ theme_override_fonts/font = ExtResource("2_d27ek")
 theme_override_styles/normal = SubResource("StyleBoxFlat_1cmpl")
 text = "Nightvision helmets by Kanahaku"
 horizontal_alignment = 1
-autowrap_mode = 1
+autowrap_mode = 2
 clip_text = true
 text_overrun_behavior = 3
 
@@ -186,7 +186,7 @@ theme_override_colors/font_color = Color(1, 1, 1, 0.6745098)
 theme_override_font_sizes/font_size = 14
 theme_override_styles/normal = SubResource("StyleBoxFlat_wrfr1")
 text = "That mod adds some actually protective nightvision helmets for use!"
-autowrap_mode = 1
+autowrap_mode = 2
 clip_text = true
 text_overrun_behavior = 3
 
