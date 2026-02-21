@@ -62,9 +62,9 @@ public partial class IconTexture2D : Texture2D {
 		_svgTexture.DrawRectRegion(toCanvasItem, rect, srcRect, modulate, transpose, clipUv);
 	}
 
-	public override int _GetHeight() { return _svgTexture.GetHeight(); }
+	public override int _GetHeight() { return IconSize; }
 
-	public override int _GetWidth() { return _svgTexture.GetWidth(); }
+	public override int _GetWidth() { return IconSize; }
 
 	[JsonDictionary("Assets/Icon/MD/icons.json")]
 	static private partial Dictionary<string, string> Icons { get; }
