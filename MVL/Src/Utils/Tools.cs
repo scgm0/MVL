@@ -69,7 +69,6 @@ public static class Tools {
 
 			Log.Info("检测到DotNet，但其架构不是x64");
 			return false;
-
 		} catch (Exception e) {
 			Log.Error("检查DotNet环境失败", e);
 			return false;
@@ -86,6 +85,7 @@ public static class Tools {
 		using var process = CreateDotNetProcess("--list-runtimes");
 		process.Start();
 
+		var has = false;
 		while (await process.StandardOutput.ReadLineAsync() is { } line) {
 			Log.Debug($"检测到运行时: {line}");
 			if (!line.Contains("Microsoft.NETCore.App", StringComparison.OrdinalIgnoreCase)) {
@@ -103,17 +103,16 @@ public static class Tools {
 				continue;
 			}
 
-			if (installedVersion.Major != targetFrameworkVersion.Major) {
+			if (installedVersion.Major < targetFrameworkVersion.Major) {
 				continue;
 			}
 
-			Log.Debug($"检测到匹配的运行时: {parts[0]} {versionString}");
-			await process.WaitForExitAsync();
-			return true;
+			Log.Debug($"检测到可用的运行时: {parts[0]} {versionString}");
+			has = true;
 		}
 
 		await process.WaitForExitAsync();
-		return false;
+		return has;
 	}
 
 	static private async Task<string?> ExecuteDotNetCommandAsync(string arguments) {
@@ -129,7 +128,6 @@ public static class Tools {
 
 		Log.Debug($"'dotnet {arguments}'返回了退出代码 {process.ExitCode}");
 		return null;
-
 	}
 
 	static private Process CreateDotNetProcess(string arguments) {

@@ -168,10 +168,10 @@ public partial class Main : NativeWindowUtility {
 		FlurlHttp.Clients.WithDefaults(builder => {
 			builder.WithTimeout(10)
 				.ConfigureInnerHandler(handler => {
-				handler.Proxy = string.IsNullOrWhiteSpace(BaseConfig.ProxyAddress)
-					? HttpClient.DefaultProxy
-					: new WebProxy(BaseConfig.ProxyAddress);
-			});
+					handler.Proxy = string.IsNullOrWhiteSpace(BaseConfig.ProxyAddress)
+						? HttpClient.DefaultProxy
+						: new WebProxy(BaseConfig.ProxyAddress);
+				});
 		});
 
 		EmitSignalReady();
@@ -615,7 +615,12 @@ public partial class Main : NativeWindowUtility {
 			return;
 		}
 
-		var hasDotnet = await Tools.HasRequiredDotNetVersionInstalledAsync(Tools.VSRunTargetFramework);
+		var gameDotnetVersion = await releaseInfo.GetTargetFrameworkAsync();
+		Log.Debug($"游戏目标框架: {gameDotnetVersion.Version} VSRun目标框架: {Tools.VSRunTargetFramework}");
+		var targetFramework = gameDotnetVersion.Version >= Tools.VSRunTargetFramework
+			? gameDotnetVersion.Version
+			: Tools.VSRunTargetFramework;
+		var hasDotnet = await Tools.HasRequiredDotNetVersionInstalledAsync(targetFramework);
 		if (!hasDotnet) {
 			var confirmationWindow = _confirmationWindowScene!.Instantiate<ConfirmationWindow>();
 			confirmationWindow.Modulate = Colors.Transparent;

@@ -1,5 +1,6 @@
 ﻿using System.Reflection;
 using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices;
 using System.Security.Cryptography;
 using System.Text;
 using System.Text.Json;
@@ -43,6 +44,7 @@ public static class Program {
 
 	public static void Main(string[] args) {
 		Console.WriteLine("VS Run Main");
+		Console.WriteLine($"Dotnet Version: {RuntimeInformation.FrameworkDescription}");
 		try {
 			Config = JsonSerializer.Deserialize<RunConfig>(Environment.GetEnvironmentVariable("RUN_CONFIG")!,
 				new JsonSerializerOptions(JsonSerializerDefaults.Web) {

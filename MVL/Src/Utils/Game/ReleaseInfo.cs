@@ -1,3 +1,8 @@
+using System;
+using System.Runtime.Versioning;
+using System.Threading.Tasks;
+using Mono.Cecil;
+
 namespace MVL.Utils.Game;
 
 public record ReleaseInfo {
@@ -6,4 +11,86 @@ public record ReleaseInfo {
 	public GameVersion Version { get; set; }
 
 	public string Name { get; set; } = string.Empty;
+
+	public async Task<(string? FrameworkName, Version Version)> GetTargetFrameworkAsync() {
+		return await Task.Run(() => GetTargetFramework(System.IO.Path.Join(Path, "VintagestoryAPI.dll")));
+	}
+
+	public static (string? FrameworkName, Version Version) GetTargetFramework(string assemblyPath) {
+		try {
+			using var assembly = AssemblyDefinition.ReadAssembly(assemblyPath);
+			var targetFrameworkAttributeName = typeof(TargetFrameworkAttribute).FullName;
+
+			foreach (var attribute in assembly.CustomAttributes) {
+				if (attribute.AttributeType.FullName != targetFrameworkAttributeName) {
+					continue;
+				}
+
+				if (attribute.ConstructorArguments.Count > 0 &&
+					attribute.ConstructorArguments[0].Value is string frameworkString) {
+					return ParseTargetFrameworkInfo(frameworkString);
+				}
+
+				break;
+			}
+		} catch (Exception ex) {
+			Log.Error($"无法从 {assemblyPath} 读取目标框架", ex);
+		}
+
+		return (null, new());
+	}
+
+	static private (string? FrameworkName, Version Version) ParseTargetFrameworkInfo(ReadOnlySpan<char> frameworkSpan) {
+		ReadOnlySpan<char> nameSpan;
+		ReadOnlySpan<char> versionSpan = [];
+
+		var commaIndex = frameworkSpan.IndexOf(',');
+		if (commaIndex != -1) {
+			nameSpan = frameworkSpan[..commaIndex];
+			versionSpan = frameworkSpan[(commaIndex + 1)..];
+		} else {
+			nameSpan = frameworkSpan;
+		}
+
+		var finalName = ParseFrameworkName(nameSpan);
+		var finalVersion = new Version();
+
+		if (versionSpan.IsEmpty) {
+			return (finalName.ToString(), finalVersion);
+		}
+
+		const string versionPrefix = "Version=";
+		var versionPart = versionSpan.Trim();
+		var prefixIndex = versionPart.IndexOf(versionPrefix, StringComparison.OrdinalIgnoreCase);
+
+		if (prefixIndex == -1) {
+			return (finalName.ToString(), finalVersion);
+		}
+
+		var versionValueSpan = versionPart[(prefixIndex + versionPrefix.Length)..];
+		if (versionValueSpan.Length > 0 && (versionValueSpan[0] == 'v' || versionValueSpan[0] == 'V')) {
+			versionValueSpan = versionValueSpan[1..];
+		}
+
+		if (System.Version.TryParse(versionValueSpan, out finalVersion)) {
+			return (finalName.ToString(), finalVersion);
+		}
+
+		Log.Error($"无法从 {versionSpan} 解析版本");
+		return (finalName.ToString(), new());
+	}
+
+	static private ReadOnlySpan<char> ParseFrameworkName(ReadOnlySpan<char> nameSpan) {
+		var processedSpan = nameSpan.Trim();
+
+		if (!processedSpan.IsEmpty && processedSpan[0] == '.') {
+			processedSpan = processedSpan[1..];
+		}
+
+		if (processedSpan.EndsWith("App", StringComparison.Ordinal)) {
+			processedSpan = processedSpan[..^3];
+		}
+
+		return processedSpan;
+	}
 }
