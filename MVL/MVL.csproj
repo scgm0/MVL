@@ -19,10 +19,10 @@
     <ItemGroup>
         <PackageReference Include="ComputerInfo" Version="0.2.0"/>
         <PackageReference Include="CSemVer" Version="13.0.0"/>
-        <PackageReference Include="Downloader" Version="4.0.3"/>
+        <PackageReference Include="Downloader" Version="4.1.1" />
         <PackageReference Include="Flurl.Http" Version="4.0.2"/>
         <PackageReference Include="Mono.Cecil" Version="0.11.6"/>
-        <PackageReference Include="Nerdbank.MessagePack" Version="0.11.54-rc"/>
+        <PackageReference Include="Nerdbank.MessagePack" Version="1.0.43" />
         <PackageReference Include="NetMQ" Version="4.0.2.2"/>
         <PackageReference Include="PublishAotCross.LinuxToWin" Version="1.0.0"/>
         <PackageReference Include="ZLogger" Version="2.5.10"/>
