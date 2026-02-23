@@ -28,9 +28,9 @@ public class ModpackConfig {
 		}
 	}
 
-	public string Command { get; set; } = "%command%";
+	public string Command { get; set; } = "";
 
-	public string GameAssembly { get; set; } = "Vintagestory.dll";
+	public string GameAssembly { get; set; } = "";
 
 	[JsonIgnore]
 	public string? Path {

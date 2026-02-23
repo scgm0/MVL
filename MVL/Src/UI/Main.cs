@@ -683,17 +683,26 @@ public partial class Main : NativeWindowUtility {
 	public static void StartGame(
 		string gamePath,
 		string dataPath,
-		string command = "%command%",
-		string assembleName = "Vintagestory.dll") {
+		string command,
+		string assembleName) {
 		try {
 			GC.Collect(GC.MaxGeneration, GCCollectionMode.Forced);
 			GC.WaitForPendingFinalizers();
 			var tmp = CopyVsRun();
+			if (string.IsNullOrEmpty(command)) {
+				command = "%command%";
+			}
+
+			if (string.IsNullOrEmpty(assembleName)) {
+				assembleName = "Vintagestory.dll";
+			}
+
 			command = command.Replace("%game_path%", gamePath)
 				.Replace("%tmp_path%", tmp.GetCurrentDir())
 				.Replace("%data_path%", dataPath)
 				.Replace("%command%",
 					$"dotnet \"{Path.Combine(tmp.GetCurrentDir(), "VSRun.dll").NormalizePath()}\"");
+
 			var process = VsRun(new() {
 					VintageStoryPath = gamePath,
 					VintageStoryDataPath = dataPath,
