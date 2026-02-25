@@ -17,20 +17,17 @@ public class ModpackConfig {
 
 	private string _configPath = string.Empty;
 	private readonly ConcurrentDictionary<string, ModCacheEntry> _modInfoCache = new();
-	public string? Name { get; set; }
-	public GameVersion? Version { get; set; }
-
-	public string? ReleasePath {
-		get;
-		set {
-			field = value;
-			ReleaseInfo = Main.ReleaseInfos.GetValueOrDefault(field ?? string.Empty);
-		}
-	}
-
-	public string Command { get; set; } = "";
-
-	public string GameAssembly { get; set; } = "";
+	public string ModpackName { get; set; } = string.Empty;
+	public GameVersion? GameVersion { get; set; }
+	public SVersion ModpackVersion { get; set; } = SVersion.ZeroVersion;
+	public List<string> ModpackAuthors { get; set; } = [];
+	public List<string> ModpackTags { get; set; } = [];
+	public string ModpackSummary { get; set; } = string.Empty;
+	public string ModpackDescription { get; set; } = string.Empty;
+	public string ModpackWebsite { get; set; } = string.Empty;
+	public string Command { get; set; } = string.Empty;
+	public string GameAssembly { get; set; } = string.Empty;
+	public string? ReleasePath { get; set; }
 
 	[JsonIgnore]
 	public string? Path {
@@ -41,14 +38,38 @@ public class ModpackConfig {
 			}
 
 			field = value;
-			if (field != null) {
+			if (field == null) {
+				return;
+			}
+
+			lock (Lock) {
 				_configPath = System.IO.Path.Combine(field, "modpack.json");
 			}
 		}
 	}
 
-	public ConcurrentDictionary<string, ModInfo> Mods = [];
-	public ReleaseInfo? ReleaseInfo;
+	[JsonIgnore]
+	public ConcurrentDictionary<string, ModInfo> Mods { get; } = [];
+
+	[JsonIgnore]
+	public ReleaseInfo? ReleaseInfo {
+		get {
+			if (Main.ReleaseInfos.TryGetValue(ReleasePath ?? string.Empty, out var releaseInfo)) {
+				return releaseInfo;
+			}
+
+			foreach (var info in Main.ReleaseInfos.Values) {
+				if (info.Version == GameVersion) {
+					return info;
+				}
+			}
+
+			return null;
+		}
+	}
+
+	[JsonExtensionData]
+	public Dictionary<string, JsonElement> ExtensionData { get; set; } = [];
 
 	public void UpdateMods() {
 		Mods.Clear();
@@ -142,33 +163,54 @@ public class ModpackConfig {
 		}
 	}
 
+	public void Save() {
+		var data = JsonSerializer.SerializeToUtf8Bytes(this, SourceGenerationContext.Default.ModpackConfig);
+		lock (Lock) {
+			File.WriteAllBytes(_configPath, data);
+		}
+	}
+
 	static private readonly Lock Lock = new();
 
-	public static ModpackConfig Load(string modpackPath) {
+	public static async Task<ModpackConfig> Load(string modpackPath) {
 		var configPath = System.IO.Path.Combine(modpackPath, "modpack.json");
-		ModpackConfig modPackConfig;
+		ModpackConfig? modPackConfig = null;
 		try {
 			if (File.Exists(configPath)) {
-				using var file = File.OpenRead(configPath);
-				modPackConfig = JsonSerializer.Deserialize<ModpackConfig>(file,
-						SourceGenerationContext.Default.ModpackConfig) ??
-					new ModpackConfig();
-			} else {
-				modPackConfig = new();
+				var jsonBytes = await File.ReadAllBytesAsync(configPath);
+				using var doc = JsonDocument.Parse(jsonBytes);
+				var root = doc.RootElement;
+				var isV0 = root.TryGetProperty("name", out _) && !root.TryGetProperty("modpackName", out _);
+				if (isV0) {
+					var v0Config = JsonSerializer.Deserialize(jsonBytes, SourceGenerationContext.Default.ModpackConfigV0);
+					if (v0Config != null) {
+						modPackConfig = MigrateFromV0(v0Config);
+						Log.Debug($"已将旧版配置文件迁移至新格式: {configPath}");
+					}
+				} else {
+					modPackConfig = JsonSerializer.Deserialize(jsonBytes, SourceGenerationContext.Default.ModpackConfig);
+				}
 			}
-		} catch {
-			modPackConfig = new();
+		} catch (Exception ex) {
+			Log.Error($"加载配置文件失败: {configPath}", ex);
 		}
 
+		modPackConfig ??= new();
 		modPackConfig.Path = modpackPath;
-		Save(modPackConfig);
+		modPackConfig.Save();
 		return modPackConfig;
 	}
 
-	public static void Save(ModpackConfig modPackConfig) {
-		var data = JsonSerializer.SerializeToUtf8Bytes(modPackConfig, SourceGenerationContext.Default.ModpackConfig);
-		lock (Lock) {
-			File.WriteAllBytes(modPackConfig._configPath, data);
-		}
+	static private ModpackConfig MigrateFromV0(ModpackConfigV0 v0) {
+		return new() {
+			ModpackName = v0.Name,
+			GameVersion = v0.Version,
+			ReleasePath = v0.ReleasePath,
+			Command = v0.Command.Equals("%command%", StringComparison.OrdinalIgnoreCase) ? string.Empty : v0.Command,
+			GameAssembly = v0.GameAssembly.Equals("Vintagestory.dll", StringComparison.OrdinalIgnoreCase)
+				? string.Empty
+				: v0.GameAssembly,
+			ExtensionData = v0.ExtensionData
+		};
 	}
 }

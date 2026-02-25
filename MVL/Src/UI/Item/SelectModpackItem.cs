@@ -23,8 +23,8 @@ public partial class SelectModpackItem : PanelContainer {
 
 	public ButtonGroup? ButtonGroup { get; set; }
 	public ModpackConfig? ModpackConfig { get; set; }
+	public bool Selected { get; set; }
 	public event Action? ButtonPressed;
-	public bool Selected;
 
 	public override void _Ready() {
 		_modpackIconTexture.NotNull();
@@ -32,17 +32,33 @@ public partial class SelectModpackItem : PanelContainer {
 		_releaseNameLabel.NotNull();
 		_releaseVersionLabel.NotNull();
 		_selectButton.NotNull();
+		ModpackConfig.NotNull();
 
-		_modpackNameLabel.Text = ModpackConfig!.Name;
-		if (ModpackConfig.ReleasePath is not null) {
-			var releaseInfo = Main.ReleaseInfos[ModpackConfig.ReleasePath];
+		_modpackNameLabel.Text = ModpackConfig.ModpackName;
+		_modpackNameLabel.TooltipText = ModpackConfig.ModpackName;
+
+		if (ModpackConfig.GameVersion is { } gameVersion) {
+			_releaseVersionLabel.Text = gameVersion.ShortGameVersion;
+			_releaseVersionLabel.TooltipText = gameVersion.ShortGameVersion;
+		}
+
+		if (ModpackConfig.ReleaseInfo is { } releaseInfo) {
 			_releaseNameLabel.Text = releaseInfo.Name;
-			_releaseVersionLabel.Text = releaseInfo.Version.ShortGameVersion;
+			_releaseNameLabel.TooltipText = releaseInfo.Name;
 		}
 
 		_selectButton.ButtonGroup = ButtonGroup;
 		_selectButton.ButtonPressed = Selected;
 		_selectButton.Pressed += SelectButtonOnPressed;
+	}
+
+	public override void _GuiInput(InputEvent @event) {
+		if (@event is InputEventMouseButton { ButtonIndex: MouseButton.Left, Pressed: true }) {
+			_selectButton?.ButtonPressed = true;
+			_selectButton?.EmitSignal(BaseButton.SignalName.Pressed);
+		}
+
+		@event.Dispose();
 	}
 
 	private void SelectButtonOnPressed() { ButtonPressed?.Invoke(); }

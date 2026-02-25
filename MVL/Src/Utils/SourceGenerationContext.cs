@@ -17,6 +17,7 @@ namespace MVL.Utils;
 [JsonSerializable(typeof(RunConfig))]
 [JsonSerializable(typeof(BaseConfigV0))]
 [JsonSerializable(typeof(BaseConfig))]
+[JsonSerializable(typeof(ModpackConfigV0))]
 [JsonSerializable(typeof(ModpackConfig))]
 [JsonSerializable(typeof(GameRelease))]
 [JsonSerializable(typeof(GameDownloadInfo))]
@@ -39,7 +40,9 @@ namespace MVL.Utils;
 [JsonSourceGenerationOptions(JsonSerializerDefaults.Web,
 	AllowTrailingCommas = true,
 	UseStringEnumConverter = true,
-	WriteIndented = true)]
+	WriteIndented = true,
+	DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull,
+	Converters = [typeof(DateTimeOffsetConverter), typeof(SVersionConverter)])]
 [GenerateShapeFor<List<RoomPlayerInfo>>]
 public partial class SourceGenerationContext : JsonSerializerContext {
 	static SourceGenerationContext() { Default = new(CreateJsonSerializerOptions(Default)); }
@@ -48,8 +51,6 @@ public partial class SourceGenerationContext : JsonSerializerContext {
 		var options = new JsonSerializerOptions(defaultContext.GeneratedSerializerOptions!) {
 			Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping
 		};
-
-		options.Converters.Add(new DateTimeOffsetConverter());
 
 		return options;
 	}

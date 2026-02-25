@@ -235,7 +235,7 @@ public partial class ModpackModManagementWindow : BaseWindow {
 					var version = SVersion.TryParse(modDependency.Version.Replace('*', '0'), out var m) ? m : SVersion.ZeroVersion;
 					var releaseVersion = SVersion.TryParse(r?.ModVersion, out var v) ? v : SVersion.ZeroVersion;
 					return releaseVersion >= version && r!.Value.Tags.Any(gameVersion =>
-						GameVersion.ComparerVersion(ModpackItem!.ModpackConfig!.Version!.Value, new(gameVersion)) >= 0);
+						GameVersion.ComparerVersion(ModpackItem!.ModpackConfig!.GameVersion!.Value, new(gameVersion)) >= 0);
 				});
 
 				if (release is null) {

@@ -328,7 +328,7 @@ public partial class ModInfoItem : PanelContainer {
 				Log.Debug(
 					$"找到可更新版本: {ApiModInfo.Value.Name} {modInfoRelease.ModVersion} (现有版本: {Mod.Version}) (兼容的游戏版本: {modInfoRelease.Tags.Stringify()})");
 				if (!modInfoRelease.Tags.Any(gameVersion =>
-					GameVersion.ComparerVersion(Mod.ModpackConfig!.Version!.Value, new(gameVersion)) >= 0)) {
+					GameVersion.ComparerVersion(Mod.ModpackConfig!.GameVersion!.Value, new(gameVersion)) >= 0)) {
 					continue;
 				}
 

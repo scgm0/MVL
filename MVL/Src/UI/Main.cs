@@ -374,9 +374,9 @@ public partial class Main : NativeWindowUtility {
 	}
 
 	public async void Init() {
-		await Task.Run(() => {
+		await Task.Run(async () => {
 			CheckReleaseInfo();
-			CheckModpackConfig();
+			await CheckModpackConfig();
 		});
 		CheckAccount();
 		Log.Info("初始化完成");
@@ -455,7 +455,7 @@ public partial class Main : NativeWindowUtility {
 		BaseConfig.Release.Remove(path);
 	}
 
-	public static void CheckModpackConfig() {
+	public static async Task CheckModpackConfig() {
 		BaseConfig.Modpack = BaseConfig.Modpack.Select(p => p.NormalizePath()).Distinct().ToList();
 		var list = BaseConfig.Modpack.ToList();
 
@@ -468,26 +468,28 @@ public partial class Main : NativeWindowUtility {
 				continue;
 			}
 
-			var modPack = ModpackConfigs.GetValueOrDefault(path, ModpackConfig.Load(path));
-			ModpackConfigs[path] = modPack;
-			modPack.Path = path;
-			modPack.Name ??= path.GetFile();
-
-			if (modPack.ReleasePath != null &&
-				(!ReleaseInfos.TryGetValue(modPack.ReleasePath, out var releaseInfo) ||
-					releaseInfo.Version != modPack.Version)) {
-				modPack.ReleasePath = null;
+			var modpack = ModpackConfigs.GetValueOrDefault(path, await ModpackConfig.Load(path));
+			ModpackConfigs[path] = modpack;
+			modpack.Path = path;
+			if (string.IsNullOrEmpty(modpack.ModpackName)) {
+				modpack.ModpackName = path.GetFile();
 			}
 
-			if (modPack.Version is null) {
-				modPack.ReleasePath = null;
+			if (modpack.ReleasePath != null &&
+				(!ReleaseInfos.TryGetValue(modpack.ReleasePath, out var releaseInfo) ||
+					releaseInfo.Version != modpack.GameVersion)) {
+				modpack.ReleasePath = null;
+			}
+
+			if (modpack.GameVersion is null) {
+				modpack.ReleasePath = null;
 				continue;
 			}
 
-			var info = versionLookup[modPack.Version.Value].FirstOrDefault();
-			modPack.ReleasePath ??= info?.Path;
+			var info = versionLookup[modpack.GameVersion.Value].FirstOrDefault();
+			modpack.ReleasePath ??= info?.Path;
 
-			ModpackConfig.Save(modPack);
+			modpack.Save();
 		}
 
 		BaseConfig.Save();
@@ -711,6 +713,7 @@ public partial class Main : NativeWindowUtility {
 					Account = string.IsNullOrEmpty(BaseConfig.CurrentAccount) ? null : Accounts[BaseConfig.CurrentAccount]
 				},
 				command);
+
 			if (process is null) {
 				return;
 			}

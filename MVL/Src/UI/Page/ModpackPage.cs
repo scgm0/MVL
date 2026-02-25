@@ -49,11 +49,11 @@ public partial class ModpackPage : MenuPage {
 	private void AddModpackOnAddModpack(string modpackName, string modpackPath, string gameVersion, string releasePath) {
 		var modpack = new ModpackConfig {
 			Path = modpackPath,
-			Name = modpackName,
-			Version = new GameVersion(gameVersion),
+			ModpackName = modpackName,
+			GameVersion = new GameVersion(gameVersion),
 			ReleasePath = releasePath
 		};
-		ModpackConfig.Save(modpack);
+		modpack.Save();
 		UI.Main.ModpackConfigs[modpackPath] = modpack;
 		UI.Main.BaseConfig.Modpack.Insert(0, modpackPath);
 		if (UI.Main.BaseConfig.Modpack.Count == 1) {

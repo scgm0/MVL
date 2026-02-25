@@ -20,7 +20,7 @@ public partial class ModpackItem : PanelContainer {
 	private Label? _modpackName;
 
 	[Export]
-	private LinkButton? _modpackPath;
+	private Label? _modpackSummary;
 
 	[Export]
 	private Button? _modCount;
@@ -29,7 +29,7 @@ public partial class ModpackItem : PanelContainer {
 	private Button? _versionButton;
 
 	[Export]
-	private Button? _releaseButton;
+	private Button? _settingButton;
 
 	[Export]
 	private Button? _playButton;
@@ -37,32 +37,24 @@ public partial class ModpackItem : PanelContainer {
 	public ModpackConfig? ModpackConfig { get; set; }
 
 	public override async void _Ready() {
-		NullExceptionHelper.NotNull(
-			_listModScene,
-			_listGameScene,
-			_modpackName,
-			_modpackPath,
-			_modCount,
-			_versionButton,
-			_releaseButton,
-			_playButton,
-			ModpackConfig
-		);
+		_listModScene.NotNull();
+		_listGameScene.NotNull();
+		_modpackName.NotNull();
+		_modpackSummary.NotNull();
+		_modCount.NotNull();
+		_versionButton.NotNull();
+		_settingButton.NotNull();
+		_playButton.NotNull();
+		ModpackConfig.NotNull();
 
-		_modpackName.Text = ModpackConfig.Name;
-		_modpackPath.Text = ModpackConfig.Path;
-		_modpackPath.Uri = ModpackConfig.Path;
-		_versionButton.Text = ModpackConfig.Version?.ShortGameVersion ?? "选择版本";
-		if (ModpackConfig.Version is not null) {
-			_releaseButton.Visible = true;
-			if (ModpackConfig.ReleasePath is not null) {
-				var releaseInfo = Main.ReleaseInfos[ModpackConfig.ReleasePath];
-				_releaseButton.Text = releaseInfo.Name;
-				_releaseButton.TooltipText = releaseInfo.Path;
-			}
+		_modpackName.Text = ModpackConfig.ModpackName;
+		if (!string.IsNullOrEmpty(ModpackConfig.ModpackSummary)) {
+			_modpackSummary.Text = ModpackConfig.ModpackSummary.Replace("\r", "").Replace("\n", "");
 		}
 
-		if (ModpackConfig.Version is null) {
+		_versionButton.Text = ModpackConfig.GameVersion?.ShortGameVersion ?? "选择版本";
+
+		if (ModpackConfig.GameVersion is null) {
 			_playButton.Disabled = true;
 			_playButton.TooltipText = "请选择版本后再启动游戏";
 		}
@@ -128,15 +120,12 @@ public partial class ModpackItem : PanelContainer {
 
 			var path = paths[0];
 			var info = Main.ReleaseInfos[path];
-			ModpackConfig!.Version = info.Version;
+			ModpackConfig!.GameVersion = info.Version;
 			ModpackConfig.ReleasePath = info.Path;
 			_versionButton!.Text = info.Version.ShortGameVersion;
-			_releaseButton!.Visible = true;
-			_releaseButton.Text = info.Name;
-			_releaseButton.TooltipText = info.Path;
 			_playButton!.Disabled = false;
 			_playButton.TooltipText = "";
-			ModpackConfig.Save(ModpackConfig);
+			ModpackConfig.Save();
 		};
 		Main.Instance?.AddChild(versionSelect);
 		_ = versionSelect.ShowInstalledGames(list);

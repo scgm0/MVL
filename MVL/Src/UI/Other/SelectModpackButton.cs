@@ -169,8 +169,8 @@ public partial class SelectModpackButton : Button {
 			}
 		}
 
-		_name!.Text = ModpackConfig.Name;
-		if (Main.ReleaseInfos.TryGetValue(ModpackConfig.ReleasePath ?? string.Empty, out var releaseInfo)) {
+		_name!.Text = ModpackConfig.ModpackName;
+		if (ModpackConfig.ReleaseInfo is { } releaseInfo) {
 			_version!.Text = $"{releaseInfo.Name} ({releaseInfo.Version.ShortGameVersion})";
 		}
 

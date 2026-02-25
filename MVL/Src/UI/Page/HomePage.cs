@@ -161,9 +161,9 @@ public partial class HomePage : MenuPage {
 	}
 
 	private async Task UpdateInfo() {
-		await Task.Run(() => {
+		await Task.Run(async () => {
 			UI.Main.CheckReleaseInfo();
-			UI.Main.CheckModpackConfig();
+			await UI.Main.CheckModpackConfig();
 		});
 		_playButton!.Modulate = Colors.White;
 		_playButton!.Text = "启动游戏";
@@ -171,10 +171,9 @@ public partial class HomePage : MenuPage {
 		_selectModpackButton.Disabled = false;
 		if (UI.Main.ModpackConfigs.TryGetValue(UI.Main.BaseConfig.CurrentModpack, out var modpackConfig)) {
 			_playButton!.Disabled = false;
-			_modPackNameLabel!.Text = modpackConfig.Name;
-			_gameVersionLabel!.Text = modpackConfig.Version?.ShortGameVersion;
-			if (modpackConfig.ReleasePath is not null) {
-				var releaseInfo = UI.Main.ReleaseInfos[modpackConfig.ReleasePath];
+			_modPackNameLabel!.Text = modpackConfig.ModpackName;
+			_gameVersionLabel!.Text = modpackConfig.GameVersion?.ShortGameVersion;
+			if (modpackConfig.ReleaseInfo is { } releaseInfo) {
 				_releaseNameLabel!.Text = releaseInfo.Name;
 			}
 

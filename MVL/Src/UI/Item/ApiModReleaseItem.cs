@@ -150,13 +150,13 @@ public partial class ApiModReleaseItem : PanelContainer {
 			label.ThemeTypeVariation = "ModReleaseTag";
 			_tagsContainer!.AddChild(label);
 
-			if (GameVersion.ComparerVersion(ModpackConfig!.Version!.Value, new(tag)) == 0) {
+			if (GameVersion.ComparerVersion(ModpackConfig!.GameVersion!.Value, new(tag)) == 0) {
 				_downloadButton.Modulate = Colors.Green;
 				_downloadButton.TooltipText = "兼容的游戏版本包含整合包游戏版本，能够安全使用";
 				_checkBox!.Modulate = Colors.Green;
 				_checkBox.TooltipText = "兼容的游戏版本包含整合包游戏版本，能够安全使用";
 				label.Modulate = Colors.Green;
-			} else if (GameVersion.ComparerVersion(ModpackConfig!.Version!.Value, new(tag)) > 0) {
+			} else if (GameVersion.ComparerVersion(ModpackConfig!.GameVersion!.Value, new(tag)) > 0) {
 				label.Modulate = Colors.DarkSeaGreen;
 				if (_downloadButton.Modulate != Colors.DarkRed) {
 					continue;
