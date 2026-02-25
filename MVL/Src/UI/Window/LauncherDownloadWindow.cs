@@ -248,7 +248,7 @@ public partial class LauncherDownloadWindow : BaseWindow {
 			return;
 		}
 
-		var version = CSVersion.Parse(_apiRelease!.Value.TagName);
+		var version = SVersion.Parse(_apiRelease!.Value.TagName);
 		Log.Debug($"最新版本: {version} 当前版本: {BuildInfo.InformationalVersion}");
 		if (onlyCheck && version <= BuildInfo.InformationalVersion) {
 			CancelButtonOnPressed();
