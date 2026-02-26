@@ -106,7 +106,7 @@ public partial class ApiModReleaseItem : PanelContainer {
 		_version!.Text = _isChecked && ModInfo is not null
 			? $"{ModInfo.Version} > {ApiModRelease!.Value.ModVersion}"
 			: ApiModRelease!.Value.ModVersion;
-		_dateLabel!.Text = ApiModRelease.Value.Created.ToString("yyyy-MM-dd");
+		_dateLabel!.Text = ApiModRelease.Value.Created.LocalDateTime.ToString("yyyy-MM-dd");
 		_downloadCountLabel!.Text = ApiModRelease.Value.Downloads.ToString();
 
 		if (string.IsNullOrEmpty(ApiModRelease.Value.MainFile)) {

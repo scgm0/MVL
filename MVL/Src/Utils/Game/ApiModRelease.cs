@@ -1,4 +1,5 @@
 using System;
+using System.Text.Json.Serialization;
 
 namespace MVL.Utils.Game;
 
@@ -12,5 +13,7 @@ public record struct ApiModRelease {
 	public string[] Tags { get; init; } = [];
 	public string ModIdStr { get; init; } = "";
 	public string ModVersion { get; init; } = "1.0.0";
+
+	[JsonConverter(typeof(SqlDateTimeOffsetConverter))]
 	public DateTimeOffset Created { get; init; } = default;
 }

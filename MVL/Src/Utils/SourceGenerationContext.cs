@@ -42,7 +42,7 @@ namespace MVL.Utils;
 	UseStringEnumConverter = true,
 	WriteIndented = true,
 	DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull,
-	Converters = [typeof(DateTimeOffsetConverter), typeof(SVersionConverter)])]
+	Converters = [typeof(SVersionConverter)])]
 [GenerateShapeFor<List<RoomPlayerInfo>>]
 public partial class SourceGenerationContext : JsonSerializerContext {
 	static SourceGenerationContext() { Default = new(CreateJsonSerializerOptions(Default)); }

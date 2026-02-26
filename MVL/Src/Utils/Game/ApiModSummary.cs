@@ -1,4 +1,5 @@
 using System;
+using System.Text.Json.Serialization;
 
 namespace MVL.Utils.Game;
 
@@ -18,5 +19,7 @@ public struct ApiModSummary {
 	public required string Type { get; init; }
 	public string? Logo { get; init; }
 	public required string[] Tags { get; init; }
+
+	[JsonConverter(typeof(SqlDateTimeOffsetConverter))]
 	public DateTimeOffset LastReleased { get; init; }
 }

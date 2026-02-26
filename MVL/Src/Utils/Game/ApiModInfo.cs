@@ -1,4 +1,5 @@
 using System;
+using System.Text.Json.Serialization;
 
 namespace MVL.Utils.Game;
 
@@ -22,8 +23,13 @@ public record struct ApiModInfo() {
 	public int Comments { get; init; } = 0;
 	public string Side { get; init; } = "";
 	public string Type { get; init; } = "";
+
+	[JsonConverter(typeof(SqlDateTimeOffsetConverter))]
 	public DateTimeOffset Created { get; init; } = default;
+
+	[JsonConverter(typeof(SqlDateTimeOffsetConverter))]
 	public DateTimeOffset LastModified { get; init; } = default;
+
 	public string[] Tags { get; init; } = [];
 	public ApiModRelease[] Releases { get; set; } = [];
 }
