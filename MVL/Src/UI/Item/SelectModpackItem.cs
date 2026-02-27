@@ -25,6 +25,7 @@ public partial class SelectModpackItem : PanelContainer {
 	public ModpackConfig? ModpackConfig { get; set; }
 	public bool Selected { get; set; }
 	public event Action? ButtonPressed;
+	private bool _onlyDown;
 
 	public override void _Ready() {
 		_modpackIconTexture.NotNull();
@@ -53,9 +54,21 @@ public partial class SelectModpackItem : PanelContainer {
 	}
 
 	public override void _GuiInput(InputEvent @event) {
-		if (@event is InputEventMouseButton { ButtonIndex: MouseButton.Left, Pressed: true }) {
-			_selectButton?.ButtonPressed = true;
-			_selectButton?.EmitSignal(BaseButton.SignalName.Pressed);
+		switch (_onlyDown) {
+			case false
+				when @event is InputEventMouseButton { ButtonIndex: MouseButton.Left, Pressed: true }: {
+				_onlyDown = true;
+				break;
+			}
+			case true when @event is InputEventMouse: {
+				_onlyDown = false;
+				if (@event is InputEventMouseButton { ButtonIndex: MouseButton.Left, Pressed: false }) {
+					_selectButton?.ButtonPressed = true;
+					_selectButton?.EmitSignal(BaseButton.SignalName.Pressed);
+				}
+
+				break;
+			}
 		}
 
 		@event.Dispose();
