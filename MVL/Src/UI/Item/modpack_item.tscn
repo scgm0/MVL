@@ -87,7 +87,7 @@ script = ExtResource("4_32kh6")
 IconName = "play"
 metadata/_custom_type_script = "uid://bk3tot6c35bwu"
 
-[node name="ModpackItem" type="PanelContainer" unique_id=931146560 node_paths=PackedStringArray("_modpackName", "_modpackSummary", "_modCount", "_versionButton", "_settingButton", "_playButton")]
+[node name="ModpackItem" type="PanelContainer" unique_id=931146560 node_paths=PackedStringArray("_modpackName", "_modpackIconTexture", "_modpackSummary", "_modCount", "_versionButton", "_settingButton", "_playButton")]
 material = ExtResource("1_00er1")
 custom_minimum_size = Vector2(827, 64)
 theme = SubResource("Theme_bmwv3")
@@ -96,6 +96,7 @@ script = ExtResource("1_j0hm1")
 _listModScene = ExtResource("3_cfjm5")
 _listGameScene = ExtResource("2_jptkp")
 _modpackName = NodePath("HBoxContainer/VBoxContainer/Label")
+_modpackIconTexture = NodePath("HBoxContainer/TextureRect")
 _modpackSummary = NodePath("HBoxContainer/VBoxContainer/HBoxContainer/Label")
 _modCount = NodePath("HBoxContainer/VBoxContainer/HBoxContainer/Button")
 _versionButton = NodePath("HBoxContainer/Button")

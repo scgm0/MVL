@@ -1,5 +1,7 @@
 using System;
+using System.IO;
 using Godot;
+using MVL.Utils;
 using MVL.Utils.Config;
 using MVL.Utils.Help;
 
@@ -51,6 +53,17 @@ public partial class SelectModpackItem : PanelContainer {
 		_selectButton.ButtonGroup = ButtonGroup;
 		_selectButton.ButtonPressed = Selected;
 		_selectButton.Pressed += SelectButtonOnPressed;
+
+		var iconPaths = Directory.GetFiles(ModpackConfig.Path!, "modpackIcon.*", SearchOption.TopDirectoryOnly);
+		foreach (var iconPath in iconPaths) {
+			var icon = Tools.LoadTextureFromPath(iconPath);
+			if (icon is null) {
+				continue;
+			}
+
+			_modpackIconTexture.Texture = icon;
+			break;
+		}
 	}
 
 	public override void _GuiInput(InputEvent @event) {

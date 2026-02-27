@@ -164,6 +164,7 @@ public static class Tools {
 				throw new NotSupportedException($"不支持的图像格式: {format}");
 		}
 
+		image.GenerateMipmaps();
 		return ImageTexture.CreateFromImage(image);
 	}
 

@@ -1,3 +1,4 @@
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Godot;
@@ -20,6 +21,9 @@ public partial class ModpackItem : PanelContainer {
 	private Label? _modpackName;
 
 	[Export]
+	private TextureRect? _modpackIconTexture;
+
+	[Export]
 	private Label? _modpackSummary;
 
 	[Export]
@@ -40,6 +44,7 @@ public partial class ModpackItem : PanelContainer {
 		_listModScene.NotNull();
 		_listGameScene.NotNull();
 		_modpackName.NotNull();
+		_modpackIconTexture.NotNull();
 		_modpackSummary.NotNull();
 		_modCount.NotNull();
 		_versionButton.NotNull();
@@ -64,6 +69,17 @@ public partial class ModpackItem : PanelContainer {
 			icon.IconName = "stop";
 			_playButton.Modulate = Colors.Red;
 			Main.GameExitEvent += MainOnGameExitEvent;
+		}
+
+		var iconPaths = Directory.GetFiles(ModpackConfig.Path!, "modpackIcon.*", SearchOption.TopDirectoryOnly);
+		foreach (var iconPath in iconPaths) {
+			var icon = Tools.LoadTextureFromPath(iconPath);
+			if (icon is null) {
+				continue;
+			}
+
+			_modpackIconTexture.Texture = icon;
+			break;
 		}
 
 		_versionButton.Pressed += VersionButtonOnPressed;
