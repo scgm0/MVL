@@ -2,6 +2,7 @@ using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Threading;
@@ -17,7 +18,7 @@ public class ModpackConfig {
 	private readonly record struct ModCacheEntry(ModInfo ModInfo, DateTime LastWriteTimeUtc);
 
 	private string _configPath = string.Empty;
-	private readonly ConcurrentDictionary<string, ModCacheEntry> _modInfoCache = new();
+	private readonly ConcurrentDictionary<string, ModCacheEntry> _modInfoCache = new(StringComparer.OrdinalIgnoreCase);
 	public string ModpackName { get; set; } = string.Empty;
 	public GameVersion? GameVersion { get; set; }
 	public SVersion ModpackVersion { get; set; } = SVersion.ZeroVersion;
@@ -94,81 +95,90 @@ public class ModpackConfig {
 	public Dictionary<string, JsonElement> ExtensionData { get; set; } = [];
 
 	public void UpdateMods() {
-		Mods.Clear();
+		// Mods.Clear();
 
 		if (string.IsNullOrEmpty(Path)) {
 			return;
 		}
 
 		var modsPath = System.IO.Path.Combine(Path, "Mods");
-		if (!Directory.Exists(modsPath)) {
-			Directory.CreateDirectory(modsPath);
+		var dirInfo = new DirectoryInfo(modsPath);
+
+		if (!dirInfo.Exists) {
+			dirInfo.Create();
 		}
 
-		var existingPaths = new HashSet<string>(Directory.EnumerateFileSystemEntries(modsPath));
+		var fileSystemInfos = dirInfo.EnumerateFileSystemInfos().ToArray();
+
+		var existingPaths = new HashSet<string>(
+			fileSystemInfos.Select(fsi => fsi.FullName),
+			StringComparer.OrdinalIgnoreCase
+		);
+
 		foreach (var cachedPath in _modInfoCache.Keys) {
 			if (!existingPaths.Contains(cachedPath)) {
 				_modInfoCache.TryRemove(cachedPath, out _);
 			}
 		}
 
-		Parallel.ForEach(Directory.EnumerateFileSystemEntries(modsPath),
-			entryPath => {
-				var modInfo = TryLoadMod(entryPath);
+		foreach (var kvp in Mods) {
+			if (!existingPaths.Contains(kvp.Value.ModPath)) {
+				Mods.TryRemove(kvp.Key, out _);
+			}
+		}
+
+		Parallel.ForEach(fileSystemInfos,
+			fsi => {
+				var modInfo = TryLoadMod(fsi);
 				if (modInfo == null) {
 					return;
 				}
 
 				modInfo.ModpackConfig = this;
 
-				var success = false;
-				while (!success) {
-					if (Mods.TryGetValue(modInfo.ModId, out var existingModInfo)) {
+				SVersion? newVersion;
+				try {
+					newVersion = SVersion.Parse(modInfo.Version);
+				} catch (Exception ex) {
+					Log.Error($"解析 {modInfo.ModPath} 版本失败: {modInfo.Version}", ex);
+					return;
+				}
+
+				Mods.AddOrUpdate(
+					modInfo.ModId,
+					modInfo,
+					(_, existingModInfo) => {
 						try {
-							var newVersion = SVersion.Parse(modInfo.Version);
 							var oldVersion = SVersion.Parse(existingModInfo.Version);
 
-							if (newVersion > oldVersion) {
-								if (Mods.TryUpdate(modInfo.ModId, modInfo, existingModInfo)) {
-									success = true;
-								}
-							} else {
-								success = true;
-							}
+							return newVersion > oldVersion ? modInfo : existingModInfo;
 						} catch (Exception ex) {
-							Log.Error($"比较 {modInfo.ModId} 版本时出错", ex);
-							success = true;
-						}
-					} else {
-						if (Mods.TryAdd(modInfo.ModId, modInfo)) {
-							success = true;
+							Log.Error($"比较 {modInfo.ModPath} 和 {existingModInfo.ModPath} 版本时出错", ex);
+							return existingModInfo;
 						}
 					}
-				}
+				);
 			});
 	}
 
-	private ModInfo? TryLoadMod(string entryPath) {
+	private ModInfo? TryLoadMod(FileSystemInfo fsi) {
+		var entryPath = fsi.FullName;
 		try {
-			var lastWriteTime = File.GetLastWriteTimeUtc(entryPath);
+			var lastWriteTime = fsi.LastWriteTimeUtc;
 
 			if (_modInfoCache.TryGetValue(entryPath, out var cachedEntry) &&
 				cachedEntry.LastWriteTimeUtc == lastWriteTime) {
 				return cachedEntry.ModInfo;
 			}
 
-			ModInfo? newModInfo = null;
-			var attributes = File.GetAttributes(entryPath);
-
-			if ((attributes & FileAttributes.Directory) == FileAttributes.Directory) {
-				newModInfo = ModInfo.FromDirectory(entryPath);
-			} else {
-				if (entryPath.EndsWith(".zip", StringComparison.OrdinalIgnoreCase)) {
-					newModInfo = ModInfo.FromZip(entryPath);
-				} else if (entryPath.EndsWith(".dll", StringComparison.OrdinalIgnoreCase)) {
-					newModInfo = ModInfo.FromAssembly(entryPath);
-				}
-			}
+			var newModInfo = fsi switch {
+				DirectoryInfo => ModInfo.FromDirectory(entryPath),
+				FileInfo { Extension: var ext } when ext.Equals(".zip", StringComparison.OrdinalIgnoreCase) =>
+					ModInfo.FromZip(entryPath),
+				FileInfo { Extension: var ext } when ext.Equals(".dll", StringComparison.OrdinalIgnoreCase) =>
+					ModInfo.FromAssembly(entryPath),
+				_ => null
+			};
 
 			if (newModInfo != null) {
 				var newCacheEntry = new ModCacheEntry(newModInfo, lastWriteTime);
