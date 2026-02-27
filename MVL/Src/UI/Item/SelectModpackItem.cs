@@ -54,15 +54,9 @@ public partial class SelectModpackItem : PanelContainer {
 		_selectButton.ButtonPressed = Selected;
 		_selectButton.Pressed += SelectButtonOnPressed;
 
-		var iconPaths = Directory.GetFiles(ModpackConfig.Path!, "modpackIcon.*", SearchOption.TopDirectoryOnly);
-		foreach (var iconPath in iconPaths) {
-			var icon = Tools.LoadTextureFromPath(iconPath);
-			if (icon is null) {
-				continue;
-			}
-
-			_modpackIconTexture.Texture = icon;
-			break;
+		var modpackIcon = ModpackConfig.ModpackIcon;
+		if (modpackIcon is not null) {
+			_modpackIconTexture.Texture = modpackIcon;
 		}
 	}
 

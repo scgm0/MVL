@@ -71,15 +71,9 @@ public partial class ModpackItem : PanelContainer {
 			Main.GameExitEvent += MainOnGameExitEvent;
 		}
 
-		var iconPaths = Directory.GetFiles(ModpackConfig.Path!, "modpackIcon.*", SearchOption.TopDirectoryOnly);
-		foreach (var iconPath in iconPaths) {
-			var icon = Tools.LoadTextureFromPath(iconPath);
-			if (icon is null) {
-				continue;
-			}
-
-			_modpackIconTexture.Texture = icon;
-			break;
+		var modpackIcon = ModpackConfig.ModpackIcon;
+		if (modpackIcon is not null) {
+			_modpackIconTexture.Texture = modpackIcon;
 		}
 
 		_versionButton.Pressed += VersionButtonOnPressed;

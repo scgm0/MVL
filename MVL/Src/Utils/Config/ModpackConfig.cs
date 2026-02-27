@@ -7,6 +7,7 @@ using System.Text.Json.Serialization;
 using System.Threading;
 using System.Threading.Tasks;
 using CSemVer;
+using Godot;
 using MVL.UI;
 using MVL.Utils.Game;
 
@@ -62,6 +63,27 @@ public class ModpackConfig {
 				if (info.Version == GameVersion) {
 					return info;
 				}
+			}
+
+			return null;
+		}
+	}
+
+	[JsonIgnore]
+	public Texture2D? ModpackIcon {
+		get {
+			if (string.IsNullOrEmpty(Path)) {
+				return null;
+			}
+
+			var iconPaths = Directory.EnumerateFileSystemEntries(Path, "modpackIcon.*", SearchOption.TopDirectoryOnly);
+			foreach (var iconPath in iconPaths) {
+				var icon = Tools.LoadTextureFromPath(iconPath);
+				if (icon is null) {
+					continue;
+				}
+
+				return icon;
 			}
 
 			return null;
