@@ -94,10 +94,18 @@ public class ModpackConfig {
 	[JsonExtensionData]
 	public Dictionary<string, JsonElement> ExtensionData { get; set; } = [];
 
-	public void UpdateMods() {
-		// Mods.Clear();
+	public event Action<ModpackConfig>? ModsUpdated;
 
-		if (string.IsNullOrEmpty(Path)) {
+	public async Task UpdateModsAsync() {
+		await Task.Run(() => UpdateMods(false));
+		ModsUpdated?.Invoke(this);
+	}
+
+	public void UpdateMods(bool emitEvent = true) {
+		Log.Debug($"开始更新整合包《{ModpackName}》模组信息");
+
+		if (string.IsNullOrEmpty(Path) || !Directory.Exists(Path)) {
+			Log.Warn($"整合包《{ModpackName}》路径为无效，无法更新模组信息");
 			return;
 		}
 
@@ -106,6 +114,7 @@ public class ModpackConfig {
 
 		if (!dirInfo.Exists) {
 			dirInfo.Create();
+			Log.Warn($"整合包《{ModpackName}》未找到Mods目录，已创建");
 		}
 
 		var fileSystemInfos = dirInfo.EnumerateFileSystemInfos().ToArray();
@@ -140,7 +149,7 @@ public class ModpackConfig {
 				try {
 					newVersion = SVersion.Parse(modInfo.Version);
 				} catch (Exception ex) {
-					Log.Error($"解析 {modInfo.ModPath} 版本失败: {modInfo.Version}", ex);
+					Log.Error($"解析{modInfo.ModPath}版本失败: {modInfo.Version}", ex);
 					return;
 				}
 
@@ -153,12 +162,18 @@ public class ModpackConfig {
 
 							return newVersion > oldVersion ? modInfo : existingModInfo;
 						} catch (Exception ex) {
-							Log.Error($"比较 {modInfo.ModPath} 和 {existingModInfo.ModPath} 版本时出错", ex);
+							Log.Error($"比较{modInfo.ModPath}和{existingModInfo.ModPath}版本时出错", ex);
 							return existingModInfo;
 						}
 					}
 				);
 			});
+
+		if (emitEvent) {
+			ModsUpdated?.Invoke(this);
+		}
+
+		Log.Debug($"更新整合包《{ModpackName}》模组信息完成，共 {Mods.Count} 个模组");
 	}
 
 	private ModInfo? TryLoadMod(FileSystemInfo fsi) {

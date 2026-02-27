@@ -271,7 +271,7 @@ public partial class BrowsePage : MenuPage {
 	}
 
 	private async Task UpdatePageAsync() {
-		await Task.Run(ModpackConfig!.UpdateMods);
+		await ModpackConfig!.UpdateModsAsync();
 
 		if (_gameVersionIds.Length == 0 || _tagIds.Length == 0) {
 			await GetOnlineInfoAsync();

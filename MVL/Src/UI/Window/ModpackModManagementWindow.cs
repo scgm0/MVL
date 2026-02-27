@@ -48,7 +48,7 @@ public partial class ModpackModManagementWindow : BaseWindow {
 	[Export]
 	private Control? _loadingContainer;
 
-	public ModpackItem? ModpackItem { get; set; }
+	public ModpackConfig? ModpackConfig { get; set; }
 
 	private readonly List<ModInfoItem> _autoModInfoItem = [];
 	private List<ModDependency> _modDependencies = [];
@@ -63,6 +63,7 @@ public partial class ModpackModManagementWindow : BaseWindow {
 		_downloadButton.NotNull();
 		_modInfoItemsContainer.NotNull();
 		_loadingContainer.NotNull();
+		ModpackConfig.NotNull();
 
 		CancelButton!.Pressed += CancelButtonOnPressed;
 		OkButton!.Pressed += OkButtonOnPressed;
@@ -72,6 +73,17 @@ public partial class ModpackModManagementWindow : BaseWindow {
 		_syncFileButton.Pressed += SyncFileButtonOnPressed;
 		_downloadButton.Pressed += DownloadButtonOnPressed;
 		_loadingContainer.VisibilityChanged += LoadingContainerOnVisibilityChanged;
+		ModpackConfig.ModsUpdated += ShowList;
+	}
+
+	public override void _ExitTree() {
+		base._ExitTree();
+		ModpackConfig!.ModsUpdated -= ShowList;
+	}
+
+	public override async Task Show() {
+		_loadingContainer!.Show();
+		await base.Show();
 	}
 
 	private void LoadingContainerOnVisibilityChanged() {
@@ -86,7 +98,7 @@ public partial class ModpackModManagementWindow : BaseWindow {
 	private async void OkButtonOnPressed() {
 		await Hide();
 		var browsePage = Main.Instance!.GetNode<BrowsePage>("%BrowsePage");
-		browsePage.ModpackConfig = ModpackItem!.ModpackConfig;
+		browsePage.ModpackConfig = ModpackConfig;
 		var button = Main.Instance.GetNode<Button>("%BrowseButton");
 		button.ButtonPressed = true;
 	}
@@ -99,7 +111,7 @@ public partial class ModpackModManagementWindow : BaseWindow {
 		await apiModReleasesWindow.Show();
 	}
 
-	private void SyncFileButtonOnPressed() { ShowList(); }
+	private void SyncFileButtonOnPressed() { _ = ModpackConfig!.UpdateModsAsync(); }
 
 	private async void UpdateInfoButtonOnPressed() {
 		_downloadButton!.Disabled = true;
@@ -152,7 +164,12 @@ public partial class ModpackModManagementWindow : BaseWindow {
 		}
 	}
 
-	public async void ShowList() {
+	public async void ShowList(ModpackConfig modpackConfig) {
+		if (!IsInstanceValid(this)) {
+			modpackConfig.ModsUpdated -= ShowList;
+			return;
+		}
+
 		_downloadButton!.Disabled = true;
 		_modDependencies = [];
 		_loadingContainer!.Show();
@@ -163,13 +180,12 @@ public partial class ModpackModManagementWindow : BaseWindow {
 
 		_scrollContainer!.Call(StringNames.Scroll, true, 0, 0, 0);
 
-		await ModpackItem!.UpdateMods();
-		if (ModpackItem!.ModpackConfig?.Mods == null) {
+		if (modpackConfig.Mods.IsEmpty) {
 			_loadingContainer.Hide();
 			return;
 		}
 
-		var list = ModpackItem.ModpackConfig.Mods.Values.OrderBy(m => m.ModId);
+		var list = modpackConfig.Mods.Values.OrderBy(m => m.ModId);
 
 		foreach (var modpackConfigMod in list) {
 			if (!IsInstanceValid(this)) {
@@ -226,23 +242,27 @@ public partial class ModpackModManagementWindow : BaseWindow {
 				var apiModInfo = status.Mod!;
 				apiModInfo = apiModInfo.Value with {
 					Releases = apiModInfo.Value.Releases.OrderByDescending(modRelease => {
-						var version = SVersion.TryParse(modRelease.ModVersion.Replace('*', '0'), out var m) ? m : SVersion.ZeroVersion;
+						var version = SVersion.TryParse(modRelease.ModVersion.Replace('*', '0'), out var m)
+							? m
+							: SVersion.ZeroVersion;
 						return version;
 					}).ToArray()
 				};
 
 				var release = apiModInfo.Value.Releases.Cast<ApiModRelease?>().FirstOrDefault(r => {
-					var version = SVersion.TryParse(modDependency.Version.Replace('*', '0'), out var m) ? m : SVersion.ZeroVersion;
+					var version = SVersion.TryParse(modDependency.Version.Replace('*', '0'), out var m)
+						? m
+						: SVersion.ZeroVersion;
 					var releaseVersion = SVersion.TryParse(r?.ModVersion, out var v) ? v : SVersion.ZeroVersion;
 					return releaseVersion >= version && r!.Value.Tags.Any(gameVersion =>
-						GameVersion.ComparerVersion(ModpackItem!.ModpackConfig!.GameVersion!.Value, new(gameVersion)) >= 0);
+						GameVersion.ComparerVersion(ModpackConfig!.GameVersion!.Value, new(gameVersion)) >= 0);
 				});
 
 				if (release is null) {
 					continue;
 				}
 
-				list.Add((apiModInfo.Value, release.Value, ModpackItem!.ModpackConfig!));
+				list.Add((apiModInfo.Value, release.Value, ModpackConfig!));
 			}
 		});
 
@@ -251,7 +271,7 @@ public partial class ModpackModManagementWindow : BaseWindow {
 		apiModReleasesWindow.ModDependencies = list;
 		apiModReleasesWindow.Hidden += () => {
 			apiModReleasesWindow.QueueFree();
-			ShowList();
+			_ = ModpackConfig!.UpdateModsAsync();
 		};
 		Main.Instance?.AddChild(apiModReleasesWindow);
 		await apiModReleasesWindow.Show();
@@ -261,7 +281,9 @@ public partial class ModpackModManagementWindow : BaseWindow {
 		var oldDependency = _modDependencies.Cast<ModDependency?>().FirstOrDefault(m => m?.ModId == modDependency.ModId);
 		if (oldDependency is not null) {
 			var newVersion = SVersion.TryParse(modDependency.Version.Replace('*', '0'), out var n) ? n : SVersion.ZeroVersion;
-			var oldVersion = SVersion.TryParse(oldDependency.Value.Version.Replace('*', '0'), out var o) ? o : SVersion.ZeroVersion;
+			var oldVersion = SVersion.TryParse(oldDependency.Value.Version.Replace('*', '0'), out var o)
+				? o
+				: SVersion.ZeroVersion;
 			if (newVersion <= oldVersion) {
 				return;
 			}

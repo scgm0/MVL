@@ -113,8 +113,9 @@ public partial class ModInfoItem : PanelContainer {
 			CanUpdate = false;
 			HasAutoUpdate?.Invoke(this);
 			File.Delete(Mod!.ModPath);
-			await Window!.ModpackItem!.UpdateMods();
-			var newMod = Window!.ModpackItem!.ModpackConfig!.Mods.Values.FirstOrDefault(x => x.ModId == Mod.ModId);
+
+			await Window!.ModpackConfig!.UpdateModsAsync();
+			var newMod = Window.ModpackConfig.Mods.Values.FirstOrDefault(x => x.ModId == Mod.ModId);
 			if (newMod is not null) {
 				Mod = newMod;
 				await UpdateApiModInfo();

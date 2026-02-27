@@ -76,25 +76,30 @@ public partial class ModpackItem : PanelContainer {
 			_modpackIconTexture.Texture = modpackIcon;
 		}
 
+		ModpackConfig.ModsUpdated += ModpackConfigOnModsUpdated;
 		_versionButton.Pressed += VersionButtonOnPressed;
 		_playButton.Pressed += PlayButtonOnPressed;
-
-		await UpdateMods();
 		_modCount.Pressed += ModCountOnPressed;
+
+		await ModpackConfig.UpdateModsAsync();
 	}
 
-	public async Task UpdateMods() {
-		await Task.Run(ModpackConfig!.UpdateMods);
-		_modCount!.Text = string.Format(Tr("模组数量: {0}"), ModpackConfig.Mods.Count);
+	public void ModpackConfigOnModsUpdated(ModpackConfig modpackConfig) {
+		if (!IsInstanceValid(this)) {
+			modpackConfig.ModsUpdated -= ModpackConfigOnModsUpdated;
+			return;
+		}
+
+		_modCount!.Text = string.Format(Tr("模组数量: {0}"), modpackConfig.Mods.Count);
 	}
 
 	private async void ModCountOnPressed() {
 		var list = _listModScene!.Instantiate<ModpackModManagementWindow>();
-		list.ModpackItem = this;
+		list.ModpackConfig = ModpackConfig;
 		list.Hidden += list.QueueFree;
 		Main.Instance?.AddChild(list);
 		await list.Show();
-		list.ShowList();
+		await ModpackConfig!.UpdateModsAsync();
 	}
 
 	private void MainOnGameExitEvent() {
@@ -111,6 +116,9 @@ public partial class ModpackItem : PanelContainer {
 	}
 
 	public override void _ExitTree() {
+		base._ExitTree();
+		ModpackConfig!.ModsUpdated -= ModpackConfigOnModsUpdated;
+
 		if (Main.CurrentModpack != ModpackConfig) {
 			return;
 		}
