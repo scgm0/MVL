@@ -350,7 +350,7 @@ public partial class BrowsePage : MenuPage {
 				UI.Main.Instance?.AddChild(confirmationWindow);
 				await confirmationWindow.Show();
 				try {
-					ModpackConfig!.UpdateMods();
+					await ModpackConfig!.UpdateModsAsync();
 					var url = $"https://mods.vintagestory.at/api/mod/{apiModSummary.ModId}";
 					await using var result = await url.GetStreamAsync();
 					var status = await JsonSerializer.DeserializeAsync(result,

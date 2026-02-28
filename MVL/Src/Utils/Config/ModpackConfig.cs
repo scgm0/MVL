@@ -76,11 +76,6 @@ public class ModpackConfig {
 	public event Action<ModpackConfig>? ModsUpdated;
 
 	public async Task UpdateModsAsync() {
-		await Task.Run(() => UpdateMods(false));
-		ModsUpdated?.Invoke(this);
-	}
-
-	public void UpdateMods(bool emitEvent = true) {
 		Log.Debug($"开始更新整合包《{ModpackName}》模组信息");
 
 		if (string.IsNullOrEmpty(Path) || !Directory.Exists(Path)) {
@@ -115,8 +110,8 @@ public class ModpackConfig {
 			}
 		}
 
-		Parallel.ForEach(fileSystemInfos,
-			async fsi => {
+		await Parallel.ForEachAsync(fileSystemInfos,
+			async (fsi, _) => {
 				var modInfo = await TryLoadMod(fsi);
 				if (modInfo == null) {
 					return;
@@ -148,11 +143,8 @@ public class ModpackConfig {
 				);
 			});
 
-		if (emitEvent) {
-			ModsUpdated?.Invoke(this);
-		}
-
 		Log.Debug($"更新整合包《{ModpackName}》模组信息完成，共 {Mods.Count} 个模组");
+		ModsUpdated?.Invoke(this);
 	}
 
 	public async Task<Texture2D?> GetModpackIconAsync() {
