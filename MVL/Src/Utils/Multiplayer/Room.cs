@@ -123,12 +123,12 @@ public partial record Room : IDisposable {
 		var part1 = fullB36Data.AsSpan(0, FinalPartLength);
 		var part2 = fullB36Data.AsSpan(FinalPartLength);
 
-		var prefixHex = Convert.ToHexString(Encoding.UTF8.GetBytes(prefix)).ToLowerInvariant();
-		var uniqueIdHex = Convert.ToHexString(uniqueIdBytes).ToLowerInvariant();
+		var prefixHex = Convert.ToHexStringLower(Encoding.UTF8.GetBytes(prefix));
+		var uniqueIdHex = Convert.ToHexStringLower(uniqueIdBytes);
 
 		var code = $"{prefixHex}-{part1.ToString()}-{part2.ToString()}".ToUpperInvariant();
 		var networkName = string.Format(NetworkNameFormat, prefix, uniqueIdHex);
-		var networkSecret = Convert.ToHexString(secretBytes).ToLowerInvariant();
+		var networkSecret = Convert.ToHexStringLower(secretBytes);
 
 		return new(code, networkName, networkSecret, hostPort, localPort);
 	}
@@ -172,8 +172,8 @@ public partial record Room : IDisposable {
 			var secretBytes = paddedCombined[2..].ToArray();
 
 			var prefix = Encoding.UTF8.GetString(Convert.FromHexString(prefixHex));
-			var networkName = string.Format(NetworkNameFormat, prefix, Convert.ToHexString(paddedUniqueId).ToLowerInvariant());
-			var networkSecret = Convert.ToHexString(secretBytes).ToLowerInvariant();
+			var networkName = string.Format(NetworkNameFormat, prefix, Convert.ToHexStringLower(paddedUniqueId));
+			var networkSecret = Convert.ToHexStringLower(secretBytes);
 
 			return new(code, networkName, networkSecret, port, Tools.GetAvailablePort());
 		} catch (Exception) {
