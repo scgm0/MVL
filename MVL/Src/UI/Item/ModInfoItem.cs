@@ -1,4 +1,5 @@
 using System;
+using System.Buffers;
 using System.Collections.Generic;
 using System.IO;
 using System.IO.Compression;
@@ -14,6 +15,7 @@ using MVL.UI.Window;
 using MVL.Utils;
 using MVL.Utils.Game;
 using MVL.Utils.Help;
+using FileAccess = System.IO.FileAccess;
 using HttpClient = System.Net.Http.HttpClient;
 using Range = Godot.Range;
 
@@ -180,7 +182,7 @@ public partial class ModInfoItem : PanelContainer {
 			Log.Debug($"删除旧文件: {Mod.ModPath.GetFile()}");
 		}
 
-		var mod = ModInfo.FromZip(path);
+		var mod = await ModInfo.FromZip(path);
 		if (mod != null) {
 			mod.ModpackConfig = Mod!.ModpackConfig;
 			mod.ModpackConfig!.Mods[mod.ModId] = mod;
@@ -229,46 +231,15 @@ public partial class ModInfoItem : PanelContainer {
 		_updateButton!.Disabled = true;
 		_updateButton!.Modulate = Colors.White;
 
-		if (string.IsNullOrEmpty(Mod?.Icon)) {
-			return;
-		}
-
-		Texture2D? texture;
-		if (Mod.ModPath.EndsWith(".zip", StringComparison.OrdinalIgnoreCase)) {
-			Task.Run(() => {
-				using var zipArchive = ZipFile.OpenRead(Mod.ModPath);
-				var iconEntry = zipArchive.GetEntry(Mod.Icon);
-				if (iconEntry == null) {
-					return;
-				}
-
-				var path = Path.Combine(Mod.ModPath, iconEntry.FullName);
-				if (ResourceLoader.Exists(path)) {
-					texture = ResourceLoader.Load<Texture2D>(path);
-				} else {
-					using var iconStream = iconEntry.Open();
-					using var iconReader = new BinaryReader(iconStream);
-					var iconBytes = iconReader.ReadBytes((int)iconEntry.Length);
-					texture = Tools.CreateTextureFromBytes(iconBytes);
-				}
-
-				if (texture is null) {
-					return;
-				}
-
-				texture.TakeOverPath(path);
-				_icon!.SetDeferred(TextureRect.PropertyName.Texture, texture);
-			});
-		} else {
-			var iconPath = Path.Combine(Mod.ModPath, Mod.Icon);
-			texture = Tools.LoadTextureFromPath(iconPath);
+		Task.Run(async () => {
+			var texture = await Mod!.GetIconAsync();
 
 			if (texture is null) {
 				return;
 			}
 
-			_icon!.Texture = texture;
-		}
+			_icon!.SetDeferred(TextureRect.PropertyName.Texture, texture);
+		});
 	}
 
 	public async Task UpdateApiModInfo() {

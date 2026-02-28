@@ -70,27 +70,6 @@ public class ModpackConfig {
 		}
 	}
 
-	[JsonIgnore]
-	public Texture2D? ModpackIcon {
-		get {
-			if (string.IsNullOrEmpty(Path)) {
-				return null;
-			}
-
-			var iconPaths = Directory.EnumerateFileSystemEntries(Path, "modpackIcon.*", SearchOption.TopDirectoryOnly);
-			foreach (var iconPath in iconPaths) {
-				var icon = Tools.LoadTextureFromPath(iconPath);
-				if (icon is null) {
-					continue;
-				}
-
-				return icon;
-			}
-
-			return null;
-		}
-	}
-
 	[JsonExtensionData]
 	public Dictionary<string, JsonElement> ExtensionData { get; set; } = [];
 
@@ -137,8 +116,8 @@ public class ModpackConfig {
 		}
 
 		Parallel.ForEach(fileSystemInfos,
-			fsi => {
-				var modInfo = TryLoadMod(fsi);
+			async fsi => {
+				var modInfo = await TryLoadMod(fsi);
 				if (modInfo == null) {
 					return;
 				}
@@ -176,7 +155,25 @@ public class ModpackConfig {
 		Log.Debug($"更新整合包《{ModpackName}》模组信息完成，共 {Mods.Count} 个模组");
 	}
 
-	private ModInfo? TryLoadMod(FileSystemInfo fsi) {
+	public async Task<Texture2D?> GetModpackIconAsync() {
+		if (string.IsNullOrEmpty(Path)) {
+			return null;
+		}
+
+		var iconPaths = Directory.EnumerateFileSystemEntries(Path, "modpackIcon.*", SearchOption.TopDirectoryOnly);
+		foreach (var iconPath in iconPaths) {
+			var icon = await Tools.LoadTextureFromPath(iconPath);
+			if (icon is null) {
+				continue;
+			}
+
+			return icon;
+		}
+
+		return null;
+	}
+
+	private async Task<ModInfo?> TryLoadMod(FileSystemInfo fsi) {
 		var entryPath = fsi.FullName;
 		try {
 			var lastWriteTime = fsi.LastWriteTimeUtc;
@@ -187,9 +184,9 @@ public class ModpackConfig {
 			}
 
 			var newModInfo = fsi switch {
-				DirectoryInfo => ModInfo.FromDirectory(entryPath),
+				DirectoryInfo => await ModInfo.FromDirectory(entryPath),
 				FileInfo { Extension: var ext } when ext.Equals(".zip", StringComparison.OrdinalIgnoreCase) =>
-					ModInfo.FromZip(entryPath),
+					await ModInfo.FromZip(entryPath),
 				FileInfo { Extension: var ext } when ext.Equals(".dll", StringComparison.OrdinalIgnoreCase) =>
 					ModInfo.FromAssembly(entryPath),
 				_ => null

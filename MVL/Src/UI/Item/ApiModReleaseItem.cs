@@ -235,7 +235,7 @@ public partial class ApiModReleaseItem : PanelContainer {
 			Log.Debug($"删除旧文件: {ModInfo.ModPath.GetFile()}");
 		}
 
-		var mod = ModInfo.FromZip(path);
+		var mod = await ModInfo.FromZip(path);
 		if (mod != null) {
 			mod.ModpackConfig = ModpackConfig;
 			mod.ModpackConfig!.Mods[mod.ModId] = mod;

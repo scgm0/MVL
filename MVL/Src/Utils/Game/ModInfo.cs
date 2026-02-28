@@ -1,4 +1,5 @@
 using System;
+using System.Buffers;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
@@ -7,9 +8,12 @@ using System.Linq;
 using System.Text;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using System.Threading.Tasks;
 using CSemVer;
+using Godot;
 using Mono.Cecil;
 using MVL.Utils.Config;
+using FileAccess = System.IO.FileAccess;
 
 namespace MVL.Utils.Game;
 
@@ -27,11 +31,11 @@ public record ModInfo : IComparable<ModInfo> {
 	[JsonConverter(typeof(DependenciesConverter))]
 	public IReadOnlyList<ModDependency> Dependencies { get; set; } = [];
 
-	public string Icon { get; set; } = "modicon.png";
-
 	public ModpackConfig? ModpackConfig { get; set; }
+	public ModFileType ModFileType { get; set; } = ModFileType.None;
 
-	private const string JsonName = "modinfo.json";
+	public const string JsonName = "modinfo.json";
+	public const string IconName = "modicon.png";
 
 	public int CompareTo(ModInfo? other) {
 		if (other is null) {
@@ -40,6 +44,69 @@ public record ModInfo : IComparable<ModInfo> {
 
 		var num = string.CompareOrdinal(ModId, other.ModId);
 		return num != 0 ? num : SVersion.Parse(Version).CompareTo(SVersion.Parse(other.Version));
+	}
+
+	public async Task<Texture2D?> GetIconAsync() {
+		switch (ModFileType) {
+			case ModFileType.Assembly or ModFileType.None: {
+				break;
+			}
+			case ModFileType.Zip: {
+				await using var fs = new FileStream(ModPath,
+					FileMode.Open,
+					FileAccess.Read,
+					FileShare.Read,
+					4096,
+					useAsync: true);
+				await using var zipArchive = new ZipArchive(fs, ZipArchiveMode.Read);
+				var iconEntry = zipArchive.GetEntry(IconName);
+
+				if (iconEntry == null) {
+					foreach (var entry in zipArchive.Entries) {
+						if (!string.Equals(entry.Name, IconName, StringComparison.OrdinalIgnoreCase)) {
+							continue;
+						}
+
+						iconEntry = entry;
+						break;
+					}
+				}
+
+				if (iconEntry == null) {
+					return null;
+				}
+
+				var path = Path.Combine(ModPath, iconEntry.FullName);
+				if (ResourceLoader.Exists(path)) {
+					return ResourceLoader.Load<Texture2D>(path);
+				}
+
+				Texture2D? texture;
+				var length = (int)iconEntry.Length;
+				await using var iconStream = await iconEntry.OpenAsync();
+				var buffer = ArrayPool<byte>.Shared.Rent(length);
+				try {
+					var memoryBuffer = new Memory<byte>(buffer, 0, length);
+					await iconStream.ReadExactlyAsync(memoryBuffer);
+					texture = Tools.CreateTextureFromBytes(memoryBuffer.Span);
+				} finally {
+					ArrayPool<byte>.Shared.Return(buffer);
+				}
+
+				if (texture is null) {
+					return null;
+				}
+
+				texture.TakeOverPath(path);
+				return texture;
+			}
+			case ModFileType.Directory: {
+				var iconPath = Path.Combine(ModPath, IconName);
+				return await Tools.LoadTextureFromPath(iconPath);
+			}
+		}
+
+		return null;
 	}
 
 	public static string? ToModId(string? name) {
@@ -86,23 +153,33 @@ public record ModInfo : IComparable<ModInfo> {
 		return true;
 	}
 
-	public static ModInfo? FromZip(string zipPath) {
+	public static async Task<ModInfo?> FromZip(string zipPath) {
 		try {
-			using var zipArchive = ZipFile.OpenRead(zipPath);
+			await using var fs = new FileStream(zipPath, FileMode.Open, FileAccess.Read, FileShare.Read, 4096, useAsync: true);
+			await using var zipArchive = new ZipArchive(fs, ZipArchiveMode.Read);
 
 			var jsonEntry = zipArchive.GetEntry(JsonName);
 
-			jsonEntry ??= zipArchive.Entries.FirstOrDefault(entry =>
-				string.Equals(entry.Name, JsonName, StringComparison.OrdinalIgnoreCase));
+			if (jsonEntry == null) {
+				foreach (var entry in zipArchive.Entries) {
+					if (!string.Equals(entry.Name, JsonName, StringComparison.OrdinalIgnoreCase)) {
+						continue;
+					}
+
+					jsonEntry = entry;
+					break;
+				}
+			}
 
 			if (jsonEntry == null) {
 				return null;
 			}
 
-			using var stream = jsonEntry.Open();
-			var modInfo = JsonSerializer.Deserialize(stream, SourceGenerationContext.Default.ModInfo);
+			await using var stream = await jsonEntry.OpenAsync();
+			var modInfo = await JsonSerializer.DeserializeAsync(stream, SourceGenerationContext.Default.ModInfo);
 
 			modInfo?.ModPath = zipPath;
+			modInfo?.ModFileType = ModFileType.Zip;
 
 			return modInfo;
 		} catch (Exception e) {
@@ -111,17 +188,18 @@ public record ModInfo : IComparable<ModInfo> {
 		}
 	}
 
-	public static ModInfo? FromDirectory(string directoryPath) {
+	public static async Task<ModInfo?> FromDirectory(string directoryPath) {
 		try {
 			var jsonPath = Path.Combine(directoryPath, JsonName);
 			if (!File.Exists(jsonPath)) {
 				return null;
 			}
 
-			using var fileStream = File.OpenRead(jsonPath);
-			var modInfo = JsonSerializer.Deserialize(fileStream, SourceGenerationContext.Default.ModInfo);
+			await using var fileStream = File.OpenRead(jsonPath);
+			var modInfo = await JsonSerializer.DeserializeAsync(fileStream, SourceGenerationContext.Default.ModInfo);
 
 			modInfo?.ModPath = directoryPath;
+			modInfo?.ModFileType = ModFileType.Directory;
 
 			return modInfo;
 		} catch (Exception e) {
@@ -153,7 +231,8 @@ public record ModInfo : IComparable<ModInfo> {
 			var modInfo = new ModInfo {
 				Name = modInfoAttribute.ConstructorArguments[0].Value?.ToString() ?? string.Empty,
 				ModId = string.Empty,
-				ModPath = assemblyPath
+				ModPath = assemblyPath,
+				ModFileType = ModFileType.Assembly
 			};
 
 			foreach (var property in modInfoAttribute.Properties) {

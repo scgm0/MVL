@@ -29,7 +29,7 @@ public partial class SelectModpackItem : PanelContainer {
 	public event Action? ButtonPressed;
 	private bool _onlyDown;
 
-	public override void _Ready() {
+	public override async void _Ready() {
 		_modpackIconTexture.NotNull();
 		_modpackNameLabel.NotNull();
 		_releaseNameLabel.NotNull();
@@ -54,7 +54,7 @@ public partial class SelectModpackItem : PanelContainer {
 		_selectButton.ButtonPressed = Selected;
 		_selectButton.Pressed += SelectButtonOnPressed;
 
-		var modpackIcon = ModpackConfig.ModpackIcon;
+		using var modpackIcon = await ModpackConfig.GetModpackIconAsync();
 		if (modpackIcon is not null) {
 			_modpackIconTexture.Texture = modpackIcon;
 		}
