@@ -47,66 +47,68 @@ public record ModInfo : IComparable<ModInfo> {
 	}
 
 	public async Task<Texture2D?> GetIconAsync() {
-		switch (ModFileType) {
-			case ModFileType.Assembly or ModFileType.None: {
-				break;
-			}
-			case ModFileType.Zip: {
-				await using var fs = new FileStream(ModPath,
-					FileMode.Open,
-					FileAccess.Read,
-					FileShare.Read,
-					4096,
-					useAsync: true);
-				await using var zipArchive = new ZipArchive(fs, ZipArchiveMode.Read);
-				var iconEntry = zipArchive.GetEntry(IconName);
+		return await Task.Run(async () => {
+			switch (ModFileType) {
+				case ModFileType.Assembly or ModFileType.None: {
+					break;
+				}
+				case ModFileType.Zip: {
+					await using var fs = new FileStream(ModPath,
+						FileMode.Open,
+						FileAccess.Read,
+						FileShare.Read,
+						4096,
+						useAsync: true);
+					await using var zipArchive = new ZipArchive(fs, ZipArchiveMode.Read);
+					var iconEntry = zipArchive.GetEntry(IconName);
 
-				if (iconEntry == null) {
-					foreach (var entry in zipArchive.Entries) {
-						if (!string.Equals(entry.Name, IconName, StringComparison.OrdinalIgnoreCase)) {
-							continue;
+					if (iconEntry == null) {
+						foreach (var entry in zipArchive.Entries) {
+							if (!string.Equals(entry.Name, IconName, StringComparison.OrdinalIgnoreCase)) {
+								continue;
+							}
+
+							iconEntry = entry;
+							break;
 						}
-
-						iconEntry = entry;
-						break;
 					}
-				}
 
-				if (iconEntry == null) {
-					return null;
-				}
+					if (iconEntry == null) {
+						return null;
+					}
 
-				var path = Path.Combine(ModPath, iconEntry.FullName);
-				if (ResourceLoader.Exists(path)) {
-					return ResourceLoader.Load<Texture2D>(path);
-				}
+					var path = Path.Combine(ModPath, iconEntry.FullName);
+					if (ResourceLoader.Exists(path)) {
+						return ResourceLoader.Load<Texture2D>(path);
+					}
 
-				Texture2D? texture;
-				var length = (int)iconEntry.Length;
-				await using var iconStream = await iconEntry.OpenAsync();
-				var buffer = ArrayPool<byte>.Shared.Rent(length);
-				try {
-					var memoryBuffer = new Memory<byte>(buffer, 0, length);
-					await iconStream.ReadExactlyAsync(memoryBuffer);
-					texture = Tools.CreateTextureFromBytes(memoryBuffer.Span);
-				} finally {
-					ArrayPool<byte>.Shared.Return(buffer);
-				}
+					Texture2D? texture;
+					var length = (int)iconEntry.Length;
+					await using var iconStream = await iconEntry.OpenAsync();
+					var buffer = ArrayPool<byte>.Shared.Rent(length);
+					try {
+						var memoryBuffer = new Memory<byte>(buffer, 0, length);
+						await iconStream.ReadExactlyAsync(memoryBuffer);
+						texture = Tools.CreateTextureFromBytes(memoryBuffer.Span);
+					} finally {
+						ArrayPool<byte>.Shared.Return(buffer);
+					}
 
-				if (texture is null) {
-					return null;
-				}
+					if (texture is null) {
+						return null;
+					}
 
-				texture.TakeOverPath(path);
-				return texture;
+					texture.TakeOverPath(path);
+					return texture;
+				}
+				case ModFileType.Directory: {
+					var iconPath = Path.Combine(ModPath, IconName);
+					return await Tools.LoadTextureFromPath(iconPath);
+				}
 			}
-			case ModFileType.Directory: {
-				var iconPath = Path.Combine(ModPath, IconName);
-				return await Tools.LoadTextureFromPath(iconPath);
-			}
-		}
 
-		return null;
+			return null;
+		});
 	}
 
 	public static string? ToModId(string? name) {

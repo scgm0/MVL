@@ -83,66 +83,67 @@ public class ModpackConfig {
 			return;
 		}
 
-		var modsPath = System.IO.Path.Combine(Path, "Mods");
-		var dirInfo = new DirectoryInfo(modsPath);
+		await Task.Run(async () => {
+			var modsPath = System.IO.Path.Combine(Path, "Mods");
+			var dirInfo = new DirectoryInfo(modsPath);
 
-		if (!dirInfo.Exists) {
-			dirInfo.Create();
-			Log.Warn($"整合包《{ModpackName}》未找到Mods目录，已创建");
-		}
-
-		var fileSystemInfos = dirInfo.EnumerateFileSystemInfos().ToArray();
-
-		var existingPaths = new HashSet<string>(
-			fileSystemInfos.Select(fsi => fsi.FullName),
-			StringComparer.OrdinalIgnoreCase
-		);
-
-		foreach (var cachedPath in _modInfoCache.Keys) {
-			if (!existingPaths.Contains(cachedPath)) {
-				_modInfoCache.TryRemove(cachedPath, out _);
+			if (!dirInfo.Exists) {
+				dirInfo.Create();
+				Log.Warn($"整合包《{ModpackName}》未找到Mods目录，已创建");
 			}
-		}
 
-		foreach (var kvp in Mods) {
-			if (!existingPaths.Contains(kvp.Value.ModPath)) {
-				Mods.TryRemove(kvp.Key, out _);
+			var fileSystemInfos = dirInfo.EnumerateFileSystemInfos().ToArray();
+
+			var existingPaths = new HashSet<string>(
+				fileSystemInfos.Select(fsi => fsi.FullName),
+				StringComparer.OrdinalIgnoreCase
+			);
+
+			foreach (var cachedPath in _modInfoCache.Keys) {
+				if (!existingPaths.Contains(cachedPath)) {
+					_modInfoCache.TryRemove(cachedPath, out _);
+				}
 			}
-		}
 
-		await Parallel.ForEachAsync(fileSystemInfos,
-			async (fsi, _) => {
-				var modInfo = await TryLoadMod(fsi);
-				if (modInfo == null) {
-					return;
+			foreach (var kvp in Mods) {
+				if (!existingPaths.Contains(kvp.Value.ModPath)) {
+					Mods.TryRemove(kvp.Key, out _);
 				}
+			}
 
-				modInfo.ModpackConfig = this;
-
-				SVersion? newVersion;
-				try {
-					newVersion = SVersion.Parse(modInfo.Version);
-				} catch (Exception ex) {
-					Log.Error($"解析{modInfo.ModPath}版本失败: {modInfo.Version}", ex);
-					return;
-				}
-
-				Mods.AddOrUpdate(
-					modInfo.ModId,
-					modInfo,
-					(_, existingModInfo) => {
-						try {
-							var oldVersion = SVersion.Parse(existingModInfo.Version);
-
-							return newVersion > oldVersion ? modInfo : existingModInfo;
-						} catch (Exception ex) {
-							Log.Error($"比较{modInfo.ModPath}和{existingModInfo.ModPath}版本时出错", ex);
-							return existingModInfo;
-						}
+			await Parallel.ForEachAsync(fileSystemInfos,
+				async (fsi, _) => {
+					var modInfo = await TryLoadMod(fsi);
+					if (modInfo == null) {
+						return;
 					}
-				);
-			});
 
+					modInfo.ModpackConfig = this;
+
+					SVersion? newVersion;
+					try {
+						newVersion = SVersion.Parse(modInfo.Version);
+					} catch (Exception ex) {
+						Log.Error($"解析{modInfo.ModPath}版本失败: {modInfo.Version}", ex);
+						return;
+					}
+
+					Mods.AddOrUpdate(
+						modInfo.ModId,
+						modInfo,
+						(_, existingModInfo) => {
+							try {
+								var oldVersion = SVersion.Parse(existingModInfo.Version);
+
+								return newVersion > oldVersion ? modInfo : existingModInfo;
+							} catch (Exception ex) {
+								Log.Error($"比较{modInfo.ModPath}和{existingModInfo.ModPath}版本时出错", ex);
+								return existingModInfo;
+							}
+						}
+					);
+				});
+		});
 		Log.Debug($"更新整合包《{ModpackName}》模组信息完成，共 {Mods.Count} 个模组");
 		ModsUpdated?.Invoke(this);
 	}
@@ -152,17 +153,19 @@ public class ModpackConfig {
 			return null;
 		}
 
-		var iconPaths = Directory.EnumerateFileSystemEntries(Path, "modpackIcon.*", SearchOption.TopDirectoryOnly);
-		foreach (var iconPath in iconPaths) {
-			var icon = await Tools.LoadTextureFromPath(iconPath);
-			if (icon is null) {
-				continue;
+		return await Task.Run(async () => {
+			var iconPaths = Directory.EnumerateFileSystemEntries(Path, "modpackIcon.*", SearchOption.TopDirectoryOnly);
+			foreach (var iconPath in iconPaths) {
+				var icon = await Tools.LoadTextureFromPath(iconPath);
+				if (icon is null) {
+					continue;
+				}
+
+				return icon;
 			}
 
-			return icon;
-		}
-
-		return null;
+			return null;
+		});
 	}
 
 	private async Task<ModInfo?> TryLoadMod(FileSystemInfo fsi) {
