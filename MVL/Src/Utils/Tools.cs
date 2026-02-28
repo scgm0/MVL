@@ -186,6 +186,43 @@ public static class Tools {
 		};
 	}
 
+	public static async Task<ImageTexture?> LoadTextureFromStream(Stream stream, int length = -1) {
+		try {
+			if (length <= 0 && stream.CanSeek) {
+				length = (int)(stream.Length - stream.Position);
+			}
+
+			ImageFormat format;
+			if (length > 0) {
+				var buffer = ArrayPool<byte>.Shared.Rent(length);
+				try {
+					var memoryBuffer = buffer.AsMemory(0, length);
+					await stream.ReadExactlyAsync(memoryBuffer);
+
+					format = GetImageFormat(memoryBuffer.Span);
+					return format == ImageFormat.Unknown ? null : CreateTextureFromBytes(memoryBuffer.Span, format);
+				} finally {
+					ArrayPool<byte>.Shared.Return(buffer);
+				}
+			}
+
+			using var ms = new MemoryStream();
+			await stream.CopyToAsync(ms);
+
+			if (ms.Length == 0) {
+				return null;
+			}
+
+			var span = new ReadOnlySpan<byte>(ms.GetBuffer(), 0, (int)ms.Length);
+
+			format = GetImageFormat(span);
+			return format == ImageFormat.Unknown ? null : CreateTextureFromBytes(span, format);
+		} catch (Exception e) {
+			Log.Error(e);
+			return null;
+		}
+	}
+
 	public static async Task<ImageTexture?> LoadTextureFromPath(string path) {
 		var fileInfo = new FileInfo(path);
 		return await LoadTextureFromPath(fileInfo);
@@ -196,76 +233,60 @@ public static class Tools {
 			return null;
 		}
 
-		return await Task.Run(async () => {
-			var path = fileInfo.FullName;
-			var length = (int)fileInfo.Length;
-			var buffer = ArrayPool<byte>.Shared.Rent(length);
-			try {
-				var fileSpan = buffer.AsSpan(0, length);
-				await using var fs = fileInfo.OpenRead();
-				fs.ReadExactly(fileSpan);
+		var path = fileInfo.FullName;
+		var hashBuffer = ArrayPool<byte>.Shared.Rent(32);
+		try {
+			await using var fs = fileInfo.OpenRead();
 
-				Span<byte> hashBytes = stackalloc byte[32];
-				CryptographicOperations.HashData(HashAlgorithmName.SHA256, fileSpan, hashBytes);
-				var fileSha256 = Convert.ToHexStringLower(hashBytes);
-				var shaPath = $"{path}.{fileSha256}";
-				if (ResourceLoader.Exists(shaPath)) {
-					return ResourceLoader.Load<ImageTexture>(shaPath);
-				}
-
-				var format = GetImageFormat(fileSpan);
-				if (format == ImageFormat.Unknown) {
-					return null;
-				}
-
-				var texture = CreateTextureFromBytes(fileSpan, format);
-				texture?.TakeOverPath(path);
-				return texture;
-			} catch (Exception e) {
-				Log.Warn($"加载贴图失败: {path}", e);
-				return null;
-			} finally {
-				ArrayPool<byte>.Shared.Return(buffer);
+			var hashMemory = hashBuffer.AsMemory(0, 32);
+			await CryptographicOperations.HashDataAsync(HashAlgorithmName.SHA256, fs, hashMemory);
+			var fileSha256 = Convert.ToHexStringLower(hashMemory.Span);
+			var shaPath = $"{path}.{fileSha256}";
+			if (ResourceLoader.Exists(shaPath)) {
+				return ResourceLoader.Load<ImageTexture>(shaPath);
 			}
-		});
+
+			fs.Seek(0, SeekOrigin.Begin);
+			var texture = await LoadTextureFromStream(fs);
+			texture?.TakeOverPath(path);
+			return texture;
+		} catch (Exception e) {
+			Log.Warn($"加载贴图失败: {path}", e);
+			return null;
+		} finally {
+			ArrayPool<byte>.Shared.Return(hashBuffer);
+		}
 	}
 
 	public static async Task<ImageTexture?> LoadTextureFromUrl(string url) {
-		return await Task.Run(async () => {
-			try {
-				var name = $"{new Guid(url.Sha256Buffer().Take(16).ToArray())}.png";
-				var path = Path.Join(Paths.CacheFolder, name);
-				if (File.Exists(path)) {
-					return await LoadTextureFromPath(path);
-				}
+		try {
+			var name = $"{new Guid(url.Sha256Buffer().Take(16).ToArray())}.png";
+			var path = Path.Join(Paths.CacheFolder, name);
+			if (File.Exists(path)) {
+				return await LoadTextureFromPath(path);
+			}
 
-				Log.Trace($"正在从 {url} 下载贴图...");
-				var buffer = await url.GetBytesAsync();
+			Log.Trace($"正在从 {url} 下载图像...");
+			var stream = await url.GetStreamAsync();
 
-				var format = GetImageFormat(buffer);
-				if (format == ImageFormat.Unknown) {
-					Log.Warn($"无法识别 {url} 的格式");
-					return null;
-				}
-
-				var texture = CreateTextureFromBytes(buffer, format);
-				if (texture is null) {
-					return null;
-				}
-
-				texture.GetImage().SavePng(path);
-				Log.Trace($"已保存 {url} 为 {name}");
-
-				var fileSha256 = FileAccess.GetSha256(path);
-				var shaPath = $"{path}.{fileSha256}";
-				texture.TakeOverPath(shaPath);
-
-				return texture;
-			} catch (Exception e) {
-				Log.Warn("下载贴图失败", e);
+			var texture = await LoadTextureFromStream(stream);
+			if (texture is null) {
+				Log.Warn($"从 {url} 获取图像失败");
 				return null;
 			}
-		});
+
+			texture.GetImage().SavePng(path);
+			Log.Trace($"已保存 {url} 为 {name}");
+
+			var fileSha256 = FileAccess.GetSha256(path);
+			var shaPath = $"{path}.{fileSha256}";
+			texture.TakeOverPath(shaPath);
+
+			return texture;
+		} catch (Exception e) {
+			Log.Warn($"下载图像失败: {url}", e);
+			return null;
+		}
 	}
 
 	public static ushort GetAvailablePort() {
