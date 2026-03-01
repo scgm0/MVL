@@ -166,7 +166,6 @@ public static class Tools {
 				throw new NotSupportedException($"不支持的图像格式: {format}");
 		}
 
-		image.GenerateMipmaps();
 		return ImageTexture.CreateFromImage(image);
 	}
 
@@ -194,15 +193,21 @@ public static class Tools {
 
 			ImageFormat format;
 			if (length > 0) {
-				var buffer = ArrayPool<byte>.Shared.Rent(length);
-				try {
-					var memoryBuffer = buffer.AsMemory(0, length);
-					await stream.ReadExactlyAsync(memoryBuffer);
+				const int poolLimit = 128 * 1024;
+				var usePool = length <= poolLimit;
+				var buffer = usePool
+					? ArrayPool<byte>.Shared.Rent(length)
+					: GC.AllocateUninitializedArray<byte>(length);
+				var memoryBuffer = buffer.AsMemory(0, length);
 
+				try {
+					await stream.ReadExactlyAsync(memoryBuffer);
 					format = GetImageFormat(memoryBuffer.Span);
 					return format == ImageFormat.Unknown ? null : CreateTextureFromBytes(memoryBuffer.Span, format);
 				} finally {
-					ArrayPool<byte>.Shared.Return(buffer);
+					if (usePool) {
+						ArrayPool<byte>.Shared.Return(buffer);
+					}
 				}
 			}
 

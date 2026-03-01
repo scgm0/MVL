@@ -52,13 +52,7 @@ public record ModInfo : IComparable<ModInfo> {
 				break;
 			}
 			case ModFileType.Zip: {
-				await using var fs = new FileStream(ModPath,
-					FileMode.Open,
-					FileAccess.Read,
-					FileShare.Read,
-					4096,
-					useAsync: true);
-				await using var zipArchive = new ZipArchive(fs, ZipArchiveMode.Read);
+				await using var zipArchive = await ZipFile.OpenReadAsync(ModPath);
 				var iconEntry = zipArchive.GetEntry(IconName);
 
 				if (iconEntry == null) {
@@ -147,8 +141,7 @@ public record ModInfo : IComparable<ModInfo> {
 
 	public static async Task<ModInfo?> FromZip(string zipPath) {
 		try {
-			await using var fs = new FileStream(zipPath, FileMode.Open, FileAccess.Read, FileShare.Read, 4096, useAsync: true);
-			await using var zipArchive = new ZipArchive(fs, ZipArchiveMode.Read);
+			await using var zipArchive = await ZipFile.OpenReadAsync(zipPath);
 
 			var jsonEntry = zipArchive.GetEntry(JsonName);
 

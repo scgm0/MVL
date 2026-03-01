@@ -492,7 +492,7 @@ public partial class Main : NativeWindowUtility {
 			modpack.Save();
 		}
 
-		BaseConfig.Save();
+		await BaseConfig.SaveAsync();
 	}
 
 	static private void RemoveModpack(string path) {
