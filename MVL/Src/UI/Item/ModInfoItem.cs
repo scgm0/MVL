@@ -32,10 +32,10 @@ public partial class ModInfoItem : PanelContainer {
 	private TextureRect? _icon;
 
 	[Export]
-	private RichTextLabel? _modName;
+	private Label? _modName;
 
 	[Export]
-	private RichTextLabel? _version;
+	private Label? _version;
 
 	[Export]
 	private Label? _description;
