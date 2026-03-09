@@ -5,484 +5,513 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: 神麤詭末的复古物语启动器\n"
-"Last-Translator: Automatically generated\n"
-"Language-Team: none\n"
+"PO-Revision-Date: 2026-03-09 07:09+0000\n"
+"Last-Translator: Arif Budiman <arifpedia@gmail.com>\n"
+"Language-Team: Indonesian <https://hosted.weblate.org/projects/mvl/mvl/id/>\n"
 "Language: id\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8-bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
+"X-Generator: Weblate 5.17-dev\n"
 
 msgid "神麤詭末的复古物语启动器"
-msgstr ""
+msgstr "Peluncur VintageStory milik MystiVaid"
 
 msgid "菜单"
-msgstr ""
+msgstr "Menu"
 
 msgid "主页"
-msgstr ""
+msgstr "Beranda"
 
 msgid "整合"
-msgstr ""
+msgstr "Paket Mod"
 
 msgid "版本"
-msgstr ""
+msgstr "Rilis"
 
 msgid "浏览"
-msgstr ""
+msgstr "Jelajahi"
 
 msgid "设置"
-msgstr ""
+msgstr "Pengaturan"
 
 msgid "关于"
-msgstr ""
+msgstr "Info"
 
 msgid "点击登录账号"
-msgstr ""
+msgstr "Klik untuk masuk ke akun Anda"
 
 msgid "启动游戏"
-msgstr ""
+msgstr "Mainkan"
 
 msgid "停止游戏"
-msgstr ""
+msgstr "Hentikan"
 
 msgid "确定"
-msgstr ""
+msgstr "Oke"
 
 msgid "取消"
-msgstr ""
+msgstr "Batal"
 
 msgid "贡献者"
-msgstr ""
+msgstr "Kontributor"
 
 msgid "赞助者"
-msgstr ""
+msgstr "Sponsor"
 
 msgid "许可证"
-msgstr ""
+msgstr "Lisensi"
 
 msgid "图标制作"
-msgstr ""
+msgstr "Pembuatan Ikon"
 
 msgid "项目创始人"
-msgstr ""
+msgstr "Pendiri Proyek"
 
 msgid "主要开发者"
-msgstr ""
+msgstr "Pengembang Utama"
 
 msgid "开发人员"
-msgstr ""
+msgstr "Pengembang"
 
 msgid "私人赞助"
-msgstr ""
+msgstr "Sponsor Pribadi"
 
 msgid "添加整合包"
-msgstr ""
+msgstr "Tambah Paket Mod"
 
 msgid "选择游戏版本"
-msgstr ""
+msgstr "Pilih Versi Game"
 
 msgid "账号登录"
-msgstr ""
+msgstr "Masuk Akun"
 
 msgid "请先选择一个整合包"
-msgstr ""
+msgstr "Silakan pilih paket mod terlebih dahulu"
 
 msgid "请先在整合界面添加一个整合包"
-msgstr ""
+msgstr "Silakan tambahkan paket mod terlebih dahulu di antarmuka paket mod"
 
 msgid "请先在版本界面中导入游戏"
-msgstr ""
+msgstr "Silakan impor game terlebih dahulu di antarmuka rilis"
 
 msgid "选择已安装版本"
-msgstr ""
+msgstr "Pilih versi yang terpasang"
 
 msgid "请输入名称"
-msgstr ""
+msgstr "Silakan masukkan nama"
 
 msgid "请输入路径"
-msgstr ""
+msgstr "Silakan masukkan jalur"
 
 msgid "路径包含非法字符"
-msgstr ""
+msgstr "Jalur mengandung karakter yang tidak valid"
 
 msgid "父文件夹不存在"
-msgstr ""
+msgstr "Folder induk tidak ada"
 
 msgid "文件夹不存在"
-msgstr ""
+msgstr "Folder tidak ada"
 
 msgid "将自动创建文件夹"
-msgstr ""
+msgstr "Folder akan dibuat secara otomatis"
 
 msgid "文件夹不为空，确定选择它吗？"
-msgstr ""
+msgstr "Folder tidak kosong, yakin ingin memilihnya?"
 
 msgid "文件夹存在且为空"
-msgstr ""
+msgstr "Folder sudah ada dan kosong"
 
 msgid "网络请求失败，请重试"
-msgstr ""
+msgstr "Permintaan jaringan gagal, silakan coba lagi"
 
 msgid "名称包含非法字符"
-msgstr ""
+msgstr "Nama mengandung karakter yang tidak valid"
 
 msgid "路径不存在"
-msgstr ""
+msgstr "Jalur tidak ada"
 
 msgid "请选择版本"
-msgstr ""
+msgstr "Silakan pilih versi"
 
 msgid "'{0}'已存在，确定覆盖它吗？"
-msgstr ""
+msgstr "'{0}' sudah ada, yakin ingin menimpanya?"
 
 msgid "下载中..."
-msgstr ""
+msgstr "Mengunduh..."
 
 msgid "提取中..."
-msgstr ""
+msgstr "Mengekstrak..."
 
 msgid "确定要删除账号 [color=#0078d7][b]{0}[/b][/color] 吗？"
-msgstr ""
+msgstr "Yakin ingin menghapus akun [color=#0078d7][b]{0}[/b][/color]?"
 
 msgid "整合包名称:"
-msgstr ""
+msgstr "Nama Paket Mod:"
 
 msgid "名称不能为空"
-msgstr ""
+msgstr "Nama tidak boleh kosong"
 
 msgid "整合包路径:"
-msgstr ""
+msgstr "Jalur Paket Mod:"
 
 msgid "创建文件夹"
-msgstr ""
+msgstr "Membuat Folder"
 
 msgid "路径不能为空"
-msgstr ""
+msgstr "Jalur tidak boleh kosong"
 
 msgid "游戏版本:"
-msgstr ""
+msgstr "Versi Game:"
 
 msgid "版本名称:"
-msgstr ""
+msgstr "Nama Versi:"
 
 msgid "安装路径:"
-msgstr ""
+msgstr "Jalur Instalasi:"
 
 msgid "邮箱:"
-msgstr ""
+msgstr "Email:"
 
 msgid "邮箱不能为空"
-msgstr ""
+msgstr "Email tidak boleh kosong"
 
 msgid "密码:"
-msgstr ""
+msgstr "Kata Sandi:"
 
 msgid "密码不能为空"
-msgstr ""
+msgstr "Kata sandi tidak boleh kosong"
 
 msgid "离线模式"
-msgstr ""
+msgstr "Mode Luring"
 
 msgid "访问代码:"
-msgstr ""
+msgstr "Kode Akses:"
 
 msgid "若账号开启了2FA，则不能为空"
-msgstr ""
+msgstr "Jika akun mengaktifkan 2FA, kolom ini tidak boleh kosong"
 
 msgid "玩家名称:"
-msgstr ""
+msgstr "Nama Pemain:"
 
 msgid "玩家名称不能为空"
-msgstr ""
+msgstr "Nama pemain tidak boleh kosong"
 
 msgid "选择版本"
-msgstr ""
+msgstr "Pilih Versi"
 
 msgid "模组数量: {0}"
-msgstr ""
+msgstr "Jumlah Mod: {0}"
 
 msgid "该名称已存在"
-msgstr ""
+msgstr "Nama sudah ada"
 
 msgid "请输入邮箱"
-msgstr ""
+msgstr "Silakan masukkan alamat email Anda"
 
 msgid "请输入密码"
-msgstr ""
+msgstr "Silakan masukkan kata sandi Anda"
 
 msgid "请输入访问代码"
-msgstr ""
+msgstr "Silakan masukkan kode akses"
 
 msgid "正在登录..."
-msgstr ""
+msgstr "Sedang masuk..."
 
 msgid "请求失败"
-msgstr ""
+msgstr "Permintaan Gagal"
 
 msgid "登录成功"
-msgstr ""
+msgstr "Berhasil Masuk"
 
 msgid "访问代码错误"
-msgstr ""
+msgstr "Kesalahan Kode Akses"
 
 msgid "登录失败: {0}"
-msgstr ""
+msgstr "Gagal masuk: {0}"
 
 msgid "如果启动器对您有所帮助且您财力有余，可以赞助一下开发者，您的支持将促进启动器的开发与完善: [color=#3c7fe1][url]https://afdian.com/a/MystiVaid[/url][/color]"
 msgstr ""
+"Jika peluncur ini membantu Anda dan Anda memiliki kemampuan, pertimbangkan "
+"untuk mensponsori pengembang. Dukungan Anda akan membantu memajukan dan "
+"menyempurnakan pengembangan peluncur ini: [color=#3c7fe1][url]https://"
+"afdian.com/a/MystiVaid[/url][/color]"
 
 msgid "不喜欢MVL？那么您还可以试试另一款复古物语启动器: [wave][pulse][rainbow][url=https://vsldocs.xurxomf.xyz]VS Launcher[/url][/rainbow][/pulse][/wave]"
 msgstr ""
+"Tidak suka MVL? Kalau begitu, Anda juga dapat mencoba peluncur Vintage Story "
+"lain: [wave][pulse][rainbow][url=https://vsldocs.xurxomf.xyz]VS Launcher[/"
+"url][/rainbow][/pulse][/wave]"
 
 msgid "英语翻译"
-msgstr ""
+msgstr "Terjemahan Bahasa Inggris"
 
 msgid "西班牙语翻译"
-msgstr ""
+msgstr "Terjemahan Bahasa Spanyol"
 
 msgid "法语翻译"
-msgstr ""
+msgstr "Terjemahan Bahasa Prancis"
 
 msgid "俄语翻译"
-msgstr ""
+msgstr "Terjemahan Bahasa Rusia"
 
 msgid "界面"
-msgstr ""
+msgstr "Antarmuka"
 
 msgid "显示语言"
-msgstr ""
+msgstr "Bahasa Tampilan"
 
 msgid "显示缩放"
-msgstr ""
+msgstr "Skala Tampilan"
 
 msgid "网络"
-msgstr ""
+msgstr "Jaringan"
 
 msgid "代理地址"
-msgstr ""
+msgstr "Alamat Proksi"
 
 msgid "下载线程"
-msgstr ""
+msgstr "Thread Unduhan"
 
 msgid "目录"
-msgstr ""
+msgstr "Folder"
 
 msgid "整合目录"
-msgstr ""
+msgstr "Folder Paket Mod"
 
 msgid "版本目录"
-msgstr ""
+msgstr "Folder Rilis"
 
 msgid "若为空，则使用系统代理"
-msgstr ""
+msgstr "Jika kosong, gunakan proksi sistem"
 
 msgid "若为无效路径，则使用默认目录"
-msgstr ""
+msgstr "Jika jalur tidak valid, direktori bawaan akan digunakan"
 
 msgid "警告"
-msgstr ""
+msgstr "Peringatan"
 
 msgid "启动器运行中，无法重复启动"
-msgstr ""
+msgstr "Peluncur sedang berjalan dan tidak dapat dijalankan berulang kali"
 
 msgid "复古物语"
-msgstr ""
+msgstr "Vintage Story"
 
 msgid "一个免费、开源且由社区驱动的复古物语启动器"
 msgstr ""
+"Peluncur Vintage Story gratis, sumber terbuka, dan digerakkan oleh komunitas"
 
 msgid "需要安装 [b].NET {1} (x64)[/b] 运行时\n请点击链接下载并安装：\n[color=#3c7fe1][url]https://dotnet.microsoft.com/download/dotnet/{1}[/url][/color]\n是否尝试强制启动游戏？"
 msgstr ""
+"Memerlukan pemasangan runtime [b].NET {1} (x64)[/b]\n"
+"Silakan klik tautan untuk mengunduh dan memasang:\n"
+"[color=#3c7fe1][url]https://dotnet.microsoft.com/download/dotnet/{1}[/url][/"
+"color]\n"
+"Apakah Anda ingin mencoba memaksa menjalankan game?"
 
 msgid "无法登录？检查您的游戏账号"
-msgstr ""
+msgstr "Tidak bisa masuk? Periksa akun game Anda"
 
 msgid "整合包模组管理"
-msgstr ""
+msgstr "Manajemen Mod Paket Mod"
 
 msgid "输入模组名称"
-msgstr ""
+msgstr "Masukkan nama mod"
 
 msgid "搜索模组"
-msgstr ""
+msgstr "Cari mod"
 
 msgid "同步本地模组信息"
-msgstr ""
+msgstr "Sinkronkan informasi mod lokal"
 
 msgid "同步模组在线信息"
-msgstr ""
+msgstr "Informasi Mod Online Tersinkronisasi"
 
 msgid "模组批量更新"
-msgstr ""
+msgstr "Pembaruan massal mod"
 
 msgid "关闭"
-msgstr ""
+msgstr "Tutup"
 
 msgid "选择要下载的模组版本"
-msgstr ""
+msgstr "Pilih versi mod untuk diunduh"
 
 msgid "跳转到ModDB网页"
-msgstr ""
+msgstr "Buka halaman ModDB"
 
 msgid "更新到最新可用版本"
-msgstr ""
+msgstr "Perbarui ke versi terbaru yang tersedia"
 
 msgid "查看所有发布版本"
-msgstr ""
+msgstr "Lihat semua versi yang telah dirilis"
 
 msgid "删除本地模组"
-msgstr ""
+msgstr "Hapus mod lokal"
 
 msgid "确定要删除 [b]{0}[/b] 吗？"
-msgstr ""
+msgstr "Yakin ingin menghapus [b]{0}[/b]?"
 
 msgid "兼容的游戏版本高于整合包游戏版本，游戏不会加载"
 msgstr ""
+"Versi game yang kompatibel lebih tinggi daripada versi game paket mod, dan "
+"game tidak akan dimuat"
 
 msgid "兼容的游戏版本包含整合包游戏版本，能够安全使用"
 msgstr ""
+"Versi game yang kompatibel mencakup versi game paket mod, sehingga aman "
+"digunakan"
 
 msgid "兼容的游戏版本低于整合包游戏版本，可能已经过时"
 msgstr ""
+"Versi game yang kompatibel lebih rendah daripada versi game paket mod dan "
+"mungkin sudah usang"
 
 msgid "缺少以下依赖模组，是否尝试从ModDB获取？\n{0}"
 msgstr ""
+"Mod dependensi berikut tidak ada, apakah Anda ingin mencoba mengambilnya "
+"dari ModDB?\n"
+"{0}"
 
 msgid "正在从ModDB获取模组信息..."
-msgstr ""
+msgstr "Mengambil informasi mod dari ModDB..."
 
 msgid "模组作者"
-msgstr ""
+msgstr "Penulis Mod"
 
 msgid "游戏版本"
-msgstr ""
+msgstr "Versi Game"
 
 msgid "模组标签"
-msgstr ""
+msgstr "Tag Mod"
 
 msgid "排序依据"
-msgstr ""
+msgstr "Urutkan Berdasarkan"
 
 msgid "运行位置"
-msgstr ""
+msgstr "Sisi Berjalan"
 
 msgid "安装状态"
-msgstr ""
+msgstr "Status Pemasangan"
 
 msgid "上一页"
-msgstr ""
+msgstr "Halaman Sebelumnya"
 
 msgid "下一页"
-msgstr ""
+msgstr "Halaman Berikutnya"
 
 msgid "任意"
-msgstr ""
+msgstr "Apa Saja"
 
 msgid "客户端"
-msgstr ""
+msgstr "Klien"
 
 msgid "服务端"
-msgstr ""
+msgstr "Server"
 
 msgid "双方"
-msgstr ""
+msgstr "Keduanya"
 
 msgid "创建时间"
-msgstr ""
+msgstr "Waktu Pembuatan"
 
 msgid "更新时间"
-msgstr ""
+msgstr "Waktu Pembaruan"
 
 msgid "下载数量"
-msgstr ""
+msgstr "Jumlah Unduhan"
 
 msgid "关注数量"
-msgstr ""
+msgstr "Jumlah Pengikut"
 
 msgid "热门趋势"
-msgstr ""
+msgstr "Topik Tren"
 
 msgid "所有"
-msgstr ""
+msgstr "Semua"
 
 msgid "已安装"
-msgstr ""
+msgstr "Terpasang"
 
 msgid "未安装"
-msgstr ""
+msgstr "Belum Terpasang"
 
 msgid "获取在线信息时发生错误，请检查网络连接"
 msgstr ""
+"Terjadi kesalahan saat mengambil informasi online, silakan periksa koneksi "
+"jaringan Anda"
 
 msgid "请先创建整合包"
-msgstr ""
+msgstr "Silakan buat Paket Mod terlebih dahulu"
 
 msgid "没有找到符合条件的模组"
-msgstr ""
+msgstr "Tidak ditemukan mod yang cocok"
 
 msgid "获取模组信息失败"
-msgstr ""
+msgstr "Gagal mengambil informasi mod"
 
 msgid "导入已安装游戏"
-msgstr ""
+msgstr "Impor game yang terpasang"
 
 msgid "渲染驱动"
-msgstr ""
+msgstr "Driver Perenderan"
 
 msgid "浏览在线模组"
-msgstr ""
+msgstr "Jelajahi Mod Online"
 
 msgid "菜单展开"
-msgstr ""
+msgstr "Perluas Menu"
 
 msgid "已将渲染驱动更改为 [color=#3c7fe1]{0}[/color]\n需要重启才能生效，是否立即重启？"
 msgstr ""
+"Driver perenderan telah diubah menjadi [color=#3c7fe1]{0}[/color]\n"
+"Mulai ulang diperlukan agar perubahan berlaku. Apakah Anda ingin memulai "
+"ulang sekarang?"
 
 msgid "启动时展开菜单"
-msgstr ""
+msgstr "Perluas menu saat startup"
 
 msgid "翻译目录"
-msgstr ""
+msgstr "Folder Terjemahan"
 
 msgid "更新"
-msgstr ""
+msgstr "Pembaruan"
 
 msgid "GitHub代理"
-msgstr ""
+msgstr "Proksi GitHub"
 
 msgid "自动检查"
-msgstr ""
+msgstr "Pemeriksaan Otomatis"
 
 msgid "最新版本"
-msgstr ""
+msgstr "Versi Terbaru"
 
 msgid "启动时检查版本"
-msgstr ""
+msgstr "Periksa versi saat startup"
 
 msgid "正在获取最新版本"
-msgstr ""
+msgstr "Mengambil versi terbaru"
 
 msgid "重新获取"
-msgstr ""
+msgstr "Mengambil lagi"
 
 msgid "下载"
-msgstr ""
+msgstr "Unduh"
 
 msgid "便携式可执行文件"
-msgstr ""
+msgstr "Berkas eksekusi portabel"
 
 msgid "无新版本"
-msgstr ""
+msgstr "Tidak ada versi baru"
 
 msgid "发现新版本"
-msgstr ""
+msgstr "Versi baru ditemukan"
 
 msgid "没有找到可用的下载文件"
-msgstr ""
+msgstr "Tidak ditemukan berkas unduhan yang tersedia"
 
 msgid "发生错误，请检查网络连接"
-msgstr ""
+msgstr "Terjadi kesalahan, silakan periksa koneksi jaringan Anda"
 
 msgid "获取最新版本失败"
-msgstr ""
+msgstr "Gagal mendapatkan versi terbaru"
