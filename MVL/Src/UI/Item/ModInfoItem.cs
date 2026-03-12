@@ -35,10 +35,10 @@ public partial class ModInfoItem : PanelContainer {
 	private Label? _modName;
 
 	[Export]
-	private Label? _version;
+	private RichTextLabel? _version;
 
 	[Export]
-	private Label? _description;
+	private RichTextLabel? _description;
 
 	[Export]
 	private Button? _webButton;

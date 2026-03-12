@@ -65,7 +65,6 @@ anchors_preset = 10
 anchor_right = 1.0
 offset_bottom = 50.0
 grow_horizontal = 2
-focus_mode = 1
 mouse_filter = 1
 theme_override_styles/panel = SubResource("StyleBoxFlat_d71qf")
 script = ExtResource("1_51ssv")
@@ -73,8 +72,8 @@ _apiModReleasesWindowScene = ExtResource("2_0y8tf")
 _confirmationWindowScene = ExtResource("2_6yopn")
 _icon = NodePath("MarginContainer/HBoxContainer/PanelContainer/TextureRect")
 _modName = NodePath("MarginContainer/HBoxContainer/MarginContainer/VBoxContainer/Label")
-_version = NodePath("MarginContainer/HBoxContainer/MarginContainer/VBoxContainer/Control/Label")
-_description = NodePath("MarginContainer/HBoxContainer/MarginContainer/VBoxContainer/Control/Label3")
+_version = NodePath("MarginContainer/HBoxContainer/MarginContainer/VBoxContainer/Control/RichTextLabel")
+_description = NodePath("MarginContainer/HBoxContainer/MarginContainer/VBoxContainer/Control/RichTextLabel2")
 _webButton = NodePath("MarginContainer/HBoxContainer/GridContainer/Button")
 _updateButton = NodePath("MarginContainer/HBoxContainer/GridContainer/Button2")
 _releaseButton = NodePath("MarginContainer/HBoxContainer/GridContainer/Button3")
@@ -127,25 +126,31 @@ autowrap_mode = 2
 [node name="Control" type="HBoxContainer" parent="MarginContainer/HBoxContainer/MarginContainer/VBoxContainer" unique_id=1954723324]
 layout_mode = 2
 size_flags_horizontal = 3
-mouse_filter = 2
-theme_override_constants/separation = 20
+theme_override_constants/separation = 10
 
-[node name="Label" type="Label" parent="MarginContainer/HBoxContainer/MarginContainer/VBoxContainer/Control" unique_id=1756630405]
+[node name="RichTextLabel" type="RichTextLabel" parent="MarginContainer/HBoxContainer/MarginContainer/VBoxContainer/Control" unique_id=1756630405]
 layout_mode = 2
 size_flags_vertical = 2
-mouse_filter = 1
-theme_override_font_sizes/font_size = 14
+focus_mode = 2
+theme_override_font_sizes/normal_font_size = 14
 text = "模组版本"
+fit_content = true
+scroll_active = false
+autowrap_mode = 0
+context_menu_enabled = true
+selection_enabled = true
 
-[node name="Label3" type="Label" parent="MarginContainer/HBoxContainer/MarginContainer/VBoxContainer/Control" unique_id=515239342]
+[node name="RichTextLabel2" type="RichTextLabel" parent="MarginContainer/HBoxContainer/MarginContainer/VBoxContainer/Control" unique_id=515239342]
 layout_mode = 2
 size_flags_horizontal = 3
-size_flags_vertical = 1
-theme_override_colors/font_color = Color(0.870588, 0.870588, 0.870588, 0.870588)
-theme_override_font_sizes/font_size = 12
+focus_mode = 2
+theme_override_font_sizes/normal_font_size = 12
 text = "模组介绍"
-vertical_alignment = 2
+fit_content = true
+scroll_active = false
 autowrap_mode = 2
+context_menu_enabled = true
+selection_enabled = true
 
 [node name="GridContainer" type="GridContainer" parent="MarginContainer/HBoxContainer" unique_id=245351124]
 layout_mode = 2
