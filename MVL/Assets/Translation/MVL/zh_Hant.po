@@ -256,6 +256,9 @@ msgstr "法語翻譯"
 msgid "俄语翻译"
 msgstr "俄語翻譯"
 
+msgid "印尼语翻译"
+msgstr ""
+
 msgid "界面"
 msgstr "介面"
 

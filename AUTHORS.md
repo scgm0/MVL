@@ -37,3 +37,7 @@
 
     Xapitonov <https://github.com/Xapitonov>
     vt729830 <https://github.com/vt72983>
+
+## 印尼语翻译
+
+    ArifBudiman <arifpedia@gmail.com>
