@@ -27,3 +27,6 @@ msgstr "Francais"
 
 msgid "Russian"
 msgstr "русский язык"
+
+msgid "Indonesian"
+msgstr "Bahasa Indonesia"
