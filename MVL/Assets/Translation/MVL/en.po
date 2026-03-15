@@ -516,3 +516,9 @@ msgstr "An error occurred, please check your network connection"
 
 msgid "获取最新版本失败"
 msgstr "Failed to get latest version"
+
+msgid "整合包的游戏版本无效，无法判断是否兼容"
+msgstr "The game version of the modpack is invalid, and compatibility cannot be determined."
+
+msgid "Please select the game version for the modpack first."
+msgstr ""

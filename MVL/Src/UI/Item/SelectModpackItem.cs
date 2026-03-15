@@ -43,11 +43,17 @@ public partial class SelectModpackItem : PanelContainer {
 		if (ModpackConfig.GameVersion is { } gameVersion) {
 			_releaseVersionLabel.Text = gameVersion.ShortGameVersion;
 			_releaseVersionLabel.TooltipText = gameVersion.ShortGameVersion;
+		} else {
+			_releaseVersionLabel.Text = "?";
+			_releaseVersionLabel.TooltipText = "?";
 		}
 
 		if (ModpackConfig.ReleaseInfo is { } releaseInfo) {
 			_releaseNameLabel.Text = releaseInfo.Name;
 			_releaseNameLabel.TooltipText = releaseInfo.Name;
+		} else {
+			_releaseNameLabel.Text = "?";
+			_releaseNameLabel.TooltipText = "?";
 		}
 
 		_selectButton.ButtonGroup = ButtonGroup;

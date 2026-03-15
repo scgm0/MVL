@@ -518,3 +518,9 @@ msgstr "Terjadi kesalahan, silakan periksa koneksi jaringan Anda"
 
 msgid "获取最新版本失败"
 msgstr "Gagal mendapatkan versi terbaru"
+
+msgid "整合包的游戏版本无效，无法判断是否兼容"
+msgstr ""
+
+msgid "请先为整合包选择游戏版本"
+msgstr ""

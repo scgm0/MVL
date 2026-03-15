@@ -150,22 +150,32 @@ public partial class ApiModReleaseItem : PanelContainer {
 			label.ThemeTypeVariation = "ModReleaseTag";
 			_tagsContainer!.AddChild(label);
 
-			if (GameVersion.ComparerVersion(ModpackConfig!.GameVersion!.Value, new(tag)) == 0) {
-				_downloadButton.Modulate = Colors.Green;
-				_downloadButton.TooltipText = "兼容的游戏版本包含整合包游戏版本，能够安全使用";
-				_checkBox!.Modulate = Colors.Green;
-				_checkBox.TooltipText = "兼容的游戏版本包含整合包游戏版本，能够安全使用";
-				label.Modulate = Colors.Green;
-			} else if (GameVersion.ComparerVersion(ModpackConfig!.GameVersion!.Value, new(tag)) > 0) {
-				label.Modulate = Colors.DarkSeaGreen;
-				if (_downloadButton.Modulate != Colors.DarkRed) {
-					continue;
-				}
+			var gameVersion = ModpackConfig?.GameVersion;
+			if (gameVersion != null) {
+				if (GameVersion.ComparerVersion(gameVersion.Value, new(tag)) == 0) {
+					_downloadButton.Modulate = Colors.Green;
+					_downloadButton.TooltipText = "兼容的游戏版本包含整合包游戏版本，能够安全使用";
+					_checkBox!.Modulate = Colors.Green;
+					_checkBox.TooltipText = "兼容的游戏版本包含整合包游戏版本，能够安全使用";
+					label.Modulate = Colors.Green;
+				} else if (GameVersion.ComparerVersion(gameVersion.Value, new(tag)) > 0 ||
+					GameVersion.ComparerVersion(gameVersion.Value, new(tag)) > 0) {
+					label.Modulate = Colors.DarkSeaGreen;
+					if (_downloadButton.Modulate != Colors.DarkRed) {
+						continue;
+					}
 
-				_downloadButton.Modulate = Colors.DarkSeaGreen;
-				_downloadButton.TooltipText = "兼容的游戏版本低于整合包游戏版本，可能已经过时";
-				_checkBox!.Modulate = Colors.DarkSeaGreen;
-				_checkBox.TooltipText = "兼容的游戏版本低于整合包游戏版本，可能已经过时";
+					_downloadButton.Modulate = Colors.DarkSeaGreen;
+					_downloadButton.TooltipText = "兼容的游戏版本低于整合包游戏版本，可能已经过时";
+					_checkBox!.Modulate = Colors.DarkSeaGreen;
+					_checkBox.TooltipText = "兼容的游戏版本低于整合包游戏版本，可能已经过时";
+				}
+			} else {
+				label.Modulate = Colors.Yellow;
+				_downloadButton.Modulate = Colors.Yellow;
+				_downloadButton.TooltipText = "整合包的游戏版本无效，无法判断是否兼容";
+				_checkBox!.Modulate = Colors.Yellow;
+				_checkBox.TooltipText = "整合包的游戏版本无效，无法判断是否兼容";
 			}
 		}
 	}
@@ -230,7 +240,8 @@ public partial class ApiModReleaseItem : PanelContainer {
 		File.Move(modFile, path, true);
 		Log.Info($"下载完成: {ApiModRelease.Value.FileName}");
 
-		if (ModInfo != null && File.Exists(ModInfo.ModPath) && !path.Equals(ModInfo.ModPath, StringComparison.OrdinalIgnoreCase)) {
+		if (ModInfo != null && File.Exists(ModInfo.ModPath) &&
+			!path.Equals(ModInfo.ModPath, StringComparison.OrdinalIgnoreCase)) {
 			File.Delete(ModInfo.ModPath);
 			Log.Debug($"删除旧文件: {ModInfo.ModPath.GetFile()}");
 		}

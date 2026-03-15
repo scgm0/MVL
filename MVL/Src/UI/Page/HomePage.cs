@@ -172,9 +172,21 @@ public partial class HomePage : MenuPage {
 		if (UI.Main.ModpackConfigs.TryGetValue(UI.Main.BaseConfig.CurrentModpack, out var modpackConfig)) {
 			_playButton!.Disabled = false;
 			_modPackNameLabel!.Text = modpackConfig.ModpackName;
-			_gameVersionLabel!.Text = modpackConfig.GameVersion?.ShortGameVersion;
+
+			if (modpackConfig.GameVersion is { } gameVersion) {
+				_gameVersionLabel!.Text = gameVersion.ShortGameVersion;
+			} else {
+				_gameVersionLabel!.Text = "?";
+				_playButton!.Disabled = true;
+				_playButton!.Modulate = Colors.Red;
+				_playButton!.Text = "无法启动";
+				_playButton.TooltipText = "请先为整合包选择游戏版本";
+			}
+
 			if (modpackConfig.ReleaseInfo is { } releaseInfo) {
 				_releaseNameLabel!.Text = releaseInfo.Name;
+			} else {
+				_releaseNameLabel!.Text = "?";
 			}
 
 			_selectModpackButton.Text = "";

@@ -61,7 +61,7 @@ public partial class ModpackItem : PanelContainer {
 
 		if (ModpackConfig.GameVersion is null) {
 			_playButton.Disabled = true;
-			_playButton.TooltipText = "请选择版本后再启动游戏";
+			_playButton.TooltipText = "请先为整合包选择游戏版本";
 		}
 
 		if (Main.CurrentModpack == ModpackConfig) {
