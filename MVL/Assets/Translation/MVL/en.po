@@ -522,3 +522,6 @@ msgstr "The game version of the modpack is invalid, and compatibility cannot be 
 
 msgid "请先为整合包选择游戏版本"
 msgstr "Please select the game version for the modpack first."
+
+msgid "无法启动"
+msgstr "Unable to play"

@@ -492,3 +492,6 @@ msgstr ""
 
 msgid "请先为整合包选择游戏版本"
 msgstr ""
+
+msgid "无法启动"
+msgstr ""
