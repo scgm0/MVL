@@ -167,6 +167,7 @@ public partial class HomePage : MenuPage {
 		});
 		_playButton!.Modulate = Colors.White;
 		_playButton!.Text = "启动游戏";
+		_playButton.TooltipText = string.Empty;
 		_selectModpackButton!.Modulate = Colors.White;
 		_selectModpackButton.Disabled = false;
 		if (UI.Main.ModpackConfigs.TryGetValue(UI.Main.BaseConfig.CurrentModpack, out var modpackConfig)) {
@@ -189,12 +190,12 @@ public partial class HomePage : MenuPage {
 				_releaseNameLabel!.Text = "?";
 			}
 
-			_selectModpackButton.Text = "";
+			_selectModpackButton.Text = string.Empty;
 		} else {
 			_playButton!.Disabled = true;
-			_modPackNameLabel!.Text = "";
-			_gameVersionLabel!.Text = "";
-			_releaseNameLabel!.Text = "";
+			_modPackNameLabel!.Text = string.Empty;
+			_gameVersionLabel!.Text = string.Empty;
+			_releaseNameLabel!.Text = string.Empty;
 			_selectModpackButton.Text = "请先选择一个整合包";
 			UI.Main.BaseConfig.CurrentModpack = string.Empty;
 			await UI.Main.BaseConfig.SaveAsync();
