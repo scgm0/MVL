@@ -24,12 +24,12 @@ jobs:
 
     steps:
       - name: Checkout MVL Repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           path: mvl-repo
 
       - name: 1.1. Setup Python for SCons
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v5
         with:
           python-version: '3.x'
 
@@ -63,12 +63,12 @@ jobs:
           echo "C:\ProgramData\chocolatey\lib\nsis" >> $env:GITHUB_PATH
 
       - name: 2.1. Setup .NET8 SDK
-        uses: actions/setup-dotnet@v4
+        uses: actions/setup-dotnet@v5
         with:
           dotnet-version: '8.0.x'
 
       - name: 2.2. Setup .NET10 SDK
-        uses: actions/setup-dotnet@v4
+        uses: actions/setup-dotnet@v5
         with:
           dotnet-version: '10.0.x'
 
@@ -232,13 +232,13 @@ jobs:
           makensis generated-script.nsi
 
       - name: 6.1. Upload Portable Artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: mvl-windows-portable
           path: MVL-x86_64.exe
 
       - name: 6.2. Upload Raw Artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: mvl-windows-raw
           path: export_build/windows/*

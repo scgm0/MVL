@@ -16,7 +16,7 @@ runs:
       run: godot/misc/scripts/purge_cache.py ${{ env.CACHE_TIMESTAMP }} "${{ inputs.cache-path }}"
 
     - name: Save SCons cache directory
-      uses: actions/cache/save@v4
+      uses: actions/cache/save@v5
       with:
         path: ${{ inputs.cache-path }}
         key: ${{ inputs.cache-name }}|${{ github.ref_name }}|${{ github.sha }}

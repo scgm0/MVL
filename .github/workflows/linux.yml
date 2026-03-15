@@ -19,7 +19,7 @@ jobs:
 
     steps:
       - name: Checkout MVL Repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           path: mvl-repo
 
@@ -29,12 +29,12 @@ jobs:
           sudo apt-get install -y build-essential gettext llvm mold scons pkg-config libx11-dev libxcursor-dev libxinerama-dev libgl1-mesa-dev libglu1-mesa-dev libasound2-dev libpulse-dev libudev-dev libxi-dev libxrandr-dev libwayland-dev
 
       - name: 2.1. Setup .NET8 SDK
-        uses: actions/setup-dotnet@v4
+        uses: actions/setup-dotnet@v5
         with:
           dotnet-version: '8.0.x' 
 
       - name: 2.2. Setup .NET10 SDK
-        uses: actions/setup-dotnet@v4
+        uses: actions/setup-dotnet@v5
         with:
           dotnet-version: '10.0.x'
 
@@ -159,13 +159,13 @@ jobs:
           appimagetool AppDir MVL-x86_64.AppImage --comp zstd --mksquashfs-opt -Xcompression-level --mksquashfs-opt 22
 
       - name: 6.1. Upload AppImage Artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: mvl-linux-appimage
           path: MVL-x86_64.AppImage
 
       - name: 6.2. Upload Raw Artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: mvl-linux-raw
           path: export_build/linux/*
