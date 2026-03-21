@@ -38,8 +38,6 @@ public partial class BaseWindow : Control {
 	}
 
 	public new virtual async Task Show() {
-		Modulate = Colors.Transparent;
-		Container!.Scale = Vector2.Zero;
 		base.Show();
 		_animationPlayer!.Play(StringNames.Show);
 		await ToSignal(_animationPlayer, AnimationMixer.SignalName.AnimationFinished);

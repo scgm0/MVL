@@ -48,7 +48,7 @@ public partial class Start : Control {
 				FileShare.None);
 
 			Modulate = Colors.Transparent;
-			Scale = Vector2.Zero;
+			OffsetTransformScale = Vector2.Zero;
 
 			_server = new(IPAddress.Loopback, 0);
 			_server.Start();
@@ -110,7 +110,7 @@ public partial class Start : Control {
 		using var tween = CreateTween();
 		tween.SetTrans(Tween.TransitionType.Quad);
 		tween.Parallel().TweenProperty(this, new(CanvasItem.PropertyName.Modulate), Colors.White, 0.5f).Dispose();
-		tween.Parallel().TweenProperty(this, new(Control.PropertyName.Scale), new Vector2(1, 1), 0.5f).Dispose();
+		tween.Parallel().TweenProperty(this, new(Control.PropertyName.OffsetTransformScale), new Vector2(1, 1), 0.5f).Dispose();
 		tween.Finished += main.Init;
 		Log.Info("启动完成");
 	}
