@@ -171,8 +171,10 @@ public partial class HomePage : MenuPage {
 		_selectModpackButton!.Modulate = Colors.White;
 		_selectModpackButton.Disabled = false;
 		if (UI.Main.ModpackConfigs.TryGetValue(UI.Main.BaseConfig.CurrentModpack, out var modpackConfig)) {
-			_playButton!.Disabled = false;
-			_modPackNameLabel!.Text = modpackConfig.ModpackName;
+			_playButton!.Disabled = false; 
+
+			_modPackNameLabel!.SetTranslationDomain(modpackConfig.Path!);
+			_modPackNameLabel.Text = modpackConfig.ModpackName.Value;
 
 			if (modpackConfig.GameVersion is { } gameVersion) {
 				_gameVersionLabel!.Text = gameVersion.ShortGameVersion;
@@ -199,7 +201,7 @@ public partial class HomePage : MenuPage {
 			_selectModpackButton.Text = "请先选择一个整合包";
 			UI.Main.BaseConfig.CurrentModpack = string.Empty;
 			await UI.Main.BaseConfig.SaveAsync();
-			if (UI.Main.ModpackConfigs.Count == 0) {
+			if (UI.Main.ModpackConfigs.IsEmpty) {
 				_selectModpackButton.Text = "请先在整合界面添加一个整合包";
 				_selectModpackButton.Disabled = true;
 				_selectModpackButton.Modulate = Colors.Red;

@@ -14,18 +14,46 @@ using MVL.Utils.Game;
 
 namespace MVL.Utils.Config;
 
+[JsonConverter(typeof(LocalizedStringConverter))]
+public struct LocalizedString(string value) {
+	public string Value {
+		get {
+			if (string.IsNullOrEmpty(field) && Localizations != null && Localizations.Count != 0) {
+				return Localizations.Values.First();
+			}
+
+			return field;
+		}
+		init;
+	} = value;
+
+	public Dictionary<string, string>? Localizations { get; set; }
+	public override string ToString() { return Value; }
+	public static LocalizedString Empty { get; } = new(string.Empty);
+}
+
+public class LocalizedStringConverter : JsonConverter<LocalizedString> {
+	public override LocalizedString Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options) {
+		return new(reader.GetString() ?? string.Empty);
+	}
+
+	public override void Write(Utf8JsonWriter writer, LocalizedString value, JsonSerializerOptions options) {
+		writer.WriteStringValue(value.Value);
+	}
+}
+
 public class ModpackConfig {
 	private readonly record struct ModCacheEntry(ModInfo ModInfo, DateTime LastWriteTimeUtc);
 
 	private string _configPath = string.Empty;
 	private readonly ConcurrentDictionary<string, ModCacheEntry> _modInfoCache = new(StringComparer.OrdinalIgnoreCase);
-	public string ModpackName { get; set; } = string.Empty;
+	public LocalizedString ModpackName { get; set; } = LocalizedString.Empty;
 	public GameVersion? GameVersion { get; set; }
 	public SVersion ModpackVersion { get; set; } = SVersion.ZeroVersion;
 	public List<string> ModpackAuthors { get; set; } = [];
 	public List<string> ModpackTags { get; set; } = [];
-	public string ModpackSummary { get; set; } = string.Empty;
-	public string ModpackDescription { get; set; } = string.Empty;
+	public LocalizedString ModpackSummary { get; set; } = LocalizedString.Empty;
+	public LocalizedString ModpackDescription { get; set; } = LocalizedString.Empty;
 	public string ModpackWebsite { get; set; } = string.Empty;
 	public string Command { get; set; } = string.Empty;
 	public string GameAssembly { get; set; } = string.Empty;
@@ -69,6 +97,18 @@ public class ModpackConfig {
 			return null;
 		}
 	}
+
+	[JsonIgnore]
+	public TranslationDomain TranslationDomain { get; set; } = TranslationServer.GetOrAddDomain("");
+
+	[JsonIgnore]
+	public string LocalizeModpackName => GetLocalizedText("modpackName", ModpackName);
+
+	[JsonIgnore]
+	public string LocalizeModpackSummary => GetLocalizedText("modpackSummary", ModpackSummary);
+
+	[JsonIgnore]
+	public string LocalizeModpackDescription => GetLocalizedText("modpackDescription", ModpackDescription);
 
 	[JsonExtensionData]
 	public Dictionary<string, JsonElement> ExtensionData { get; set; } = [];
@@ -198,10 +238,59 @@ public class ModpackConfig {
 		}
 	}
 
+	public string GetLocalizedText(string ctx, LocalizedString key) { return GetLocalizedText(ctx, key.Value); }
+
+	public string GetLocalizedText(string ctx, string key) { return TranslationDomain.Translate(key, ctx); }
+
 	public void Save() {
-		var data = JsonSerializer.SerializeToUtf8Bytes(this, SourceGenerationContext.Default.ModpackConfig);
 		lock (Lock) {
+			InjectLocalizations(ModpackName, "modpackName");
+			InjectLocalizations(ModpackSummary, "modpackSummary");
+			InjectLocalizations(ModpackDescription, "modpackDescription");
+
+			var data = JsonSerializer.SerializeToUtf8Bytes(this, SourceGenerationContext.Default.ModpackConfig);
 			File.WriteAllBytes(_configPath, data);
+
+			RemoveLocalizations(ModpackName, "modpackName");
+			RemoveLocalizations(ModpackSummary, "modpackSummary");
+			RemoveLocalizations(ModpackDescription, "modpackDescription");
+		}
+	}
+
+	private void InjectLocalizations(LocalizedString ls, string baseKey) {
+		if (ls.Localizations == null || ls.Localizations.Count == 0) {
+			return;
+		}
+
+		foreach (var (lang, text) in ls.Localizations) {
+			var val = JsonSerializer.SerializeToElement(text, SourceGenerationContext.Default.String);
+			ExtensionData[$"{baseKey}[{lang}]"] = val;
+		}
+	}
+
+	private void RemoveLocalizations(LocalizedString ls, string baseKey) {
+		if (ls.Localizations == null || ls.Localizations.Count == 0) {
+			return;
+		}
+
+		foreach (var (lang, _) in ls.Localizations) {
+			ExtensionData.Remove($"{baseKey}[{lang}]");
+		}
+	}
+
+	private void AddLocalizationTranslation(LocalizedString ls) {
+		if (ls.Localizations == null || ls.Localizations.Count == 0) {
+			return;
+		}
+
+		foreach (var (lang, text) in ls.Localizations) {
+			var translation = TranslationDomain.HasTranslationForLocale(lang, false)
+				? TranslationDomain.FindTranslations(lang, false)[0]
+				: new() {
+					Locale = lang
+				};
+			translation.AddMessage(ls.Value, text);
+			TranslationDomain.AddTranslation(translation);
 		}
 	}
 
@@ -232,13 +321,15 @@ public class ModpackConfig {
 
 		modPackConfig ??= new();
 		modPackConfig.Path = modpackPath;
+		modPackConfig.TranslationDomain = TranslationServer.GetOrAddDomain(modpackPath);
+		modPackConfig.OnDeserialized();
 		modPackConfig.Save();
 		return modPackConfig;
 	}
 
 	static private ModpackConfig MigrateFromV0(ModpackConfigV0 v0) {
 		return new() {
-			ModpackName = v0.Name,
+			ModpackName = new(v0.Name),
 			GameVersion = v0.Version,
 			ReleasePath = v0.ReleasePath,
 			Command = v0.Command.Equals("%command%", StringComparison.OrdinalIgnoreCase) ? string.Empty : v0.Command,
@@ -247,5 +338,56 @@ public class ModpackConfig {
 				: v0.GameAssembly,
 			ExtensionData = v0.ExtensionData
 		};
+	}
+
+	public void OnDeserialized() {
+		TranslationDomain.Clear();
+
+		foreach (var kvp in ExtensionData) {
+			var key = kvp.Key.AsSpan();
+			var openBracket = key.IndexOf('[');
+			var closeBracket = key.LastIndexOf(']');
+
+			if (openBracket > 0 && closeBracket == key.Length - 1) {
+				var prefix = key[..openBracket];
+				var val = kvp.Value.ValueKind == JsonValueKind.String ? kvp.Value.GetString() : null;
+
+				if (val == null) {
+					continue;
+				}
+
+				var lang = key.Slice(openBracket + 1, closeBracket - openBracket - 1).ToString();
+				ExtensionData.Remove(key.ToString());
+
+				lang = TranslationServer.StandardizeLocale(lang);
+				switch (prefix) {
+					case "modpackName": {
+						var ls = ModpackName;
+						ls.Localizations ??= [];
+						ls.Localizations[lang] = val;
+						ModpackName = ls;
+						break;
+					}
+					case "modpackSummary": {
+						var ls = ModpackSummary;
+						ls.Localizations ??= [];
+						ls.Localizations[lang] = val;
+						ModpackSummary = ls;
+						break;
+					}
+					case "modpackDescription": {
+						var ls = ModpackDescription;
+						ls.Localizations ??= [];
+						ls.Localizations[lang] = val;
+						ModpackDescription = ls;
+						break;
+					}
+				}
+			}
+		}
+
+		AddLocalizationTranslation(ModpackName);
+		AddLocalizationTranslation(ModpackSummary);
+		AddLocalizationTranslation(ModpackDescription);
 	}
 }

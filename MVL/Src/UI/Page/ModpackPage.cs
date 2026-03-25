@@ -49,7 +49,7 @@ public partial class ModpackPage : MenuPage {
 	private void AddModpackOnAddModpack(string modpackName, string modpackPath, string gameVersion, string releasePath) {
 		var modpack = new ModpackConfig {
 			Path = modpackPath,
-			ModpackName = modpackName,
+			ModpackName = new (modpackName),
 			GameVersion = new GameVersion(gameVersion),
 			ReleasePath = releasePath
 		};

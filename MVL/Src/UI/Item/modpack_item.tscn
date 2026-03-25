@@ -7,6 +7,8 @@
 [ext_resource type="FontFile" uid="uid://bmgx1vyg6bavd" path="res://Assets/Font/HarmonyOS_Sans_SC_Bold.woff2" id="3_3qaia"]
 [ext_resource type="PackedScene" uid="uid://bf8v1y2ikmx0h" path="res://Src/UI/Window/modpack_mod_management_window.tscn" id="3_cfjm5"]
 [ext_resource type="Script" uid="uid://bk3tot6c35bwu" path="res://Src/Utils/IconTexture2D.cs" id="4_32kh6"]
+[ext_resource type="Script" uid="uid://bgqglerkcylxx" path="res://addons/SmoothScroll/smooth_scroll_container.gd" id="7_56p2o"]
+[ext_resource type="Script" uid="uid://b7h0k2h2qwlqv" path="res://addons/SmoothScroll/scroll_damper/expo_scroll_damper.gd" id="8_gtwmp"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_jptkp"]
 
@@ -50,6 +52,12 @@ corner_radius_top_right = 8
 corner_radius_bottom_right = 8
 corner_radius_bottom_left = 8
 
+[sub_resource type="Resource" id="Resource_c8ihh"]
+script = ExtResource("8_gtwmp")
+
+[sub_resource type="Resource" id="Resource_ugwhv"]
+script = ExtResource("8_gtwmp")
+
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_gtwmp"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_56p2o"]
@@ -87,7 +95,7 @@ script = ExtResource("4_32kh6")
 IconName = "play"
 metadata/_custom_type_script = "uid://bk3tot6c35bwu"
 
-[node name="ModpackItem" type="PanelContainer" unique_id=931146560 node_paths=PackedStringArray("_modpackName", "_modpackIconTexture", "_modpackSummary", "_modCount", "_versionButton", "_settingButton", "_playButton")]
+[node name="ModpackItem" type="PanelContainer" unique_id=931146560 node_paths=PackedStringArray("_modpackName", "_modpackAuthor", "_modpackVersion", "_modpackIconTexture", "_modpackSummary", "_modCount", "_versionButton", "_settingButton", "_playButton")]
 material = ExtResource("1_00er1")
 custom_minimum_size = Vector2(827, 64)
 theme = SubResource("Theme_bmwv3")
@@ -95,7 +103,9 @@ theme_override_styles/panel = SubResource("StyleBoxFlat_30yt8")
 script = ExtResource("1_j0hm1")
 _listModScene = ExtResource("3_cfjm5")
 _listGameScene = ExtResource("2_jptkp")
-_modpackName = NodePath("HBoxContainer/VBoxContainer/Label")
+_modpackName = NodePath("HBoxContainer/VBoxContainer/HBoxContainer2/Label")
+_modpackAuthor = NodePath("HBoxContainer/VBoxContainer/HBoxContainer2/SmoothScrollContainer/HBoxContainer/Label")
+_modpackVersion = NodePath("HBoxContainer/VBoxContainer/HBoxContainer/Label2")
 _modpackIconTexture = NodePath("HBoxContainer/TextureRect")
 _modpackSummary = NodePath("HBoxContainer/VBoxContainer/HBoxContainer/Label")
 _modCount = NodePath("HBoxContainer/VBoxContainer/HBoxContainer/Button")
@@ -117,21 +127,58 @@ stretch_mode = 5
 [node name="VBoxContainer" type="VBoxContainer" parent="HBoxContainer" unique_id=1840355022]
 layout_mode = 2
 size_flags_horizontal = 3
+theme_override_constants/separation = 6
 
-[node name="Label" type="Label" parent="HBoxContainer/VBoxContainer" unique_id=1964015766]
-auto_translate_mode = 2
+[node name="HBoxContainer2" type="HBoxContainer" parent="HBoxContainer/VBoxContainer" unique_id=1033999355]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="HBoxContainer/VBoxContainer/HBoxContainer2" unique_id=1964015766]
 layout_mode = 2
 size_flags_vertical = 3
+tooltip_auto_translate_mode = 2
+mouse_filter = 1
 theme_override_constants/outline_size = 5
 theme_override_fonts/font = ExtResource("3_3qaia")
+theme_override_font_sizes/font_size = 18
+text = "整合包名称"
+
+[node name="SmoothScrollContainer" type="ScrollContainer" parent="HBoxContainer/VBoxContainer/HBoxContainer2" unique_id=816079938]
+layout_mode = 2
+size_flags_horizontal = 3
+script = ExtResource("7_56p2o")
+wheel_scroll_damper = SubResource("Resource_c8ihh")
+dragging_scroll_damper = SubResource("Resource_ugwhv")
+handle_input = false
+metadata/_custom_type_script = "uid://bgqglerkcylxx"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="HBoxContainer/VBoxContainer/HBoxContainer2/SmoothScrollContainer" unique_id=1009191948]
+layout_mode = 2
+size_flags_horizontal = 2
+size_flags_vertical = 10
+
+[node name="Label" type="Label" parent="HBoxContainer/VBoxContainer/HBoxContainer2/SmoothScrollContainer/HBoxContainer" unique_id=1822799741]
+auto_translate_mode = 2
+layout_mode = 2
+size_flags_horizontal = 2
+size_flags_vertical = 1
+theme_override_font_sizes/font_size = 12
+text = "整合包作者: 未知"
 
 [node name="HBoxContainer" type="HBoxContainer" parent="HBoxContainer/VBoxContainer" unique_id=2040620241]
 layout_mode = 2
 size_flags_vertical = 8
 
+[node name="Label2" type="Label" parent="HBoxContainer/VBoxContainer/HBoxContainer" unique_id=1964011910]
+auto_translate_mode = 2
+layout_mode = 2
+size_flags_vertical = 0
+theme_override_font_sizes/font_size = 12
+text = "v0.0.0"
+
 [node name="Label" type="Label" parent="HBoxContainer/VBoxContainer/HBoxContainer" unique_id=873845475]
 layout_mode = 2
 size_flags_horizontal = 3
+size_flags_vertical = 8
 theme_override_colors/font_color = Color(0.601223, 0.601223, 0.601223, 1)
 theme_override_font_sizes/font_size = 12
 text = "整合包简介"
@@ -156,7 +203,7 @@ icon_alignment = 2
 [node name="Button" type="Button" parent="HBoxContainer" unique_id=618890851]
 custom_minimum_size = Vector2(150, 40)
 layout_mode = 2
-size_flags_vertical = 0
+theme_override_font_sizes/font_size = 14
 text = "选择版本"
 icon = SubResource("Texture2D_5lwjt")
 text_overrun_behavior = 3

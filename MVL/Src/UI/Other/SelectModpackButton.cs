@@ -169,7 +169,8 @@ public partial class SelectModpackButton : Button {
 			}
 		}
 
-		_name!.Text = ModpackConfig.ModpackName;
+		_name!.SetTranslationDomain(ModpackConfig.Path!);
+		_name.Text = ModpackConfig.ModpackName.Value;
 		if (ModpackConfig.ReleaseInfo is { } releaseInfo) {
 			_version!.Text = $"{releaseInfo.Name} ({releaseInfo.Version.ShortGameVersion})";
 		} else if (ModpackConfig.GameVersion is { } gameVersion) {

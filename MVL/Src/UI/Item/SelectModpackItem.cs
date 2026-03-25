@@ -1,7 +1,5 @@
 using System;
-using System.IO;
 using Godot;
-using MVL.Utils;
 using MVL.Utils.Config;
 using MVL.Utils.Help;
 
@@ -37,8 +35,10 @@ public partial class SelectModpackItem : PanelContainer {
 		_selectButton.NotNull();
 		ModpackConfig.NotNull();
 
-		_modpackNameLabel.Text = ModpackConfig.ModpackName;
-		_modpackNameLabel.TooltipText = ModpackConfig.ModpackName;
+		_modpackNameLabel.SetTranslationDomain(ModpackConfig.Path!);
+
+		_modpackNameLabel.Text = ModpackConfig.ModpackName.Value;
+		_modpackNameLabel.TooltipText = ModpackConfig.ModpackName.Value;
 
 		if (ModpackConfig.GameVersion is { } gameVersion) {
 			_releaseVersionLabel.Text = gameVersion.ShortGameVersion;

@@ -45,10 +45,11 @@ expand_mode = 1
 stretch_mode = 5
 
 [node name="Label" type="Label" parent="HBoxContainer" unique_id=1956916068]
-auto_translate_mode = 2
+auto_translate_mode = 1
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_stretch_ratio = 1.5
+tooltip_auto_translate_mode = 2
 mouse_filter = 1
 theme_override_font_sizes/font_size = 14
 text = "整合包"
