@@ -86,7 +86,7 @@ jobs:
           echo "Vintage Story paths set."
 
       - name: 4.1. Clone Godot
-        run: git clone https://github.com/scgm0/godot.git --branch Fix-RenderingDevice-Opengl3
+        run: git clone https://github.com/scgm0/godot.git --branch MVL
 
       - name: 4.2. Restore Godot build cache
         uses: ./mvl-repo/.github/actions/godot-cache-restore
