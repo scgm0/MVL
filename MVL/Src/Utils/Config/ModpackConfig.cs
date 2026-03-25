@@ -14,34 +14,6 @@ using MVL.Utils.Game;
 
 namespace MVL.Utils.Config;
 
-[JsonConverter(typeof(LocalizedStringConverter))]
-public struct LocalizedString(string value) {
-	public string Value {
-		get {
-			if (string.IsNullOrEmpty(field) && Localizations != null && Localizations.Count != 0) {
-				return Localizations.Values.First();
-			}
-
-			return field;
-		}
-		init;
-	} = value;
-
-	public Dictionary<string, string>? Localizations { get; set; }
-	public override string ToString() { return Value; }
-	public static LocalizedString Empty { get; } = new(string.Empty);
-}
-
-public class LocalizedStringConverter : JsonConverter<LocalizedString> {
-	public override LocalizedString Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options) {
-		return new(reader.GetString() ?? string.Empty);
-	}
-
-	public override void Write(Utf8JsonWriter writer, LocalizedString value, JsonSerializerOptions options) {
-		writer.WriteStringValue(value.Value);
-	}
-}
-
 public class ModpackConfig {
 	private readonly record struct ModCacheEntry(ModInfo ModInfo, DateTime LastWriteTimeUtc);
 
