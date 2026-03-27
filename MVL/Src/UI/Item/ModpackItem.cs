@@ -85,7 +85,7 @@ public partial class ModpackItem : PanelContainer {
 		_modpackVersion!.Text = $"v{ModpackConfig.ModpackVersion}";
 
 		if (!string.IsNullOrEmpty(ModpackConfig.ModpackSummary.Value)) {
-			_modpackSummary!.Text = ModpackConfig.ModpackSummary.Value.Replace("\r", "").Replace("\n", "");
+			_modpackSummary!.Text = ModpackConfig.ModpackSummary.Value;
 		}
 
 		_versionButton!.Text = ModpackConfig.GameVersion?.ShortGameVersion ?? "选择版本";

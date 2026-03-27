@@ -358,6 +358,13 @@ public class ModpackConfig {
 			}
 		}
 
+		ModpackSummary = ModpackSummary with { Value = ModpackSummary.Value.ReplaceLineEndings("") };
+		if (ModpackSummary.Localizations != null) {
+			foreach (var (key, value) in ModpackSummary.Localizations) {
+				ModpackSummary.Localizations[key] = value.ReplaceLineEndings("");
+			}
+		}
+
 		AddLocalizationTranslation(ModpackName);
 		AddLocalizationTranslation(ModpackSummary);
 		AddLocalizationTranslation(ModpackDescription);
