@@ -101,7 +101,7 @@ jobs:
         shell: sh
         id: angle-sdk
         run: |
-          if python ./misc/scripts/install_angle.py; then
+          if python ./godot/misc/scripts/install_angle.py; then
             echo "ANGLE_ENABLED=yes" >> "$GITHUB_OUTPUT"
           else
             echo "::warning::ANGLE SDK installation failed, building without ANGLE support."
