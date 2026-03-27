@@ -1,8 +1,10 @@
 using System;
+using System.Buffers;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Threading;
@@ -251,11 +253,12 @@ public class ModpackConfig {
 	}
 
 	private void AddLocalizationTranslation(LocalizedString ls) {
-		if (ls.Localizations == null || ls.Localizations.Count == 0) {
+		var localizations = ls.Localizations;
+		if (localizations is not { Count: not 0 }) {
 			return;
 		}
 
-		foreach (var (lang, text) in ls.Localizations) {
+		foreach (var (lang, text) in localizations) {
 			var translation = TranslationDomain.HasTranslationForLocale(lang, false)
 				? TranslationDomain.FindTranslations(lang, false)[0]
 				: new() {
@@ -315,58 +318,95 @@ public class ModpackConfig {
 	public void OnDeserialized() {
 		TranslationDomain.Clear();
 
-		foreach (var kvp in ExtensionData) {
-			var key = kvp.Key.AsSpan();
-			var openBracket = key.IndexOf('[');
-			var closeBracket = key.LastIndexOf(']');
+		string[]? keysToRemove = null;
+		try {
+			if (ExtensionData is { Count: not 0 }) {
+				var removeCount = 0;
+				foreach (var kvp in ExtensionData) {
+					if (kvp.Value.ValueKind != JsonValueKind.String) {
+						continue;
+					}
 
-			if (openBracket > 0 && closeBracket == key.Length - 1) {
-				var prefix = key[..openBracket];
-				var val = kvp.Value.ValueKind == JsonValueKind.String ? kvp.Value.GetString() : null;
+					var key = kvp.Key.AsSpan();
+					var openBracket = key.IndexOf('[');
 
-				if (val == null) {
-					continue;
-				}
+					if (openBracket <= 0 || key[^1] is not ']') {
+						continue;
+					}
 
-				var lang = key.Slice(openBracket + 1, closeBracket - openBracket - 1).ToString();
-				ExtensionData.Remove(key.ToString());
+					var prefix = key[..openBracket];
 
-				lang = TranslationServer.StandardizeLocale(lang);
-				switch (prefix) {
-					case "modpackName": {
+					var isName = prefix is "modpackName";
+					var isSummary = !isName && prefix is "modpackSummary";
+					var isDesc = !isName && !isSummary && prefix is "modpackDescription";
+
+					if (!isName && !isSummary && !isDesc) {
+						continue;
+					}
+
+					keysToRemove ??= ArrayPool<string>.Shared.Rent(ExtensionData.Count);
+					keysToRemove[removeCount++] = kvp.Key;
+
+					var lang = TranslationServer.StandardizeLocale(key.Slice(openBracket + 1, key.Length - openBracket - 2)
+						.ToString());
+					var val = kvp.Value.GetString() ?? string.Empty;
+
+					if (isName) {
 						var ls = ModpackName;
-						ls.Localizations ??= [];
-						ls.Localizations[lang] = val;
+						(ls.Localizations ??= [])[lang] = val;
 						ModpackName = ls;
-						break;
-					}
-					case "modpackSummary": {
+					} else if (isSummary) {
 						var ls = ModpackSummary;
-						ls.Localizations ??= [];
-						ls.Localizations[lang] = val;
+						(ls.Localizations ??= [])[lang] = val;
 						ModpackSummary = ls;
-						break;
-					}
-					case "modpackDescription": {
+					} else {
 						var ls = ModpackDescription;
-						ls.Localizations ??= [];
-						ls.Localizations[lang] = val;
+						(ls.Localizations ??= [])[lang] = val;
 						ModpackDescription = ls;
-						break;
+					}
+				}
+
+				if (keysToRemove != null) {
+					for (var i = 0; i < removeCount; i++) {
+						ExtensionData.Remove(keysToRemove[i]);
 					}
 				}
 			}
-		}
 
-		ModpackSummary = ModpackSummary with { Value = ModpackSummary.Value.ReplaceLineEndings("") };
-		if (ModpackSummary.Localizations != null) {
-			foreach (var (key, value) in ModpackSummary.Localizations) {
-				ModpackSummary.Localizations[key] = value.ReplaceLineEndings("");
+			var summary = ModpackSummary;
+			var summaryUpdated = false;
+
+			if (NeedsLineEndingReplacement(summary.Value)) {
+				summary = summary with { Value = summary.Value.ReplaceLineEndings(string.Empty) };
+				summaryUpdated = true;
+			}
+
+			if (summary.Localizations != null) {
+				foreach (var (key, value) in summary.Localizations) {
+					if (NeedsLineEndingReplacement(value)) {
+						summary.Localizations[key] = value.ReplaceLineEndings(string.Empty);
+					}
+				}
+			}
+
+			if (summaryUpdated) {
+				ModpackSummary = summary;
+			}
+
+			AddLocalizationTranslation(ModpackName);
+			AddLocalizationTranslation(ModpackSummary);
+			AddLocalizationTranslation(ModpackDescription);
+		} catch (Exception e) {
+			Log.Error($"解析整合包本地化字段失败: {Path}", e);
+		} finally {
+			if (keysToRemove != null) {
+				ArrayPool<string>.Shared.Return(keysToRemove);
 			}
 		}
+	}
 
-		AddLocalizationTranslation(ModpackName);
-		AddLocalizationTranslation(ModpackSummary);
-		AddLocalizationTranslation(ModpackDescription);
+	[MethodImpl(MethodImplOptions.AggressiveInlining)]
+	static private bool NeedsLineEndingReplacement(string? text) {
+		return !string.IsNullOrEmpty(text) && (text.Contains('\n') || text.Contains('\r'));
 	}
 }
