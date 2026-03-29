@@ -296,7 +296,6 @@ HotTopicButton/constants/h_separation = 0
 HotTopicButton/styles/hover = SubResource("StyleBoxFlat_belqv")
 HotTopicButton/styles/normal = SubResource("StyleBoxFlat_7hr8s")
 HotTopicButton/styles/pressed = SubResource("StyleBoxFlat_hypud")
-LineEdit/font_sizes/font_size = 14
 LineEdit/icons/clear = SubResource("Texture2D_4tsj6")
 LineEdit/styles/normal = SubResource("StyleBoxFlat_i7wln")
 LineEdit/styles/read_only = SubResource("StyleBoxFlat_asgjk")

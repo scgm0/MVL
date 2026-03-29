@@ -332,7 +332,6 @@ text = "翻译目录"
 [node name="RichTextLabel" type="RichTextLabel" parent="MarginContainer/ScrollContainer/VBoxContainer/PanelContainer3/VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer3" unique_id=1891356868]
 layout_mode = 2
 size_flags_horizontal = 10
-theme_override_font_sizes/normal_font_size = 14
 bbcode_enabled = true
 fit_content = true
 scroll_active = false
