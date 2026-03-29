@@ -525,3 +525,9 @@ msgstr "Please select the game version for the modpack first."
 
 msgid "无法启动"
 msgstr "Unable to play"
+
+msgid "整合包作者:"
+msgstr "Modpack Author: "
+
+msgid "未知"
+msgstr "Unknown"

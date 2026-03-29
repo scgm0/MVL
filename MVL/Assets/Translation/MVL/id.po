@@ -529,3 +529,9 @@ msgstr "Silakan pilih versi game untuk modpack terlebih dahulu."
 
 msgid "无法启动"
 msgstr "Tidak dapat dimainkan"
+
+msgid "整合包作者:"
+msgstr ""
+
+msgid "未知"
+msgstr ""
