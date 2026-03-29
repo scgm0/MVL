@@ -1,0 +1,128 @@
+[gd_scene format=3 uid="uid://bd44i8mcp5igr"]
+
+[ext_resource type="PackedScene" uid="uid://bu4hwijkbc8sm" path="res://Src/UI/Window/base_window.tscn" id="1_1g2g1"]
+[ext_resource type="Script" uid="uid://csuhu6aeq47sd" path="res://Src/UI/Window/ModpackSettingWindow.cs" id="2_nh8gm"]
+[ext_resource type="Texture2D" uid="uid://d3mq4tlr6rr01" path="res://Assets/Icon/VS/gameicon.png" id="3_6b333"]
+[ext_resource type="FontFile" uid="uid://bmgx1vyg6bavd" path="res://Assets/Font/HarmonyOS_Sans_SC_Bold.woff2" id="3_ys3gp"]
+[ext_resource type="Script" uid="uid://bk3tot6c35bwu" path="res://Src/Utils/IconTexture2D.cs" id="4_ys3gp"]
+[ext_resource type="PackedScene" uid="uid://bxcly4rmyqyy8" path="res://Src/UI/Item/modpack_name_localized_item.tscn" id="6_yrsig"]
+
+[sub_resource type="Texture2D" id="Texture2D_yrsig"]
+resource_local_to_scene = false
+resource_name = ""
+script = ExtResource("4_ys3gp")
+IconName = "image-edit-outline"
+IconSize = 18
+metadata/_custom_type_script = "uid://bk3tot6c35bwu"
+
+[sub_resource type="Texture2D" id="Texture2D_naeh1"]
+resource_local_to_scene = false
+resource_name = ""
+script = ExtResource("4_ys3gp")
+IconName = "trash-can-outline"
+IconSize = 18
+metadata/_custom_type_script = "uid://bk3tot6c35bwu"
+
+[sub_resource type="Texture2D" id="Texture2D_qvc0t"]
+resource_local_to_scene = false
+resource_name = ""
+script = ExtResource("4_ys3gp")
+IconName = "alert-circle-outline"
+IconSize = 16
+metadata/_custom_type_script = "uid://bk3tot6c35bwu"
+
+[node name="ModpackSettingWindow" unique_id=1805424548 node_paths=PackedStringArray("_modpackIconTextureRect", "_modpackNamEdit", "_addModpackNameLocalizedItem", "_modpackNameLocalizedContainer") instance=ExtResource("1_1g2g1")]
+script = ExtResource("2_nh8gm")
+_modpackNameLocalizedItemScene = ExtResource("6_yrsig")
+_modpackIconTextureRect = NodePath("PanelContainer/VBoxContainer/ScrollContainer/VBoxContainer/FoldableContainer/HBoxContainer/TextureRect")
+_modpackNamEdit = NodePath("PanelContainer/VBoxContainer/ScrollContainer/VBoxContainer/FoldableContainer2/VBoxContainer/LineEdit3")
+_addModpackNameLocalizedItem = NodePath("PanelContainer/VBoxContainer/ScrollContainer/VBoxContainer/FoldableContainer2/VBoxContainer/ModpackNameLocalizedItem")
+_modpackNameLocalizedContainer = NodePath("PanelContainer/VBoxContainer/ScrollContainer/VBoxContainer/FoldableContainer2/VBoxContainer/VBoxContainer")
+BackBufferCopy = false
+
+[node name="PanelContainer" parent="." index="2" unique_id=1939254484]
+custom_minimum_size = Vector2(650, 500)
+
+[node name="Label" parent="PanelContainer/VBoxContainer" parent_id_path=PackedInt32Array(1085092068) index="0" unique_id=45475559]
+text = "整合包设置"
+
+[node name="ScrollContainer" type="ScrollContainer" parent="PanelContainer/VBoxContainer" parent_id_path=PackedInt32Array(1085092068) index="2" unique_id=1598949316]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer/VBoxContainer/ScrollContainer" index="0" unique_id=1173711559]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/separation = 5
+
+[node name="FoldableContainer" type="FoldableContainer" parent="PanelContainer/VBoxContainer/ScrollContainer/VBoxContainer" index="0" unique_id=130571315]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("3_ys3gp")
+title = "整合包图标"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="PanelContainer/VBoxContainer/ScrollContainer/VBoxContainer/FoldableContainer" index="0" unique_id=1646863238]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="TextureRect" type="TextureRect" parent="PanelContainer/VBoxContainer/ScrollContainer/VBoxContainer/FoldableContainer/HBoxContainer" index="0" unique_id=1335955125]
+custom_minimum_size = Vector2(50, 50)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+texture = ExtResource("3_6b333")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer/VBoxContainer/ScrollContainer/VBoxContainer/FoldableContainer/HBoxContainer" index="1" unique_id=2095750009]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 10
+
+[node name="Button" type="Button" parent="PanelContainer/VBoxContainer/ScrollContainer/VBoxContainer/FoldableContainer/HBoxContainer/VBoxContainer" index="0" unique_id=54007962]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_font_sizes/font_size = 14
+text = "修改"
+icon = SubResource("Texture2D_yrsig")
+
+[node name="Button2" type="Button" parent="PanelContainer/VBoxContainer/ScrollContainer/VBoxContainer/FoldableContainer/HBoxContainer/VBoxContainer" index="1" unique_id=615384643]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_font_sizes/font_size = 14
+text = "重置"
+icon = SubResource("Texture2D_naeh1")
+
+[node name="FoldableContainer2" type="FoldableContainer" parent="PanelContainer/VBoxContainer/ScrollContainer/VBoxContainer" index="1" unique_id=1071459774]
+layout_mode = 2
+title = "整合包名称"
+
+[node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer/VBoxContainer/ScrollContainer/VBoxContainer/FoldableContainer2" index="0" unique_id=1417784283]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="LineEdit3" type="LineEdit" parent="PanelContainer/VBoxContainer/ScrollContainer/VBoxContainer/FoldableContainer2/VBoxContainer" index="0" unique_id=1435310905]
+layout_mode = 2
+placeholder_text = "名称不能为空"
+alignment = 1
+clear_button_enabled = true
+right_icon = SubResource("Texture2D_qvc0t")
+
+[node name="ModpackNameLocalizedItem" parent="PanelContainer/VBoxContainer/ScrollContainer/VBoxContainer/FoldableContainer2/VBoxContainer" index="1" unique_id=1735378566 instance=ExtResource("6_yrsig")]
+layout_mode = 2
+EditMode = 0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer/VBoxContainer/ScrollContainer/VBoxContainer/FoldableContainer2/VBoxContainer" index="2" unique_id=1813911085]
+visible = false
+layout_mode = 2
+
+[node name="HBoxContainer3" parent="PanelContainer/VBoxContainer" parent_id_path=PackedInt32Array(1085092068) index="4" unique_id=522919472]
+size_flags_vertical = 8
+
+[node name="Button" parent="PanelContainer/VBoxContainer/HBoxContainer3" index="0" unique_id=42009310]
+text = "关闭"
+
+[node name="Button2" parent="PanelContainer/VBoxContainer/HBoxContainer3" index="1" unique_id=1754640447]
+text = "保存"

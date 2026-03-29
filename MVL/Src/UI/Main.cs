@@ -42,6 +42,9 @@ public partial class Main : NativeWindowUtility {
 	private PackedScene? _confirmationWindowScene;
 
 	[Export]
+	private PackedScene? _modpackSettingWindowScene;
+
+	[Export]
 	private Button? _minButton;
 
 	[Export]
@@ -422,6 +425,13 @@ public partial class Main : NativeWindowUtility {
 		};
 
 		return _installedGamesImport;
+	}
+
+	public ModpackSettingWindow OpenModpackSettingWindow(ModpackConfig modpackConfig) {
+		var window = _modpackSettingWindowScene!.Instantiate<ModpackSettingWindow>();
+		window.ModpackConfig = modpackConfig;
+		AddChild(window);
+		return window;
 	}
 
 	public static void CheckReleaseInfo() {

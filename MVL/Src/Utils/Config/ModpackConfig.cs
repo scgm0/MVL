@@ -89,7 +89,10 @@ public class ModpackConfig {
 
 	public event Action<ModpackConfig>? ModsUpdated;
 
+	public event Action? LocalizedTextUpdated;
+
 	public static Texture2D DefaultIcon { get; } = GD.Load<Texture2D>("res://Assets/Icon/VS/gameicon.png");
+
 	public async Task UpdateModsAsync() {
 		Log.Debug($"开始更新整合包《{ModpackName}》模组信息");
 
@@ -253,21 +256,54 @@ public class ModpackConfig {
 		}
 	}
 
-	private void AddLocalizationTranslation(LocalizedString ls) {
+	public void AddLocalizationTranslations(LocalizedString ls) {
 		var localizations = ls.Localizations;
 		if (localizations is not { Count: not 0 }) {
 			return;
 		}
 
 		foreach (var (lang, text) in localizations) {
-			var translation = TranslationDomain.HasTranslationForLocale(lang, false)
-				? TranslationDomain.FindTranslations(lang, false)[0]
+			var translation = TranslationDomain.HasTranslationForLocale(lang, true)
+				? TranslationDomain.FindTranslations(lang, true)[0]
 				: new() {
 					Locale = lang
 				};
+			translation.EraseMessage(ls.Value);
 			translation.AddMessage(ls.Value, text);
 			TranslationDomain.AddTranslation(translation);
 		}
+
+		LocalizedTextUpdated?.Invoke();
+	}
+
+	public void AddLocalizationTranslation(string key, string text, string lang) {
+		var translation = TranslationDomain.HasTranslationForLocale(lang, true)
+			? TranslationDomain.FindTranslations(lang, true)[0]
+			: new() {
+				Locale = lang
+			};
+		translation.EraseMessage(key);
+		translation.AddMessage(key, text);
+		TranslationDomain.AddTranslation(translation);
+		LocalizedTextUpdated?.Invoke();
+	}
+
+	public void RemoveLocalizationTranslations(string key) {
+		foreach (var translation in TranslationDomain.GetTranslations()) {
+			translation.EraseMessage(key);
+		}
+
+		LocalizedTextUpdated?.Invoke();
+	}
+
+	public void RemoveLocalizationTranslation(string key, string lang) {
+		if (TranslationDomain.HasTranslationForLocale(lang, true)) {
+			var translation = TranslationDomain.FindTranslations(lang, true)[0];
+			translation.EraseMessage(key);
+			TranslationDomain.AddTranslation(translation);
+		}
+
+		LocalizedTextUpdated?.Invoke();
 	}
 
 	static private readonly Lock Lock = new();
@@ -394,9 +430,9 @@ public class ModpackConfig {
 				ModpackSummary = summary;
 			}
 
-			AddLocalizationTranslation(ModpackName);
-			AddLocalizationTranslation(ModpackSummary);
-			AddLocalizationTranslation(ModpackDescription);
+			AddLocalizationTranslations(ModpackName);
+			AddLocalizationTranslations(ModpackSummary);
+			AddLocalizationTranslations(ModpackDescription);
 		} catch (Exception e) {
 			Log.Error($"解析整合包本地化字段失败: {Path}", e);
 		} finally {

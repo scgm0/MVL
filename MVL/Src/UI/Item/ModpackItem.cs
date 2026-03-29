@@ -62,7 +62,9 @@ public partial class ModpackItem : PanelContainer {
 		_modpackSummary!.SetTranslationDomain(ModpackConfig.Path!);
 
 		ModpackConfig.ModsUpdated += ModpackConfigOnModsUpdated;
+		ModpackConfig.LocalizedTextUpdated += OnModpackConfigOnLocalizedTextUpdated;
 		_versionButton.Pressed += VersionButtonOnPressed;
+		_settingButton.Pressed += SettingButtonOnPressed;
 		_playButton.Pressed += PlayButtonOnPressed;
 		_modCount.Pressed += ModCountOnPressed;
 
@@ -70,11 +72,42 @@ public partial class ModpackItem : PanelContainer {
 		await ModpackConfig.UpdateModsAsync();
 	}
 
-	public async Task UpdateUI() {
+	private void OnModpackConfigOnLocalizedTextUpdated() {
+		if (!IsInstanceValid(this)) {
+			ModpackConfig!.LocalizedTextUpdated -= OnModpackConfigOnLocalizedTextUpdated;
+			return;
+		}
+
+		UpdateModpackText();
+	}
+
+	private async void SettingButtonOnPressed() {
+		if (ModpackConfig == null) {
+			return;
+		}
+
+		var window = Main.Instance!.OpenModpackSettingWindow(ModpackConfig);
+		window.Hidden += window.QueueFree;
+		window.Hidden += () => _ = UpdateUI();
+		await window.Show();
+	}
+
+	public void UpdateModpackText() {
 		_modpackName!.Text = ModpackConfig!.ModpackName.Value;
 		_modpackName.TooltipText = ModpackConfig.ModpackName.Value;
 
-		if (ModpackConfig.ModpackAuthors.Count == 0) {
+		if (!string.IsNullOrEmpty(ModpackConfig.ModpackSummary.Value)) {
+			_modpackSummary!.Text = ModpackConfig.ModpackSummary.Value;
+		}
+
+		_modpackName!.Notification((int)NotificationTranslationChanged);
+		_modpackSummary!.Notification((int)NotificationTranslationChanged);
+	}
+
+	public async Task UpdateUI() {
+		UpdateModpackText();
+
+		if (ModpackConfig!.ModpackAuthors.Count == 0) {
 			_modpackAuthor!.Text = $"{Tr("整合包作者:")} {Tr("未知")}";
 		} else if (ModpackConfig.ModpackAuthors.Count == 1) {
 			_modpackAuthor!.Text = $"{Tr("整合包作者:")} {ModpackConfig.ModpackAuthors[0]}";
@@ -83,11 +116,6 @@ public partial class ModpackItem : PanelContainer {
 		}
 
 		_modpackVersion!.Text = $"v{ModpackConfig.ModpackVersion}";
-
-		if (!string.IsNullOrEmpty(ModpackConfig.ModpackSummary.Value)) {
-			_modpackSummary!.Text = ModpackConfig.ModpackSummary.Value;
-		}
-
 		_versionButton!.Text = ModpackConfig.GameVersion?.ShortGameVersion ?? "选择版本";
 
 		if (ModpackConfig.GameVersion is null) {
@@ -139,6 +167,7 @@ public partial class ModpackItem : PanelContainer {
 	public override void _ExitTree() {
 		base._ExitTree();
 		ModpackConfig!.ModsUpdated -= ModpackConfigOnModsUpdated;
+		ModpackConfig.LocalizedTextUpdated -= OnModpackConfigOnLocalizedTextUpdated;
 
 		if (Main.CurrentModpack != ModpackConfig) {
 			return;

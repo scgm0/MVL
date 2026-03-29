@@ -6,6 +6,7 @@
 [ext_resource type="PackedScene" uid="uid://d21bm32gkwqcr" path="res://Src/UI/Window/installed_games_import.tscn" id="3_a5da0"]
 [ext_resource type="ButtonGroup" uid="uid://c644g3bgevb7h" path="res://Assets/Gui/menu_button_group.tres" id="4_megpf"]
 [ext_resource type="PackedScene" uid="uid://cns5w84qytq88" path="res://Src/UI/Item/account_select_item.tscn" id="5_365jr"]
+[ext_resource type="PackedScene" uid="uid://bd44i8mcp5igr" path="res://Src/UI/Window/modpack_setting_window.tscn" id="6_53u4p"]
 [ext_resource type="PackedScene" uid="uid://cx30yvsu80t6f" path="res://Src/UI/Window/confirmation_window.tscn" id="6_a6wm3"]
 [ext_resource type="Material" uid="uid://c0sb2bjy16ljf" path="res://Assets/Material/button_blur.tres" id="6_oarc7"]
 [ext_resource type="Theme" uid="uid://bwauanadesdm6" path="res://Assets/Theme/menu_panel.tres" id="7_7nt4r"]
@@ -304,7 +305,7 @@ _data = {
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_kq46g"]
 
-[sub_resource type="ButtonGroup" id="ButtonGroup_365jr"]
+[sub_resource type="ButtonGroup" id="ButtonGroup_08ol6"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_08ol6"]
 
@@ -350,6 +351,7 @@ _loginWindowScene = ExtResource("2_gblyu")
 _installedGamesImportScene = ExtResource("3_a5da0")
 _accountSelectItemScene = ExtResource("5_365jr")
 _confirmationWindowScene = ExtResource("6_a6wm3")
+_modpackSettingWindowScene = ExtResource("6_53u4p")
 _minButton = NodePath("HBoxContainer2/MinButton")
 _closeButton = NodePath("HBoxContainer2/CloseButton")
 _accountButton = NodePath("HBoxContainer/ColorRect/VBoxContainer/MarginContainer2/HBoxContainer/Button")
@@ -706,7 +708,7 @@ layout_mode = 2
 unique_name_in_owner = true
 visible = false
 layout_mode = 2
-_buttonGroup = SubResource("ButtonGroup_365jr")
+_buttonGroup = SubResource("ButtonGroup_08ol6")
 _titleBar = NodePath("../../../MarginContainer2/HBoxContainer")
 
 [node name="HBoxContainer2" type="HBoxContainer" parent="." unique_id=1999562561]
