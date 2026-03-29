@@ -89,6 +89,7 @@ public class ModpackConfig {
 
 	public event Action<ModpackConfig>? ModsUpdated;
 
+	public static Texture2D DefaultIcon { get; } = GD.Load<Texture2D>("res://Assets/Icon/VS/gameicon.png");
 	public async Task UpdateModsAsync() {
 		Log.Debug($"开始更新整合包《{ModpackName}》模组信息");
 
@@ -160,9 +161,9 @@ public class ModpackConfig {
 		ModsUpdated?.Invoke(this);
 	}
 
-	public async Task<Texture2D?> GetModpackIconAsync() {
+	public async Task<Texture2D> GetModpackIconAsync() {
 		if (string.IsNullOrEmpty(Path)) {
-			return null;
+			return DefaultIcon;
 		}
 
 		var iconPaths = Directory.EnumerateFileSystemEntries(Path, "modpackIcon.*", SearchOption.TopDirectoryOnly);
@@ -175,7 +176,7 @@ public class ModpackConfig {
 			return icon;
 		}
 
-		return null;
+		return DefaultIcon;
 	}
 
 	private async Task<ModInfo?> TryLoadMod(FileSystemInfo fsi) {

@@ -102,10 +102,7 @@ public partial class ModpackItem : PanelContainer {
 			Main.GameExitEvent += MainOnGameExitEvent;
 		}
 
-		using var modpackIcon = await ModpackConfig.GetModpackIconAsync();
-		if (modpackIcon is not null) {
-			_modpackIconTexture!.Texture = modpackIcon;
-		}
+		_modpackIconTexture!.Texture = await ModpackConfig.GetModpackIconAsync();
 	}
 
 	public void ModpackConfigOnModsUpdated(ModpackConfig modpackConfig) {

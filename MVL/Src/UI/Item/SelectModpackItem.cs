@@ -60,10 +60,7 @@ public partial class SelectModpackItem : PanelContainer {
 		_selectButton.ButtonPressed = Selected;
 		_selectButton.Pressed += SelectButtonOnPressed;
 
-		using var modpackIcon = await ModpackConfig.GetModpackIconAsync();
-		if (modpackIcon is not null) {
-			_modpackIconTexture.Texture = modpackIcon;
-		}
+		_modpackIconTexture.Texture = await ModpackConfig.GetModpackIconAsync();
 	}
 
 	public override void _GuiInput(InputEvent @event) {
