@@ -307,7 +307,7 @@ public partial class SettingPage : MenuPage {
 
 	private void UpdateThirdPartyGameLinkCheckButtonState() {
 		_thirdPartyGameLinkCheckButton!.Disabled = !_useThirdPartyGameDownloadCheckButton!.ButtonPressed ||
-		                                           string.IsNullOrWhiteSpace(_thirdPartyGameLinkLineEdit!.Text);
+			string.IsNullOrWhiteSpace(_thirdPartyGameLinkLineEdit!.Text);
 	}
 
 	private void ShowThirdPartyGameLinkCheckResult(string message) {
@@ -323,31 +323,36 @@ public partial class SettingPage : MenuPage {
 		var url = _thirdPartyGameLinkLineEdit!.Text.Trim();
 
 		if (!Uri.TryCreate(url, UriKind.Absolute, out var uri) ||
-		    (uri.Scheme != Uri.UriSchemeHttp && uri.Scheme != Uri.UriSchemeHttps)) {
-			ShowThirdPartyGameLinkCheckResult("链接格式无效，请输入 http 或 https 链接");
+			uri.Scheme != Uri.UriSchemeHttp && uri.Scheme != Uri.UriSchemeHttps) {
+			ShowThirdPartyGameLinkCheckResult("链接格式错误，请输入有效的[b]http[/b]或[b]https[/b]链接");
 			return;
 		}
 
-		var originalText = _thirdPartyGameLinkCheckButton!.Text;
-		_thirdPartyGameLinkCheckButton.Text = "检测中...";
+		_thirdPartyGameLinkCheckButton!.Text = "检测中...";
 		_thirdPartyGameLinkCheckButton.Disabled = true;
 
 		try {
+			Log.Debug($"检测第三方游戏链接: {url}");
 			await using var stream = await url.WithTimeout(10).GetStreamAsync();
 			var releases = await JsonSerializer.DeserializeAsync(
 				stream,
 				SourceGenerationContext.Default.DictionaryGameVersionGameRelease
 			);
 			if (releases == null || releases.Count == 0) {
-				throw new InvalidDataException("返回内容可解析，但版本列表为空");
+				Log.Warn($"检测失败，返回内容为空: {url}");
+				ShowThirdPartyGameLinkCheckResult("返回内容解析成功，但版本列表为空");
+				return;
 			}
 
-			ShowThirdPartyGameLinkCheckResult("检测成功，链接可访问且返回了有效 JSON");
+			ShowThirdPartyGameLinkCheckResult("检测成功，链接可访问且返回了有效内容");
+		} catch (TimeoutException e) {
+			Log.Error($"链接超时: {url}", e);
+			ShowThirdPartyGameLinkCheckResult("链接超时，请检查网络连接或稍后重试");
 		} catch (Exception e) {
-			Log.Error("检测第三方游戏链接失败", e);
-			ShowThirdPartyGameLinkCheckResult($"检测失败：{e.Message}");
+			Log.Error($"解析失败: {url}", e);
+			ShowThirdPartyGameLinkCheckResult("返回内容解析失败，接口格式不符合");
 		} finally {
-			_thirdPartyGameLinkCheckButton.Text = originalText;
+			_thirdPartyGameLinkCheckButton.Text = "检测";
 			UpdateThirdPartyGameLinkCheckButtonState();
 		}
 	}
