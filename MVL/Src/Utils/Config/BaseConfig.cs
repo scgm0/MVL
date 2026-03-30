@@ -101,6 +101,8 @@ public class BaseConfig : BaseConfigV0 {
 			DisplayScale = config.DisplayScale,
 			MenuExpand = config.MenuExpand,
 			ProxyAddress = config.ProxyAddress,
+			UseThirdPartyCdn = config.UseThirdPartyCdn,
+			ThirdPartyCdnJsonUrl = config.ThirdPartyCdnJsonUrl,
 			DownloadThreads = config.DownloadThreads,
 			ModpackFolder = config.ModpackFolder,
 			ReleaseFolder = config.ReleaseFolder,

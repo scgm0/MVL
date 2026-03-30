@@ -27,6 +27,12 @@ public class BaseConfigV0 {
 	public string ProxyAddress { get; set; } = "";
 
 	[JsonPropertyOrder(2)]
+	public bool UseThirdPartyCdn { get; set; } = false;
+
+	[JsonPropertyOrder(2)]
+	public string ThirdPartyCdnJsonUrl { get; set; } = "";
+
+	[JsonPropertyOrder(2)]
 	public int DownloadThreads { get; set; } = Environment.ProcessorCount;
 
 	[JsonPropertyOrder(3)]

@@ -38,6 +38,12 @@ public partial class SettingPage : MenuPage {
 	private LineEdit? _proxyAddressLineEdit;
 
 	[Export]
+	private CheckButton? _useThirdPartyCdnCheckButton;
+
+	[Export]
+	private LineEdit? _thirdPartyJsonUrlLineEdit;
+
+	[Export]
 	private SpinBox? _downloadThreadSpinbox;
 
 	[Export]
@@ -101,6 +107,8 @@ public partial class SettingPage : MenuPage {
 		_renderingDriverOptionButton.NotNull();
 		_menuExpandCheckButton.NotNull();
 		_proxyAddressLineEdit.NotNull();
+		_useThirdPartyCdnCheckButton.NotNull();
+		_thirdPartyJsonUrlLineEdit.NotNull();
 		_downloadThreadSpinbox.NotNull();
 		_modpackFolderLineEdit.NotNull();
 		_modpackFolderButton.NotNull();
@@ -115,6 +123,9 @@ public partial class SettingPage : MenuPage {
 		_displayScaleSpinbox.Value = UI.Main.BaseConfig.DisplayScale * 100;
 		_menuExpandCheckButton.ButtonPressed = UI.Main.BaseConfig.MenuExpand;
 		_proxyAddressLineEdit.Text = UI.Main.BaseConfig.ProxyAddress;
+		_useThirdPartyCdnCheckButton.ButtonPressed = UI.Main.BaseConfig.UseThirdPartyCdn;
+		_thirdPartyJsonUrlLineEdit.Text = UI.Main.BaseConfig.ThirdPartyCdnJsonUrl;
+		_thirdPartyJsonUrlLineEdit.Editable = _useThirdPartyCdnCheckButton.ButtonPressed;
 		_downloadThreadSpinbox.Value = UI.Main.BaseConfig.DownloadThreads;
 		_modpackFolderLineEdit.Text = UI.Main.BaseConfig.ModpackFolder;
 		_releaseFolderLineEdit.Text = UI.Main.BaseConfig.ReleaseFolder;
@@ -125,6 +136,8 @@ public partial class SettingPage : MenuPage {
 		_renderingDriverOptionButton.ItemSelected += RenderingDriverOptionButtonOnItemSelected;
 		_menuExpandCheckButton.Toggled += MenuExpandCheckButtonOnToggled;
 		_proxyAddressLineEdit.EditingToggled += ProxyAddressLineEditOnEditingToggled;
+		_useThirdPartyCdnCheckButton.Toggled += UseThirdPartyCdnCheckButtonOnToggled;
+		_thirdPartyJsonUrlLineEdit.EditingToggled += ThirdPartyJsonUrlLineEditOnEditingToggled;
 		_downloadThreadSpinbox.ValueChanged += DownloadThreadSpinboxOnValueChanged;
 		_modpackFolderLineEdit.EditingToggled += ModpackFolderLineEditOnEditingToggled;
 		_releaseFolderLineEdit.EditingToggled += ReleaseFolderLineEditOnEditingToggled;
@@ -263,6 +276,21 @@ public partial class SettingPage : MenuPage {
 
 		UI.Main.BaseConfig.ProxyAddress = _proxyAddressLineEdit!.Text;
 		FlurlHttp.Clients.Clear();
+		UI.Main.BaseConfig.Save();
+	}
+
+	private void UseThirdPartyCdnCheckButtonOnToggled(bool toggledOn) {
+		UI.Main.BaseConfig.UseThirdPartyCdn = toggledOn;
+		_thirdPartyJsonUrlLineEdit!.Editable = toggledOn;
+		UI.Main.BaseConfig.Save();
+	}
+
+	private void ThirdPartyJsonUrlLineEditOnEditingToggled(bool toggledOn) {
+		if (toggledOn) {
+			return;
+		}
+
+		UI.Main.BaseConfig.ThirdPartyCdnJsonUrl = _thirdPartyJsonUrlLineEdit!.Text.Trim();
 		UI.Main.BaseConfig.Save();
 	}
 
