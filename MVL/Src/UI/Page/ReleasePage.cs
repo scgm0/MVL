@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Godot;
@@ -10,6 +11,8 @@ using MVL.Utils.Help;
 namespace MVL.UI.Page;
 
 public partial class ReleasePage : MenuPage {
+	private const string OfficialReleaseListUrl = "https://api.vintagestory.at/stable-unstable.json";
+
 	[Export]
 	private PackedScene? _gameDownloadScene;
 
@@ -68,7 +71,15 @@ public partial class ReleasePage : MenuPage {
 		var downloadWindow = _gameDownloadScene!.Instantiate<GameDownloadWindow>();
 		UI.Main.Instance?.AddChild(downloadWindow);
 		await downloadWindow.Show();
-		downloadWindow.UpdateDownloadList("https://api.vintagestory.at/stable-unstable.json");
+		var releaseListUrl = OfficialReleaseListUrl;
+		if (UI.Main.BaseConfig.UseThirdPartyGameDownload) {
+			var customReleaseListUrl = UI.Main.BaseConfig.ThirdPartyGameLink.Trim();
+			if (!string.IsNullOrWhiteSpace(customReleaseListUrl)) {
+				releaseListUrl = customReleaseListUrl;
+			}
+		}
+
+		downloadWindow.UpdateDownloadList(releaseListUrl);
 		downloadWindow.InstallGame += ImportGame;
 		downloadWindow.Hidden += downloadWindow.QueueFree;
 	}

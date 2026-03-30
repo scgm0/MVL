@@ -19,6 +19,7 @@
 ## 开发人员
 
     神麤詭末 <https://github.com/scgm0>
+    寒士杰克 <https://github.com/TGU-HansJack>
 
 ## 英语翻译
 
