@@ -63,6 +63,7 @@ public partial class ModpackItem : PanelContainer {
 
 		ModpackConfig.ModsUpdated += ModpackConfigOnModsUpdated;
 		ModpackConfig.LocalizedTextUpdated += OnModpackConfigOnLocalizedTextUpdated;
+		ModpackConfig.ModpackIconUpdated += ModpackConfigOnModpackIconUpdated;
 		_versionButton.Pressed += VersionButtonOnPressed;
 		_settingButton.Pressed += SettingButtonOnPressed;
 		_playButton.Pressed += PlayButtonOnPressed;
@@ -70,6 +71,28 @@ public partial class ModpackItem : PanelContainer {
 
 		await UpdateUI();
 		await ModpackConfig.UpdateModsAsync();
+	}
+
+	public override void _ExitTree() {
+		base._ExitTree();
+		ModpackConfig!.ModsUpdated -= ModpackConfigOnModsUpdated;
+		ModpackConfig.LocalizedTextUpdated -= OnModpackConfigOnLocalizedTextUpdated;
+		ModpackConfig.ModpackIconUpdated -= ModpackConfigOnModpackIconUpdated;
+
+		if (Main.CurrentModpack != ModpackConfig) {
+			return;
+		}
+
+		Main.GameExitEvent -= MainOnGameExitEvent;
+	}
+
+	private async void ModpackConfigOnModpackIconUpdated() {
+		if (!IsInstanceValid(this)) {
+			ModpackConfig!.ModpackIconUpdated -= ModpackConfigOnModpackIconUpdated;
+			return;
+		}
+
+		_modpackIconTexture!.Texture = await ModpackConfig!.GetModpackIconAsync();
 	}
 
 	private void OnModpackConfigOnLocalizedTextUpdated() {
@@ -162,18 +185,6 @@ public partial class ModpackItem : PanelContainer {
 				_playButton.Modulate = Colors.White;
 			},
 			null);
-	}
-
-	public override void _ExitTree() {
-		base._ExitTree();
-		ModpackConfig!.ModsUpdated -= ModpackConfigOnModsUpdated;
-		ModpackConfig.LocalizedTextUpdated -= OnModpackConfigOnLocalizedTextUpdated;
-
-		if (Main.CurrentModpack != ModpackConfig) {
-			return;
-		}
-
-		Main.GameExitEvent -= MainOnGameExitEvent;
 	}
 
 	private void VersionButtonOnPressed() {

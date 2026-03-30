@@ -31,10 +31,12 @@ IconName = "alert-circle-outline"
 IconSize = 16
 metadata/_custom_type_script = "uid://bk3tot6c35bwu"
 
-[node name="ModpackSettingWindow" unique_id=1805424548 node_paths=PackedStringArray("_modpackIconTextureRect", "_modpackNamEdit", "_addModpackNameLocalizedItem", "_modpackNameLocalizedContainer") instance=ExtResource("1_1g2g1")]
+[node name="ModpackSettingWindow" unique_id=1805424548 node_paths=PackedStringArray("_modpackIconTextureRect", "_modifyIconButton", "_resetIconButton", "_modpackNamEdit", "_addModpackNameLocalizedItem", "_modpackNameLocalizedContainer") instance=ExtResource("1_1g2g1")]
 script = ExtResource("2_nh8gm")
 _modpackNameLocalizedItemScene = ExtResource("6_yrsig")
 _modpackIconTextureRect = NodePath("PanelContainer/VBoxContainer/ScrollContainer/VBoxContainer/FoldableContainer/HBoxContainer/TextureRect")
+_modifyIconButton = NodePath("PanelContainer/VBoxContainer/ScrollContainer/VBoxContainer/FoldableContainer/HBoxContainer/VBoxContainer/Button")
+_resetIconButton = NodePath("PanelContainer/VBoxContainer/ScrollContainer/VBoxContainer/FoldableContainer/HBoxContainer/VBoxContainer/Button2")
 _modpackNamEdit = NodePath("PanelContainer/VBoxContainer/ScrollContainer/VBoxContainer/FoldableContainer2/VBoxContainer/LineEdit3")
 _addModpackNameLocalizedItem = NodePath("PanelContainer/VBoxContainer/ScrollContainer/VBoxContainer/FoldableContainer2/VBoxContainer/ModpackNameLocalizedItem")
 _modpackNameLocalizedContainer = NodePath("PanelContainer/VBoxContainer/ScrollContainer/VBoxContainer/FoldableContainer2/VBoxContainer/VBoxContainer")
@@ -66,7 +68,7 @@ layout_mode = 2
 theme_override_constants/separation = 10
 
 [node name="TextureRect" type="TextureRect" parent="PanelContainer/VBoxContainer/ScrollContainer/VBoxContainer/FoldableContainer/HBoxContainer" index="0" unique_id=1335955125]
-custom_minimum_size = Vector2(50, 50)
+custom_minimum_size = Vector2(60, 60)
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
@@ -83,7 +85,6 @@ theme_override_constants/separation = 10
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
-theme_override_font_sizes/font_size = 14
 text = "修改"
 icon = SubResource("Texture2D_yrsig")
 
@@ -91,7 +92,6 @@ icon = SubResource("Texture2D_yrsig")
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
-theme_override_font_sizes/font_size = 14
 text = "重置"
 icon = SubResource("Texture2D_naeh1")
 
