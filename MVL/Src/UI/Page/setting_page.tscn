@@ -37,7 +37,7 @@ IconName = "reload"
 IconSize = 18
 metadata/_custom_type_script = "uid://bk3tot6c35bwu"
 
-[node name="SettingPage" type="Control" unique_id=718450851 node_paths=PackedStringArray("_displayLanguageOptionButton", "_displayScaleSpinbox", "_renderingDriverOptionButton", "_menuExpandCheckButton", "_proxyAddressLineEdit", "_downloadThreadSpinbox", "_modpackFolderLineEdit", "_modpackFolderButton", "_releaseFolderLineEdit", "_releaseFolderButton", "_localTranslationFolderLabel", "_localTranslationReloadButton", "_gitHubProxyOptionButton", "_autoCheckVersionCheckButton", "_lastVersionLinkButton", "Main")]
+[node name="SettingPage" type="Control" unique_id=718450851 node_paths=PackedStringArray("_displayLanguageOptionButton", "_displayScaleSpinbox", "_renderingDriverOptionButton", "_menuExpandCheckButton", "_proxyAddressLineEdit", "_useThirdPartyGameDownloadCheckButton", "_thirdPartyGameLinkLineEdit", "_thirdPartyGameLinkCheckButton", "_downloadThreadSpinbox", "_modpackFolderLineEdit", "_modpackFolderButton", "_releaseFolderLineEdit", "_releaseFolderButton", "_localTranslationFolderLabel", "_localTranslationReloadButton", "_gitHubProxyOptionButton", "_autoCheckVersionCheckButton", "_lastVersionLinkButton", "Main")]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -54,6 +54,9 @@ _displayScaleSpinbox = NodePath("MarginContainer/ScrollContainer/VBoxContainer/P
 _renderingDriverOptionButton = NodePath("MarginContainer/ScrollContainer/VBoxContainer/PanelContainer/VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer3/OptionButton")
 _menuExpandCheckButton = NodePath("MarginContainer/ScrollContainer/VBoxContainer/PanelContainer/VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer4/CheckButton")
 _proxyAddressLineEdit = NodePath("MarginContainer/ScrollContainer/VBoxContainer/PanelContainer2/VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer/LineEdit")
+_useThirdPartyGameDownloadCheckButton = NodePath("MarginContainer/ScrollContainer/VBoxContainer/PanelContainer2/VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer3/CheckButton")
+_thirdPartyGameLinkLineEdit = NodePath("MarginContainer/ScrollContainer/VBoxContainer/PanelContainer2/VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer4/LineEdit")
+_thirdPartyGameLinkCheckButton = NodePath("MarginContainer/ScrollContainer/VBoxContainer/PanelContainer2/VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer4/Button")
 _downloadThreadSpinbox = NodePath("MarginContainer/ScrollContainer/VBoxContainer/PanelContainer2/VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer2/SpinBox")
 _modpackFolderLineEdit = NodePath("MarginContainer/ScrollContainer/VBoxContainer/PanelContainer3/VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer/LineEdit")
 _modpackFolderButton = NodePath("MarginContainer/ScrollContainer/VBoxContainer/PanelContainer3/VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer/Button")
@@ -250,6 +253,44 @@ max_value = 64.0
 value = 1.0
 alignment = 2
 suffix = "x"
+
+[node name="HBoxContainer3" type="HBoxContainer" parent="MarginContainer/ScrollContainer/VBoxContainer/PanelContainer2/VBoxContainer/MarginContainer/VBoxContainer" unique_id=1535837021]
+custom_minimum_size = Vector2(0, 32)
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/ScrollContainer/VBoxContainer/PanelContainer2/VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer3" unique_id=678139254]
+layout_mode = 2
+mouse_filter = 1
+text = "第三方游戏下载"
+
+[node name="CheckButton" type="CheckButton" parent="MarginContainer/ScrollContainer/VBoxContainer/PanelContainer2/VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer3" unique_id=1470846118]
+layout_mode = 2
+size_flags_horizontal = 10
+theme_override_font_sizes/font_size = 14
+text = "使用第三方游戏下载"
+
+[node name="HBoxContainer4" type="HBoxContainer" parent="MarginContainer/ScrollContainer/VBoxContainer/PanelContainer2/VBoxContainer/MarginContainer/VBoxContainer" unique_id=425545369]
+custom_minimum_size = Vector2(0, 32)
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/ScrollContainer/VBoxContainer/PanelContainer2/VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer4" unique_id=704837278]
+layout_mode = 2
+mouse_filter = 1
+text = "第三方游戏链接"
+
+[node name="LineEdit" type="LineEdit" parent="MarginContainer/ScrollContainer/VBoxContainer/PanelContainer2/VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer4" unique_id=130899238]
+layout_mode = 2
+size_flags_horizontal = 10
+theme_type_variation = &"SpinBoxInnerLineEdit"
+placeholder_text = "接口格式需与官方保持一致"
+alignment = 2
+expand_to_text_length = true
+clear_button_enabled = true
+
+[node name="Button" type="Button" parent="MarginContainer/ScrollContainer/VBoxContainer/PanelContainer2/VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer4" unique_id=2026033101]
+custom_minimum_size = Vector2(72, 0)
+layout_mode = 2
+text = "检测"
 
 [node name="PanelContainer3" type="PanelContainer" parent="MarginContainer/ScrollContainer/VBoxContainer" unique_id=1108486692]
 material = ExtResource("4_tr7nv")

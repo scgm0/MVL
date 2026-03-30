@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Text.Json;
 using Flurl.Http;
 using Godot;
 using MVL.UI.Window;
@@ -36,6 +37,15 @@ public partial class SettingPage : MenuPage {
 
 	[Export]
 	private LineEdit? _proxyAddressLineEdit;
+
+	[Export]
+	private CheckButton? _useThirdPartyGameDownloadCheckButton;
+
+	[Export]
+	private LineEdit? _thirdPartyGameLinkLineEdit;
+
+	[Export]
+	private Button? _thirdPartyGameLinkCheckButton;
 
 	[Export]
 	private SpinBox? _downloadThreadSpinbox;
@@ -101,6 +111,9 @@ public partial class SettingPage : MenuPage {
 		_renderingDriverOptionButton.NotNull();
 		_menuExpandCheckButton.NotNull();
 		_proxyAddressLineEdit.NotNull();
+		_useThirdPartyGameDownloadCheckButton.NotNull();
+		_thirdPartyGameLinkLineEdit.NotNull();
+		_thirdPartyGameLinkCheckButton.NotNull();
 		_downloadThreadSpinbox.NotNull();
 		_modpackFolderLineEdit.NotNull();
 		_modpackFolderButton.NotNull();
@@ -115,6 +128,10 @@ public partial class SettingPage : MenuPage {
 		_displayScaleSpinbox.Value = UI.Main.BaseConfig.DisplayScale * 100;
 		_menuExpandCheckButton.ButtonPressed = UI.Main.BaseConfig.MenuExpand;
 		_proxyAddressLineEdit.Text = UI.Main.BaseConfig.ProxyAddress;
+		_useThirdPartyGameDownloadCheckButton.ButtonPressed = UI.Main.BaseConfig.UseThirdPartyGameDownload;
+		_thirdPartyGameLinkLineEdit.Text = UI.Main.BaseConfig.ThirdPartyGameLink;
+		_thirdPartyGameLinkLineEdit.Editable = _useThirdPartyGameDownloadCheckButton.ButtonPressed;
+		UpdateThirdPartyGameLinkCheckButtonState();
 		_downloadThreadSpinbox.Value = UI.Main.BaseConfig.DownloadThreads;
 		_modpackFolderLineEdit.Text = UI.Main.BaseConfig.ModpackFolder;
 		_releaseFolderLineEdit.Text = UI.Main.BaseConfig.ReleaseFolder;
@@ -125,6 +142,10 @@ public partial class SettingPage : MenuPage {
 		_renderingDriverOptionButton.ItemSelected += RenderingDriverOptionButtonOnItemSelected;
 		_menuExpandCheckButton.Toggled += MenuExpandCheckButtonOnToggled;
 		_proxyAddressLineEdit.EditingToggled += ProxyAddressLineEditOnEditingToggled;
+		_useThirdPartyGameDownloadCheckButton.Toggled += UseThirdPartyGameDownloadCheckButtonOnToggled;
+		_thirdPartyGameLinkLineEdit.EditingToggled += ThirdPartyGameLinkLineEditOnEditingToggled;
+		_thirdPartyGameLinkLineEdit.TextChanged += ThirdPartyGameLinkLineEditOnTextChanged;
+		_thirdPartyGameLinkCheckButton.Pressed += ThirdPartyGameLinkCheckButtonOnPressed;
 		_downloadThreadSpinbox.ValueChanged += DownloadThreadSpinboxOnValueChanged;
 		_modpackFolderLineEdit.EditingToggled += ModpackFolderLineEditOnEditingToggled;
 		_releaseFolderLineEdit.EditingToggled += ReleaseFolderLineEditOnEditingToggled;
@@ -264,6 +285,71 @@ public partial class SettingPage : MenuPage {
 		UI.Main.BaseConfig.ProxyAddress = _proxyAddressLineEdit!.Text;
 		FlurlHttp.Clients.Clear();
 		UI.Main.BaseConfig.Save();
+	}
+
+	private void UseThirdPartyGameDownloadCheckButtonOnToggled(bool toggledOn) {
+		UI.Main.BaseConfig.UseThirdPartyGameDownload = toggledOn;
+		_thirdPartyGameLinkLineEdit!.Editable = toggledOn;
+		UpdateThirdPartyGameLinkCheckButtonState();
+		UI.Main.BaseConfig.Save();
+	}
+
+	private void ThirdPartyGameLinkLineEditOnEditingToggled(bool toggledOn) {
+		if (toggledOn) {
+			return;
+		}
+
+		UI.Main.BaseConfig.ThirdPartyGameLink = _thirdPartyGameLinkLineEdit!.Text.Trim();
+		UI.Main.BaseConfig.Save();
+	}
+
+	private void ThirdPartyGameLinkLineEditOnTextChanged(string _) { UpdateThirdPartyGameLinkCheckButtonState(); }
+
+	private void UpdateThirdPartyGameLinkCheckButtonState() {
+		_thirdPartyGameLinkCheckButton!.Disabled = !_useThirdPartyGameDownloadCheckButton!.ButtonPressed ||
+		                                           string.IsNullOrWhiteSpace(_thirdPartyGameLinkLineEdit!.Text);
+	}
+
+	private void ShowThirdPartyGameLinkCheckResult(string message) {
+		var confirmationWindow = _confirmationWindowScene!.Instantiate<ConfirmationWindow>();
+		confirmationWindow.Message = message;
+		confirmationWindow.Hidden += confirmationWindow.QueueFree;
+		confirmationWindow.Confirm += async () => { await confirmationWindow.Hide(); };
+		UI.Main.Instance?.AddChild(confirmationWindow);
+		_ = confirmationWindow.Show();
+	}
+
+	private async void ThirdPartyGameLinkCheckButtonOnPressed() {
+		var url = _thirdPartyGameLinkLineEdit!.Text.Trim();
+
+		if (!Uri.TryCreate(url, UriKind.Absolute, out var uri) ||
+		    (uri.Scheme != Uri.UriSchemeHttp && uri.Scheme != Uri.UriSchemeHttps)) {
+			ShowThirdPartyGameLinkCheckResult("链接格式无效，请输入 http 或 https 链接");
+			return;
+		}
+
+		var originalText = _thirdPartyGameLinkCheckButton!.Text;
+		_thirdPartyGameLinkCheckButton.Text = "检测中...";
+		_thirdPartyGameLinkCheckButton.Disabled = true;
+
+		try {
+			await using var stream = await url.WithTimeout(10).GetStreamAsync();
+			var releases = await JsonSerializer.DeserializeAsync(
+				stream,
+				SourceGenerationContext.Default.DictionaryGameVersionGameRelease
+			);
+			if (releases == null || releases.Count == 0) {
+				throw new InvalidDataException("返回内容可解析，但版本列表为空");
+			}
+
+			ShowThirdPartyGameLinkCheckResult("检测成功，链接可访问且返回了有效 JSON");
+		} catch (Exception e) {
+			Log.Error("检测第三方游戏链接失败", e);
+			ShowThirdPartyGameLinkCheckResult($"检测失败：{e.Message}");
+		} finally {
+			_thirdPartyGameLinkCheckButton.Text = originalText;
+			UpdateThirdPartyGameLinkCheckButtonState();
+		}
 	}
 
 	private void DisplayScaleSpinboxOnValueChanged(double value) {

@@ -23,6 +23,12 @@ public class BaseConfig : BaseConfigV0 {
 	[JsonPropertyOrder(4)]
 	public bool AutoCheckVersion { get; set; } = true;
 
+	[JsonPropertyOrder(2)]
+	public bool UseThirdPartyGameDownload { get; set; } = false;
+
+	[JsonPropertyOrder(2)]
+	public string ThirdPartyGameLink { get; set; } = "";
+
 	public void Save() {
 		lock (_syncLock) {
 			if (string.IsNullOrEmpty(_configPath)) {
