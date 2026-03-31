@@ -331,4 +331,5 @@ SpinBox/icons/up_hover = SubResource("Texture2D_belqv")
 SpinBox/icons/up_pressed = SubResource("Texture2D_belqv")
 SpinBoxInnerLineEdit/base_type = &"LineEdit"
 SpinBoxInnerLineEdit/styles/normal = SubResource("StyleBoxEmpty_bgbrj")
+SpinBoxInnerLineEdit/styles/read_only = SubResource("StyleBoxEmpty_bgbrj")
 VScrollBar/styles/scroll_focus = SubResource("StyleBoxFlat_vje8o")
