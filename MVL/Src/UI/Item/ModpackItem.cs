@@ -79,7 +79,7 @@ public partial class ModpackItem : PanelContainer {
 		ModpackConfig.LocalizedTextUpdated -= OnModpackConfigOnLocalizedTextUpdated;
 		ModpackConfig.ModpackIconUpdated -= ModpackConfigOnModpackIconUpdated;
 
-		if (Main.CurrentModpack != ModpackConfig) {
+		if (Main.CurrentRunModpack != ModpackConfig) {
 			return;
 		}
 
@@ -112,6 +112,7 @@ public partial class ModpackItem : PanelContainer {
 		var window = Main.Instance!.OpenModpackSettingWindow(ModpackConfig);
 		window.Hidden += window.QueueFree;
 		window.Hidden += () => _ = UpdateUI();
+		window.RemoveModpack += QueueFree;
 		await window.Show();
 	}
 
@@ -128,6 +129,10 @@ public partial class ModpackItem : PanelContainer {
 	}
 
 	public async Task UpdateUI() {
+		if (!IsInstanceValid(this)) {
+			return;
+		}
+
 		UpdateModpackText();
 
 		if (ModpackConfig!.ModpackAuthors.Count == 0) {
@@ -146,7 +151,7 @@ public partial class ModpackItem : PanelContainer {
 			_playButton.TooltipText = "请先为整合包选择游戏版本";
 		}
 
-		if (Main.CurrentModpack == ModpackConfig) {
+		if (Main.CurrentRunModpack == ModpackConfig) {
 			var icon = (IconTexture2D)_playButton!.Icon;
 			icon.IconName = "stop";
 			_playButton.Modulate = Colors.Red;
@@ -212,7 +217,7 @@ public partial class ModpackItem : PanelContainer {
 	}
 
 	private void PlayButtonOnPressed() {
-		if (Main.CurrentModpack is null) {
+		if (Main.CurrentRunModpack is null) {
 			var icon = (IconTexture2D)_playButton!.Icon;
 			icon.IconName = "stop";
 			_playButton.Modulate = Colors.Red;

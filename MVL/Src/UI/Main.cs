@@ -95,7 +95,7 @@ public partial class Main : NativeWindowUtility {
 	public static Main? Instance { get; private set; }
 
 	public static Process? CurrentGameProcess { get; set; }
-	public static ModpackConfig? CurrentModpack { get; set; }
+	public static ModpackConfig? CurrentRunModpack { get; set; }
 
 	public static ConcurrentDictionary<string, ReleaseInfo> ReleaseInfos { get; } = new();
 
@@ -621,11 +621,11 @@ public partial class Main : NativeWindowUtility {
 	}
 
 	public async Task StartGame(ModpackConfig modpackConfig) {
-		CurrentModpack = modpackConfig;
+		CurrentRunModpack = modpackConfig;
 		var releaseInfo = modpackConfig.ReleaseInfo;
 		if (releaseInfo is null) {
 			GameExitEvent?.Invoke();
-			CurrentModpack = null;
+			CurrentRunModpack = null;
 			Log.Error("ReleaseInfo为空");
 			return;
 		}
@@ -657,7 +657,7 @@ public partial class Main : NativeWindowUtility {
 			};
 			confirmationWindow.Cancel += () => {
 				GameExitEvent?.Invoke();
-				CurrentModpack = null;
+				CurrentRunModpack = null;
 			};
 			AddChild(confirmationWindow);
 			await confirmationWindow.Show();
@@ -684,7 +684,7 @@ public partial class Main : NativeWindowUtility {
 				};
 				confirmationWindow.Cancel += () => {
 					GameExitEvent?.Invoke();
-					CurrentModpack = null;
+					CurrentRunModpack = null;
 				};
 				AddChild(confirmationWindow);
 				await confirmationWindow.Show();
@@ -737,7 +737,7 @@ public partial class Main : NativeWindowUtility {
 				tmp.Dispose();
 				process.Dispose();
 				CurrentGameProcess = null;
-				CurrentModpack = null;
+				CurrentRunModpack = null;
 			};
 		} catch (Exception e) {
 			GameExitEvent?.Invoke();

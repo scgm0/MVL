@@ -73,7 +73,7 @@ public partial class HomePage : MenuPage {
 	}
 
 	private async void StartButtonOnPressed() {
-		if (UI.Main.CurrentModpack is null) {
+		if (UI.Main.CurrentRunModpack is null) {
 			var modpackConfig = UI.Main.ModpackConfigs[UI.Main.BaseConfig.CurrentModpack];
 			_ = UI.Main.Instance?.StartGame(modpackConfig);
 		} else {
@@ -208,7 +208,7 @@ public partial class HomePage : MenuPage {
 			}
 		}
 
-		if (UI.Main.CurrentModpack is null) {
+		if (UI.Main.CurrentRunModpack is null) {
 			return;
 		}
 
