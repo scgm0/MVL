@@ -460,11 +460,17 @@ public partial class Main : NativeWindowUtility {
 			}
 		}
 
+		foreach (var path in ReleaseInfos.Keys) {
+			if (!snapshotPaths.Contains(path)) {
+				ReleaseInfos.Remove(path, out _);
+			}
+		}
+
 		BaseConfig.Save();
 	}
 
 
-	static private void RemoveRelease(string path) {
+	public static void RemoveRelease(string path) {
 		ReleaseInfos.Remove(path, out _);
 		BaseConfig.Release.Remove(path);
 	}
@@ -506,10 +512,16 @@ public partial class Main : NativeWindowUtility {
 			modpack.Save();
 		}
 
+		foreach (var path in ModpackConfigs.Keys) {
+			if (!list.Contains(path)) {
+				ModpackConfigs.Remove(path, out _);
+			}
+		}
+
 		await BaseConfig.SaveAsync();
 	}
 
-	static private void RemoveModpack(string path) {
+	public static void RemoveModpack(string path) {
 		ModpackConfigs.Remove(path, out _);
 		BaseConfig.Modpack.Remove(path);
 	}
