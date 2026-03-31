@@ -313,8 +313,9 @@ public partial class SettingPage : MenuPage {
 	private void ShowThirdPartyGameLinkCheckResult(string message) {
 		var confirmationWindow = _confirmationWindowScene!.Instantiate<ConfirmationWindow>();
 		confirmationWindow.Message = message;
+		confirmationWindow.CancelButton!.Text = "关闭";
+		confirmationWindow.OkButton!.Hide();
 		confirmationWindow.Hidden += confirmationWindow.QueueFree;
-		confirmationWindow.Confirm += async () => { await confirmationWindow.Hide(); };
 		UI.Main.Instance?.AddChild(confirmationWindow);
 		_ = confirmationWindow.Show();
 	}
