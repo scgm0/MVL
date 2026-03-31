@@ -8,6 +8,9 @@ namespace MVL.UI.Window;
 public partial class ConfirmationWindow : BaseWindow {
 	[Export]
 	private RichTextLabel? _messageLabel;
+	
+	[Export]
+	public VBoxContainer? ExpandContainer { get; set; }
 
 	[Signal]
 	public delegate void ConfirmEventHandler();
@@ -25,6 +28,7 @@ public partial class ConfirmationWindow : BaseWindow {
 		OkButton.NotNull();
 		CancelButton.NotNull();
 		_messageLabel.NotNull();
+		ExpandContainer.NotNull();
 
 		_messageLabel.Text = Message;
 		_messageLabel.MetaClicked += Tools.RichTextOpenUrl;
