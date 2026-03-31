@@ -74,6 +74,7 @@ public partial class ModpackSettingWindow : BaseWindow {
 		var fileDialog = new FileDialog {
 			Access = FileDialog.AccessEnum.Filesystem,
 			FileMode = FileDialog.FileModeEnum.OpenFile,
+			CurrentDir = Paths.HomeFolder,
 			Filters = ["*.png", "*.jpg", "*.jpeg", "Image Files", "image/png", "image/jpeg"],
 			UseNativeDialog = true
 		};
