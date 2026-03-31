@@ -161,7 +161,8 @@ auto_translate_mode = 2
 layout_mode = 2
 size_flags_horizontal = 2
 size_flags_vertical = 1
-theme_override_font_sizes/font_size = 12
+theme_override_constants/outline_size = 4
+theme_override_font_sizes/font_size = 14
 text = "整合包作者: 未知"
 
 [node name="HBoxContainer" type="HBoxContainer" parent="HBoxContainer/VBoxContainer" unique_id=2040620241]
