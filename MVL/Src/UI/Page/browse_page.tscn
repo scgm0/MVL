@@ -1,8 +1,7 @@
-[gd_scene load_steps=35 format=3 uid="uid://dri1d4mt1w68c"]
+[gd_scene format=3 uid="uid://dri1d4mt1w68c"]
 
 [ext_resource type="Script" uid="uid://g2x8e85gx8ct" path="res://Src/UI/Page/BrowsePage.cs" id="1_vnkfo"]
 [ext_resource type="PackedScene" uid="uid://by3fewq1gv8si" path="res://Src/UI/Item/browse_item.tscn" id="2_b5fxa"]
-[ext_resource type="PackedScene" uid="uid://cx30yvsu80t6f" path="res://Src/UI/Window/confirmation_window.tscn" id="3_2b3vt"]
 [ext_resource type="PackedScene" uid="uid://8k1twti5t7jp" path="res://Src/UI/Window/api_mod_releases_window.tscn" id="4_b7jyc"]
 [ext_resource type="Material" uid="uid://c0sb2bjy16ljf" path="res://Assets/Material/button_blur.tres" id="5_k83tl"]
 [ext_resource type="Script" uid="uid://bk3tot6c35bwu" path="res://Src/Utils/IconTexture2D.cs" id="6_d4kmo"]
@@ -127,7 +126,6 @@ grow_vertical = 2
 mouse_filter = 2
 script = ExtResource("1_vnkfo")
 _moduleItemScene = ExtResource("2_b5fxa")
-_confirmationWindowScene = ExtResource("3_2b3vt")
 _apiModReleasesWindowScene = ExtResource("4_b7jyc")
 _modNameLineEdit = NodePath("MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer2/LineEdit")
 _searchButton = NodePath("MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer2/Button")

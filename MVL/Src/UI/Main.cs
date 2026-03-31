@@ -273,10 +273,8 @@ public partial class Main : NativeWindowUtility {
 	}
 
 	private void AccountItemOnRemove(AccountSelectItem item) {
-		var confirmationWindow = _confirmationWindowScene!.Instantiate<ConfirmationWindow>();
-		confirmationWindow.Visible = false;
-		confirmationWindow.Message =
-			string.Format(Tr("确定要删除账号 [color=#0078d7][b]{0}[/b][/color] 吗？"), item.Account!.PlayerName);
+		var confirmationWindow =
+			OpenConfirmationWindow(string.Format(Tr("确定要删除账号 [color=#0078d7][b]{0}[/b][/color] 吗？"), item.Account!.PlayerName));
 		confirmationWindow.Confirm += async () => {
 			await confirmationWindow.Hide();
 			BaseConfig.Account.Remove(item.Account);
@@ -293,7 +291,6 @@ public partial class Main : NativeWindowUtility {
 			}
 		};
 		confirmationWindow.Hidden += confirmationWindow.QueueFree;
-		AddChild(confirmationWindow);
 		_ = confirmationWindow.Show();
 	}
 
@@ -434,6 +431,13 @@ public partial class Main : NativeWindowUtility {
 		return window;
 	}
 
+	public ConfirmationWindow OpenConfirmationWindow(string message) {
+		var window = _confirmationWindowScene!.Instantiate<ConfirmationWindow>();
+		window.Message = message;
+		AddChild(window);
+		return window;
+	}
+
 	public static void CheckReleaseInfo() {
 		BaseConfig.Release = BaseConfig.Release.Select(p => p.NormalizePath()).Distinct().ToList();
 		var snapshotPaths = BaseConfig.Release.ToList();
@@ -522,7 +526,6 @@ public partial class Main : NativeWindowUtility {
 			return null;
 		}
 	}
-
 
 	public static DirAccess CopyVsRun() {
 		var tmp = DirAccess.CreateTemp("VSRun");

@@ -15,9 +15,6 @@ namespace MVL.UI.Page;
 
 public partial class SettingPage : MenuPage {
 	[Export]
-	private PackedScene? _confirmationWindowScene;
-
-	[Export]
 	private PackedScene? _launcherDownloadWindowScene;
 
 	[Export]
@@ -199,16 +196,14 @@ public partial class SettingPage : MenuPage {
 
 		Log.Debug($"已更改渲染驱动: {currentDriver} -> {driverKey}");
 
-		var confirmationWindow = _confirmationWindowScene!.Instantiate<ConfirmationWindow>();
-		confirmationWindow.Message =
-			string.Format(Tr("已将渲染驱动更改为 [color=#3c7fe1]{0}[/color]\n需要重启才能生效，是否立即重启？"), driverDisplayName);
-
+		var confirmationWindow =
+			UI.Main.Instance!.OpenConfirmationWindow(string.Format(Tr("已将渲染驱动更改为 [color=#3c7fe1]{0}[/color]\n需要重启才能生效，是否立即重启？"),
+				driverDisplayName));
 		confirmationWindow.Confirm += () => {
 			OS.SetRestartOnExit(true);
 			Tools.SceneTree.Quit();
 		};
 		confirmationWindow.Hidden += confirmationWindow.QueueFree;
-		UI.Main.Instance!.AddChild(confirmationWindow);
 		_ = confirmationWindow.Show();
 	}
 
@@ -311,12 +306,10 @@ public partial class SettingPage : MenuPage {
 	}
 
 	private void ShowThirdPartyGameLinkCheckResult(string message) {
-		var confirmationWindow = _confirmationWindowScene!.Instantiate<ConfirmationWindow>();
-		confirmationWindow.Message = message;
+		var confirmationWindow = UI.Main.Instance!.OpenConfirmationWindow(message);
 		confirmationWindow.CancelButton!.Text = "关闭";
 		confirmationWindow.OkButton!.Hide();
 		confirmationWindow.Hidden += confirmationWindow.QueueFree;
-		UI.Main.Instance?.AddChild(confirmationWindow);
 		_ = confirmationWindow.Show();
 	}
 

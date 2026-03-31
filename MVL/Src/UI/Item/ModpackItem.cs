@@ -135,7 +135,7 @@ public partial class ModpackItem : PanelContainer {
 		} else if (ModpackConfig.ModpackAuthors.Count == 1) {
 			_modpackAuthor!.Text = $"{Tr("整合包作者:")} {ModpackConfig.ModpackAuthors[0]}";
 		} else {
-			_modpackAuthor!.Text = $"{Tr("整合包作者:")}{string.Join(", ", ModpackConfig.ModpackAuthors)}";
+			_modpackAuthor!.Text = $"{Tr("整合包作者:")} {string.Join(", ", ModpackConfig.ModpackAuthors)}";
 		}
 
 		_modpackVersion!.Text = $"v{ModpackConfig.ModpackVersion}";

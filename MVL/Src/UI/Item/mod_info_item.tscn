@@ -3,7 +3,6 @@
 [ext_resource type="Script" uid="uid://ci3alcv0p5u32" path="res://Src/UI/Item/ModInfoItem.cs" id="1_51ssv"]
 [ext_resource type="Texture2D" uid="uid://dcoju08mvjqim" path="res://Assets/Icon/VS/modicon.png" id="1_uh6ep"]
 [ext_resource type="PackedScene" uid="uid://8k1twti5t7jp" path="res://Src/UI/Window/api_mod_releases_window.tscn" id="2_0y8tf"]
-[ext_resource type="PackedScene" uid="uid://cx30yvsu80t6f" path="res://Src/UI/Window/confirmation_window.tscn" id="2_6yopn"]
 [ext_resource type="Script" uid="uid://bk3tot6c35bwu" path="res://Src/Utils/IconTexture2D.cs" id="4_6yopn"]
 [ext_resource type="FontFile" uid="uid://bmgx1vyg6bavd" path="res://Assets/Font/HarmonyOS_Sans_SC_Bold.woff2" id="5_sas7r"]
 
@@ -69,7 +68,6 @@ mouse_filter = 1
 theme_override_styles/panel = SubResource("StyleBoxFlat_d71qf")
 script = ExtResource("1_51ssv")
 _apiModReleasesWindowScene = ExtResource("2_0y8tf")
-_confirmationWindowScene = ExtResource("2_6yopn")
 _icon = NodePath("MarginContainer/HBoxContainer/PanelContainer/TextureRect")
 _modName = NodePath("MarginContainer/HBoxContainer/MarginContainer/VBoxContainer/Label")
 _version = NodePath("MarginContainer/HBoxContainer/MarginContainer/VBoxContainer/Control/RichTextLabel")

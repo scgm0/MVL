@@ -19,9 +19,6 @@ public partial class ModpackModManagementWindow : BaseWindow {
 	private PackedScene? _apiModReleasesWindowScene;
 
 	[Export]
-	private PackedScene? _confirmationWindowScene;
-
-	[Export]
 	private PackedScene? _modInfoItemScene;
 
 	[Export]
@@ -215,13 +212,10 @@ public partial class ModpackModManagementWindow : BaseWindow {
 			return;
 		}
 
-		var confirmationWindow = _confirmationWindowScene!.Instantiate<ConfirmationWindow>();
-		confirmationWindow.Message = string.Format(Tr("缺少以下依赖模组，是否尝试从ModDB获取？\n{0}"),
-			string.Join('\n', _modDependencies.Select(m => $"[b]{m.ModId}[/b]: {m.Version}")));
-		confirmationWindow.Modulate = Colors.Transparent;
+		var confirmationWindow = Main.Instance!.OpenConfirmationWindow(string.Format(Tr("缺少以下依赖模组，是否尝试从ModDB获取？\n{0}"),
+			string.Join('\n', _modDependencies.Select(m => $"[b]{m.ModId}[/b]: {m.Version}"))));
 		confirmationWindow.Hidden += confirmationWindow.QueueFree;
 		confirmationWindow.Confirm += () => GetModDependency(confirmationWindow);
-		Main.Instance?.AddChild(confirmationWindow);
 		await confirmationWindow.Show();
 	}
 

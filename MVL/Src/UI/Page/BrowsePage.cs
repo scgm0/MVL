@@ -22,9 +22,6 @@ public partial class BrowsePage : MenuPage {
 	private PackedScene? _moduleItemScene;
 
 	[Export]
-	private PackedScene? _confirmationWindowScene;
-
-	[Export]
 	private PackedScene? _apiModReleasesWindowScene;
 
 	[Export]
@@ -341,13 +338,10 @@ public partial class BrowsePage : MenuPage {
 			var moduleItem = _moduleItemScene!.Instantiate<BrowseItem>();
 			moduleItem.ModSummary = apiModSummary;
 			moduleItem.Pressed += async () => {
-				var confirmationWindow = _confirmationWindowScene!.Instantiate<ConfirmationWindow>();
-				confirmationWindow.Message = "正在从ModDB获取模组信息...";
-				confirmationWindow.Modulate = Colors.Transparent;
+				var confirmationWindow = UI.Main.Instance!.OpenConfirmationWindow("正在从ModDB获取模组信息...");
 				confirmationWindow.Hidden += confirmationWindow.QueueFree;
 				confirmationWindow.OkButton!.Disabled = true;
 				confirmationWindow.CancelButton!.Disabled = true;
-				UI.Main.Instance?.AddChild(confirmationWindow);
 				await confirmationWindow.Show();
 				try {
 					await ModpackConfig!.UpdateModsAsync();
@@ -368,7 +362,7 @@ public partial class BrowsePage : MenuPage {
 					var apiModReleasesWindow = _apiModReleasesWindowScene!.Instantiate<ApiModReleasesWindow>();
 					apiModReleasesWindow.DownloadModInfo = (modInfo, status.Mod!.Value, ModpackConfig);
 					apiModReleasesWindow.Hidden += () => { apiModReleasesWindow.QueueFree(); };
-					UI.Main.Instance?.AddChild(apiModReleasesWindow);
+					UI.Main.Instance.AddChild(apiModReleasesWindow);
 					await apiModReleasesWindow.Show();
 				} catch (Exception ex) {
 					Log.Error("获取模组信息时发生错误", ex);

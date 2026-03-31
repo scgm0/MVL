@@ -23,9 +23,6 @@ public partial class ModInfoItem : PanelContainer {
 	private PackedScene? _apiModReleasesWindowScene;
 
 	[Export]
-	private PackedScene? _confirmationWindowScene;
-
-	[Export]
 	private TextureRect? _icon;
 
 	[Export]
@@ -103,9 +100,7 @@ public partial class ModInfoItem : PanelContainer {
 	}
 
 	private void DeleteButtonOnPressed() {
-		var confirmationWindow = _confirmationWindowScene!.Instantiate<ConfirmationWindow>();
-		confirmationWindow!.Message = string.Format(Tr("确定要删除 [b]{0}[/b] 吗？"), Mod!.Name);
-		confirmationWindow.Modulate = Colors.Transparent;
+		var confirmationWindow = Main.Instance!.OpenConfirmationWindow(string.Format(Tr("确定要删除 [b]{0}[/b] 吗？"), Mod!.Name));
 		confirmationWindow.Hidden += confirmationWindow.QueueFree;
 		confirmationWindow.Confirm += async () => {
 			await confirmationWindow.Hide();
@@ -122,7 +117,6 @@ public partial class ModInfoItem : PanelContainer {
 				QueueFree();
 			}
 		};
-		Main.Instance?.AddChild(confirmationWindow);
 		_ = confirmationWindow.Show();
 	}
 

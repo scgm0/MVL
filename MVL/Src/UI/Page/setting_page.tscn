@@ -1,7 +1,6 @@
 [gd_scene format=3 uid="uid://bp02so1m0q7m0"]
 
 [ext_resource type="Script" uid="uid://er6sd5rjfnp5" path="res://Src/UI/Page/SettingPage.cs" id="1_f2m4w"]
-[ext_resource type="PackedScene" uid="uid://cx30yvsu80t6f" path="res://Src/UI/Window/confirmation_window.tscn" id="2_tr7nv"]
 [ext_resource type="Script" uid="uid://bgqglerkcylxx" path="res://addons/SmoothScroll/smooth_scroll_container.gd" id="3_4s13v"]
 [ext_resource type="PackedScene" uid="uid://debbauyce0xia" path="res://Src/UI/Window/launcher_download_window.tscn" id="3_yoik7"]
 [ext_resource type="Translation" uid="uid://crk0pgc2qwfi" path="res://Assets/Translation/zh_default_translation.tres" id="4_axk81"]
@@ -46,7 +45,6 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 script = ExtResource("1_f2m4w")
-_confirmationWindowScene = ExtResource("2_tr7nv")
 _launcherDownloadWindowScene = ExtResource("3_yoik7")
 _zhTranslation = ExtResource("4_axk81")
 _displayLanguageOptionButton = NodePath("MarginContainer/ScrollContainer/VBoxContainer/PanelContainer/VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer/OptionButton")
