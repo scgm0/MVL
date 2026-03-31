@@ -76,13 +76,13 @@ public class ModpackConfig {
 	public TranslationDomain TranslationDomain { get; set; } = TranslationServer.GetOrAddDomain("");
 
 	[JsonIgnore]
-	public string LocalizeModpackName => GetLocalizedText("modpackName", ModpackName);
+	public string LocalizeModpackName => GetLocalizedText(ModpackName);
 
 	[JsonIgnore]
-	public string LocalizeModpackSummary => GetLocalizedText("modpackSummary", ModpackSummary);
+	public string LocalizeModpackSummary => GetLocalizedText(ModpackSummary);
 
 	[JsonIgnore]
-	public string LocalizeModpackDescription => GetLocalizedText("modpackDescription", ModpackDescription);
+	public string LocalizeModpackDescription => GetLocalizedText(ModpackDescription);
 
 	[JsonExtensionData]
 	public Dictionary<string, JsonElement> ExtensionData { get; set; } = [];
@@ -237,9 +237,9 @@ public class ModpackConfig {
 		}
 	}
 
-	public string GetLocalizedText(string ctx, LocalizedString key) { return GetLocalizedText(ctx, key.Value); }
+	public string GetLocalizedText(LocalizedString key) { return GetLocalizedText(key.Value); }
 
-	public string GetLocalizedText(string ctx, string key) { return TranslationDomain.Translate(key, ctx); }
+	public string GetLocalizedText(string key) { return TranslationDomain.Translate(key); }
 
 	public void Save() {
 		lock (Lock) {

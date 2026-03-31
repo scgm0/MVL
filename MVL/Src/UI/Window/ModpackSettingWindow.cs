@@ -1,4 +1,6 @@
+using System;
 using System.Collections.Generic;
+using System.IO;
 using Godot;
 using MVL.UI.Item;
 using MVL.Utils;
@@ -29,7 +31,12 @@ public partial class ModpackSettingWindow : BaseWindow {
 	[Export]
 	private VBoxContainer? _modpackNameLocalizedContainer;
 
+	[Export]
+	private Button? _openModpackFolderButton;
+
 	public ModpackConfig? ModpackConfig { get; set; }
+
+	public event Action? RemoveModpack;
 
 	public override void _Ready() {
 		base._Ready();
@@ -40,18 +47,23 @@ public partial class ModpackSettingWindow : BaseWindow {
 		_modpackNamEdit.NotNull();
 		_addModpackNameLocalizedItem.NotNull();
 		_modpackNameLocalizedContainer.NotNull();
+		_openModpackFolderButton.NotNull();
 		ModpackConfig.NotNull();
 
 		ModpackConfig.ModpackName = ModpackConfig.ModpackName with {
 			Localizations = ModpackConfig.ModpackName.Localizations ?? []
 		};
 
+		_addModpackNameLocalizedItem.Localizations = ModpackConfig.ModpackName.Localizations;
+		OkButton!.Disabled = Main.CurrentRunModpack == ModpackConfig;
+
 		_modifyIconButton.Pressed += ModifyIconButtonOnPressed;
 		_resetIconButton.Pressed += ResetIconButtonOnPressed;
 		_modpackNamEdit.EditingToggled += ModpackNamEditOnEditingToggled;
-		_addModpackNameLocalizedItem.Localizations = ModpackConfig.ModpackName.Localizations;
-		CancelButton!.Pressed += CancelButtonOnPressed;
 		_addModpackNameLocalizedItem.AddLocalizedName += AddModpackNameLocalizedItemOnAddLocalizedName;
+		CancelButton!.Pressed += CancelButtonOnPressed;
+		_openModpackFolderButton.Pressed += OpenModpackFolderButtonOnPressed;
+		OkButton.Pressed += OkButtonOnPressed;
 
 		if (ModpackConfig.ModpackName.Localizations.Count > 0) {
 			var ls = ModpackConfig.ModpackName;
@@ -63,6 +75,35 @@ public partial class ModpackSettingWindow : BaseWindow {
 
 		UpdateUi();
 	}
+
+	private void OkButtonOnPressed() {
+		var confirmationWindow =
+			Main.Instance!.OpenConfirmationWindow(
+				string.Format(Tr("确定要移除[b]{0}[/b]吗？"), ModpackConfig!.LocalizeModpackName));
+		var checkButton = new CheckButton {
+			Text = "删除文件夹"
+		};
+		confirmationWindow.ExpandContainer!.AddChild(checkButton);
+		confirmationWindow.Hidden += confirmationWindow.QueueFree;
+		confirmationWindow.Confirm += async () => {
+			if (Main.BaseConfig.CurrentModpack == ModpackConfig!.Path) {
+				Main.BaseConfig.CurrentModpack = string.Empty;
+				await Main.BaseConfig.SaveAsync();
+			}
+
+			Main.RemoveModpack(ModpackConfig.Path!);
+			if (checkButton.ButtonPressed) {
+				Directory.Delete(ModpackConfig.Path!, true);
+			}
+
+			RemoveModpack?.Invoke();
+			await confirmationWindow.Hide();
+			await Hide();
+		};
+		_ = confirmationWindow.Show();
+	}
+
+	private void OpenModpackFolderButtonOnPressed() { OS.ShellOpen(ModpackConfig!.Path); }
 
 	private void ResetIconButtonOnPressed() {
 		_modpackIconTextureRect!.Texture = ModpackConfig.DefaultIcon;

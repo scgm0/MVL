@@ -31,7 +31,7 @@ IconName = "alert-circle-outline"
 IconSize = 16
 metadata/_custom_type_script = "uid://bk3tot6c35bwu"
 
-[node name="ModpackSettingWindow" unique_id=1805424548 node_paths=PackedStringArray("_modpackIconTextureRect", "_modifyIconButton", "_resetIconButton", "_modpackNamEdit", "_addModpackNameLocalizedItem", "_modpackNameLocalizedContainer") instance=ExtResource("1_1g2g1")]
+[node name="ModpackSettingWindow" unique_id=1805424548 node_paths=PackedStringArray("_modpackIconTextureRect", "_modifyIconButton", "_resetIconButton", "_modpackNamEdit", "_addModpackNameLocalizedItem", "_modpackNameLocalizedContainer", "_openModpackFolderButton") instance=ExtResource("1_1g2g1")]
 script = ExtResource("2_nh8gm")
 _modpackNameLocalizedItemScene = ExtResource("6_yrsig")
 _modpackIconTextureRect = NodePath("PanelContainer/VBoxContainer/ScrollContainer/VBoxContainer/FoldableContainer/HBoxContainer/TextureRect")
@@ -40,6 +40,7 @@ _resetIconButton = NodePath("PanelContainer/VBoxContainer/ScrollContainer/VBoxCo
 _modpackNamEdit = NodePath("PanelContainer/VBoxContainer/ScrollContainer/VBoxContainer/FoldableContainer2/VBoxContainer/LineEdit3")
 _addModpackNameLocalizedItem = NodePath("PanelContainer/VBoxContainer/ScrollContainer/VBoxContainer/FoldableContainer2/VBoxContainer/ModpackNameLocalizedItem")
 _modpackNameLocalizedContainer = NodePath("PanelContainer/VBoxContainer/ScrollContainer/VBoxContainer/FoldableContainer2/VBoxContainer/VBoxContainer")
+_openModpackFolderButton = NodePath("PanelContainer/VBoxContainer/HBoxContainer3/Button3")
 BackBufferCopy = false
 
 [node name="PanelContainer" parent="." index="2" unique_id=1939254484]
@@ -119,10 +120,16 @@ visible = false
 layout_mode = 2
 
 [node name="HBoxContainer3" parent="PanelContainer/VBoxContainer" parent_id_path=PackedInt32Array(1085092068) index="4" unique_id=522919472]
+size_flags_horizontal = 1
 size_flags_vertical = 8
 
 [node name="Button" parent="PanelContainer/VBoxContainer/HBoxContainer3" index="0" unique_id=42009310]
 text = "关闭"
 
-[node name="Button2" parent="PanelContainer/VBoxContainer/HBoxContainer3" index="1" unique_id=1754640447]
-text = "保存"
+[node name="Button3" type="Button" parent="PanelContainer/VBoxContainer/HBoxContainer3" index="1" unique_id=74169792]
+layout_mode = 2
+size_flags_horizontal = 4
+text = "打开目录"
+
+[node name="Button2" parent="PanelContainer/VBoxContainer/HBoxContainer3" index="2" unique_id=1754640447]
+text = "移除"

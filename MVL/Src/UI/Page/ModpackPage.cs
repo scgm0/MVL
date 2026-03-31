@@ -49,7 +49,7 @@ public partial class ModpackPage : MenuPage {
 	private void AddModpackOnAddModpack(string modpackName, string modpackPath, string gameVersion, string releasePath) {
 		var modpack = new ModpackConfig {
 			Path = modpackPath,
-			ModpackName = new (modpackName),
+			ModpackName = new(modpackName),
 			GameVersion = new GameVersion(gameVersion),
 			ReleasePath = releasePath
 		};
@@ -64,6 +64,10 @@ public partial class ModpackPage : MenuPage {
 	}
 
 	private void OnVisibilityChanged() {
+		UpdateList();
+	}
+
+	public async void UpdateList() {
 		foreach (var child in _list!.GetChildren()) {
 			if (child == _addModpackButton) {
 				continue;
@@ -76,10 +80,6 @@ public partial class ModpackPage : MenuPage {
 			return;
 		}
 
-		UpdateList();
-	}
-
-	public async void UpdateList() {
 		await Task.Run(UI.Main.CheckModpackConfig);
 		var i = 1;
 		foreach (var path in UI.Main.BaseConfig.Modpack) {
