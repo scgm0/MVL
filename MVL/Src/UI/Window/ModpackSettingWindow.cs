@@ -41,6 +41,12 @@ public partial class ModpackSettingWindow : BaseWindow {
 	private VBoxContainer? _modpackSummaryLocalizedContainer;
 
 	[Export]
+	private LineEdit? _commandLineEdit;
+
+	[Export]
+	private LineEdit? _gameAssemblyLineEdit;
+
+	[Export]
 	private Button? _openModpackFolderButton;
 
 	public ModpackConfig? ModpackConfig { get; set; }
@@ -59,6 +65,8 @@ public partial class ModpackSettingWindow : BaseWindow {
 		_modpackSummaryEdit.NotNull();
 		_addModpackSummaryLocalizedItem.NotNull();
 		_modpackSummaryLocalizedContainer.NotNull();
+		_commandLineEdit.NotNull();
+		_gameAssemblyLineEdit.NotNull();
 		_openModpackFolderButton.NotNull();
 		ModpackConfig.NotNull();
 
@@ -80,6 +88,8 @@ public partial class ModpackSettingWindow : BaseWindow {
 		_modpackSummaryEdit.EditingToggled += ModpackSummaryEditOnEditingToggled;
 		_addModpackNameLocalizedItem.AddLocalizedName += AddModpackNameLocalizedItemOnAddLocalizedName;
 		_addModpackSummaryLocalizedItem.AddLocalizedName += AddModpackSummaryLocalizedItemOnAddLocalized;
+		_commandLineEdit.EditingToggled += CommandLineEditOnEditingToggled;
+		_gameAssemblyLineEdit.EditingToggled += GameAssemblyLineEditOnEditingToggled;
 		CancelButton!.Pressed += CancelButtonOnPressed;
 		_openModpackFolderButton.Pressed += OpenModpackFolderButtonOnPressed;
 		OkButton.Pressed += OkButtonOnPressed;
@@ -101,6 +111,24 @@ public partial class ModpackSettingWindow : BaseWindow {
 		}
 
 		UpdateUi();
+	}
+
+	private void GameAssemblyLineEditOnEditingToggled(bool toggledOn) {
+		if (toggledOn) {
+			return;
+		}
+
+		ModpackConfig!.GameAssembly = _gameAssemblyLineEdit!.Text;
+		ModpackConfig.Save();
+	}
+
+	private void CommandLineEditOnEditingToggled(bool toggledOn) {
+		if (toggledOn) {
+			return;
+		}
+
+		ModpackConfig!.Command = _commandLineEdit!.Text;
+		ModpackConfig.Save();
 	}
 
 	private void OkButtonOnPressed() {
@@ -252,6 +280,10 @@ public partial class ModpackSettingWindow : BaseWindow {
 	}
 
 	private void ModpackSummaryEditOnEditingToggled(bool toggledOn) {
+		if (toggledOn) {
+			return;
+		}
+
 		var ls = ModpackConfig!.ModpackSummary;
 		var old = ls.Value;
 		ls = ls with { Value = _modpackSummaryEdit!.Text };
@@ -285,6 +317,8 @@ public partial class ModpackSettingWindow : BaseWindow {
 		_modpackNameLocalizedContainer!.Visible = ModpackConfig!.ModpackName.Localizations is { Count: > 0 };
 		_modpackSummaryEdit!.Text = ModpackConfig!.ModpackSummary.Value;
 		_modpackSummaryLocalizedContainer!.Visible = ModpackConfig!.ModpackSummary.Localizations is { Count: > 0 };
+		_commandLineEdit!.Text = ModpackConfig!.Command;
+		_gameAssemblyLineEdit!.Text = ModpackConfig!.GameAssembly;
 		_modpackIconTextureRect!.Texture = await ModpackConfig.GetModpackIconAsync();
 		_resetIconButton!.Disabled = _modpackIconTextureRect.Texture == ModpackConfig.DefaultIcon;
 	}

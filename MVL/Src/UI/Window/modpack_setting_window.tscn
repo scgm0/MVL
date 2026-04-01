@@ -39,7 +39,7 @@ IconName = "alert-circle-outline"
 IconSize = 16
 metadata/_custom_type_script = "uid://bk3tot6c35bwu"
 
-[node name="ModpackSettingWindow" unique_id=1805424548 node_paths=PackedStringArray("_modpackIconTextureRect", "_modifyIconButton", "_resetIconButton", "_modpackNamEdit", "_addModpackNameLocalizedItem", "_modpackNameLocalizedContainer", "_modpackSummaryEdit", "_addModpackSummaryLocalizedItem", "_modpackSummaryLocalizedContainer", "_openModpackFolderButton") instance=ExtResource("1_1g2g1")]
+[node name="ModpackSettingWindow" unique_id=1805424548 node_paths=PackedStringArray("_modpackIconTextureRect", "_modifyIconButton", "_resetIconButton", "_modpackNamEdit", "_addModpackNameLocalizedItem", "_modpackNameLocalizedContainer", "_modpackSummaryEdit", "_addModpackSummaryLocalizedItem", "_modpackSummaryLocalizedContainer", "_commandLineEdit", "_gameAssemblyLineEdit", "_openModpackFolderButton") instance=ExtResource("1_1g2g1")]
 script = ExtResource("2_nh8gm")
 _modpackLocalizedItemScene = ExtResource("6_yrsig")
 _modpackIconTextureRect = NodePath("PanelContainer/VBoxContainer/ScrollContainer/VBoxContainer/FoldableContainer/HBoxContainer/TextureRect")
@@ -51,6 +51,8 @@ _modpackNameLocalizedContainer = NodePath("PanelContainer/VBoxContainer/ScrollCo
 _modpackSummaryEdit = NodePath("PanelContainer/VBoxContainer/ScrollContainer/VBoxContainer/FoldableContainer3/VBoxContainer/LineEdit")
 _addModpackSummaryLocalizedItem = NodePath("PanelContainer/VBoxContainer/ScrollContainer/VBoxContainer/FoldableContainer3/VBoxContainer/ModpackLocalizedItem")
 _modpackSummaryLocalizedContainer = NodePath("PanelContainer/VBoxContainer/ScrollContainer/VBoxContainer/FoldableContainer3/VBoxContainer/VBoxContainer")
+_commandLineEdit = NodePath("PanelContainer/VBoxContainer/ScrollContainer/VBoxContainer/FoldableContainer4/VBoxContainer/VBoxContainer/LineEdit")
+_gameAssemblyLineEdit = NodePath("PanelContainer/VBoxContainer/ScrollContainer/VBoxContainer/FoldableContainer4/VBoxContainer/VBoxContainer2/LineEdit")
 _openModpackFolderButton = NodePath("PanelContainer/VBoxContainer/HBoxContainer3/Button3")
 BackBufferCopy = false
 
