@@ -11,7 +11,7 @@
 [![Weblate](https://hosted.weblate.org/widget/mvl/mvl/svg-badge.svg)](https://hosted.weblate.org/engage/mvl/)
 [![Github release](https://img.shields.io/github/v/tag/scgm0/MVL)](https://github.com/scgm0/MVL/releases)
 [![GitHub](https://img.shields.io/github/license/scgm0/MVL)](https://github.com/scgm0/MVL/blob/main/LICENSE)
-[![GitHub last commit](https://img.shields.io/github/last-commit/EasyTier/EasyTier)](https://github.com/EasyTier/EasyTier/commits/main)
+[![GitHub last commit](https://img.shields.io/github/last-commit/scgm0/MVL)](https://github.com/scgm0/MVL/commits/main)
 [![GitHub issues](https://img.shields.io/github/issues/scgm0/MVL)](https://github.com/scgm0/MVL/issues)
 [![GitHub Test Actions](https://github.com/scgm0/MVL/actions/workflows/runner.yml/badge.svg)](https://github.com/scgm0/MVL/actions/workflows/runner.yml)
 
