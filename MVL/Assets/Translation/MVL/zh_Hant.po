@@ -513,3 +513,84 @@ msgstr ""
 
 msgid "未知"
 msgstr ""
+
+msgid "整合包没有简介"
+msgstr ""
+
+msgid "整合包设置"
+msgstr ""
+
+msgid "整合包图标"
+msgstr ""
+
+msgid "整合包名称"
+msgstr ""
+
+msgid "整合包简介"
+msgstr ""
+
+msgid "额外设置"
+msgstr ""
+
+msgid "启动命令"
+msgstr ""
+
+msgid "主程序集"
+msgstr ""
+
+msgid "语言代码"
+msgstr ""
+
+msgid "本地化文本"
+msgstr ""
+
+msgid "修改"
+msgstr ""
+
+msgid "重置"
+msgstr ""
+
+msgid "第三方游戏下载"
+msgstr ""
+
+msgid "使用第三方游戏下载"
+msgstr ""
+
+msgid "第三方游戏链接"
+msgstr ""
+
+msgid "检测"
+msgstr ""
+
+msgid "接口格式需与官方保持一致"
+msgstr ""
+
+msgid "检测中..."
+msgstr ""
+
+msgid "链接格式错误，请输入有效的[b]http[/b]或[b]https[/b]链接"
+msgstr ""
+
+msgid "返回内容解析成功，但版本列表为空"
+msgstr ""
+
+msgid "检测成功，链接可访问且返回了有效内容"
+msgstr ""
+
+msgid "连接超时，请检查网络连接或稍后重试"
+msgstr ""
+
+msgid "返回内容解析失败，接口格式不符合"
+msgstr ""
+
+msgid "确定要移除[b]{0}[/b]吗？"
+msgstr ""
+
+msgid "删除文件夹"
+msgstr ""
+
+msgid "打开目录"
+msgstr ""
+
+msgid "移除"
+msgstr ""

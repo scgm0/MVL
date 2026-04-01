@@ -494,7 +494,7 @@ msgid "正在获取最新版本"
 msgstr "Fetching the latest version"
 
 msgid "重新获取"
-msgstr "Retrieving again"
+msgstr "Retrieving Again"
 
 msgid "下载"
 msgstr "Download"
@@ -518,16 +518,97 @@ msgid "获取最新版本失败"
 msgstr "Failed to get latest version"
 
 msgid "整合包的游戏版本无效，无法判断是否兼容"
-msgstr "The game version of the modpack is invalid, and compatibility cannot be determined."
+msgstr "The game version of the modpack is invalid, and compatibility cannot be determined"
 
 msgid "请先为整合包选择游戏版本"
-msgstr "Please select the game version for the modpack first."
+msgstr "Please select the game version for the modpack first"
 
 msgid "无法启动"
 msgstr "Unable to play"
 
 msgid "整合包作者:"
-msgstr "Modpack Author: "
+msgstr "Modpack Author:"
 
 msgid "未知"
 msgstr "Unknown"
+
+msgid "整合包没有简介"
+msgstr "The modpack has no summary"
+
+msgid "整合包设置"
+msgstr "Modpack Setting"
+
+msgid "整合包图标"
+msgstr "Modpack Icon"
+
+msgid "整合包名称"
+msgstr "Modpack Name"
+
+msgid "整合包简介"
+msgstr "Modpack Summary"
+
+msgid "额外设置"
+msgstr "Additional Setting"
+
+msgid "启动命令"
+msgstr "Start Command"
+
+msgid "主程序集"
+msgstr "Main Assembly"
+
+msgid "语言代码"
+msgstr "Language Code"
+
+msgid "本地化文本"
+msgstr "Localized text"
+
+msgid "修改"
+msgstr "Modify"
+
+msgid "重置"
+msgstr "Reset"
+
+msgid "第三方游戏下载"
+msgstr "Third Party Game Download"
+
+msgid "使用第三方游戏下载"
+msgstr "Using third-party game download"
+
+msgid "第三方游戏链接"
+msgstr "Third Party Game Link"
+
+msgid "检测"
+msgstr "Detection"
+
+msgid "接口格式需与官方保持一致"
+msgstr "The api format must be consistent with the official"
+
+msgid "检测中..."
+msgstr "Detecting..."
+
+msgid "链接格式错误，请输入有效的[b]http[/b]或[b]https[/b]链接"
+msgstr "Incorrect link format, please enter a valid [b]http[/b] or [b]https[/b] link"
+
+msgid "返回内容解析成功，但版本列表为空"
+msgstr "The content was successfully parsed, but the version list is empty"
+
+msgid "检测成功，链接可访问且返回了有效内容"
+msgstr "Detection successful, the link is accessible and returned valid content"
+
+msgid "连接超时，请检查网络连接或稍后重试"
+msgstr "Connection timed out, please check your network connection or try again later"
+
+msgid "返回内容解析失败，接口格式不符合"
+msgstr "Return content parsing failed, api format does not comply"
+
+msgid "确定要移除[b]{0}[/b]吗？"
+msgstr "Are you sure you want to remove [b]{0}[/b]?"
+
+msgid "删除文件夹"
+msgstr "Delete folder"
+
+msgid "打开目录"
+msgstr "Open Directory"
+
+msgid "移除"
+msgstr "Remove"

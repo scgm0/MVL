@@ -341,7 +341,7 @@ public partial class SettingPage : MenuPage {
 			ShowThirdPartyGameLinkCheckResult("检测成功，链接可访问且返回了有效内容");
 		} catch (TimeoutException e) {
 			Log.Error($"链接超时: {url}", e);
-			ShowThirdPartyGameLinkCheckResult("链接超时，请检查网络连接或稍后重试");
+			ShowThirdPartyGameLinkCheckResult("连接超时，请检查网络连接或稍后重试");
 		} catch (Exception e) {
 			Log.Error($"解析失败: {url}", e);
 			ShowThirdPartyGameLinkCheckResult("返回内容解析失败，接口格式不符合");
