@@ -118,7 +118,7 @@ public partial class ModpackSettingWindow : BaseWindow {
 			return;
 		}
 
-		ModpackConfig!.GameAssembly = _gameAssemblyLineEdit!.Text;
+		ModpackConfig!.MainAssembly = _gameAssemblyLineEdit!.Text;
 		ModpackConfig.Save();
 	}
 
@@ -318,7 +318,7 @@ public partial class ModpackSettingWindow : BaseWindow {
 		_modpackSummaryEdit!.Text = ModpackConfig!.ModpackSummary.Value;
 		_modpackSummaryLocalizedContainer!.Visible = ModpackConfig!.ModpackSummary.Localizations is { Count: > 0 };
 		_commandLineEdit!.Text = ModpackConfig!.Command;
-		_gameAssemblyLineEdit!.Text = ModpackConfig!.GameAssembly;
+		_gameAssemblyLineEdit!.Text = ModpackConfig!.MainAssembly;
 		_modpackIconTextureRect!.Texture = await ModpackConfig.GetModpackIconAsync();
 		_resetIconButton!.Disabled = _modpackIconTextureRect.Texture == ModpackConfig.DefaultIcon;
 	}

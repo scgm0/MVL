@@ -665,7 +665,7 @@ public partial class Main : NativeWindowUtility {
 			confirmationWindow.Hidden += confirmationWindow.QueueFree;
 			confirmationWindow.Confirm += async () => {
 				await confirmationWindow.Hide();
-				StartGame(releaseInfo.Path, modpackConfig.Path!, modpackConfig.Command, modpackConfig.GameAssembly);
+				StartGame(releaseInfo.Path, modpackConfig.Path!, modpackConfig.Command, modpackConfig.MainAssembly);
 			};
 			confirmationWindow.Cancel += () => {
 				GameExitEvent?.Invoke();
@@ -692,7 +692,7 @@ public partial class Main : NativeWindowUtility {
 				confirmationWindow.Hidden += confirmationWindow.QueueFree;
 				confirmationWindow.Confirm += async () => {
 					await confirmationWindow.Hide();
-					StartGame(releaseInfo.Path, modpackConfig.Path!, modpackConfig.Command, modpackConfig.GameAssembly);
+					StartGame(releaseInfo.Path, modpackConfig.Path!, modpackConfig.Command, modpackConfig.MainAssembly);
 				};
 				confirmationWindow.Cancel += () => {
 					GameExitEvent?.Invoke();
@@ -704,7 +704,7 @@ public partial class Main : NativeWindowUtility {
 			}
 		}
 
-		StartGame(releaseInfo.Path, modpackConfig.Path!, modpackConfig.Command, modpackConfig.GameAssembly);
+		StartGame(releaseInfo.Path, modpackConfig.Path!, modpackConfig.Command, modpackConfig.MainAssembly);
 	}
 
 	public static void StartGame(

@@ -30,7 +30,7 @@ public class ModpackConfig {
 	public LocalizedString ModpackDescription { get; set; } = LocalizedString.Empty;
 	public string ModpackWebsite { get; set; } = string.Empty;
 	public string Command { get; set; } = string.Empty;
-	public string GameAssembly { get; set; } = string.Empty;
+	public string MainAssembly { get; set; } = string.Empty;
 	public string? ReleasePath { get; set; }
 
 	[JsonIgnore]
@@ -366,7 +366,7 @@ public class ModpackConfig {
 			GameVersion = v0.Version,
 			ReleasePath = v0.ReleasePath,
 			Command = v0.Command.Equals("%command%", StringComparison.OrdinalIgnoreCase) ? string.Empty : v0.Command,
-			GameAssembly = v0.GameAssembly.Equals("Vintagestory.dll", StringComparison.OrdinalIgnoreCase)
+			MainAssembly = v0.GameAssembly.Equals("Vintagestory.dll", StringComparison.OrdinalIgnoreCase)
 				? string.Empty
 				: v0.GameAssembly,
 			ExtensionData = v0.ExtensionData
