@@ -4,8 +4,16 @@
 [ext_resource type="Script" uid="uid://csuhu6aeq47sd" path="res://Src/UI/Window/ModpackSettingWindow.cs" id="2_nh8gm"]
 [ext_resource type="Texture2D" uid="uid://d3mq4tlr6rr01" path="res://Assets/Icon/VS/gameicon.png" id="3_6b333"]
 [ext_resource type="FontFile" uid="uid://bmgx1vyg6bavd" path="res://Assets/Font/HarmonyOS_Sans_SC_Bold.woff2" id="3_ys3gp"]
+[ext_resource type="Script" uid="uid://bgqglerkcylxx" path="res://addons/SmoothScroll/smooth_scroll_container.gd" id="4_qvc0t"]
 [ext_resource type="Script" uid="uid://bk3tot6c35bwu" path="res://Src/Utils/IconTexture2D.cs" id="4_ys3gp"]
-[ext_resource type="PackedScene" uid="uid://bxcly4rmyqyy8" path="res://Src/UI/Item/modpack_name_localized_item.tscn" id="6_yrsig"]
+[ext_resource type="Script" uid="uid://b7h0k2h2qwlqv" path="res://addons/SmoothScroll/scroll_damper/expo_scroll_damper.gd" id="5_tuivn"]
+[ext_resource type="PackedScene" uid="uid://bxcly4rmyqyy8" path="res://Src/UI/Item/modpack_localized_item.tscn" id="6_yrsig"]
+
+[sub_resource type="Resource" id="Resource_uq8gy"]
+script = ExtResource("5_tuivn")
+
+[sub_resource type="Resource" id="Resource_o0cn4"]
+script = ExtResource("5_tuivn")
 
 [sub_resource type="Texture2D" id="Texture2D_yrsig"]
 resource_local_to_scene = false
@@ -31,15 +39,18 @@ IconName = "alert-circle-outline"
 IconSize = 16
 metadata/_custom_type_script = "uid://bk3tot6c35bwu"
 
-[node name="ModpackSettingWindow" unique_id=1805424548 node_paths=PackedStringArray("_modpackIconTextureRect", "_modifyIconButton", "_resetIconButton", "_modpackNamEdit", "_addModpackNameLocalizedItem", "_modpackNameLocalizedContainer", "_openModpackFolderButton") instance=ExtResource("1_1g2g1")]
+[node name="ModpackSettingWindow" unique_id=1805424548 node_paths=PackedStringArray("_modpackIconTextureRect", "_modifyIconButton", "_resetIconButton", "_modpackNamEdit", "_addModpackNameLocalizedItem", "_modpackNameLocalizedContainer", "_modpackSummaryEdit", "_addModpackSummaryLocalizedItem", "_modpackSummaryLocalizedContainer", "_openModpackFolderButton") instance=ExtResource("1_1g2g1")]
 script = ExtResource("2_nh8gm")
-_modpackNameLocalizedItemScene = ExtResource("6_yrsig")
+_modpackLocalizedItemScene = ExtResource("6_yrsig")
 _modpackIconTextureRect = NodePath("PanelContainer/VBoxContainer/ScrollContainer/VBoxContainer/FoldableContainer/HBoxContainer/TextureRect")
 _modifyIconButton = NodePath("PanelContainer/VBoxContainer/ScrollContainer/VBoxContainer/FoldableContainer/HBoxContainer/VBoxContainer/Button")
 _resetIconButton = NodePath("PanelContainer/VBoxContainer/ScrollContainer/VBoxContainer/FoldableContainer/HBoxContainer/VBoxContainer/Button2")
-_modpackNamEdit = NodePath("PanelContainer/VBoxContainer/ScrollContainer/VBoxContainer/FoldableContainer2/VBoxContainer/LineEdit3")
-_addModpackNameLocalizedItem = NodePath("PanelContainer/VBoxContainer/ScrollContainer/VBoxContainer/FoldableContainer2/VBoxContainer/ModpackNameLocalizedItem")
+_modpackNamEdit = NodePath("PanelContainer/VBoxContainer/ScrollContainer/VBoxContainer/FoldableContainer2/VBoxContainer/LineEdit")
+_addModpackNameLocalizedItem = NodePath("PanelContainer/VBoxContainer/ScrollContainer/VBoxContainer/FoldableContainer2/VBoxContainer/ModpackLocalizedItem")
 _modpackNameLocalizedContainer = NodePath("PanelContainer/VBoxContainer/ScrollContainer/VBoxContainer/FoldableContainer2/VBoxContainer/VBoxContainer")
+_modpackSummaryEdit = NodePath("PanelContainer/VBoxContainer/ScrollContainer/VBoxContainer/FoldableContainer3/VBoxContainer/LineEdit")
+_addModpackSummaryLocalizedItem = NodePath("PanelContainer/VBoxContainer/ScrollContainer/VBoxContainer/FoldableContainer3/VBoxContainer/ModpackLocalizedItem")
+_modpackSummaryLocalizedContainer = NodePath("PanelContainer/VBoxContainer/ScrollContainer/VBoxContainer/FoldableContainer3/VBoxContainer/VBoxContainer")
 _openModpackFolderButton = NodePath("PanelContainer/VBoxContainer/HBoxContainer3/Button3")
 BackBufferCopy = false
 
@@ -49,15 +60,21 @@ custom_minimum_size = Vector2(650, 500)
 [node name="Label" parent="PanelContainer/VBoxContainer" parent_id_path=PackedInt32Array(1085092068) index="0" unique_id=45475559]
 text = "整合包设置"
 
-[node name="ScrollContainer" type="ScrollContainer" parent="PanelContainer/VBoxContainer" parent_id_path=PackedInt32Array(1085092068) index="2" unique_id=1598949316]
+[node name="ScrollContainer" type="ScrollContainer" parent="PanelContainer/VBoxContainer" parent_id_path=PackedInt32Array(1085092068) index="2" unique_id=1242893270]
 layout_mode = 2
 size_flags_vertical = 3
+script = ExtResource("4_qvc0t")
+wheel_scroll_damper = SubResource("Resource_uq8gy")
+dragging_scroll_damper = SubResource("Resource_o0cn4")
+drag_with_mouse = false
+drag_with_touch = false
+metadata/_custom_type_script = "uid://bgqglerkcylxx"
 
 [node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer/VBoxContainer/ScrollContainer" index="0" unique_id=1173711559]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
-theme_override_constants/separation = 5
+theme_override_constants/separation = 10
 
 [node name="FoldableContainer" type="FoldableContainer" parent="PanelContainer/VBoxContainer/ScrollContainer/VBoxContainer" index="0" unique_id=130571315]
 layout_mode = 2
@@ -98,26 +115,82 @@ icon = SubResource("Texture2D_naeh1")
 
 [node name="FoldableContainer2" type="FoldableContainer" parent="PanelContainer/VBoxContainer/ScrollContainer/VBoxContainer" index="1" unique_id=1071459774]
 layout_mode = 2
+theme_override_fonts/font = ExtResource("3_ys3gp")
 title = "整合包名称"
 
 [node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer/VBoxContainer/ScrollContainer/VBoxContainer/FoldableContainer2" index="0" unique_id=1417784283]
 layout_mode = 2
 theme_override_constants/separation = 10
 
-[node name="LineEdit3" type="LineEdit" parent="PanelContainer/VBoxContainer/ScrollContainer/VBoxContainer/FoldableContainer2/VBoxContainer" index="0" unique_id=1435310905]
+[node name="LineEdit" type="LineEdit" parent="PanelContainer/VBoxContainer/ScrollContainer/VBoxContainer/FoldableContainer2/VBoxContainer" index="0" unique_id=1435310905]
 layout_mode = 2
 placeholder_text = "名称不能为空"
 alignment = 1
 clear_button_enabled = true
 right_icon = SubResource("Texture2D_qvc0t")
 
-[node name="ModpackNameLocalizedItem" parent="PanelContainer/VBoxContainer/ScrollContainer/VBoxContainer/FoldableContainer2/VBoxContainer" index="1" unique_id=1735378566 instance=ExtResource("6_yrsig")]
+[node name="ModpackLocalizedItem" parent="PanelContainer/VBoxContainer/ScrollContainer/VBoxContainer/FoldableContainer2/VBoxContainer" index="1" unique_id=1735378566 instance=ExtResource("6_yrsig")]
 layout_mode = 2
 EditMode = 0
 
 [node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer/VBoxContainer/ScrollContainer/VBoxContainer/FoldableContainer2/VBoxContainer" index="2" unique_id=1813911085]
 visible = false
 layout_mode = 2
+
+[node name="FoldableContainer3" type="FoldableContainer" parent="PanelContainer/VBoxContainer/ScrollContainer/VBoxContainer" index="2" unique_id=771689241]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("3_ys3gp")
+title = "整合包简介"
+
+[node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer/VBoxContainer/ScrollContainer/VBoxContainer/FoldableContainer3" index="0" unique_id=136287571]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="LineEdit" type="LineEdit" parent="PanelContainer/VBoxContainer/ScrollContainer/VBoxContainer/FoldableContainer3/VBoxContainer" index="0" unique_id=1951029641]
+layout_mode = 2
+placeholder_text = "整合包没有简介"
+alignment = 1
+clear_button_enabled = true
+
+[node name="ModpackLocalizedItem" parent="PanelContainer/VBoxContainer/ScrollContainer/VBoxContainer/FoldableContainer3/VBoxContainer" index="1" unique_id=1378293641 instance=ExtResource("6_yrsig")]
+layout_mode = 2
+EditMode = 0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer/VBoxContainer/ScrollContainer/VBoxContainer/FoldableContainer3/VBoxContainer" index="2" unique_id=1506569874]
+visible = false
+layout_mode = 2
+
+[node name="FoldableContainer4" type="FoldableContainer" parent="PanelContainer/VBoxContainer/ScrollContainer/VBoxContainer" index="3" unique_id=1093984597]
+layout_mode = 2
+title = "额外设置"
+
+[node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer/VBoxContainer/ScrollContainer/VBoxContainer/FoldableContainer4" index="0" unique_id=156392221]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer/VBoxContainer/ScrollContainer/VBoxContainer/FoldableContainer4/VBoxContainer" index="0" unique_id=1867183538]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="PanelContainer/VBoxContainer/ScrollContainer/VBoxContainer/FoldableContainer4/VBoxContainer/VBoxContainer" index="0" unique_id=1408630953]
+layout_mode = 2
+theme_override_font_sizes/font_size = 14
+text = "启动命令"
+
+[node name="LineEdit" type="LineEdit" parent="PanelContainer/VBoxContainer/ScrollContainer/VBoxContainer/FoldableContainer4/VBoxContainer/VBoxContainer" index="1" unique_id=935166782]
+layout_mode = 2
+placeholder_text = "%command%"
+
+[node name="VBoxContainer2" type="VBoxContainer" parent="PanelContainer/VBoxContainer/ScrollContainer/VBoxContainer/FoldableContainer4/VBoxContainer" index="1" unique_id=1535764023]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="PanelContainer/VBoxContainer/ScrollContainer/VBoxContainer/FoldableContainer4/VBoxContainer/VBoxContainer2" index="0" unique_id=780740383]
+layout_mode = 2
+theme_override_font_sizes/font_size = 14
+text = "主程序集"
+
+[node name="LineEdit" type="LineEdit" parent="PanelContainer/VBoxContainer/ScrollContainer/VBoxContainer/FoldableContainer4/VBoxContainer/VBoxContainer2" index="1" unique_id=2097716261]
+layout_mode = 2
+placeholder_text = "Vintagestory.dll"
 
 [node name="HBoxContainer3" parent="PanelContainer/VBoxContainer" parent_id_path=PackedInt32Array(1085092068) index="4" unique_id=522919472]
 size_flags_horizontal = 1

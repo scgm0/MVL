@@ -11,7 +11,7 @@ namespace MVL.UI.Window;
 
 public partial class ModpackSettingWindow : BaseWindow {
 	[Export]
-	private PackedScene? _modpackNameLocalizedItemScene;
+	private PackedScene? _modpackLocalizedItemScene;
 
 	[Export]
 	private TextureRect? _modpackIconTextureRect;
@@ -26,10 +26,19 @@ public partial class ModpackSettingWindow : BaseWindow {
 	private LineEdit? _modpackNamEdit;
 
 	[Export]
-	private ModpackNameLocalizedItem? _addModpackNameLocalizedItem;
+	private ModpackLocalizedItem? _addModpackNameLocalizedItem;
 
 	[Export]
 	private VBoxContainer? _modpackNameLocalizedContainer;
+
+	[Export]
+	private LineEdit? _modpackSummaryEdit;
+
+	[Export]
+	private ModpackLocalizedItem? _addModpackSummaryLocalizedItem;
+
+	[Export]
+	private VBoxContainer? _modpackSummaryLocalizedContainer;
 
 	[Export]
 	private Button? _openModpackFolderButton;
@@ -40,13 +49,16 @@ public partial class ModpackSettingWindow : BaseWindow {
 
 	public override void _Ready() {
 		base._Ready();
-		_modpackNameLocalizedItemScene.NotNull();
+		_modpackLocalizedItemScene.NotNull();
 		_modpackIconTextureRect.NotNull();
 		_modifyIconButton.NotNull();
 		_resetIconButton.NotNull();
 		_modpackNamEdit.NotNull();
 		_addModpackNameLocalizedItem.NotNull();
 		_modpackNameLocalizedContainer.NotNull();
+		_modpackSummaryEdit.NotNull();
+		_addModpackSummaryLocalizedItem.NotNull();
+		_modpackSummaryLocalizedContainer.NotNull();
 		_openModpackFolderButton.NotNull();
 		ModpackConfig.NotNull();
 
@@ -54,13 +66,20 @@ public partial class ModpackSettingWindow : BaseWindow {
 			Localizations = ModpackConfig.ModpackName.Localizations ?? []
 		};
 
+		ModpackConfig.ModpackSummary = ModpackConfig.ModpackSummary with {
+			Localizations = ModpackConfig.ModpackSummary.Localizations ?? []
+		};
+
 		_addModpackNameLocalizedItem.Localizations = ModpackConfig.ModpackName.Localizations;
+		_addModpackSummaryLocalizedItem.Localizations = ModpackConfig.ModpackSummary.Localizations;
 		OkButton!.Disabled = Main.CurrentRunModpack == ModpackConfig;
 
 		_modifyIconButton.Pressed += ModifyIconButtonOnPressed;
 		_resetIconButton.Pressed += ResetIconButtonOnPressed;
 		_modpackNamEdit.EditingToggled += ModpackNamEditOnEditingToggled;
+		_modpackSummaryEdit.EditingToggled += ModpackSummaryEditOnEditingToggled;
 		_addModpackNameLocalizedItem.AddLocalizedName += AddModpackNameLocalizedItemOnAddLocalizedName;
+		_addModpackSummaryLocalizedItem.AddLocalizedName += AddModpackSummaryLocalizedItemOnAddLocalized;
 		CancelButton!.Pressed += CancelButtonOnPressed;
 		_openModpackFolderButton.Pressed += OpenModpackFolderButtonOnPressed;
 		OkButton.Pressed += OkButtonOnPressed;
@@ -70,6 +89,14 @@ public partial class ModpackSettingWindow : BaseWindow {
 			var localizations = ls.Localizations;
 			foreach (var localized in localizations) {
 				AddModpackNameLocalizedItemOnAddLocalizedName(localized.Key, ls.Value, localized.Value, localizations);
+			}
+		}
+
+		if (ModpackConfig.ModpackSummary.Localizations.Count > 0) {
+			var ls = ModpackConfig.ModpackSummary;
+			var localizations = ls.Localizations;
+			foreach (var localized in localizations) {
+				AddModpackSummaryLocalizedItemOnAddLocalized(localized.Key, ls.Value, localized.Value, localizations);
 			}
 		}
 
@@ -153,7 +180,7 @@ public partial class ModpackSettingWindow : BaseWindow {
 		ModpackConfig.Save();
 
 		foreach (var node in _modpackNameLocalizedContainer!.GetChildren()) {
-			var item = (ModpackNameLocalizedItem)node;
+			var item = (ModpackLocalizedItem)node;
 			item.Key = ls.Value;
 		}
 	}
@@ -180,24 +207,72 @@ public partial class ModpackSettingWindow : BaseWindow {
 		string key,
 		string localizedName,
 		Dictionary<string, string> localizations) {
-		var item = _modpackNameLocalizedItemScene!.Instantiate<ModpackNameLocalizedItem>();
-		item.EditMode = ModpackNameLocalizedItem.EditModeEnum.View;
+		var item = _modpackLocalizedItemScene!.Instantiate<ModpackLocalizedItem>();
+		item.EditMode = ModpackLocalizedItem.EditModeEnum.View;
 		item.Language = language;
 		item.LocalizedName = localizedName;
 		item.Key = key;
 		item.Localizations = localizations;
-		item.LocalizedNameChanged += () => OnItemOnLocalizedNameChanged(item);
-		item.RemoveLocalizedName += () => OnItemOnRemoveLocalizedName(item);
+		item.LocalizedNameChanged += () => OnItemOnLocalizedChanged(item);
+		item.RemoveLocalizedName += () => OnItemOnRemoveLocalized(item);
 		_modpackNameLocalizedContainer!.AddChild(item);
 	}
 
-	private void OnItemOnLocalizedNameChanged(ModpackNameLocalizedItem item) {
+	private void AddModpackSummaryLocalizedItemOnAddLocalized() {
+		var ls = ModpackConfig!.ModpackSummary;
+		var language = _addModpackSummaryLocalizedItem!.Language;
+		var localizedName = _addModpackSummaryLocalizedItem!.LocalizedName;
+		var localizations = ls.Localizations!;
+		localizations[language] = localizedName;
+		ModpackConfig!.ModpackSummary = ls;
+		ModpackConfig.AddLocalizationTranslation(ls.Value, localizedName, language);
+		ModpackConfig.Save();
+
+		_addModpackSummaryLocalizedItem.Language = string.Empty;
+		_addModpackSummaryLocalizedItem.LocalizedName = string.Empty;
+
+		AddModpackSummaryLocalizedItemOnAddLocalized(language, ls.Value, localizedName, localizations);
+		UpdateUi();
+	}
+
+	private void AddModpackSummaryLocalizedItemOnAddLocalized(
+		string language,
+		string key,
+		string localizedName,
+		Dictionary<string, string>? localizations) {
+		var item = _modpackLocalizedItemScene!.Instantiate<ModpackLocalizedItem>();
+		item.EditMode = ModpackLocalizedItem.EditModeEnum.View;
+		item.Language = language;
+		item.LocalizedName = localizedName;
+		item.Key = key;
+		item.Localizations = localizations;
+		item.LocalizedNameChanged += () => OnItemOnLocalizedChanged(item);
+		item.RemoveLocalizedName += () => OnItemOnRemoveLocalized(item);
+		_modpackSummaryLocalizedContainer!.AddChild(item);
+	}
+
+	private void ModpackSummaryEditOnEditingToggled(bool toggledOn) {
+		var ls = ModpackConfig!.ModpackSummary;
+		var old = ls.Value;
+		ls = ls with { Value = _modpackSummaryEdit!.Text };
+		ModpackConfig!.ModpackSummary = ls;
+		ModpackConfig.RemoveLocalizationTranslations(old);
+		ModpackConfig.AddLocalizationTranslations(ls);
+		ModpackConfig.Save();
+
+		foreach (var node in _modpackSummaryLocalizedContainer!.GetChildren()) {
+			var item = (ModpackLocalizedItem)node;
+			item.Key = ls.Value;
+		}
+	}
+
+	private void OnItemOnLocalizedChanged(ModpackLocalizedItem item) {
 		item.Localizations![item.Language] = item.LocalizedName;
 		ModpackConfig!.AddLocalizationTranslation(item.Key, item.LocalizedName, item.Language);
 		ModpackConfig.Save();
 	}
 
-	private void OnItemOnRemoveLocalizedName(ModpackNameLocalizedItem item) {
+	private void OnItemOnRemoveLocalized(ModpackLocalizedItem item) {
 		item.Localizations!.Remove(item.Language);
 		ModpackConfig!.RemoveLocalizationTranslation(item.Key, item.Language);
 		ModpackConfig.Save();
@@ -208,6 +283,8 @@ public partial class ModpackSettingWindow : BaseWindow {
 	private async void UpdateUi() {
 		_modpackNamEdit!.Text = ModpackConfig!.ModpackName.Value;
 		_modpackNameLocalizedContainer!.Visible = ModpackConfig!.ModpackName.Localizations is { Count: > 0 };
+		_modpackSummaryEdit!.Text = ModpackConfig!.ModpackSummary.Value;
+		_modpackSummaryLocalizedContainer!.Visible = ModpackConfig!.ModpackSummary.Localizations is { Count: > 0 };
 		_modpackIconTextureRect!.Texture = await ModpackConfig.GetModpackIconAsync();
 		_resetIconButton!.Disabled = _modpackIconTextureRect.Texture == ModpackConfig.DefaultIcon;
 	}

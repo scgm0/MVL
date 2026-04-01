@@ -180,9 +180,11 @@ text = "v0.0.0"
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 8
+tooltip_auto_translate_mode = 2
+mouse_filter = 1
 theme_override_colors/font_color = Color(0.601223, 0.601223, 0.601223, 1)
 theme_override_font_sizes/font_size = 12
-text = "整合包简介"
+text = "整合包没有简介"
 text_overrun_behavior = 5
 
 [node name="Button" type="Button" parent="HBoxContainer/VBoxContainer/HBoxContainer" unique_id=970320624]

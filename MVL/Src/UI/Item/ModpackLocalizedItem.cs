@@ -5,7 +5,7 @@ using MVL.Utils.Help;
 
 namespace MVL.UI.Item;
 
-public partial class ModpackNameLocalizedItem : HBoxContainer {
+public partial class ModpackLocalizedItem : HBoxContainer {
 	public enum EditModeEnum { Add, View }
 
 	[Export]

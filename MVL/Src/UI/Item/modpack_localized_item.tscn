@@ -1,12 +1,12 @@
 [gd_scene format=3 uid="uid://bxcly4rmyqyy8"]
 
-[ext_resource type="Script" uid="uid://cgcfj4iw7qnrt" path="res://Src/UI/Item/ModpackNameLocalizedItem.cs" id="1_jw7se"]
-[ext_resource type="Script" uid="uid://bk3tot6c35bwu" path="res://Src/Utils/IconTexture2D.cs" id="1_rluno"]
+[ext_resource type="Script" uid="uid://cgcfj4iw7qnrt" path="res://Src/UI/Item/ModpackLocalizedItem.cs" id="1_xnnqu"]
+[ext_resource type="Script" uid="uid://bk3tot6c35bwu" path="res://Src/Utils/IconTexture2D.cs" id="2_aimh5"]
 
 [sub_resource type="Texture2D" id="Texture2D_qvc0t"]
 resource_local_to_scene = false
 resource_name = ""
-script = ExtResource("1_rluno")
+script = ExtResource("2_aimh5")
 IconName = "alert-circle-outline"
 IconSize = 16
 metadata/_custom_type_script = "uid://bk3tot6c35bwu"
@@ -14,7 +14,7 @@ metadata/_custom_type_script = "uid://bk3tot6c35bwu"
 [sub_resource type="Texture2D" id="Texture2D_ys3gp"]
 resource_local_to_scene = false
 resource_name = ""
-script = ExtResource("1_rluno")
+script = ExtResource("2_aimh5")
 IconName = "plus"
 IconSize = 18
 metadata/_custom_type_script = "uid://bk3tot6c35bwu"
@@ -22,12 +22,12 @@ metadata/_custom_type_script = "uid://bk3tot6c35bwu"
 [sub_resource type="Texture2D" id="Texture2D_naeh1"]
 resource_local_to_scene = false
 resource_name = ""
-script = ExtResource("1_rluno")
+script = ExtResource("2_aimh5")
 IconName = "trash-can-outline"
 IconSize = 18
 metadata/_custom_type_script = "uid://bk3tot6c35bwu"
 
-[node name="ModpackNameLocalizedItem" type="HBoxContainer" unique_id=1735378566 node_paths=PackedStringArray("_localizedEdit", "_nameEdit", "_addButton", "_removeButton")]
+[node name="ModpackLocalizedItem" type="HBoxContainer" unique_id=1735378566 node_paths=PackedStringArray("_localizedEdit", "_nameEdit", "_addButton", "_removeButton")]
 anchors_preset = 14
 anchor_top = 0.5
 anchor_right = 1.0
@@ -37,7 +37,7 @@ offset_bottom = 13.5
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_constants/separation = 10
-script = ExtResource("1_jw7se")
+script = ExtResource("1_xnnqu")
 _localizedEdit = NodePath("LineEdit")
 _nameEdit = NodePath("LineEdit2")
 _addButton = NodePath("Button")
@@ -56,7 +56,7 @@ right_icon = SubResource("Texture2D_qvc0t")
 [node name="LineEdit2" type="LineEdit" parent="." unique_id=2128215990]
 layout_mode = 2
 size_flags_horizontal = 3
-placeholder_text = "本地化名称"
+placeholder_text = "本地化文本"
 alignment = 1
 clear_button_enabled = true
 right_icon = SubResource("Texture2D_qvc0t")

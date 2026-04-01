@@ -59,7 +59,6 @@ public partial class ModpackItem : PanelContainer {
 		ModpackConfig.NotNull();
 
 		_modpackName!.SetTranslationDomain(ModpackConfig!.Path!);
-		_modpackSummary!.SetTranslationDomain(ModpackConfig.Path!);
 
 		ModpackConfig.ModsUpdated += ModpackConfigOnModsUpdated;
 		ModpackConfig.LocalizedTextUpdated += OnModpackConfigOnLocalizedTextUpdated;
@@ -121,8 +120,14 @@ public partial class ModpackItem : PanelContainer {
 		_modpackName.TooltipText = ModpackConfig.ModpackName.Value;
 
 		if (!string.IsNullOrEmpty(ModpackConfig.ModpackSummary.Value)) {
+			_modpackSummary!.SetTranslationDomain(ModpackConfig.Path!);
 			_modpackSummary!.Text = ModpackConfig.ModpackSummary.Value;
+		} else {
+			_modpackSummary!.SetTranslationDomain(null);
+			_modpackSummary!.Text = "整合包没有简介";
 		}
+
+		_modpackSummary.TooltipText = ModpackConfig.ModpackSummary.Value;
 
 		_modpackName!.Notification((int)NotificationTranslationChanged);
 		_modpackSummary!.Notification((int)NotificationTranslationChanged);
