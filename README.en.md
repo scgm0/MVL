@@ -96,7 +96,14 @@ CI reference files: `.github/workflows/windows.yml`, `.github/workflows/linux.ym
 
 Third-party component license files within the project are located in `MVL/License/` and are dynamically displayed on the app's `Info` page.
 
-## Links
+## Related Projects
+
+| Name | Introduction |
+| --- | --- |
+| [VS Launcher](https://vsldocs.xurxomf.xyz) | Another open-source Vintage Story launcher |
+| [Vintage Story Chinese Community](https://vintagestory.top) | Unofficial Chinese forum for Vintage Story |
+
+## Related Links
 
 | Name | URL |
 | --- | --- |

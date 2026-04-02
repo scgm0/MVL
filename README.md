@@ -67,7 +67,7 @@ MVL 使用 Godot 用户目录（`OS.GetUserDataDir()`），并开启了`use_cust
 
 ## 开发与构建
 
-1. 克隆仓库`git clone https://github.com/scgm0/MVL.git`
+1. 克隆仓库：`git clone https://github.com/scgm0/MVL.git`
 2. 安装依赖（`Python/SCons`、平台工具链、`.NET 8`+`.NET 10`）
 3. 准备`VINTAGE_STORY`目录（工作流中会下载并解压客户端后写入环境变量）
 4. 克隆自定义`Godot`分支：`https://github.com/scgm0/godot.git`的`MVL`分支
@@ -95,6 +95,13 @@ CI 参考文件：`.github/workflows/windows.yml`、`.github/workflows/linux.yml
 | 赞助者名单 | [DONORS.md](./DONORS.md) |
 
 项目内第三方组件许可证文件位于`MVL/License/`，并在应用`关于`页内动态展示。
+
+## 相关项目
+
+| 名称 | 介绍 |
+| --- | --- |
+| [VS Launcher](https://vsldocs.xurxomf.xyz) | 另一个开源复古物语启动器 |
+| [Vintage Story 中文社区](https://vintagestory.top) | 非官方的复古物语中文论坛 |
 
 ## 相关链接
 
