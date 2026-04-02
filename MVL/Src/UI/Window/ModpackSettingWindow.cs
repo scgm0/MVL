@@ -162,7 +162,7 @@ public partial class ModpackSettingWindow : BaseWindow {
 
 	private void ResetIconButtonOnPressed() {
 		_modpackIconTextureRect!.Texture = ModpackConfig.DefaultIcon;
-		ModpackConfig!.SetModpackIcon(null);
+		_ = ModpackConfig!.SetModpackIconAsync(null);
 		_resetIconButton!.Disabled = true;
 	}
 
@@ -176,14 +176,13 @@ public partial class ModpackSettingWindow : BaseWindow {
 		};
 		fileDialog.Canceled += fileDialog.QueueFree;
 		fileDialog.FileSelected += async path => {
-			using var icon = await Tools.LoadTextureFromPath(path);
-			if (icon != null) {
-				_modpackIconTextureRect!.Texture = icon;
-				ModpackConfig!.SetModpackIcon(icon);
+			fileDialog.QueueFree();
+
+			await ModpackConfig!.SetModpackIconAsync(path);
+			_modpackIconTextureRect!.Texture = await ModpackConfig.GetModpackIconAsync();
+			if (_modpackIconTextureRect!.Texture != ModpackConfig.DefaultIcon) {
 				_resetIconButton!.Disabled = false;
 			}
-
-			fileDialog.QueueFree();
 		};
 		AddChild(fileDialog);
 		fileDialog.Show();

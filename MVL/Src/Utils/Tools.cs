@@ -253,7 +253,7 @@ public static class Tools {
 
 			fs.Seek(0, SeekOrigin.Begin);
 			var texture = await LoadTextureFromStream(fs);
-			texture?.TakeOverPath(path);
+			texture?.TakeOverPath(shaPath);
 			return texture;
 		} catch (Exception e) {
 			Log.Warn($"加载贴图失败: {path}", e);

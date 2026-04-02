@@ -21,6 +21,8 @@ public class ModpackConfig {
 
 	private string _configPath = string.Empty;
 	private readonly ConcurrentDictionary<string, ModCacheEntry> _modInfoCache = new(StringComparer.OrdinalIgnoreCase);
+	private Texture2D _modpackIcon;
+
 	public LocalizedString ModpackName { get; set; } = LocalizedString.Empty;
 	public GameVersion? GameVersion { get; set; }
 	public SVersion ModpackVersion { get; set; } = SVersion.ZeroVersion;
@@ -166,23 +168,28 @@ public class ModpackConfig {
 		ModsUpdated?.Invoke(this);
 	}
 
-	public void SetModpackIcon(ImageTexture? icon) {
+	public async Task SetModpackIconAsync(string? iconPath, bool emit = true) {
 		if (string.IsNullOrEmpty(Path)) {
 			return;
 		}
 
-		if (icon == null) {
+		if (iconPath == null) {
 			var iconPaths = Directory.EnumerateFileSystemEntries(Path, "modpackIcon.*", SearchOption.TopDirectoryOnly);
-			foreach (var iconPath in iconPaths) {
-				File.Delete(iconPath);
+			foreach (var path in iconPaths) {
+				File.Delete(path);
 			}
-
-			ModpackIconUpdated?.Invoke();
-			return;
+		} else if (File.Exists(iconPath)) {
+			await SetModpackIconAsync(null, false);
+			var icon = await Tools.LoadTextureFromPath(iconPath);
+			if (icon is not null) {
+				var savePath = System.IO.Path.Combine(Path, $"modpackIcon.{iconPath.GetExtension()}");
+				File.Copy(iconPath, savePath, true);
+			}
 		}
 
-		icon.Image.SavePng(Path.PathJoin("modpackIcon.png"));
-		ModpackIconUpdated?.Invoke();
+		if (emit) {
+			ModpackIconUpdated?.Invoke();
+		}
 	}
 
 	public async Task<Texture2D> GetModpackIconAsync() {
@@ -190,17 +197,19 @@ public class ModpackConfig {
 			return DefaultIcon;
 		}
 
-		var iconPaths = Directory.EnumerateFileSystemEntries(Path, "modpackIcon.*", SearchOption.TopDirectoryOnly);
-		foreach (var iconPath in iconPaths) {
-			var icon = await Tools.LoadTextureFromPath(iconPath);
-			if (icon is null) {
-				continue;
+		return _modpackIcon = await Task.Run(async () => {
+			var iconPaths = Directory.EnumerateFileSystemEntries(Path, "modpackIcon.*", SearchOption.TopDirectoryOnly);
+			foreach (var iconPath in iconPaths) {
+				var icon = await Tools.LoadTextureFromPath(iconPath);
+				if (icon is null) {
+					continue;
+				}
+
+				return icon;
 			}
 
-			return icon;
-		}
-
-		return DefaultIcon;
+			return null;
+		}) ?? DefaultIcon;
 	}
 
 	private async Task<ModInfo?> TryLoadMod(FileSystemInfo fsi) {
