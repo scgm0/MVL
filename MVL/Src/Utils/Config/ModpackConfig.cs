@@ -21,7 +21,7 @@ public class ModpackConfig {
 
 	private string _configPath = string.Empty;
 	private readonly ConcurrentDictionary<string, ModCacheEntry> _modInfoCache = new(StringComparer.OrdinalIgnoreCase);
-	private Texture2D _modpackIcon;
+	private Texture2D _modpackIcon = DefaultIcon;
 
 	public LocalizedString ModpackName { get; set; } = LocalizedString.Empty;
 	public GameVersion? GameVersion { get; set; }
@@ -197,7 +197,7 @@ public class ModpackConfig {
 			return DefaultIcon;
 		}
 
-		return _modpackIcon = await Task.Run(async () => {
+		_modpackIcon = await Task.Run(async () => {
 			var iconPaths = Directory.EnumerateFileSystemEntries(Path, "modpackIcon.*", SearchOption.TopDirectoryOnly);
 			foreach (var iconPath in iconPaths) {
 				var icon = await Tools.LoadTextureFromPath(iconPath);
@@ -210,6 +210,8 @@ public class ModpackConfig {
 
 			return null;
 		}) ?? DefaultIcon;
+
+		return _modpackIcon;
 	}
 
 	private async Task<ModInfo?> TryLoadMod(FileSystemInfo fsi) {
