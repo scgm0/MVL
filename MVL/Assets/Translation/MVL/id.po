@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: 神麤詭末的复古物语启动器\n"
-"PO-Revision-Date: 2026-03-29 06:09+0000\n"
+"PO-Revision-Date: 2026-04-04 10:09+0000\n"
 "Last-Translator: Arif Budiman <arifpedia@gmail.com>\n"
 "Language-Team: Indonesian <https://hosted.weblate.org/projects/mvl/mvl/id/>\n"
 "Language: id\n"
@@ -531,88 +531,91 @@ msgid "无法启动"
 msgstr "Tidak dapat dimainkan"
 
 msgid "整合包作者:"
-msgstr ""
+msgstr "Penulis Modpack:"
 
 msgid "未知"
-msgstr ""
+msgstr "Tidak Diketahui"
 
 msgid "整合包没有简介"
-msgstr ""
+msgstr "Modpack ini tidak memiliki ringkasan"
 
 msgid "整合包设置"
-msgstr ""
+msgstr "Pengaturan Modpack"
 
 msgid "整合包图标"
-msgstr ""
+msgstr "Ikon Modpack"
 
 msgid "整合包名称"
-msgstr ""
+msgstr "Nama Modpack"
 
 msgid "整合包简介"
-msgstr ""
+msgstr "Ringkasan Modpack"
 
 msgid "额外设置"
-msgstr ""
+msgstr "Pengaturan Tambahan"
 
 msgid "启动命令"
-msgstr ""
+msgstr "Perintah Mulai"
 
 msgid "主程序集"
-msgstr ""
+msgstr "Rakitan Utama"
 
 msgid "语言代码"
-msgstr ""
+msgstr "Kode Bahasa"
 
 msgid "本地化文本"
-msgstr ""
+msgstr "Teks Terlokal"
 
 msgid "修改"
-msgstr ""
+msgstr "Ubah"
 
 msgid "重置"
-msgstr ""
+msgstr "Atur Ulang"
 
 msgid "第三方游戏下载"
-msgstr ""
+msgstr "Unduhan Game Pihak Ketiga"
 
 msgid "使用第三方游戏下载"
-msgstr ""
+msgstr "Menggunakan unduhan game pihak ketiga"
 
 msgid "第三方游戏链接"
-msgstr ""
+msgstr "Tautan Game Pihak Ketiga"
 
 msgid "检测"
-msgstr ""
+msgstr "Deteksi"
 
 msgid "接口格式需与官方保持一致"
-msgstr ""
+msgstr "Format api harus konsisten dengan yang resmi"
 
 msgid "检测中..."
-msgstr ""
+msgstr "Mendeteksi..."
 
 msgid "链接格式错误，请输入有效的[b]http[/b]或[b]https[/b]链接"
 msgstr ""
+"Format tautan tidak valid, masukkan tautan [b]http[/b] atau [b]https[/b] "
+"yang valid"
 
 msgid "返回内容解析成功，但版本列表为空"
-msgstr ""
+msgstr "Konten berhasil diurai, namun daftar versi kosong"
 
 msgid "检测成功，链接可访问且返回了有效内容"
 msgstr ""
+"Deteksi berhasil, tautan dapat diakses dan mengembalikan konten yang valid"
 
 msgid "连接超时，请检查网络连接或稍后重试"
-msgstr ""
+msgstr "Koneksi habis waktu, periksa koneksi jaringan Anda atau coba lagi nanti"
 
 msgid "返回内容解析失败，接口格式不符合"
-msgstr ""
+msgstr "Penguraian konten yang dikembalikan gagal, format api tidak sesuai"
 
 msgid "确定要移除[b]{0}[/b]吗？"
-msgstr ""
+msgstr "Apakah Anda yakin ingin menghapus [b]{0}[/b]?"
 
 msgid "删除文件夹"
-msgstr ""
+msgstr "Hapus folder"
 
 msgid "打开目录"
-msgstr ""
+msgstr "Buka Direktori"
 
 msgid "移除"
-msgstr ""
+msgstr "Hapus"
