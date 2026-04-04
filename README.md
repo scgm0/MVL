@@ -3,7 +3,9 @@
 # 神麤詭末的复古物语启动器（MVL）
 
 <p align="center">
-  <img src="./MVL/Assets/Icon/icon.svg" width="200" alt="MVL Icon">
+  <a href="https://github.com/scgm0/MVL">
+    <img src="./MVL/Assets/Icon/icon.svg" width="200" alt="MVL Icon">
+  </a>
 </p>
 
 ## 跨平台复古物语启动器
@@ -17,7 +19,7 @@
 
 神麤詭末的复古物语启动器（`MVL`）是一个免费、开源、由社区驱动的复古物语启动器，支持`Windows`与`Linux`系统
 
-项目使用`Godot4`与`C#`，围绕多版本管理 + 整合包管理 + 模组浏览下载 + 启动封装提供一体化桌面体验
+项目使用[Godot4](https://godotengine.org)与[C#](https://dotnet.microsoft.com)，围绕多版本管理 + 整合包管理 + 模组浏览下载 + 启动封装提供一体化桌面体验
 
 ## 项目简介
 
@@ -74,7 +76,7 @@ MVL 使用 Godot 用户目录（`OS.GetUserDataDir()`），并开启了`use_cust
 5. 用`SCons`构建`Godot C#编辑器`（参考[官方文档](https://docs.godotengine.org/en/latest/engine_details/development/compiling/index.html)），构建`template_release`时可选应用`MVL/GodotBuildProfile/custom.py`与`custom.build`
 6. 将`mvl-repo/MVL/project.godot`导入自构建的编辑器中
 
-CI 参考文件：`.github/workflows/windows.yml`、`.github/workflows/linux.yml`
+CI 参考文件：[windows.yml](.github/workflows/windows.yml)、[linux.yml](.github/workflows/linux.yml)
 
 ## 网络服务
 

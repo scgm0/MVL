@@ -3,7 +3,9 @@
 # MystiVaid's VintageStory Launcher (MVL)
 
 <p align="center">
-  <img src="./MVL/Assets/Icon/icon.svg" width="200" alt="MVL Icon">
+  <a href="https://github.com/scgm0/MVL">
+    <img src="./MVL/Assets/Icon/icon.svg" width="200" alt="MVL Icon">
+  </a>
 </p>
 
 ## Cross-Platform Retro Tale Launcher
@@ -17,7 +19,7 @@
 
 MystiVaid's VintageStory Launcher (`MVL`) is a free, open-source, community-driven launcher for Vintage Story, supports both `Windows` and `Linux` systems.
 
-The project utilizes `Godot4` and `C#` to deliver an integrated desktop experience centered around multi-version management, modpack management, mod browsing and downloading, and launch encapsulation
+The project utilizes [Godot4](https://godotengine.org) and [C#](https://dotnet.microsoft.com) to deliver an integrated desktop experience centered around multi-version management, modpack management, mod browsing and downloading, and launch encapsulation
 
 ## Overview
 
@@ -74,7 +76,7 @@ Common path examples: On `Windows`, it is typically located at `%APPDATA%\MVL`, 
 5. Build the `Godot C# Editor` using `SCons` (refer to the [official documentation](https://docs.godotengine.org/en/latest/engine_details/development/compiling/index.html)). When building `template_release`, optionally apply `MVL/GodotBuildProfile/custom.py` and `custom.build`  
 6. Import `mvl-repo/MVL/project.godot` into the self-built editor  
 
-CI reference files: `.github/workflows/windows.yml`, `.github/workflows/linux.yml`
+CI reference files: [windows.yml](.github/workflows/windows.yml), [linux.yml](.github/workflows/linux.yml)
 
 ## External Services
 
