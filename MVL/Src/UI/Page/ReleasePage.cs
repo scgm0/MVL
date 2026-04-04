@@ -83,7 +83,9 @@ public partial class ReleasePage : MenuPage {
 		downloadWindow.Hidden += downloadWindow.QueueFree;
 	}
 
-	private void OnVisibilityChanged() {
+	private void OnVisibilityChanged() { UpdateList(); }
+
+	public void UpdateList() {
 		foreach (var child in _grid!.GetChildren()) {
 			if (child == _addReleaseButton) {
 				continue;
@@ -96,10 +98,6 @@ public partial class ReleasePage : MenuPage {
 			return;
 		}
 
-		UpdateList();
-	}
-
-	public void UpdateList() {
 		UI.Main.CheckReleaseInfo();
 		var list = UI.Main.ReleaseInfos.Values.OrderByDescending(info => info.Version, GameVersion.Comparer);
 
