@@ -101,7 +101,7 @@ CI 参考文件：`.github/workflows/windows.yml`、`.github/workflows/linux.yml
 | 名称 | 介绍 |
 | --- | --- |
 | [VS Launcher](https://vsldocs.xurxomf.xyz) | 另一个开源复古物语启动器 |
-| [Vintage Story 中文社区](https://vintagestory.top) | 非官方的复古物语中文论坛 |
+| [复古物语中文社区](https://vintagestory.top) | 非官方的复古物语中文论坛 |
 
 ## 相关链接
 
