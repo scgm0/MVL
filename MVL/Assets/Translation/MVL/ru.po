@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: 神麤詭末的复古物语启动器\n"
-"PO-Revision-Date: 2026-03-20 08:09+0000\n"
+"PO-Revision-Date: 2026-04-07 11:09+0000\n"
 "Last-Translator: Xapitonov <sergejharitonov001@gmail.com>\n"
 "Language-Team: Russian <https://hosted.weblate.org/projects/mvl/mvl/ru/>\n"
 "Language: ru\n"
@@ -530,88 +530,94 @@ msgid "无法启动"
 msgstr "Не удается запустить"
 
 msgid "整合包作者:"
-msgstr ""
+msgstr "Автор модпака"
 
 msgid "未知"
-msgstr ""
+msgstr "Автор: неизвестен"
 
 msgid "整合包没有简介"
-msgstr ""
+msgstr "У модпака нет описания"
 
 msgid "整合包设置"
-msgstr ""
+msgstr "Настройки модпака"
 
 msgid "整合包图标"
-msgstr ""
+msgstr "Значок модпака"
 
 msgid "整合包名称"
-msgstr ""
+msgstr "Название модпака"
 
 msgid "整合包简介"
-msgstr ""
+msgstr "Описание модпака"
 
 msgid "额外设置"
-msgstr ""
+msgstr "Дополнительные настройки"
 
 msgid "启动命令"
-msgstr ""
+msgstr "Команда запуска"
 
 msgid "主程序集"
-msgstr ""
+msgstr "Главная сборка"
 
 msgid "语言代码"
-msgstr ""
+msgstr "Код языка"
 
 msgid "本地化文本"
-msgstr ""
+msgstr "Локализованный текст"
 
 msgid "修改"
-msgstr ""
+msgstr "Изменить"
 
 msgid "重置"
-msgstr ""
+msgstr "Сброс"
 
 msgid "第三方游戏下载"
-msgstr ""
+msgstr "Загрузка сторонних игр"
 
 msgid "使用第三方游戏下载"
-msgstr ""
+msgstr "Использование сторонней загрузки игр"
 
 msgid "第三方游戏链接"
-msgstr ""
+msgstr "Сторонняя ссылка на игру"
 
 msgid "检测"
-msgstr ""
+msgstr "Обнаружение"
 
 msgid "接口格式需与官方保持一致"
-msgstr ""
+msgstr "Формат API должен соответствовать официальному формату"
 
 msgid "检测中..."
-msgstr ""
+msgstr "Ищу..."
 
 msgid "链接格式错误，请输入有效的[b]http[/b]或[b]https[/b]链接"
 msgstr ""
+"Неверный формат ссылки. Пожалуйста, введите корректную ссылку в формате "
+"[b]http[/b] или [b]https[/b]"
 
 msgid "返回内容解析成功，但版本列表为空"
-msgstr ""
+msgstr "Содержимое успешно обработано, но список версий пуст"
 
 msgid "检测成功，链接可访问且返回了有效内容"
 msgstr ""
+"Проверка прошла успешно: ссылка доступна и вернула корректное содержимое"
 
 msgid "连接超时，请检查网络连接或稍后重试"
 msgstr ""
+"Время ожидания подключения истекло. Проверьте интернет‑соединение или "
+"повторите позже"
 
 msgid "返回内容解析失败，接口格式不符合"
 msgstr ""
+"Не удалось разобрать содержимое: формат API не соответствует требованиям"
 
 msgid "确定要移除[b]{0}[/b]吗？"
-msgstr ""
+msgstr "Вы действительно хотите удалить [b]{0}[/b]?"
 
 msgid "删除文件夹"
-msgstr ""
+msgstr "Удалить папку"
 
 msgid "打开目录"
-msgstr ""
+msgstr "Открыть каталог"
 
 msgid "移除"
-msgstr ""
+msgstr "Удалить"
