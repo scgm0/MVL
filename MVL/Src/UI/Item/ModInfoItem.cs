@@ -270,6 +270,10 @@ public partial class ModInfoItem : PanelContainer {
 	}
 
 	public void UpdateApiModRelease() {
+		if (Mod?.ModpackConfig!.GameVersion is null) {
+			Log.Warn($"游戏版本为空: {Mod!.ModpackConfig!.ModpackName.Value}({Mod!.ModpackConfig!.Path})");
+		}
+
 		foreach (var modInfoRelease in ApiModInfo!.Value.Releases) {
 			try {
 				if (!IsInstanceValid(this)) {
@@ -289,12 +293,13 @@ public partial class ModInfoItem : PanelContainer {
 				HasNewVersion = true;
 				ApiModRelease = modInfoRelease;
 				if (!modInfoRelease.Tags.Any(gameVersion =>
-					GameVersion.ComparerVersion(Mod.ModpackConfig!.GameVersion!.Value, new(gameVersion)) >= 0)) {
+					Mod.ModpackConfig.GameVersion is null ||
+					GameVersion.ComparerVersion(Mod.ModpackConfig.GameVersion.Value, new(gameVersion)) >= 0)) {
 					continue;
 				}
 
 				Log.Debug(
-					$"找到可更新版本: {ApiModInfo.Value.Name} {modInfoRelease.ModVersion} (现有版本: {Mod.Version}) (兼容的游戏版本: {modInfoRelease.Tags.Stringify()})");
+					$"找到可更新版本: {ApiModInfo.Value.Name} {modInfoRelease.ModVersion} (兼容的游戏版本: {modInfoRelease.Tags.Stringify()}) (现有版本: {Mod.Version})");
 				CanUpdate = true;
 				Dispatcher.SynchronizationContext.Post(_ => {
 						if (!IsInstanceValid(this)) {
