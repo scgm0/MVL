@@ -20,8 +20,7 @@ public partial class InstalledGamesImport : BaseWindow {
 	[Export]
 	private Control? _installedGameList;
 
-	[Signal]
-	public delegate void ImportEventHandler(string[] gamePaths);
+	public event Action<List<string>>? Import;
 
 	public bool SingleSelect { get; set; }
 
@@ -42,7 +41,7 @@ public partial class InstalledGamesImport : BaseWindow {
 			gamePaths.AddRange(from InstalledGameItem installedGameItem in _installedGameList!.GetChildren()
 							   where installedGameItem.Check
 							   select installedGameItem.GamePath);
-			EmitSignalImport(gamePaths.ToArray());
+			Import?.Invoke(gamePaths);
 		} catch (Exception e) {
 			Log.Error(e);
 		}

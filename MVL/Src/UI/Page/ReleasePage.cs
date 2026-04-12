@@ -57,9 +57,9 @@ public partial class ReleasePage : MenuPage {
 		_installedGamesImport.Import += UpdateList;
 	}
 
-	private void UpdateList(string[] gamePaths) {
+	private void UpdateList(List<string> gamePaths) {
 		_installedGamesImport!.Import -= UpdateList;
-		if (gamePaths.Length <= 0) {
+		if (gamePaths.Count <= 0) {
 			return;
 		}
 

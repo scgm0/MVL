@@ -59,8 +59,7 @@ public partial class GameDownloadWindow : BaseWindow {
 	[Export]
 	private Button? _importButton;
 
-	[Signal]
-	public delegate void InstallGameEventHandler(string gamePath);
+	public event Action<string>? InstallGame;
 
 	private Dictionary<GameVersion, GameRelease>? _releases;
 
@@ -114,12 +113,10 @@ public partial class GameDownloadWindow : BaseWindow {
 			UseNativeDialog = true
 		};
 		fileWindow.Canceled += fileWindow.QueueFree;
-		fileWindow.DirSelected += async dir => {
+		fileWindow.DirSelected += dir => {
 			fileWindow.QueueFree();
-			var installedGamesImport = Main.Instance!.InstantiateInstalledGamesImport();
-			if (await installedGamesImport.ShowInstalledGames([dir])) {
-				CancelButtonOnPressed();
-			}
+			InstallGame?.Invoke(dir);
+			CancelButtonOnPressed();
 		};
 		AddChild(fileWindow);
 		fileWindow.Show();
@@ -307,7 +304,7 @@ public partial class GameDownloadWindow : BaseWindow {
 
 		CancelButton.Disabled = false;
 		await Hide();
-		EmitSignalInstallGame(Path.Combine(outputDir, name));
+		InstallGame?.Invoke(Path.Combine(outputDir, name));
 	}
 
 	private void UpdateProgress(double percentage, ulong speed) {

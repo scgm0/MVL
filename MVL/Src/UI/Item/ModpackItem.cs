@@ -203,7 +203,7 @@ public partial class ModpackItem : PanelContainer {
 		versionSelect.Visible = false;
 		versionSelect.SingleSelect = true;
 		versionSelect.Import += paths => {
-			if (paths.Length == 0) {
+			if (paths.Count == 0) {
 				return;
 			}
 

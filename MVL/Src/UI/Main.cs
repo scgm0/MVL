@@ -413,7 +413,7 @@ public partial class Main : NativeWindowUtility {
 		_installedGamesImport = _installedGamesImportScene!.Instantiate<InstalledGamesImport>();
 		AddChild(_installedGamesImport);
 		_installedGamesImport.Import += paths => {
-			if (paths.Length == 0) {
+			if (paths.Count == 0) {
 				return;
 			}
 
