@@ -98,10 +98,10 @@ public class ModpackConfig {
 	public static Texture2D DefaultIcon { get; } = GD.Load<Texture2D>("res://Assets/Icon/VS/gameicon.png");
 
 	public async Task UpdateModsAsync() {
-		Log.Debug($"开始更新整合包《{ModpackName}》模组信息");
+		Log.Trace($"开始更新整合包\"{ModpackName.Value}\"({Path})模组信息");
 
 		if (string.IsNullOrEmpty(Path) || !Directory.Exists(Path)) {
-			Log.Warn($"整合包《{ModpackName}》路径为无效，无法更新模组信息");
+			Log.Warn($"整合包\"{ModpackName.Value}\"({Path})路径为无效，无法更新模组信息");
 			return;
 		}
 
@@ -110,7 +110,7 @@ public class ModpackConfig {
 
 		if (!dirInfo.Exists) {
 			dirInfo.Create();
-			Log.Warn($"整合包《{ModpackName}》未找到Mods目录，已创建");
+			Log.Warn($"整合包\"{ModpackName.Value}\"({Path})未找到Mods目录，已创建");
 		}
 
 		var fileSystemInfos = dirInfo.EnumerateFileSystemInfos().ToArray();
@@ -164,7 +164,7 @@ public class ModpackConfig {
 					}
 				);
 			});
-		Log.Debug($"更新整合包《{ModpackName}》模组信息完成，共 {Mods.Count} 个模组");
+		Log.Info($"更新整合包\"{ModpackName.Value}\"({Path})模组信息完成，共 {Mods.Count} 个模组");
 		ModsUpdated?.Invoke(this);
 	}
 
