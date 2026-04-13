@@ -194,6 +194,9 @@ jobs:
 
           Function .onInit
             System::Call 'Kernel32::AttachConsole(i -1)'
+            System::Call 'Kernel32::GetCurrentDirectory(i 1024, t .r0)'
+            System::Call 'Kernel32::SetEnvironmentVariable(t "EXECUTABLEFILE", t r0)'
+            System::Call 'Kernel32::SetEnvironmentVariable(t "OWD", t "$EXEDIR")'
           FunctionEnd
 
           Section
@@ -206,6 +209,7 @@ jobs:
             Nsis7z::extract "app.7z"
             Delete "app.7z"
 
+            SetOutPath "$EXEDIR"
             ExecWait "$PLUGINSDIR\MVL.exe $R0"
 
             SetOutPath "$TEMP"

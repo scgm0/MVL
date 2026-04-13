@@ -89,6 +89,7 @@ public partial class LauncherDownloadWindow : BaseWindow {
 		_progressLabel.NotNull();
 		_usePortableCheckButton.NotNull();
 
+		_fileDialog.CurrentDir = Paths.WorkingFolder;
 		_chineseRichTextLabel.MetaClicked += Tools.RichTextOpenUrl;
 		_englishRichTextLabel.MetaClicked += Tools.RichTextOpenUrl;
 		_refreshButton.Pressed += () => GetLatestRelease();

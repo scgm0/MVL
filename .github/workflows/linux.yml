@@ -136,6 +136,7 @@ jobs:
           this_dir="\$(readlink -f "\$(dirname "\$0")")"
 
           export PATH="\$this_dir":"\$PATH"
+          export EXECUTABLEFILE="$APPIMAGE"
 
           exec "\$this_dir"/MVL.x86_64 "\$@"
           EOF

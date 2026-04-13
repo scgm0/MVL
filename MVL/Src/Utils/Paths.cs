@@ -1,3 +1,4 @@
+using System;
 using Godot;
 using MVL.Utils.Extensions;
 using Environment = System.Environment;
@@ -5,6 +6,26 @@ using Environment = System.Environment;
 namespace MVL.Utils;
 
 public static class Paths {
+	public static string ExecutableFile {
+		get {
+			if (string.IsNullOrEmpty(field)) {
+				field = Environment.GetEnvironmentVariable("EXECUTABLEFILE") ?? Environment.ProcessPath ?? OS.GetExecutablePath();
+			}
+
+			return field;
+		}
+	}
+
+	public static string WorkingFolder {
+		get {
+			if (string.IsNullOrEmpty(field)) {
+				field = Environment.GetEnvironmentVariable("OWD") ?? Environment.CurrentDirectory;
+			}
+
+			return field;
+		}
+	}
+
 	public static string HomeFolder { get; } = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
 	public static string AppDataFolder { get; } = OS.GetUserDataDir().NormalizePath();
 	public static string BaseConfigPath { get; } = AppDataFolder.PathJoin("data.json").NormalizePath();
