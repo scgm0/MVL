@@ -360,8 +360,9 @@ public partial class BrowsePage : MenuPage {
 					var modInfo = ModpackConfig!.Mods.Values.FirstOrDefault(m =>
 						apiModSummary.ModIdStrs.Any(s => s.Equals(m.ModId, StringComparison.OrdinalIgnoreCase)));
 					var apiModReleasesWindow = _apiModReleasesWindowScene!.Instantiate<ApiModReleasesWindow>();
+					apiModReleasesWindow.Modulate = Colors.Transparent;
 					apiModReleasesWindow.DownloadModInfo = (modInfo, status.Mod!.Value, ModpackConfig);
-					apiModReleasesWindow.Hidden += () => { apiModReleasesWindow.QueueFree(); };
+					apiModReleasesWindow.Hidden += apiModReleasesWindow.QueueFree;
 					UI.Main.Instance.AddChild(apiModReleasesWindow);
 					await apiModReleasesWindow.Show();
 				} catch (Exception ex) {

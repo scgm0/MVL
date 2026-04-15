@@ -426,6 +426,7 @@ public partial class Main : NativeWindowUtility {
 
 	public ModpackSettingWindow OpenModpackSettingWindow(ModpackConfig modpackConfig) {
 		var window = _modpackSettingWindowScene!.Instantiate<ModpackSettingWindow>();
+		window.Modulate = Colors.Transparent;
 		window.ModpackConfig = modpackConfig;
 		AddChild(window);
 		return window;
@@ -433,6 +434,7 @@ public partial class Main : NativeWindowUtility {
 
 	public ConfirmationWindow OpenConfirmationWindow(string message) {
 		var window = _confirmationWindowScene!.Instantiate<ConfirmationWindow>();
+		window.Modulate = Colors.Transparent;
 		window.Message = message;
 		AddChild(window);
 		return window;
