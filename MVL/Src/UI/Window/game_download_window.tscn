@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=3 uid="uid://dfsyvb8tdyef2"]
+[gd_scene format=3 uid="uid://dfsyvb8tdyef2"]
 
 [ext_resource type="PackedScene" uid="uid://bu4hwijkbc8sm" path="res://Src/UI/Window/base_window.tscn" id="1_42u7i"]
 [ext_resource type="Script" uid="uid://baxitom4bklvu" path="res://Src/UI/Window/GameDownloadWindow.cs" id="2_x3qgb"]
@@ -31,7 +31,7 @@ script = ExtResource("5_x3qgb")
 [sub_resource type="Resource" id="Resource_asvws"]
 script = ExtResource("5_x3qgb")
 
-[node name="GameDownloadWindow" node_paths=PackedStringArray("_releaseName", "_releasePath", "_folderButton", "_tooltip", "_fileDialog", "_contentContainer", "_downloadListContainer", "_loadingControl", "_progressBar", "_importButton") instance=ExtResource("1_42u7i")]
+[node name="GameDownloadWindow" unique_id=101116669 node_paths=PackedStringArray("_releaseName", "_releasePath", "_folderButton", "_tooltip", "_fileDialog", "_contentContainer", "_downloadListContainer", "_loadingControl", "_progressBar", "_progressLabel", "_importButton") instance=ExtResource("1_42u7i")]
 script = ExtResource("2_x3qgb")
 _buttonGroup = ExtResource("3_x3qgb")
 _releaseName = NodePath("PanelContainer/VBoxContainer/MarginContainer/VBoxContainer/VBoxContainer/LineEdit")
@@ -44,32 +44,25 @@ _contentContainer = NodePath("PanelContainer/VBoxContainer/MarginContainer/VBoxC
 _downloadListContainer = NodePath("PanelContainer/VBoxContainer/MarginContainer/VBoxContainer/SmoothScrollContainer/VBoxContainer")
 _loadingControl = NodePath("PanelContainer/VBoxContainer/MarginContainer/ColorRect")
 _progressBar = NodePath("PanelContainer/VBoxContainer/MarginContainer/ProgressBar")
+_progressLabel = NodePath("PanelContainer/VBoxContainer/MarginContainer/ProgressBar/Label")
 _importButton = NodePath("PanelContainer/VBoxContainer/HBoxContainer3/Button3")
 
-[node name="FileDialog" type="FileDialog" parent="." index="3"]
-auto_translate_mode = 1
-title = "Open a Directory"
-file_mode = 2
-access = 2
-show_hidden_files = true
-use_native_dialog = true
-
-[node name="PanelContainer" parent="." index="4"]
+[node name="PanelContainer" parent="." index="2" unique_id=1939254484]
 custom_minimum_size = Vector2(482, 500)
 offset_left = -241.0
 offset_top = -86.5
 offset_right = 241.0
 offset_bottom = 86.5
 
-[node name="Label" parent="PanelContainer/VBoxContainer" index="0"]
+[node name="Label" parent="PanelContainer/VBoxContainer" parent_id_path=PackedInt32Array(1085092068) index="0" unique_id=45475559]
 text = "选择游戏版本"
 
-[node name="MarginContainer" type="MarginContainer" parent="PanelContainer/VBoxContainer" index="2"]
+[node name="MarginContainer" type="MarginContainer" parent="PanelContainer/VBoxContainer" parent_id_path=PackedInt32Array(1085092068) index="2" unique_id=916019162]
 process_mode = 1
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="ColorRect" type="ColorRect" parent="PanelContainer/VBoxContainer/MarginContainer" index="0"]
+[node name="ColorRect" type="ColorRect" parent="PanelContainer/VBoxContainer/MarginContainer" index="0" unique_id=1155044796]
 visible = false
 material = ExtResource("3_k3web")
 custom_minimum_size = Vector2(75, 75)
@@ -77,56 +70,56 @@ layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
 
-[node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer/VBoxContainer/MarginContainer" index="1"]
+[node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer/VBoxContainer/MarginContainer" index="1" unique_id=734200560]
 layout_mode = 2
 theme_override_constants/separation = 8
 
-[node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer/VBoxContainer/MarginContainer/VBoxContainer" index="0"]
+[node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer/VBoxContainer/MarginContainer/VBoxContainer" index="0" unique_id=1542635630]
 layout_mode = 2
 
-[node name="Name" type="Label" parent="PanelContainer/VBoxContainer/MarginContainer/VBoxContainer/VBoxContainer" index="0"]
+[node name="Name" type="Label" parent="PanelContainer/VBoxContainer/MarginContainer/VBoxContainer/VBoxContainer" index="0" unique_id=566508758]
 layout_mode = 2
 theme_override_fonts/font = ExtResource("10_lb40e")
 text = "版本名称:"
 
-[node name="LineEdit" type="LineEdit" parent="PanelContainer/VBoxContainer/MarginContainer/VBoxContainer/VBoxContainer" index="1"]
+[node name="LineEdit" type="LineEdit" parent="PanelContainer/VBoxContainer/MarginContainer/VBoxContainer/VBoxContainer" index="1" unique_id=648195530]
 layout_mode = 2
 placeholder_text = "名称不能为空"
 clear_button_enabled = true
-right_icon = SubResource("Texture2D_0pqmy")
 caret_blink = true
+right_icon = SubResource("Texture2D_0pqmy")
 
-[node name="VBoxContainer2" type="VBoxContainer" parent="PanelContainer/VBoxContainer/MarginContainer/VBoxContainer" index="1"]
+[node name="VBoxContainer2" type="VBoxContainer" parent="PanelContainer/VBoxContainer/MarginContainer/VBoxContainer" index="1" unique_id=651358547]
 layout_mode = 2
 
-[node name="Label2" type="Label" parent="PanelContainer/VBoxContainer/MarginContainer/VBoxContainer/VBoxContainer2" index="0"]
+[node name="Label2" type="Label" parent="PanelContainer/VBoxContainer/MarginContainer/VBoxContainer/VBoxContainer2" index="0" unique_id=1758647545]
 layout_mode = 2
 size_flags_vertical = 8
 theme_override_fonts/font = ExtResource("10_lb40e")
 text = "安装路径:"
 
-[node name="HBoxContainer" type="HBoxContainer" parent="PanelContainer/VBoxContainer/MarginContainer/VBoxContainer/VBoxContainer2" index="1"]
+[node name="HBoxContainer" type="HBoxContainer" parent="PanelContainer/VBoxContainer/MarginContainer/VBoxContainer/VBoxContainer2" index="1" unique_id=1562670181]
 layout_mode = 2
 
-[node name="LineEdit" type="LineEdit" parent="PanelContainer/VBoxContainer/MarginContainer/VBoxContainer/VBoxContainer2/HBoxContainer" index="0"]
+[node name="LineEdit" type="LineEdit" parent="PanelContainer/VBoxContainer/MarginContainer/VBoxContainer/VBoxContainer2/HBoxContainer" index="0" unique_id=276913391]
 layout_mode = 2
 size_flags_horizontal = 3
 placeholder_text = "路径不能为空"
 clear_button_enabled = true
-right_icon = SubResource("Texture2D_0pqmy")
 caret_blink = true
+right_icon = SubResource("Texture2D_0pqmy")
 
-[node name="Button" type="Button" parent="PanelContainer/VBoxContainer/MarginContainer/VBoxContainer/VBoxContainer2/HBoxContainer" index="1"]
+[node name="Button" type="Button" parent="PanelContainer/VBoxContainer/MarginContainer/VBoxContainer/VBoxContainer2/HBoxContainer" index="1" unique_id=1217197525]
 layout_mode = 2
 icon = SubResource("Texture2D_w2kmj")
 
-[node name="Label" type="Label" parent="PanelContainer/VBoxContainer/MarginContainer/VBoxContainer" index="2"]
+[node name="Label" type="Label" parent="PanelContainer/VBoxContainer/MarginContainer/VBoxContainer" index="2" unique_id=177046318]
 layout_mode = 2
 size_flags_horizontal = 4
 theme_override_font_sizes/font_size = 14
 text = "请输入名称"
 
-[node name="SmoothScrollContainer" type="ScrollContainer" parent="PanelContainer/VBoxContainer/MarginContainer/VBoxContainer" index="3"]
+[node name="SmoothScrollContainer" type="ScrollContainer" parent="PanelContainer/VBoxContainer/MarginContainer/VBoxContainer" index="3" unique_id=1342981938]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
@@ -136,17 +129,17 @@ wheel_scroll_damper = SubResource("Resource_lb40e")
 dragging_scroll_damper = SubResource("Resource_asvws")
 allow_horizontal_scroll = false
 
-[node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer/VBoxContainer/MarginContainer/VBoxContainer/SmoothScrollContainer" index="0"]
+[node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer/VBoxContainer/MarginContainer/VBoxContainer/SmoothScrollContainer" index="0" unique_id=806699392]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
-[node name="ProgressBar" type="ProgressBar" parent="PanelContainer/VBoxContainer/MarginContainer" index="2"]
+[node name="ProgressBar" type="ProgressBar" parent="PanelContainer/VBoxContainer/MarginContainer" index="2" unique_id=751790505]
 visible = false
 layout_mode = 2
 size_flags_vertical = 8
 
-[node name="Label" type="Label" parent="PanelContainer/VBoxContainer/MarginContainer/ProgressBar" index="0"]
+[node name="Label" type="Label" parent="PanelContainer/VBoxContainer/MarginContainer/ProgressBar" index="0" unique_id=60750615]
 layout_mode = 1
 anchors_preset = 6
 anchor_left = 1.0
@@ -163,9 +156,16 @@ theme_override_font_sizes/font_size = 12
 horizontal_alignment = 2
 vertical_alignment = 1
 
-[node name="Button3" type="Button" parent="PanelContainer/VBoxContainer/HBoxContainer3" index="1"]
+[node name="Button3" type="Button" parent="PanelContainer/VBoxContainer/HBoxContainer3" parent_id_path=PackedInt32Array(522919472) index="1" unique_id=1666299990]
 layout_mode = 2
 text = "导入已安装游戏"
 
-[node name="Button2" parent="PanelContainer/VBoxContainer/HBoxContainer3" index="2"]
+[node name="Button2" parent="PanelContainer/VBoxContainer/HBoxContainer3" parent_id_path=PackedInt32Array(522919472) index="2" unique_id=1754640447]
 disabled = true
+
+[node name="FileDialog" type="FileDialog" parent="." index="3" unique_id=223323061]
+auto_translate_mode = 1
+title = "Open a Directory"
+file_mode = 2
+access = 2
+use_native_dialog = true

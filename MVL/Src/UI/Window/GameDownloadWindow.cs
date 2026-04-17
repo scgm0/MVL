@@ -57,6 +57,9 @@ public partial class GameDownloadWindow : BaseWindow {
 	private ProgressBar? _progressBar;
 
 	[Export]
+	private Label? _progressLabel;
+
+	[Export]
 	private Button? _importButton;
 
 	public event Action<string>? InstallGame;
@@ -227,6 +230,8 @@ public partial class GameDownloadWindow : BaseWindow {
 		var url = downloadInfo.Urls.Cdn ?? downloadInfo.Urls.Local;
 		var downloadDir = _downloadTmp.GetCurrentDir();
 
+		UpdateProgress(0, 0);
+		_cancellation = new();
 		_download = DownloadBuilder.New()
 			.WithUrl(url)
 			.WithDirectory(downloadDir)
@@ -251,6 +256,8 @@ public partial class GameDownloadWindow : BaseWindow {
 		};
 
 		_download.DownloadFileCompleted += (_, args) => {
+			_cancellation.Dispose();
+			_cancellation = null;
 			switch (args) {
 				case { Cancelled: true, Error: OperationCanceledException }: {
 					Log.Info($"下载取消 {downloadInfo.FileName}");
@@ -277,8 +284,7 @@ public partial class GameDownloadWindow : BaseWindow {
 			_download = null;
 		};
 
-		UpdateProgress(0, 0);
-		await _download.StartAsync();
+		await _download.StartAsync(_cancellation.Token);
 	}
 
 	private async void ExtractGame(string filePath, string outputDir, string name) {
@@ -310,7 +316,7 @@ public partial class GameDownloadWindow : BaseWindow {
 	private void UpdateProgress(double percentage, ulong speed) {
 		_progressBar!.Value = percentage;
 		var (fmtSpeed, unit) = Tools.GetSizeAndUnit(speed);
-		_progressBar.GetNode<Label>("Label").Text = $"{fmtSpeed:F2} {unit}/s";
+		_progressLabel!.Text = $"{fmtSpeed:F2} {unit}/s";
 	}
 
 	private void ButtonGroupOnPressed(BaseButton button) {
