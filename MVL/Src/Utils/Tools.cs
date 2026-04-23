@@ -19,6 +19,7 @@ namespace MVL.Utils;
 public static class Tools {
 	public static readonly Version VSRunTargetFramework = Version.Parse("10.0");
 	static private readonly string[] Units = ["B", "KB", "MB", "GB", "TB", "PB", "EB"];
+	public static ulong MainThreadId { get; } = OS.GetMainThreadId();
 	public static SceneTree SceneTree { get; } = (SceneTree)Engine.GetMainLoop();
 	public static MessagePackSerializer PackSerializer { get; } = new();
 	public static bool IsEditorHint { get; } = Engine.IsEditorHint();

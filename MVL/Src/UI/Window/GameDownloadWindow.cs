@@ -17,6 +17,7 @@ using MVL.Utils;
 using MVL.Utils.Extensions;
 using MVL.Utils.Game;
 using MVL.Utils.Help;
+using Environment = System.Environment;
 using FileAccess = System.IO.FileAccess;
 using HttpClient = System.Net.Http.HttpClient;
 
@@ -67,9 +68,9 @@ public partial class GameDownloadWindow : BaseWindow {
 	private Dictionary<GameVersion, GameRelease>? _releases;
 
 	private IDownload? _download;
-	private DirAccess _downloadTmp = DirAccess.CreateTemp("MVL_Download");
+	private DirAccess? _downloadTmp;
 	private CancellationTokenSource? _cancellation;
-	private FlurlHttpException? _lastException;
+	private string? _lastException;
 
 	public override void _Ready() {
 		base._Ready();
@@ -141,7 +142,7 @@ public partial class GameDownloadWindow : BaseWindow {
 
 		if (_lastException != null) {
 			OkButton!.Disabled = true;
-			_tooltip!.Text = "网络请求失败，请重试";
+			_tooltip!.Text = _lastException;
 			_tooltip.Modulate = Colors.Red;
 			return;
 		}
@@ -195,20 +196,20 @@ public partial class GameDownloadWindow : BaseWindow {
 
 	override protected async void CancelButtonOnPressed() {
 		_download?.Pause();
-		await Hide();
-		EmitSignalCancel();
 		if (_cancellation != null) {
 			await _cancellation.CancelAsync();
-			_cancellation.Dispose();
-			_cancellation = null;
 		}
 
+		await Hide();
+		EmitSignalCancel();
 		_download?.Stop();
 	}
 
-	public new async Task Hide() {
-		await base.Hide();
-		_downloadTmp.Dispose();
+	public override void _ExitTree() {
+		_downloadTmp?.Dispose();
+		_downloadTmp = null;
+		_cancellation?.Dispose();
+		_cancellation = null;
 	}
 
 	private async void OkButtonOnPressed() {
@@ -228,9 +229,11 @@ public partial class GameDownloadWindow : BaseWindow {
 		var downloadInfo = _releases![item.GameVersion].Linux;
 #endif
 		var url = downloadInfo.Urls.Cdn ?? downloadInfo.Urls.Local;
+		_downloadTmp?.Dispose();
+		_downloadTmp = DirAccess.CreateTemp("MVL_Download");
 		var downloadDir = _downloadTmp.GetCurrentDir();
 
-		UpdateProgress(0, 0);
+		UpdateProgress(0, "");
 		_cancellation = new();
 		_download = DownloadBuilder.New()
 			.WithUrl(url)
@@ -249,10 +252,9 @@ public partial class GameDownloadWindow : BaseWindow {
 			.Build();
 
 		_download.DownloadProgressChanged += (_, args) => {
-			Dispatcher.SynchronizationContext.Post(_ => {
-					UpdateProgress(args.ProgressPercentage, (ulong)args.BytesPerSecondSpeed);
-				},
-				null);
+			var (fmtSpeed, unit) = Tools.GetSizeAndUnit((ulong)args.BytesPerSecondSpeed);
+			var text = $"{fmtSpeed:F2} {unit}/s";
+			UpdateProgress(args.ProgressPercentage, text);
 		};
 
 		_download.DownloadFileCompleted += (_, args) => {
@@ -287,10 +289,21 @@ public partial class GameDownloadWindow : BaseWindow {
 		await _download.StartAsync(_cancellation.Token);
 	}
 
+	private void UpdateProgress(double p, string? n) {
+		if ((ulong)Environment.CurrentManagedThreadId == Tools.MainThreadId) {
+			_progressBar!.Value = p;
+			_progressLabel!.Text = n;
+		} else {
+			Dispatcher.SynchronizationContext.Post(_ => {
+					_progressBar!.Value = p;
+					_progressLabel!.Text = n;
+				},
+				null);
+		}
+	}
+
 	private async void ExtractGame(string filePath, string outputDir, string name) {
 		TitleLabel!.Text = "提取中...";
-		CancelButton!.Disabled = true;
-		_progressBar!.Hide();
 
 		var assetDir = Path.Combine(outputDir, name, "assets");
 		if (Directory.Exists(assetDir)) {
@@ -301,22 +314,45 @@ public partial class GameDownloadWindow : BaseWindow {
 			}
 		}
 
-		Log.Info($"开始提取游戏");
+		_cancellation?.Dispose();
+		_cancellation = new();
+		var tmpPath = Path.Combine(filePath.GetBaseDir(), "vintagestory");
+		Log.Info("开始提取游戏");
+		try {
 #if GODOT_WINDOWS
-		await ExtractInnoSetupAsync(filePath, outputDir, name);
+			await ExtractInnoSetupAsync(filePath,
+				tmpPath,
+				UpdateProgress,
+				_cancellation.Token);
 #elif GODOT_LINUXBSD
-		await ExtractTarGzAsync(filePath, outputDir, name);
+			await ExtractTarGzAsync(filePath,
+				tmpPath,
+				UpdateProgress,
+				_cancellation.Token);
 #endif
+			if (_cancellation?.IsCancellationRequested ?? true) {
+				Log.Info("取消提取游戏");
+				return;
+			}
 
-		CancelButton.Disabled = false;
+			TitleLabel!.Text = "移动中...";
+			CancelButton!.Disabled = true;
+			var finalDestDir = Path.Combine(outputDir, name).NormalizePath();
+			await DirMoveAsync(tmpPath,
+				finalDestDir,
+				true,
+				UpdateProgress);
+		} catch (OperationCanceledException) {
+			Log.Info("取消提取游戏");
+			return;
+		} catch (Exception e) {
+			Log.Error("提取游戏失败", e);
+			_lastException = "提取游戏失败";
+			return;
+		}
+
 		await Hide();
 		InstallGame?.Invoke(Path.Combine(outputDir, name));
-	}
-
-	private void UpdateProgress(double percentage, ulong speed) {
-		_progressBar!.Value = percentage;
-		var (fmtSpeed, unit) = Tools.GetSizeAndUnit(speed);
-		_progressLabel!.Text = $"{fmtSpeed:F2} {unit}/s";
 	}
 
 	private void ButtonGroupOnPressed(BaseButton button) {
@@ -394,81 +430,266 @@ public partial class GameDownloadWindow : BaseWindow {
 			}
 		} catch (FlurlHttpException e) {
 			Log.Error(e);
-			_lastException = e;
+			_lastException = "网络请求失败，请重试";
 		}
 	}
 
-	public static async Task ExtractTarGzAsync(string filePath, string outputDir, string name) {
-		await Task.Run(() => {
-			using FileStream fs = new(filePath, FileMode.Open, FileAccess.Read);
-			using GZipStream gz = new(fs, CompressionMode.Decompress, leaveOpen: true);
-			using var reader = new TarReader(gz, leaveOpen: true);
+	public static async Task ExtractTarGzAsync(
+		string filePath,
+		string tempDir,
+		Action<double, string?>? extractProgress = null,
+		CancellationToken cancellationToken = default) {
+		extractProgress?.Invoke(0, "正在扫描文件总数...");
 
-			string? subDir = null;
-			while (reader.GetNextEntry() is { } entry) {
-				Log.Trace(entry.Name);
-				subDir ??= entry.Name;
-				var path = Path.Combine(outputDir, entry.Name).NormalizePath();
-				path = path.Replace(Path.Combine(outputDir, subDir).NormalizePath(),
-					Path.Combine(outputDir, name).NormalizePath());
-				switch (entry.EntryType) {
-					case TarEntryType.RegularFile: entry.ExtractToFile(path, true); break;
-					case TarEntryType.Directory: Directory.CreateDirectory(path); break;
+		const int bufferSize = 131072;
+		const FileOptions fileOpts = FileOptions.Asynchronous | FileOptions.SequentialScan;
+
+		var totalFiles = 0;
+
+		await using (FileStream fsScan = new(filePath, FileMode.Open, FileAccess.Read, FileShare.Read, bufferSize, fileOpts))
+		await using (GZipStream gzScan = new(fsScan, CompressionMode.Decompress, leaveOpen: false))
+		await using (TarReader scanReader = new(gzScan, leaveOpen: false)) {
+			while (await scanReader.GetNextEntryAsync(copyData: false, cancellationToken).ConfigureAwait(false) is
+				{ } scanEntry) {
+				cancellationToken.ThrowIfCancellationRequested();
+				if (scanEntry.EntryType == TarEntryType.RegularFile) {
+					totalFiles++;
 				}
 			}
-		});
+		}
+
+		cancellationToken.ThrowIfCancellationRequested();
+		if (totalFiles == 0) {
+			throw new InvalidOperationException("未找到可提取文件");
+		}
+
+		var extractedFiles = 0;
+		var pathComparer = OperatingSystem.IsWindows() ? StringComparer.OrdinalIgnoreCase : StringComparer.Ordinal;
+		HashSet<string> createdDirs = new(pathComparer) { tempDir };
+		var dirLookup = createdDirs.GetAlternateLookup<ReadOnlySpan<char>>();
+
+		await using FileStream fs = new(filePath, FileMode.Open, FileAccess.Read, FileShare.Read, bufferSize, fileOpts);
+		await using GZipStream gz = new(fs, CompressionMode.Decompress, leaveOpen: false);
+		await using TarReader reader = new(gz, leaveOpen: false);
+
+		while (await reader.GetNextEntryAsync(copyData: false, cancellationToken).ConfigureAwait(false) is { } entry) {
+			cancellationToken.ThrowIfCancellationRequested();
+
+			var nameSpan = entry.Name.AsSpan();
+			var firstSlashIndex = nameSpan.IndexOf('/');
+
+			var relativeNameSpan = firstSlashIndex >= 0
+				? nameSpan[(firstSlashIndex + 1)..]
+				: nameSpan;
+
+			if (relativeNameSpan.IsWhiteSpace()) {
+				continue;
+			}
+
+			var destPath = Path.Join(tempDir.AsSpan(), relativeNameSpan);
+
+			switch (entry.EntryType) {
+				case TarEntryType.RegularFile: {
+					var lastSeparator = destPath.LastIndexOfAny(Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar);
+					if (lastSeparator > 0) {
+						var dirSpan = destPath.AsSpan(0, lastSeparator);
+
+						if (!dirLookup.Contains(dirSpan)) {
+							var destDir = new string(dirSpan);
+							createdDirs.Add(destDir);
+							Directory.CreateDirectory(destDir);
+						}
+					}
+
+					await entry.ExtractToFileAsync(destPath, overwrite: true, cancellationToken).ConfigureAwait(false);
+
+					extractedFiles++;
+
+					if (extractProgress != null) {
+						var currentPercent = (int)((double)extractedFiles / totalFiles * 100);
+						extractProgress.Invoke(currentPercent, $"{extractedFiles} / {totalFiles}");
+					}
+
+					break;
+				}
+				case TarEntryType.Directory: {
+					if (createdDirs.Add(destPath)) {
+						Directory.CreateDirectory(destPath);
+					}
+
+					break;
+				}
+			}
+		}
+
+		extractProgress?.Invoke(100, $"{totalFiles} / {totalFiles}");
 	}
 
-	public static async Task ExtractInnoSetupAsync(string filePath, string outputDir, string name) {
-		await Task.Run(async () => {
-			using var tmp = DirAccess.CreateTemp("InnoExtract");
-			var tmpRunPath = tmp.GetCurrentDir();
-			const string innoExtractPath = "res://Misc/InnoUnp-2/innounp.exe";
-			var innoExtract = tmpRunPath.PathJoin("innounp.exe");
-			tmp.Copy(innoExtractPath, innoExtract.NormalizePath());
-			using var process = new Process();
-			process.EnableRaisingEvents = true;
-			process.StartInfo.FileName = $"{innoExtract}";
-			process.StartInfo.Arguments =
-				$"\"{filePath.NormalizePath()}\" -x -c{{app}} -d\"{filePath.GetBaseDir().PathJoin("app").NormalizePath()}\"";
-			process.StartInfo.UseShellExecute = false;
-			process.StartInfo.RedirectStandardOutput = true;
-			process.StartInfo.RedirectStandardError = true;
-			process.StartInfo.CreateNoWindow = true;
-			process.OutputDataReceived += (_, args) => Log.Trace(args.Data);
-			process.ErrorDataReceived += (_, args) => Log.Error(args.Data);
-			process.Start();
-			process.BeginOutputReadLine();
-			process.BeginErrorReadLine();
-			await process.WaitForExitAsync();
-			DirMove(filePath.GetBaseDir().PathJoin("app").NormalizePath(), outputDir.PathJoin(name).NormalizePath());
-		});
+	public static async Task ExtractInnoSetupAsync(
+		string filePath,
+		string appDir,
+		Action<double, string?>? extractProgress = null,
+		CancellationToken cancellationToken = default) {
+		using var tmp = DirAccess.CreateTemp("InnoExtract");
+		var tmpRunPath = tmp.GetCurrentDir();
+		const string innoExtractPath = "res://Misc/InnoUnp-2/innounp.exe";
+		var innoExtract = tmpRunPath.PathJoin("innounp.exe");
+		tmp.Copy(innoExtractPath, innoExtract.NormalizePath());
+
+		extractProgress?.Invoke(0, "正在扫描文件总数...");
+		var totalFiles = 0;
+
+		using (Process countProcess = new()) {
+			countProcess.StartInfo = new() {
+				FileName = innoExtract,
+				Arguments = $"-s -b -h \"{filePath}\"",
+				UseShellExecute = false,
+				RedirectStandardOutput = true,
+				CreateNoWindow = true
+			};
+
+			countProcess.Start();
+
+			try {
+				var reader = countProcess.StandardOutput;
+				while (await reader.ReadLineAsync(cancellationToken).ConfigureAwait(false) is { } line) {
+					cancellationToken.ThrowIfCancellationRequested();
+					if (line.AsSpan().TrimStart().StartsWith("{app}")) {
+						totalFiles++;
+					}
+				}
+
+				await countProcess.WaitForExitAsync(cancellationToken).ConfigureAwait(false);
+			} finally {
+				countProcess.Kill();
+			}
+		}
+
+		cancellationToken.ThrowIfCancellationRequested();
+		if (totalFiles == 0) {
+			throw new InvalidOperationException("未找到可提取文件");
+		}
+
+		var extractedFiles = 0;
+
+		using Process extractProcess = new();
+		extractProcess.StartInfo = new() {
+			FileName = innoExtract,
+			Arguments = $"-x -y -b -h -c{{app}} -d\"{appDir}\" \"{filePath}\"",
+			UseShellExecute = false,
+			RedirectStandardOutput = true,
+			RedirectStandardError = true,
+			CreateNoWindow = true
+		};
+
+		extractProcess.Start();
+
+		try {
+			var errReader = extractProcess.StandardError;
+			var errorReadTask = Task.Run(async () => {
+					while (await errReader.ReadLineAsync(CancellationToken.None).ConfigureAwait(false) is { } errLine) {
+						if (!string.IsNullOrWhiteSpace(errLine)) {
+							Log.Error(errLine);
+						}
+					}
+				},
+				cancellationToken);
+
+			var outReader = extractProcess.StandardOutput;
+			while (await outReader.ReadLineAsync(cancellationToken).ConfigureAwait(false) is { } line) {
+				cancellationToken.ThrowIfCancellationRequested();
+				if (string.IsNullOrWhiteSpace(line) || !line.AsSpan().TrimStart().EndsWith("extracted")) {
+					continue;
+				}
+
+				extractedFiles++;
+
+				if (extractProgress != null) {
+					var currentPercent = (int)((double)extractedFiles / totalFiles * 100);
+					extractProgress.Invoke(currentPercent, $"{extractedFiles} / {totalFiles}");
+				}
+			}
+
+			await Task.WhenAll(extractProcess.WaitForExitAsync(cancellationToken), errorReadTask).ConfigureAwait(false);
+		} finally {
+			extractProcess.Kill(true);
+		}
+
+		cancellationToken.ThrowIfCancellationRequested();
+
+		switch (extractProcess.ExitCode) {
+			case 0: break;
+			case 1: throw new NotSupportedException("InnoSetup 版本不受支持。");
+			case 2: throw new InvalidDataException("安装文件已损坏或不兼容。");
+			case 3: throw new("innounp 发生内部或未知错误。");
+			default:
+				throw new($"innounp 异常退出，状态码: {extractProcess.ExitCode}");
+		}
+
+		extractProgress?.Invoke(100, $"{totalFiles} / {totalFiles}");
 	}
 
-	public static void DirMove(string sourceDirName, string destDirName, bool overwrite = true) {
+
+	public static async Task DirMoveAsync(
+		string sourceDirName,
+		string destDirName,
+		bool overwrite = true,
+		Action<double, string?>? progress = null) {
 		if (!Directory.Exists(destDirName)) {
 			Directory.CreateDirectory(destDirName);
 		}
 
-		foreach (var file in Directory.EnumerateFiles(sourceDirName, "*", SearchOption.AllDirectories)) {
-			var destFile = Path.Combine(destDirName, Path.GetRelativePath(sourceDirName, file));
-			var destDir = Path.GetDirectoryName(destFile);
-			var sameVolume = string.Equals(Path.GetPathRoot(file),
-				Path.GetPathRoot(destFile),
-				StringComparison.OrdinalIgnoreCase);
+		var files = Directory.GetFiles(sourceDirName, "*", SearchOption.AllDirectories);
+		var totalFiles = files.Length;
 
-			if (!string.IsNullOrEmpty(destDir) && !Directory.Exists(destDir)) {
-				Directory.CreateDirectory(destDir);
+		if (totalFiles == 0) {
+			if (Directory.Exists(sourceDirName)) {
+				Directory.Delete(sourceDirName, true);
 			}
 
-			if (sameVolume) {
-				File.Move(file, destFile, overwrite);
-			} else {
-				File.Copy(file, destFile, overwrite);
-				File.Delete(file);
-			}
+			progress?.Invoke(100, "0 / 0");
+			return;
 		}
 
-		Directory.Delete(sourceDirName, true);
+		progress?.Invoke(0, $"0 / {totalFiles}");
+
+		var normalizedSource = Path.TrimEndingDirectorySeparator(sourceDirName);
+		var sourcePrefixLength = normalizedSource.Length + 1;
+
+		var pathComparer = OperatingSystem.IsWindows() ? StringComparer.OrdinalIgnoreCase : StringComparer.Ordinal;
+		HashSet<string> createdDirs = new(pathComparer) { destDirName };
+		var dirLookup = createdDirs.GetAlternateLookup<ReadOnlySpan<char>>();
+
+		await Task.Run(() => {
+			for (var i = 0; i < totalFiles; i++) {
+				var file = files[i];
+
+				var relativeSpan = file.AsSpan(sourcePrefixLength);
+
+				var destFile = Path.Join(destDirName.AsSpan(), relativeSpan);
+
+				var lastSeparatorIndex = destFile.LastIndexOfAny(Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar);
+				if (lastSeparatorIndex > 0) {
+					var destDirSpan = destFile.AsSpan(0, lastSeparatorIndex);
+
+					if (!dirLookup.Contains(destDirSpan)) {
+						var destDir = new string(destDirSpan);
+						createdDirs.Add(destDir);
+						Directory.CreateDirectory(destDir);
+					}
+				}
+
+				File.Move(file, destFile, overwrite);
+
+				if (progress != null) {
+					var currentPercent = (int)((double)(i + 1) / totalFiles * 100);
+					progress.Invoke(currentPercent, $"{i + 1} / {totalFiles}");
+				}
+			}
+
+			if (Directory.Exists(sourceDirName)) {
+				Directory.Delete(sourceDirName, true);
+			}
+		});
 	}
 }
