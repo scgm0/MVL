@@ -621,3 +621,27 @@ msgstr "Открыть каталог"
 
 msgid "移除"
 msgstr "Удалить"
+
+msgid "选择已安装版本"
+msgstr ""
+
+msgid "移动中..."
+msgstr ""
+
+msgid "正在扫描文件总数..."
+msgstr ""
+
+msgid "InnoSetup版本不受支持"
+msgstr ""
+
+msgid "安装文件已损坏或不兼容"
+msgstr ""
+
+msgid "innounp发生内部或未知错误"
+msgstr ""
+
+msgid "innounp异常退出，状态码: {0}"
+msgstr ""
+
+msgid "提取游戏失败: {0}"
+msgstr ""

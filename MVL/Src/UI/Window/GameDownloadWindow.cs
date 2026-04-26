@@ -345,7 +345,7 @@ public partial class GameDownloadWindow : BaseWindow {
 			return;
 		} catch (Exception e) {
 			Log.Error("提取游戏失败", e);
-			_lastException = "提取游戏失败";
+			_lastException = string.Format(Tr("提取游戏失败: {0}"), e.Message);
 			ValidateInputs();
 			return;
 		}
@@ -565,11 +565,11 @@ public partial class GameDownloadWindow : BaseWindow {
 
 			switch (countProcess.ExitCode) {
 				case 0: break;
-				case 1: throw new NotSupportedException("InnoSetup版本不受支持。");
-				case 2: throw new InvalidDataException("安装文件已损坏或不兼容。");
-				case 3: throw new("innounp发生内部或未知错误。");
+				case 1: throw new NotSupportedException("InnoSetup版本不受支持");
+				case 2: throw new InvalidDataException("安装文件已损坏或不兼容");
+				case 3: throw new("innounp发生内部或未知错误");
 				default:
-					throw new($"innounp异常退出，状态码: {countProcess.ExitCode}");
+					throw new(string.Format(TranslationServer.Translate("innounp异常退出，状态码: {0}"), countProcess.ExitCode));
 			}
 		}
 
@@ -627,11 +627,11 @@ public partial class GameDownloadWindow : BaseWindow {
 
 		switch (extractProcess.ExitCode) {
 			case 0: break;
-			case 1: throw new NotSupportedException("InnoSetup版本不受支持。");
-			case 2: throw new InvalidDataException("安装文件已损坏或不兼容。");
-			case 3: throw new("innounp发生内部或未知错误。");
+			case 1: throw new NotSupportedException("InnoSetup版本不受支持");
+			case 2: throw new InvalidDataException("安装文件已损坏或不兼容");
+			case 3: throw new("innounp发生内部或未知错误");
 			default:
-				throw new($"innounp异常退出，状态码: {extractProcess.ExitCode}");
+				throw new(string.Format(TranslationServer.Translate("innounp异常退出，状态码: {0}"), extractProcess.ExitCode));
 		}
 
 		extractProgress?.Invoke(100, $"{totalFiles} / {totalFiles}");

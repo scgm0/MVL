@@ -42,7 +42,7 @@ _installedGameList = NodePath("PanelContainer/VBoxContainer/SmoothScrollContaine
 custom_minimum_size = Vector2(475, 323)
 
 [node name="Label" parent="PanelContainer/VBoxContainer" index="0"]
-text = " 选择已安装版本"
+text = "选择已安装版本"
 
 [node name="SmoothScrollContainer" type="ScrollContainer" parent="PanelContainer/VBoxContainer" index="2"]
 custom_minimum_size = Vector2(0, 150)

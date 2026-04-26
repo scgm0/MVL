@@ -612,3 +612,27 @@ msgstr "Open Directory"
 
 msgid "移除"
 msgstr "Remove"
+
+msgid "选择已安装版本"
+msgstr "Select the installed release"
+
+msgid "移动中..."
+msgstr "Moving..."
+
+msgid "正在扫描文件总数..."
+msgstr "Scanning total number of files..."
+
+msgid "InnoSetup版本不受支持"
+msgstr "InnoSetup version is not supported"
+
+msgid "安装文件已损坏或不兼容"
+msgstr "The installation file is corrupt or incompatible"
+
+msgid "innounp发生内部或未知错误"
+msgstr "Internal or unknown error occurred in innounp"
+
+msgid "innounp异常退出，状态码: {0}"
+msgstr "innounp exited abnormally, status code: {0}"
+
+msgid "提取游戏失败: {0}"
+msgstr "Failed to extract game: {0}"
