@@ -97,7 +97,7 @@ msgid "请先在版本界面中导入游戏"
 msgstr "Please first import the game in the release interface"
 
 msgid "选择已安装版本"
-msgstr "Select the installed version"
+msgstr "Select the installed release"
 
 msgid "请输入名称"
 msgstr "Please enter the name"
@@ -612,9 +612,6 @@ msgstr "Open Directory"
 
 msgid "移除"
 msgstr "Remove"
-
-msgid "选择已安装版本"
-msgstr "Select the installed release"
 
 msgid "移动中..."
 msgstr "Moving..."

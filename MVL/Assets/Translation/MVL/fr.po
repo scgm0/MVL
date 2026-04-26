@@ -607,9 +607,6 @@ msgstr ""
 msgid "移除"
 msgstr ""
 
-msgid "选择已安装版本"
-msgstr ""
-
 msgid "移动中..."
 msgstr ""
 
