@@ -139,6 +139,7 @@ public partial class GameDownloadWindow : BaseWindow {
 		var name = _releaseName!.Text;
 		var path = _releasePath!.Text.NormalizePath();
 		_importButton!.Disabled = false;
+		CancelButton!.Disabled = false;
 
 		if (_lastException != null) {
 			OkButton!.Disabled = true;
@@ -330,10 +331,7 @@ public partial class GameDownloadWindow : BaseWindow {
 				UpdateProgress,
 				_cancellation.Token);
 #endif
-			if (_cancellation?.IsCancellationRequested ?? true) {
-				Log.Info("取消提取游戏");
-				return;
-			}
+			_cancellation.Token.ThrowIfCancellationRequested();
 
 			TitleLabel!.Text = "移动中...";
 			CancelButton!.Disabled = true;
@@ -348,6 +346,7 @@ public partial class GameDownloadWindow : BaseWindow {
 		} catch (Exception e) {
 			Log.Error("提取游戏失败", e);
 			_lastException = "提取游戏失败";
+			ValidateInputs();
 			return;
 		}
 
@@ -563,6 +562,15 @@ public partial class GameDownloadWindow : BaseWindow {
 			} finally {
 				countProcess.Kill();
 			}
+
+			switch (countProcess.ExitCode) {
+				case 0: break;
+				case 1: throw new NotSupportedException("InnoSetup版本不受支持。");
+				case 2: throw new InvalidDataException("安装文件已损坏或不兼容。");
+				case 3: throw new("innounp发生内部或未知错误。");
+				default:
+					throw new($"innounp异常退出，状态码: {countProcess.ExitCode}");
+			}
 		}
 
 		cancellationToken.ThrowIfCancellationRequested();
@@ -619,11 +627,11 @@ public partial class GameDownloadWindow : BaseWindow {
 
 		switch (extractProcess.ExitCode) {
 			case 0: break;
-			case 1: throw new NotSupportedException("InnoSetup 版本不受支持。");
+			case 1: throw new NotSupportedException("InnoSetup版本不受支持。");
 			case 2: throw new InvalidDataException("安装文件已损坏或不兼容。");
-			case 3: throw new("innounp 发生内部或未知错误。");
+			case 3: throw new("innounp发生内部或未知错误。");
 			default:
-				throw new($"innounp 异常退出，状态码: {extractProcess.ExitCode}");
+				throw new($"innounp异常退出，状态码: {extractProcess.ExitCode}");
 		}
 
 		extractProgress?.Invoke(100, $"{totalFiles} / {totalFiles}");
