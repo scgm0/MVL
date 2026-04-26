@@ -166,18 +166,58 @@ public static class StringExtensions {
 		}
 	}
 
+	private enum InlineFormatType {
+		None = 0,
+		Bold,
+		Code,
+		MarkdownLink,
+		GitHubCompare,
+		BracketLink
+	}
+
 	static private void ProcessInlineFormatting(StringBuilder sb, ReadOnlySpan<char> line) {
 		var remainingLine = line;
 		while (!remainingLine.IsEmpty) {
 			var boldPos = remainingLine.IndexOf("**");
-			var urlPos = remainingLine.IndexOf("https://");
 			var codePos = remainingLine.IndexOf('`');
+			var mdLinkPos = remainingLine.IndexOf('[');
+			var bracketUrlPos1 = remainingLine.IndexOf("<https://");
+			var bracketUrlPos2 = remainingLine.IndexOf("<http://");
+
+			var bracketUrlPos = GetValidMin(bracketUrlPos1, bracketUrlPos2);
+
+			var ghComparePos = -1;
+			var searchStart = 0;
+			while (searchStart < remainingLine.Length) {
+				var p = remainingLine[searchStart..].IndexOf("https://github.com/");
+				if (p == -1) break;
+				p += searchStart;
+
+				var urlEnd = p;
+				while (urlEnd < remainingLine.Length) {
+					var c = remainingLine[urlEnd];
+					if (char.IsWhiteSpace(c) || c == '<' || c == '>' || c == ')' || c == ']' || c == '(' || c == '[')
+						break;
+					urlEnd++;
+				}
+
+				var candidate = remainingLine[p..urlEnd];
+				if (candidate.IndexOf("/compare/") != -1) {
+					ghComparePos = p;
+					break;
+				}
+
+				searchStart = urlEnd;
+			}
 
 			var firstPos = -1;
+			var currentType = InlineFormatType.None;
 
-			if (boldPos != -1) firstPos = boldPos;
-			if (urlPos != -1 && (firstPos == -1 || urlPos < firstPos)) firstPos = urlPos;
-			if (codePos != -1 && (firstPos == -1 || codePos < firstPos)) firstPos = codePos;
+			CheckPos(boldPos, InlineFormatType.Bold);
+			CheckPos(codePos, InlineFormatType.Code);
+			CheckPos(mdLinkPos, InlineFormatType.MarkdownLink);
+			CheckPos(ghComparePos, InlineFormatType.GitHubCompare);
+			CheckPos(bracketUrlPos, InlineFormatType.BracketLink);
 
 			if (firstPos == -1) {
 				sb.Append(remainingLine);
@@ -185,35 +225,102 @@ public static class StringExtensions {
 			}
 
 			sb.Append(remainingLine[..firstPos]);
+			remainingLine = remainingLine[firstPos..];
 
-			if (firstPos == boldPos) {
-				var contentSpan = remainingLine[(firstPos + 2)..];
-				var closingPos = contentSpan.IndexOf("**");
-				if (closingPos != -1) {
-					sb.Append("[b]").Append(contentSpan[..closingPos]).Append("[/b]");
-					remainingLine = contentSpan[(closingPos + 2)..];
-				} else {
-					sb.Append(remainingLine[..2]);
-					remainingLine = remainingLine[2..];
+			switch (currentType) {
+				case InlineFormatType.Bold: {
+					var contentSpan = remainingLine[2..];
+					var closingPos = contentSpan.IndexOf("**");
+					if (closingPos != -1) {
+						sb.Append("[b]").Append(contentSpan[..closingPos]).Append("[/b]");
+						remainingLine = contentSpan[(closingPos + 2)..];
+					} else {
+						sb.Append(remainingLine[..2]);
+						remainingLine = remainingLine[2..];
+					}
+
+					break;
 				}
-			} else if (firstPos == urlPos) {
-				var urlSpan = remainingLine[firstPos..];
-				var urlEnd = urlSpan.IndexOf(' ');
-				if (urlEnd == -1) urlEnd = urlSpan.Length;
+				case InlineFormatType.Code: {
+					var contentSpan = remainingLine[1..];
+					var closingPos = contentSpan.IndexOf('`');
+					if (closingPos != -1) {
+						sb.Append("[img width=3 height=1 color=0000]uid://cg2dshwidpbbv[/img][code][fgcolor=0007]")
+							.Append(contentSpan[..closingPos])
+							.Append("[/fgcolor][/code][img width=3 height=1 color=0000]uid://cg2dshwidpbbv[/img]");
+						remainingLine = contentSpan[(closingPos + 1)..];
+					} else {
+						sb.Append(remainingLine[..1]);
+						remainingLine = remainingLine[1..];
+					}
 
-				sb.Append("[color=#3c7fe1][url]").Append(urlSpan[..urlEnd]).Append("[/url][/color]");
-				remainingLine = urlSpan[urlEnd..];
-			} else if (firstPos == codePos) {
-				var contentSpan = remainingLine[(firstPos + 1)..];
-				var closingPos = contentSpan.IndexOf('`');
-				if (closingPos != -1) {
-					sb.Append("[img width=3 height=1 color=0000]uid://cg2dshwidpbbv[/img][code][fgcolor=0007]").Append(contentSpan[..closingPos]).Append("[/fgcolor][/code][img width=3 height=1 color=0000]uid://cg2dshwidpbbv[/img]");
-					remainingLine = contentSpan[(closingPos + 1)..];
-				} else {
+					break;
+				}
+				case InlineFormatType.MarkdownLink: {
+					var closeBracket = remainingLine.IndexOf(']');
+					if (closeBracket != -1 && remainingLine.Length > closeBracket + 1 &&
+						remainingLine[closeBracket + 1] == '(') {
+						var afterParen = remainingLine[(closeBracket + 2)..];
+						var closeParen = afterParen.IndexOf(')');
+						if (closeParen != -1) {
+							var text = remainingLine[1..closeBracket];
+							var url = afterParen[..closeParen];
+
+							sb.Append("[color=#3c7fe1][url=").Append(url).Append(']');
+							ProcessInlineFormatting(sb, text);
+							sb.Append("[/url][/color]");
+
+							remainingLine = afterParen[(closeParen + 1)..];
+							continue;
+						}
+					}
+
 					sb.Append(remainingLine[..1]);
 					remainingLine = remainingLine[1..];
+					break;
+				}
+				case InlineFormatType.GitHubCompare: {
+					var urlEnd = 0;
+					while (urlEnd < remainingLine.Length) {
+						var c = remainingLine[urlEnd];
+						if (char.IsWhiteSpace(c) || c == '<' || c == '>' || c == ')' || c == ']' || c == '(' || c == '[')
+							break;
+						urlEnd++;
+					}
+
+					var urlSpan = remainingLine[..urlEnd];
+					var lastSlash = urlSpan.LastIndexOf('/');
+					var versionText = urlSpan[(lastSlash + 1)..]; // 截取 compare/ 后的版本范围字符
+
+					sb.Append("[url=").Append(urlSpan).Append(']').Append(versionText).Append("[/url]");
+					remainingLine = remainingLine[urlEnd..];
+					break;
+				}
+				case InlineFormatType.BracketLink: {
+					var closeBracket = remainingLine.IndexOf('>');
+					if (closeBracket != -1) {
+						var url = remainingLine[1..closeBracket];
+						sb.Append("[color=#3c7fe1][url]").Append(url).Append("[/url][/color]");
+						remainingLine = remainingLine[(closeBracket + 1)..];
+					} else {
+						sb.Append(remainingLine[..1]);
+						remainingLine = remainingLine[1..];
+					}
+
+					break;
 				}
 			}
+
+			continue;
+
+			void CheckPos(int pos, InlineFormatType type) {
+				if (pos != -1 && (firstPos == -1 || pos < firstPos)) {
+					firstPos = pos;
+					currentType = type;
+				}
+			}
+
+			int GetValidMin(int a, int b) => a != -1 && b != -1 ? Math.Min(a, b) : Math.Max(a, b);
 		}
 	}
 
@@ -252,13 +359,31 @@ public static class StringExtensions {
 					continue;
 				}
 
-				if (line.Length > 2 && char.IsDigit(line[0]) && line[1] == '.' && line[2] == ' ') {
+				var isListItem = false;
+				var listPrefixLength = 0;
+				var dotSpaceIndex = line.IndexOf(". ");
+
+				if (dotSpaceIndex > 0) {
+					isListItem = true;
+					for (var i = 0; i < dotSpaceIndex; i++) {
+						if (!char.IsDigit(line[i])) {
+							isListItem = false;
+							break;
+						}
+					}
+
+					if (isListItem) {
+						listPrefixLength = dotSpaceIndex + 2;
+					}
+				}
+
+				if (isListItem) {
 					if (!inList) {
 						sb.AppendLine("[ol]");
 						inList = true;
 					}
 
-					ProcessInlineFormatting(sb, line[3..]);
+					ProcessInlineFormatting(sb, line[listPrefixLength..]);
 				} else {
 					if (inList) {
 						sb.AppendLine("[/ol]");
