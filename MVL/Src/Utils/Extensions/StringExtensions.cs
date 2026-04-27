@@ -383,7 +383,9 @@ public static class StringExtensions {
 						inList = true;
 					}
 
+					sb.Append("[color=#fff]");
 					ProcessInlineFormatting(sb, line[listPrefixLength..]);
+					sb.Append("[/color]");
 				} else {
 					if (inList) {
 						sb.AppendLine("[/ol]");
