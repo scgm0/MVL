@@ -107,6 +107,11 @@ public readonly record struct GameVersion {
 
 	public static GameVersion? FromGamePath(string gamePath) {
 		var assemblyPath = Path.Combine(gamePath, "VintagestoryAPI.dll");
+		if (!File.Exists(assemblyPath)) {
+			Log.Error($"游戏程序集 {assemblyPath} 不存在");
+			return null;
+		}
+
 		try {
 			using var assembly = AssemblyDefinition.ReadAssembly(assemblyPath);
 			var type = assembly.MainModule.GetType("Vintagestory.API.Config.GameVersion");
