@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using Godot;
 using MVL.UI.Item;
@@ -19,6 +20,8 @@ public partial class ApiModReleasesWindow : BaseWindow {
 	[Export]
 	private Control? _loadingContainer;
 
+	private CancellationTokenSource _cancellationTokenSource = new();
+
 	public ModInfoItem? ModInfoItem { get; set; }
 
 	public IEnumerable<ModInfoItem>? AutoUpdateModInfoItems { get; set; }
@@ -34,6 +37,7 @@ public partial class ApiModReleasesWindow : BaseWindow {
 		_loadingContainer.NotNull();
 
 		CancelButton!.Pressed += CancelButtonOnPressed;
+		CancelButton.Pressed += _cancellationTokenSource.Cancel;
 		OkButton!.Pressed += OkButtonOnPressed;
 		_loadingContainer.VisibilityChanged += LoadingContainerOnVisibilityChanged;
 
@@ -75,6 +79,10 @@ public partial class ApiModReleasesWindow : BaseWindow {
 	}
 
 	public async void UpdateApiModInfo() {
+		if (!IsInstanceValid(this)) {
+			return;
+		}
+
 		_loadingContainer!.Show();
 
 		foreach (var child in _apiModReleaseItemsContainer!.GetChildren()) {
@@ -94,6 +102,7 @@ public partial class ApiModReleasesWindow : BaseWindow {
 				apiModReleaseItem.ModpackConfig = ModInfoItem.Mod?.ModpackConfig;
 				apiModReleaseItem.ApiModInfo = ModInfoItem.ApiModInfo;
 				apiModReleaseItem.ApiModRelease = apiModRelease;
+				apiModReleaseItem.CancellationTokenSource = _cancellationTokenSource;
 				_apiModReleaseItemsContainer!.AddChild(apiModReleaseItem);
 
 				using var tween = apiModReleaseItem.CreateTween();
@@ -116,6 +125,7 @@ public partial class ApiModReleasesWindow : BaseWindow {
 				apiModReleaseItem.ApiModInfo = modInfoItem.ApiModInfo;
 				apiModReleaseItem.ApiModRelease = modInfoItem.ApiModRelease;
 				apiModReleaseItem.IsChecked = true;
+				apiModReleaseItem.CancellationTokenSource = _cancellationTokenSource;
 				_apiModReleaseItemsContainer!.AddChild(apiModReleaseItem);
 
 				using var tween = apiModReleaseItem.CreateTween();
@@ -138,6 +148,7 @@ public partial class ApiModReleasesWindow : BaseWindow {
 				apiModReleaseItem.ApiModInfo = apiModInfo;
 				apiModReleaseItem.ApiModRelease = apiModRelease;
 				apiModReleaseItem.IsChecked = true;
+				apiModReleaseItem.CancellationTokenSource = _cancellationTokenSource;
 				_apiModReleaseItemsContainer!.AddChild(apiModReleaseItem);
 
 				using var tween = apiModReleaseItem.CreateTween();
@@ -159,6 +170,7 @@ public partial class ApiModReleasesWindow : BaseWindow {
 				apiModReleaseItem.ModpackConfig = DownloadModInfo.Value.modpackConfig;
 				apiModReleaseItem.ApiModInfo = DownloadModInfo.Value.apiModInfo;
 				apiModReleaseItem.ApiModRelease = apiModRelease;
+				apiModReleaseItem.CancellationTokenSource = _cancellationTokenSource;
 				_apiModReleaseItemsContainer!.AddChild(apiModReleaseItem);
 
 				using var tween = apiModReleaseItem.CreateTween();

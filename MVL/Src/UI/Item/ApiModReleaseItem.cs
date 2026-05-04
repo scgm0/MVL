@@ -1,18 +1,15 @@
 using System;
 using System.IO;
 using System.Linq;
-using System.Net;
+using System.Threading;
 using System.Threading.Tasks;
 using CSemVer;
-using Downloader;
 using Godot;
 using MVL.UI.Window;
 using MVL.Utils;
 using MVL.Utils.Config;
 using MVL.Utils.Game;
 using MVL.Utils.Help;
-using HttpClient = System.Net.Http.HttpClient;
-using Range = Godot.Range;
 
 namespace MVL.UI.Item;
 
@@ -46,13 +43,13 @@ public partial class ApiModReleaseItem : PanelContainer {
 	private Label? _progressLabel;
 
 	private bool _isChecked;
-	private IDownload? _download;
 
 	public ModInfo? ModInfo { get; set; }
 	public ModpackConfig? ModpackConfig { get; set; }
 	public ApiModInfo? ApiModInfo { get; set; }
 	public ApiModRelease? ApiModRelease { get; set; }
 	public ApiModReleasesWindow? Window { get; set; }
+	public CancellationTokenSource? CancellationTokenSource { get; set; }
 
 	public bool IsChecked {
 		get => _checkBox?.ButtonPressed ?? _isChecked;
@@ -92,8 +89,6 @@ public partial class ApiModReleaseItem : PanelContainer {
 		_downloadButton!.Disabled = true;
 		_checkBox!.Disabled = true;
 	}
-
-	public override void _ExitTree() { _download?.Stop(); }
 
 	private async void DownloadButtonOnPressed() { await Download(); }
 
@@ -192,53 +187,25 @@ public partial class ApiModReleaseItem : PanelContainer {
 		_checkBox!.Hide();
 		_progressLabel!.Show();
 		_progressBar!.Show();
-		Log.Info($"开始下载: {ApiModRelease!.Value.FileName}...");
 
-		using var downloadTmp = DirAccess.CreateTemp("MVL_Download");
-		var downloadDir = downloadTmp.GetCurrentDir();
-		_download = DownloadBuilder.New()
-			.WithUrl(ApiModRelease.Value.MainFile)
-			.WithDirectory(downloadDir)
-			.WithFileName(ApiModRelease.Value.FileName)
-			.WithConfiguration(new() {
-				ParallelDownload = true,
-				ChunkCount = Main.BaseConfig.DownloadThreads,
-				ParallelCount = Main.BaseConfig.DownloadThreads,
-				RequestConfiguration = new() {
-					Proxy = string.IsNullOrWhiteSpace(Main.BaseConfig.ProxyAddress)
-						? HttpClient.DefaultProxy
-						: new WebProxy(Main.BaseConfig.ProxyAddress)
-				}
-			})
-			.Build();
-		_download.DownloadProgressChanged += (_, args) => {
-			if (!IsInstanceValid(this)) {
-				return;
+		var path = Path.Combine(ModpackConfig!.Path!, "Mods", ApiModRelease!.Value.FileName);
+		try {
+			await ApiModRelease.Value.DownloadMainFileAsync(path,progress => {
+				_progressBar.SetValue(progress.Percentage);
+				_progressLabel.SetText($"{progress.Percentage:F1}%");
+			}, CancellationTokenSource?.Token ?? CancellationToken.None);
+		} catch (OperationCanceledException) {
+			Log.Info($"取消下载: {ApiModRelease!.Value.FileName}");
+			return;
+		} catch (Exception e) {
+			Log.Error($"下载失败: {ApiModRelease!.Value.FileName}", e);
+			if (IsInstanceValid(this)) {
+				_progressBar.Hide();
+				_progressLabel.SetText("下载失败");
 			}
 
-			_progressBar.CallDeferred(Range.MethodName.SetValue, args.ProgressPercentage);
-			_progressLabel.CallDeferred(Label.MethodName.SetText, $"{args.ProgressPercentage:F1}%");
-		};
-
-		await _download.StartAsync();
-		_download.Dispose();
-		_download = null;
-
-		var modFile = Path.Combine(downloadDir, ApiModRelease.Value.FileName);
-		if (!File.Exists(modFile)) {
-			Log.Error($"下载失败: {modFile} 不存在");
-			if (!IsInstanceValid(this)) {
-				return;
-			}
-
-			_progressBar.Hide();
-			_progressLabel.SetText("下载失败");
 			return;
 		}
-
-		var path = Path.Combine(ModpackConfig!.Path!, "Mods", ApiModRelease.Value.FileName);
-		File.Move(modFile, path, true);
-		Log.Info($"下载完成: {ApiModRelease.Value.FileName}");
 
 		if (ModInfo != null && File.Exists(ModInfo.ModPath) &&
 			!path.Equals(ModInfo.ModPath, StringComparison.OrdinalIgnoreCase)) {

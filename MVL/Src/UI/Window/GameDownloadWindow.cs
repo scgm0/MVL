@@ -9,11 +9,11 @@ using System.Net;
 using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
-using Downloader;
 using Flurl.Http;
 using Godot;
 using MVL.UI.Item;
 using MVL.Utils;
+using MVL.Utils.Downloader;
 using MVL.Utils.Extensions;
 using MVL.Utils.Game;
 using MVL.Utils.Help;
@@ -67,7 +67,6 @@ public partial class GameDownloadWindow : BaseWindow {
 
 	private Dictionary<GameVersion, GameRelease>? _releases;
 
-	private IDownload? _download;
 	private DirAccess? _downloadTmp;
 	private CancellationTokenSource? _cancellation;
 	private string? _lastException;
@@ -136,6 +135,10 @@ public partial class GameDownloadWindow : BaseWindow {
 	private void ReleasePathOnTextChanged(string text) { ValidateInputs(); }
 
 	private void ValidateInputs() {
+		if (!IsInstanceValid(this)) {
+			return;
+		}
+
 		var name = _releaseName!.Text;
 		var path = _releasePath!.Text.NormalizePath();
 		_importButton!.Disabled = false;
@@ -145,6 +148,9 @@ public partial class GameDownloadWindow : BaseWindow {
 			OkButton!.Disabled = true;
 			_tooltip!.Text = _lastException;
 			_tooltip.Modulate = Colors.Red;
+			_loadingControl!.Hide();
+			_contentContainer!.Show();
+			_progressBar!.Hide();
 			return;
 		}
 
@@ -195,15 +201,9 @@ public partial class GameDownloadWindow : BaseWindow {
 		OkButton!.Disabled = false;
 	}
 
-	override protected async void CancelButtonOnPressed() {
-		_download?.Pause();
-		if (_cancellation != null) {
-			await _cancellation.CancelAsync();
-		}
-
-		await Hide();
-		EmitSignalCancel();
-		_download?.Stop();
+	override protected void CancelButtonOnPressed() {
+		_cancellation?.Cancel();
+		base.CancelButtonOnPressed();
 	}
 
 	public override void _ExitTree() {
@@ -236,61 +236,46 @@ public partial class GameDownloadWindow : BaseWindow {
 
 		UpdateProgress(0, "");
 		_cancellation = new();
-		_download = DownloadBuilder.New()
-			.WithUrl(url)
-			.WithDirectory(downloadDir)
-			.WithFileName(downloadInfo.FileName)
-			.WithConfiguration(new() {
-				ParallelDownload = true,
+
+		try {
+			Log.Info($"开始下载: {downloadInfo.FileName}");
+			using var download = new LightDownloader(new() {
 				ChunkCount = Main.BaseConfig.DownloadThreads,
 				ParallelCount = Main.BaseConfig.DownloadThreads,
-				RequestConfiguration = new() {
-					Proxy = string.IsNullOrWhiteSpace(Main.BaseConfig.ProxyAddress)
-						? HttpClient.DefaultProxy
-						: new WebProxy(Main.BaseConfig.ProxyAddress)
-				}
-			})
-			.Build();
+				Proxy = string.IsNullOrWhiteSpace(Main.BaseConfig.ProxyAddress)
+					? HttpClient.DefaultProxy
+					: new WebProxy(Main.BaseConfig.ProxyAddress)
+			});
+			download.ProgressChanged += progress => {
+				var (fmtSpeed, unit) = Tools.GetSizeAndUnit((ulong)progress.SpeedBytesPerSecond);
+				var text = $"{fmtSpeed:F2} {unit}/s";
+				UpdateProgress(progress.Percentage, text);
+			};
 
-		_download.DownloadProgressChanged += (_, args) => {
-			var (fmtSpeed, unit) = Tools.GetSizeAndUnit((ulong)args.BytesPerSecondSpeed);
-			var text = $"{fmtSpeed:F2} {unit}/s";
-			UpdateProgress(args.ProgressPercentage, text);
-		};
+			await download.DownloadAsync(url,
+				downloadDir.PathJoin(downloadInfo.FileName),
+				_cancellation.Token);
+		} catch (OperationCanceledException) {
+			Log.Info($"下载取消 {downloadInfo.FileName}");
+			return;
+		} catch (Exception e) {
+			Log.Error("下载失败", e);
+			_lastException = "下载失败，请重试";
+			ValidateInputs();
+			return;
+		}
 
-		_download.DownloadFileCompleted += (_, args) => {
-			_cancellation.Dispose();
-			_cancellation = null;
-			switch (args) {
-				case { Cancelled: true, Error: OperationCanceledException }: {
-					Log.Info($"下载取消 {downloadInfo.FileName}");
-					break;
-				}
-				case { Cancelled: false, Error: null }: {
-					Log.Info($"下载完成 {downloadInfo.FileName}");
-					var path = _releasePath!.Text.NormalizePath();
-					var name = _releaseName!.Text;
+		var path = _releasePath!.Text.NormalizePath();
+		var name = _releaseName!.Text;
 
-					Dispatcher.SynchronizationContext.Post(_ => {
-							ExtractGame(downloadDir.PathJoin(downloadInfo.FileName), path, name);
-						},
-						null);
-					break;
-				}
-				case { Cancelled: false, Error: not null }: {
-					Log.Error("下载失败", args.Error);
-					break;
-				}
-			}
-
-			_download.Dispose();
-			_download = null;
-		};
-
-		await _download.StartAsync(_cancellation.Token);
+		ExtractGame(downloadDir.PathJoin(downloadInfo.FileName), path, name);
 	}
 
 	private void UpdateProgress(double p, string? n) {
+		if (!IsInstanceValid(this)) {
+			return;
+		}
+
 		if ((ulong)Environment.CurrentManagedThreadId == Tools.MainThreadId) {
 			_progressBar!.Value = p;
 			_progressLabel!.Text = n;
@@ -336,6 +321,7 @@ public partial class GameDownloadWindow : BaseWindow {
 			TitleLabel!.Text = "移动中...";
 			CancelButton!.Disabled = true;
 			var finalDestDir = Path.Combine(outputDir, name).NormalizePath();
+			Log.Info($"开始移动游戏到 {finalDestDir}");
 			await DirMoveAsync(tmpPath,
 				finalDestDir,
 				true,
@@ -350,6 +336,7 @@ public partial class GameDownloadWindow : BaseWindow {
 			return;
 		}
 
+		Log.Info("提取游戏完成");
 		await Hide();
 		InstallGame?.Invoke(Path.Combine(outputDir, name));
 	}

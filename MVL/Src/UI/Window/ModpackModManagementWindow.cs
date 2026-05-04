@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.Json;
+using System.Threading;
 using System.Threading.Tasks;
 using CSemVer;
 using Flurl.Http;
@@ -49,6 +50,7 @@ public partial class ModpackModManagementWindow : BaseWindow {
 
 	private readonly List<ModInfoItem> _autoModInfoItem = [];
 	private List<ModDependency> _modDependencies = [];
+	private CancellationTokenSource _cancellationTokenSource = new();
 
 	public override void _Ready() {
 		base._Ready();
@@ -63,6 +65,7 @@ public partial class ModpackModManagementWindow : BaseWindow {
 		ModpackConfig.NotNull();
 
 		CancelButton!.Pressed += CancelButtonOnPressed;
+		CancelButton.Pressed += _cancellationTokenSource.Cancel;
 		OkButton!.Pressed += OkButtonOnPressed;
 		_searchInput.TextSubmitted += _ => SearchButtonOnPressed();
 		_searchButton.Pressed += SearchButtonOnPressed;
@@ -193,6 +196,7 @@ public partial class ModpackModManagementWindow : BaseWindow {
 			modInfoItem.Window = this;
 			modInfoItem.Mod = modpackConfigMod;
 			modInfoItem.Modulate = Colors.Transparent;
+			modInfoItem.CancellationTokenSource = _cancellationTokenSource;
 			modInfoItem.HasAutoUpdate += ModInfoItemOnHasAutoUpdate;
 			modInfoItem.NeedToDepend += ModInfoItemOnNeedToDepend;
 

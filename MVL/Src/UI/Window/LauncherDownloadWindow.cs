@@ -3,9 +3,9 @@ using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
 using CSemVer;
-using Downloader;
 using Godot;
 using MVL.Utils;
+using MVL.Utils.Downloader;
 using MVL.Utils.Extensions;
 using MVL.Utils.GitHub;
 using MVL.Utils.Help;
@@ -46,7 +46,6 @@ public partial class LauncherDownloadWindow : BaseWindow {
 
 	private CancellationTokenSource? _cancellationTokenSource;
 	private ApiRelease? _apiRelease;
-	private IDownload? _download;
 
 #if GODOT_LINUXBSD
 	private const string FileExtension = ".AppImage";
@@ -93,16 +92,17 @@ public partial class LauncherDownloadWindow : BaseWindow {
 		_chineseRichTextLabel.MetaClicked += Tools.RichTextOpenUrl;
 		_englishRichTextLabel.MetaClicked += Tools.RichTextOpenUrl;
 		_refreshButton.Pressed += () => GetLatestRelease();
-		CancelButton!.Pressed += () => {
-			_cancellationTokenSource?.Cancel();
-			_cancellationTokenSource?.Dispose();
-			_download?.Dispose();
-			CancelButtonOnPressed();
-		};
-		OkButton!.Pressed += OnPressed;
 		_fileDialog.FileSelected += FileDialogOnFileSelected;
 		_usePortableCheckButton.Toggled += UsePortableCheckButtonOnToggled;
-		Hidden += QueueFree;
+		OkButton!.Pressed += OnPressed;
+		CancelButton!.Pressed += () => {
+			_cancellationTokenSource?.Cancel();
+			CancelButtonOnPressed();
+		};
+		Hidden += () => {
+			_cancellationTokenSource?.Dispose();
+			QueueFree();
+		};
 	}
 
 	private void UsePortableCheckButtonOnToggled(bool toggledOn) {
@@ -126,60 +126,36 @@ public partial class LauncherDownloadWindow : BaseWindow {
 		_cancellationTokenSource = new();
 
 		try {
-			_download = _download = DownloadBuilder.New()
-				.WithUrl(ApiAsset!.Value.BrowserDownloadUrl)
-				.WithFileLocation(path)
-				.WithConfiguration(new() {
-					ParallelDownload = true,
-					ChunkCount = Main.BaseConfig.DownloadThreads,
-					ParallelCount = Main.BaseConfig.DownloadThreads,
-					RequestConfiguration = new() {
-						Proxy = string.IsNullOrWhiteSpace(Main.BaseConfig.ProxyAddress)
-							? HttpClient.DefaultProxy
-							: new WebProxy(Main.BaseConfig.ProxyAddress)
-					}
-				})
-				.Build();
-			_download.DownloadProgressChanged += (_, args) => {
-				Dispatcher.SynchronizationContext.Post(_ => {
-						UpdateProgress(args.ProgressPercentage, (ulong)args.BytesPerSecondSpeed);
-					},
-					null);
-			};
-			_download.DownloadFileCompleted += (_, args) => {
-				switch (args) {
-					case { Cancelled: false, Error: null }: {
-						Log.Info($"下载完成 {ApiAsset!.Value.Name}");
-						Dispatcher.SynchronizationContext.Post(_ => {
-								OS.ShellOpen(path.GetBaseDir());
-								CancelButton?.EmitSignal(BaseButton.SignalName.Pressed);
-							},
-							null);
-						return;
-					}
-					case { Cancelled: true, Error: OperationCanceledException }: {
-						Log.Info($"下载取消 {ApiAsset!.Value.Name}");
-						break;
-					}
-					case { Cancelled: false, Error: not null }: {
-						Log.Error("下载失败", args.Error);
-						Dispatcher.SynchronizationContext.Post(_ => {
-								_errorLabel!.Text = "发生错误，请检查网络连接";
-								_errorLabel!.Visible = true;
-								_progressBar!.Visible = false;
-								_loadingColorRect!.Visible = false;
-							},
-							null);
-						break;
-					}
-				}
-			};
-			UpdateProgress(0, 0);
 			Log.Info($"开始下载 {ApiAsset!.Value.Name}");
-			await _download.StartAsync(_cancellationTokenSource.Token);
+			using var download = new LightDownloader(new() {
+				ChunkCount = Main.BaseConfig.DownloadThreads,
+				ParallelCount = Main.BaseConfig.DownloadThreads,
+				Proxy = string.IsNullOrWhiteSpace(Main.BaseConfig.ProxyAddress)
+					? HttpClient.DefaultProxy
+					: new WebProxy(Main.BaseConfig.ProxyAddress)
+			});
+			download.ProgressChanged += progress => {
+				UpdateProgress(progress.Percentage, (ulong)progress.SpeedBytesPerSecond);
+			};
+
+			await download.DownloadAsync(ApiAsset!.Value.BrowserDownloadUrl,
+				path,
+				_cancellationTokenSource.Token);
+		} catch (OperationCanceledException) {
+			Log.Info("下载取消");
+			return;
 		} catch (Exception e) {
-			Log.Error(e);
+			Log.Error("下载失败", e);
+			_errorLabel!.Text = "发生错误，请检查网络连接";
+			_errorLabel!.Visible = true;
+			_progressBar!.Visible = false;
+			_loadingColorRect!.Visible = false;
+			return;
 		}
+
+		Log.Info("下载完成");
+		OS.ShellOpen(path.GetBaseDir());
+		await Hide();
 	}
 
 	private void UpdateProgress(double percentage, ulong speed) {
