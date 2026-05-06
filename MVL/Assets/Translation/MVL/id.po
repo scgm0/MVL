@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: 神麤詭末的复古物语启动器\n"
-"PO-Revision-Date: 2026-04-04 10:09+0000\n"
+"PO-Revision-Date: 2026-05-07 08:11+0000\n"
 "Last-Translator: Arif Budiman <arifpedia@gmail.com>\n"
 "Language-Team: Indonesian <https://hosted.weblate.org/projects/mvl/mvl/id/>\n"
 "Language: id\n"
@@ -13,7 +13,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8-bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 5.17-dev\n"
+"X-Generator: Weblate 5.17.1\n"
 
 msgid "神麤詭末的复古物语启动器"
 msgstr "Peluncur VintageStory milik MystiVaid"
@@ -621,22 +621,22 @@ msgid "移除"
 msgstr "Hapus"
 
 msgid "移动中..."
-msgstr ""
+msgstr "Memindahkan..."
 
 msgid "正在扫描文件总数..."
-msgstr ""
+msgstr "Memindai jumlah total berkas..."
 
 msgid "InnoSetup版本不受支持"
-msgstr ""
+msgstr "Versi InnoSetup tidak didukung"
 
 msgid "安装文件已损坏或不兼容"
-msgstr ""
+msgstr "Berkas instalasi rusak atau tidak kompatibel"
 
 msgid "innounp发生内部或未知错误"
-msgstr ""
+msgstr "Terjadi kesalahan internal atau tidak diketahui di innounp"
 
 msgid "innounp异常退出，状态码: {0}"
-msgstr ""
+msgstr "innounp keluar secara tidak normal, kode status: {0}"
 
 msgid "提取游戏失败: {0}"
-msgstr ""
+msgstr "Gagal mengekstrak game: {0}"
