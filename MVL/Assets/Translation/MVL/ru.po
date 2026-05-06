@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: 神麤詭末的复古物语启动器\n"
-"PO-Revision-Date: 2026-04-07 11:09+0000\n"
+"PO-Revision-Date: 2026-05-07 08:11+0000\n"
 "Last-Translator: Xapitonov <sergejharitonov001@gmail.com>\n"
 "Language-Team: Russian <https://hosted.weblate.org/projects/mvl/mvl/ru/>\n"
 "Language: ru\n"
@@ -14,7 +14,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8-bit\n"
 "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
 "n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
-"X-Generator: Weblate 5.17-dev\n"
+"X-Generator: Weblate 5.17.1\n"
 
 msgid "神麤詭末的复古物语启动器"
 msgstr "Лаунчер VintageStory от MystiVaid"
@@ -623,22 +623,22 @@ msgid "移除"
 msgstr "Удалить"
 
 msgid "移动中..."
-msgstr ""
+msgstr "Перемещение..."
 
 msgid "正在扫描文件总数..."
-msgstr ""
+msgstr "Идёт подсчёт общего количества файлов..."
 
 msgid "InnoSetup版本不受支持"
-msgstr ""
+msgstr "Версия Inno Setup не поддерживается"
 
 msgid "安装文件已损坏或不兼容"
-msgstr ""
+msgstr "Установочный файл повреждён или несовместим"
 
 msgid "innounp发生内部或未知错误"
-msgstr ""
+msgstr "В innounp произошла внутренняя или неизвестная ошибка"
 
 msgid "innounp异常退出，状态码: {0}"
-msgstr ""
+msgstr "innounp завершился аварийно, код состояния: {0}"
 
 msgid "提取游戏失败: {0}"
-msgstr ""
+msgstr "Не удалось извлечь игру: {0}"
