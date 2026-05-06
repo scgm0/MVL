@@ -190,10 +190,12 @@ public partial class ApiModReleaseItem : PanelContainer {
 
 		var path = Path.Combine(ModpackConfig!.Path!, "Mods", ApiModRelease!.Value.FileName);
 		try {
-			await ApiModRelease.Value.DownloadMainFileAsync(path,progress => {
-				_progressBar.SetValue(progress.Percentage);
-				_progressLabel.SetText($"{progress.Percentage:F1}%");
-			}, CancellationTokenSource?.Token ?? CancellationToken.None);
+			await ApiModRelease.Value.DownloadMainFileAsync(path,
+				progress => {
+					_progressBar.SetValue(progress.Percentage);
+					_progressLabel.SetText($"{progress.Percentage:F1}%");
+				},
+				CancellationTokenSource?.Token ?? CancellationToken.None);
 		} catch (OperationCanceledException) {
 			Log.Info($"取消下载: {ApiModRelease!.Value.FileName}");
 			return;
@@ -207,10 +209,9 @@ public partial class ApiModReleaseItem : PanelContainer {
 			return;
 		}
 
-		if (ModInfo != null && File.Exists(ModInfo.ModPath) &&
-			!path.Equals(ModInfo.ModPath, StringComparison.OrdinalIgnoreCase)) {
-			File.Delete(ModInfo.ModPath);
-			Log.Debug($"删除旧文件: {ModInfo.ModPath.GetFile()}");
+		if (ModInfo != null && !path.Equals(ModInfo.ModPath)) {
+			ModInfo.DeleteMod();
+			Log.Debug($"删除旧模组: {ModInfo.ModPath.GetFile()}");
 		}
 
 		var mod = await ModInfo.FromZip(path);

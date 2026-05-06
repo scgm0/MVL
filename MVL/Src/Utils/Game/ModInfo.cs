@@ -93,6 +93,20 @@ public record ModInfo : IComparable<ModInfo> {
 		return null;
 	}
 
+	public void DeleteMod() {
+		switch (ModFileType) {
+			case ModFileType.None: return;
+			case ModFileType.Assembly:
+			case ModFileType.Zip:
+				File.Delete(ModPath);
+				break;
+			case ModFileType.Directory:
+				Directory.Delete(ModPath, true);
+				break;
+			default: throw new ArgumentOutOfRangeException();
+		}
+	}
+
 	public static string? ToModId(string? name) {
 		if (name == null) {
 			return null;

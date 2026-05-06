@@ -101,18 +101,15 @@ public partial class ModInfoItem : PanelContainer {
 		var confirmationWindow = Main.Instance!.OpenConfirmationWindow(string.Format(Tr("确定要删除 [b]{0}[/b] 吗？"), Mod!.Name));
 		confirmationWindow.Hidden += confirmationWindow.QueueFree;
 		confirmationWindow.Confirm += async () => {
-			await confirmationWindow.Hide();
-			CanUpdate = false;
-			HasAutoUpdate?.Invoke(this);
-			File.Delete(Mod!.ModPath);
-
-			await Window!.ModpackConfig!.UpdateModsAsync();
-			var newMod = Window.ModpackConfig.Mods.Values.FirstOrDefault(x => x.ModId == Mod.ModId);
-			if (newMod is not null) {
-				Mod = newMod;
-				await UpdateApiModInfo();
-			} else {
+			try {
+				Mod.DeleteMod();
 				QueueFree();
+				Log.Info($"删除模组: {Mod!.Name}");
+				await confirmationWindow.Hide();
+				await Window!.ModpackConfig!.UpdateModsAsync();
+			} catch (Exception e) {
+				Log.Error($"删除模组失败: {Mod!.ModPath}", e);
+				confirmationWindow.Message = Tr("删除模组失败: {0}", e.Message);
 			}
 		};
 		_ = confirmationWindow.Show();
@@ -146,7 +143,7 @@ public partial class ModInfoItem : PanelContainer {
 			return;
 		}
 
-		if (File.Exists(Mod.ModPath) && !path.Equals(Mod.ModPath, StringComparison.OrdinalIgnoreCase)) {
+		if (File.Exists(Mod.ModPath) && !path.Equals(Mod.ModPath)) {
 			File.Delete(Mod.ModPath);
 			Log.Debug($"删除旧文件: {Mod.ModPath.GetFile()}");
 		}
