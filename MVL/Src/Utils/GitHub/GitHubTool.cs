@@ -23,8 +23,7 @@ public static class GitHubTool {
 		var proxyUrl = GetProxyRequestUrl(proxy);
 		var requestUrl = $"{proxyUrl}{releaseUrl}";
 
-		var stream = await new Url(requestUrl)
-			.WithHeader("User-Agent", "MVL")
+		var stream = await requestUrl
 			.WithHeader("Accept", "application/vnd.github+json")
 			.GetStreamAsync(cancellationToken: cancellationToken);
 

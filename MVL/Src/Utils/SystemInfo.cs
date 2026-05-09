@@ -9,12 +9,15 @@ namespace MVL.Utils;
 // ReSharper disable once PartialTypeWithSinglePart
 public static partial class SystemInfo {
 #if GODOT_WINDOWS
-	public static string OSDescription => field ??=
- $"{OS.GetName()} {OS.GetVersionAlias()} {RuntimeInformation.OSArchitecture}";
-#elif GODOT_LINUXBSD
+	public static string OSVersion => field ??= OS.GetVersion();
 	public static string OSDescription =>
 		field ??=
-			$"{RuntimeInformation.OSDescription} {File.ReadAllText("/proc/sys/kernel/osrelease").Trim()} {RuntimeInformation.OSArchitecture}";
+			$"{OS.GetName()} {OSVersion} {RuntimeInformation.OSArchitecture}";
+#elif GODOT_LINUXBSD
+	public static string OSVersion => field ??= File.ReadAllText("/proc/sys/kernel/osrelease").Trim();
+	public static string OSDescription =>
+		field ??=
+			$"{RuntimeInformation.OSDescription} {OSVersion} {RuntimeInformation.OSArchitecture}";
 #endif
 	public static string ProcessorName => field ??= OS.GetProcessorName();
 	public static int ProcessorCount => Environment.ProcessorCount;

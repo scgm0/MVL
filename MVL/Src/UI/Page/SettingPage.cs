@@ -327,7 +327,7 @@ public partial class SettingPage : MenuPage {
 
 		try {
 			Log.Debug($"检测第三方游戏链接: {url}");
-			await using var stream = await url.WithTimeout(10).GetStreamAsync();
+			await using var stream = await url.GetStreamAsync();
 			var releases = await JsonSerializer.DeserializeAsync(
 				stream,
 				SourceGenerationContext.Default.DictionaryGameVersionGameRelease

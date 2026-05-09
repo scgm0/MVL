@@ -38,7 +38,8 @@ public record struct ApiModRelease {
 			ParallelCount = Main.BaseConfig.DownloadThreads,
 			Proxy = string.IsNullOrWhiteSpace(Main.BaseConfig.ProxyAddress)
 				? HttpClient.DefaultProxy
-				: new WebProxy(Main.BaseConfig.ProxyAddress)
+				: new WebProxy(Main.BaseConfig.ProxyAddress),
+			UserAgent = Tools.UserAgent
 		});
 		download.ProgressChanged += onProgress;
 		await download.DownloadAsync(MainFile,

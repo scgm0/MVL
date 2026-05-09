@@ -132,7 +132,8 @@ public partial class LauncherDownloadWindow : BaseWindow {
 				ParallelCount = Main.BaseConfig.DownloadThreads,
 				Proxy = string.IsNullOrWhiteSpace(Main.BaseConfig.ProxyAddress)
 					? HttpClient.DefaultProxy
-					: new WebProxy(Main.BaseConfig.ProxyAddress)
+					: new WebProxy(Main.BaseConfig.ProxyAddress),
+				UserAgent = Tools.UserAgent
 			});
 			download.ProgressChanged += progress => {
 				UpdateProgress(progress.Percentage, (ulong)progress.SpeedBytesPerSecond);

@@ -6,6 +6,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Sockets;
 using System.Numerics;
+using System.Runtime.InteropServices;
 using System.Security.Cryptography;
 using System.Threading.Tasks;
 using CSemVer;
@@ -23,6 +24,7 @@ public static class Tools {
 	public static SceneTree SceneTree { get; } = (SceneTree)Engine.GetMainLoop();
 	public static MessagePackSerializer PackSerializer { get; } = new();
 	public static bool IsEditorHint { get; } = Engine.IsEditorHint();
+	public static string UserAgent { get; } = $"MVL/{BuildInfo.InformationalVersion} ({OS.GetName()} {SystemInfo.OSVersion}; {RuntimeInformation.OSArchitecture})";
 
 	public static void RichTextOpenUrl(Variant url) { Task.Run(() => OS.ShellOpen(url.AsString())); }
 
