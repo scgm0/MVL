@@ -586,32 +586,26 @@ public partial class Main : NativeWindowUtility {
 				EnableRaisingEvents = true
 			};
 
-			var hide = false;
-			process.OutputDataReceived += (_, args) => {
-				if (args.Data == null) {
-					return;
-				}
-
-				Console.Out.WriteLine(args.Data);
-				if (hide) {
-					return;
-				}
-
-				Dispatcher.SynchronizationContext.Post(_ => { Tools.SceneTree.Root.Minimize(); }, null);
-				hide = true;
-			};
-			process.ErrorDataReceived += (_, args) => {
-				if (args.Data == null) {
-					return;
-				}
-
-				Console.Error.WriteLine(args.Data);
-			};
-
 			process.Start();
-			process.BeginOutputReadLine();
-			process.BeginErrorReadLine();
+			var outStream = process.StandardOutput.BaseStream;
+			var errStream = process.StandardError.BaseStream;
+			var outTarget = Console.OpenStandardOutput();
+			var errTarget = Console.OpenStandardError();
+			_ = errStream.CopyToAsync(errTarget);
+			_ = ProcessOutputAsync();
 			return process;
+
+			async Task ProcessOutputAsync() {
+				var line = await process.StandardOutput.ReadLineAsync();
+				if (line == "VS Run Initialize ") {
+					Tools.SceneTree.Root.Minimize();
+				} else {
+					Log.Error("VSRun初始化失败");
+				}
+
+				Console.WriteLine("VS Run Initialize");
+				await outStream.CopyToAsync(outTarget);
+			}
 		} catch (Exception e) {
 			Log.Error(e);
 			return null;
@@ -744,11 +738,15 @@ public partial class Main : NativeWindowUtility {
 				command);
 
 			if (process is null) {
+				GameExitEvent?.Invoke();
+				tmp.Dispose();
+				CurrentRunModpack = null;
 				return;
 			}
 
 			CurrentGameProcess = process;
 			process.Exited += (_, _) => {
+				Log.Info("游戏进程已退出");
 				GameExitEvent?.Invoke();
 				tmp.Dispose();
 				process.Dispose();
