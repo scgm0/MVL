@@ -597,7 +597,7 @@ public partial class Main : NativeWindowUtility {
 
 			async Task ProcessOutputAsync() {
 				var line = await process.StandardOutput.ReadLineAsync();
-				if (line == "VS Run Initialize ") {
+				if (line == "VS Run Initialize") {
 					Tools.SceneTree.Root.Minimize();
 				} else {
 					Log.Error("VSRun初始化失败");
