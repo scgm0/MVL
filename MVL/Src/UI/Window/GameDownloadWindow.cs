@@ -421,12 +421,13 @@ public partial class GameDownloadWindow : BaseWindow {
 		}
 	}
 
-	public static async Task ExtractTarGzAsync(
+	public async Task ExtractTarGzAsync(
 		string filePath,
 		string tempDir,
 		Action<double, string?>? extractProgress = null,
 		CancellationToken cancellationToken = default) {
-		extractProgress?.Invoke(0, "正在扫描文件总数...");
+		var str = Tr("正在扫描文件总数: {0}");
+		extractProgress?.Invoke(0, string.Format(str, 0));
 
 		const int bufferSize = 131072;
 		const FileOptions fileOpts = FileOptions.Asynchronous | FileOptions.SequentialScan;
@@ -441,6 +442,7 @@ public partial class GameDownloadWindow : BaseWindow {
 				cancellationToken.ThrowIfCancellationRequested();
 				if (scanEntry.EntryType == TarEntryType.RegularFile) {
 					totalFiles++;
+					extractProgress?.Invoke(0, string.Format(str, totalFiles));
 				}
 			}
 		}
@@ -452,7 +454,7 @@ public partial class GameDownloadWindow : BaseWindow {
 
 		var extractedFiles = 0;
 		var pathComparer = OperatingSystem.IsWindows() ? StringComparer.OrdinalIgnoreCase : StringComparer.Ordinal;
-		HashSet<string> createdDirs = new(pathComparer) { tempDir };
+		HashSet<string> createdDirs = [with(pathComparer), tempDir];
 		var dirLookup = createdDirs.GetAlternateLookup<ReadOnlySpan<char>>();
 
 		await using FileStream fs = new(filePath, FileMode.Open, FileAccess.Read, FileShare.Read, bufferSize, fileOpts);
@@ -512,7 +514,7 @@ public partial class GameDownloadWindow : BaseWindow {
 		extractProgress?.Invoke(100, $"{totalFiles} / {totalFiles}");
 	}
 
-	public static async Task ExtractInnoSetupAsync(
+	public async Task ExtractInnoSetupAsync(
 		string filePath,
 		string appDir,
 		Action<double, string?>? extractProgress = null,
@@ -523,7 +525,8 @@ public partial class GameDownloadWindow : BaseWindow {
 		var innoExtract = tmpRunPath.PathJoin("innounp.exe");
 		tmp.Copy(innoExtractPath, innoExtract.NormalizePath());
 
-		extractProgress?.Invoke(0, "正在扫描文件总数...");
+		var str = Tr("正在扫描文件总数: {0}");
+		extractProgress?.Invoke(0, string.Format(str, 0));
 		var totalFiles = 0;
 
 		using (Process countProcess = new()) {
@@ -538,15 +541,26 @@ public partial class GameDownloadWindow : BaseWindow {
 			countProcess.Start();
 
 			try {
+				var errReader = countProcess.StandardError;
+				var errorReadTask = Task.Run(async () => {
+						while (await errReader.ReadLineAsync(CancellationToken.None).ConfigureAwait(false) is { } errLine) {
+							if (!string.IsNullOrWhiteSpace(errLine)) {
+								Log.Error(errLine);
+							}
+						}
+					},
+					cancellationToken);
+
 				var reader = countProcess.StandardOutput;
 				while (await reader.ReadLineAsync(cancellationToken).ConfigureAwait(false) is { } line) {
 					cancellationToken.ThrowIfCancellationRequested();
 					if (line.AsSpan().TrimStart().StartsWith("{app}")) {
 						totalFiles++;
+						extractProgress?.Invoke(0, string.Format(str, totalFiles));
 					}
 				}
 
-				await countProcess.WaitForExitAsync(cancellationToken).ConfigureAwait(false);
+				await Task.WhenAll(countProcess.WaitForExitAsync(cancellationToken), errorReadTask).ConfigureAwait(false);
 			} finally {
 				countProcess.Kill();
 			}
@@ -579,6 +593,7 @@ public partial class GameDownloadWindow : BaseWindow {
 		};
 
 		extractProcess.Start();
+
 
 		try {
 			var errReader = extractProcess.StandardError;
@@ -653,7 +668,7 @@ public partial class GameDownloadWindow : BaseWindow {
 		var sourcePrefixLength = normalizedSource.Length + 1;
 
 		var pathComparer = OperatingSystem.IsWindows() ? StringComparer.OrdinalIgnoreCase : StringComparer.Ordinal;
-		HashSet<string> createdDirs = new(pathComparer) { destDirName };
+		HashSet<string> createdDirs = [with(pathComparer), destDirName];
 		var dirLookup = createdDirs.GetAlternateLookup<ReadOnlySpan<char>>();
 
 		await Task.Run(() => {

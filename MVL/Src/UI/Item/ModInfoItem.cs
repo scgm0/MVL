@@ -64,12 +64,13 @@ public partial class ModInfoItem : PanelContainer {
 
 	public event Action<ModDependency>? NeedToDepend;
 
-	static private readonly HashSet<string> SystemModIds = new(StringComparer.OrdinalIgnoreCase) {
+	static private readonly HashSet<string> SystemModIds = [
+		with(StringComparer.OrdinalIgnoreCase),
 		"game",
 		"survival",
 		"essentials",
 		"creative"
-	};
+	];
 
 	public override void _Ready() {
 		_icon.NotNull();

@@ -623,8 +623,8 @@ msgstr "Hapus"
 msgid "移动中..."
 msgstr "Memindahkan..."
 
-msgid "正在扫描文件总数..."
-msgstr "Memindai jumlah total berkas..."
+msgid "正在扫描文件总数: {0}"
+msgstr "Memindai jumlah total berkas: {0}"
 
 msgid "InnoSetup版本不受支持"
 msgstr "Versi InnoSetup tidak didukung"

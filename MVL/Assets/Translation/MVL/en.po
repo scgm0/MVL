@@ -616,8 +616,8 @@ msgstr "Remove"
 msgid "移动中..."
 msgstr "Moving..."
 
-msgid "正在扫描文件总数..."
-msgstr "Scanning total number of files..."
+msgid "正在扫描文件总数: {0}"
+msgstr "Scanning total number of files: {0}"
 
 msgid "InnoSetup版本不受支持"
 msgstr "InnoSetup version is not supported"
