@@ -535,6 +535,7 @@ public partial class GameDownloadWindow : BaseWindow {
 				Arguments = $"-s -b -h \"{filePath}\"",
 				UseShellExecute = false,
 				RedirectStandardOutput = true,
+				RedirectStandardError = true,
 				CreateNoWindow = true
 			};
 
