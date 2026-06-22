@@ -95,7 +95,16 @@ jobs:
         continue-on-error: true
 
       - name: 4.3. Download Direct3D 12 SDK components
-        run: python ./godot/misc/scripts/install_d3d12_sdk_windows.py
+        shell: sh
+        id: d3d12-sdk
+        run: |
+          if python ./godot/misc/scripts/install_d3d12_sdk_windows.py; then
+            echo "D3D12_ENABLED=yes" >> "$GITHUB_OUTPUT"
+          else
+            echo "::warning::Windows: Direct3D 12 SDK installation failed, building without Direct3D 12 support."
+            echo "D3D12_ENABLED=no" >> "$GITHUB_OUTPUT"
+          fi
+        continue-on-error: true
 
       - name: 4.4. Download pre-built ANGLE
         shell: sh
@@ -108,7 +117,12 @@ jobs:
             echo "ANGLE_ENABLED=no" >> "$GITHUB_OUTPUT"
           fi
 
-      - name: 4.5. Compilation Editor
+      - name: 4.5. Download WinRT components
+        shell: sh
+        run: python ./godot/misc/scripts/install_winrt.py
+        continue-on-error: true
+
+      - name: 4.6. Compilation Editor
         uses: ./mvl-repo/.github/actions/godot-build
         with:
           scons-flags: >-
@@ -121,7 +135,7 @@ jobs:
           platform: windows
           target: editor
 
-      - name: 4.6. Compilation Release Template
+      - name: 4.7. Compilation Release Template
         uses: ./mvl-repo/.github/actions/godot-build
         with:
           scons-flags: >-
@@ -134,13 +148,13 @@ jobs:
           platform: windows
           target: template_release
 
-      - name: 4.7. Save Godot build cache
+      - name: 4.8. Save Godot build cache
         uses: ./mvl-repo/.github/actions/godot-cache-save
         with:
           cache-name: ${{ matrix.cache-name }}
         continue-on-error: true
 
-      - name: 4.8. Generate C# glue
+      - name: 4.9. Generate C# glue
         shell: powershell
         run: |
           & ${{ matrix.bin }} --headless --generate-mono-glue ./godot/modules/mono/glue
