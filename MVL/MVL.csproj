@@ -1,4 +1,4 @@
-<Project Sdk="Godot.NET.Sdk/4.7.0-beta">
+<Project Sdk="Godot.NET.Sdk/4.8.0-dev">
     <PropertyGroup>
         <TargetFramework>net10.0</TargetFramework>
         <Nullable>enable</Nullable>
@@ -21,8 +21,8 @@
         <PackageReference Include="CSemVer" Version="13.0.0" />
         <PackageReference Include="Flurl.Http" Version="4.0.2" />
         <PackageReference Include="Mono.Cecil" Version="0.11.6" />
-        <PackageReference Include="Nerdbank.MessagePack" Version="1.1.62" />
-        <PackageReference Include="NetMQ" Version="4.0.4.1" />
+        <PackageReference Include="Nerdbank.MessagePack" Version="1.2.4" />
+        <PackageReference Include="NetMQ" Version="4.0.4.2" />
         <PackageReference Include="PublishAotCross.LinuxToWin" Version="1.0.0" />
         <PackageReference Include="ZLogger" Version="2.5.10" />
     </ItemGroup>
