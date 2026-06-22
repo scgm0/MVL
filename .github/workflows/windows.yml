@@ -98,7 +98,8 @@ jobs:
         shell: sh
         id: d3d12-sdk
         run: |
-          if python ./godot/misc/scripts/install_d3d12_sdk_windows.py; then
+          cd ./godot
+          if python ./misc/scripts/install_d3d12_sdk_windows.py; then
             echo "D3D12_ENABLED=yes" >> "$GITHUB_OUTPUT"
           else
             echo "::warning::Windows: Direct3D 12 SDK installation failed, building without Direct3D 12 support."
@@ -110,7 +111,8 @@ jobs:
         shell: sh
         id: angle-sdk
         run: |
-          if python ./godot/misc/scripts/install_angle.py; then
+          cd ./godot
+          if python ./misc/scripts/install_angle.py; then
             echo "ANGLE_ENABLED=yes" >> "$GITHUB_OUTPUT"
           else
             echo "::warning::ANGLE SDK installation failed, building without ANGLE support."
@@ -119,7 +121,9 @@ jobs:
 
       - name: 4.5. Download WinRT components
         shell: sh
-        run: python ./godot/misc/scripts/install_winrt.py
+        run: |
+          cd ./godot
+          python ./misc/scripts/install_winrt.py
         continue-on-error: true
 
       - name: 4.6. Compilation Editor
