@@ -5,605 +5,641 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: 神麤詭末的复古物语启动器\n"
-"Last-Translator: Automatically generated\n"
-"Language-Team: none\n"
+"PO-Revision-Date: 2026-06-27 04:03+0000\n"
+"Last-Translator: flexioo <maytsider@gmail.com>\n"
+"Language-Team: Ukrainian <https://hosted.weblate.org/projects/mvl/mvl/uk/>\n"
 "Language: uk\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8-bit\n"
-"Plural-Forms: nplurals=3; plural=n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
-"n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
+"n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+"X-Generator: Weblate 2026.7.dev0\n"
 
 msgid "神麤詭末的复古物语启动器"
-msgstr ""
+msgstr "Лаунчер VintageStory від MystiVaid"
 
 msgid "菜单"
-msgstr ""
+msgstr "Меню"
 
 msgid "主页"
-msgstr ""
+msgstr "Головна"
 
 msgid "整合"
-msgstr ""
+msgstr "Модпак"
 
 msgid "版本"
-msgstr ""
+msgstr "Реліз"
 
 msgid "浏览"
-msgstr ""
+msgstr "Перегляд"
 
 msgid "设置"
-msgstr ""
+msgstr "Налаштування"
 
 msgid "关于"
-msgstr ""
+msgstr "Інформація"
 
 msgid "点击登录账号"
-msgstr ""
+msgstr "Натисніть, щоб увійти в свій профіль"
 
 msgid "启动游戏"
-msgstr ""
+msgstr "Грати"
 
 msgid "停止游戏"
-msgstr ""
+msgstr "Зупинити"
 
 msgid "确定"
-msgstr ""
+msgstr "Добре"
 
 msgid "取消"
-msgstr ""
+msgstr "Відмінити"
 
 msgid "贡献者"
-msgstr ""
+msgstr "Співавтор"
 
 msgid "赞助者"
-msgstr ""
+msgstr "Спонсор"
 
 msgid "许可证"
-msgstr ""
+msgstr "Ліцензія"
 
 msgid "图标制作"
-msgstr ""
+msgstr "Створення Значка"
 
 msgid "项目创始人"
-msgstr ""
+msgstr "Засновник Проекту"
 
 msgid "主要开发者"
-msgstr ""
+msgstr "Головний Розробник"
 
 msgid "开发人员"
-msgstr ""
+msgstr "Розробник"
 
 msgid "私人赞助"
-msgstr ""
+msgstr "Приватне Спонсорство"
 
 msgid "添加整合包"
-msgstr ""
+msgstr "Додати Модпак"
 
 msgid "选择游戏版本"
-msgstr ""
+msgstr "Виберіть Версію Гри"
 
 msgid "账号登录"
-msgstr ""
+msgstr "Вхід до Профілю"
 
 msgid "请先选择一个整合包"
-msgstr ""
+msgstr "Спочатку виберіть модпак, будь ласка"
 
 msgid "请先在整合界面添加一个整合包"
-msgstr ""
+msgstr "Спочатку додайте модпак в інтерфейсі модпаків, будь ласка"
 
 msgid "请先在版本界面中导入游戏"
-msgstr ""
+msgstr "Спочатку імортуйте гру в інтерфейсі релізів, будь ласка"
 
 msgid "选择已安装版本"
-msgstr ""
+msgstr "Виберіть встановлений реліз"
 
 msgid "请输入名称"
-msgstr ""
+msgstr "Будь ласка, введіть ім'я"
 
 msgid "请输入路径"
-msgstr ""
+msgstr "Будь ласка, вкажіть шлях"
 
 msgid "路径包含非法字符"
-msgstr ""
+msgstr "Шлях містить недопустимі символи"
 
 msgid "父文件夹不存在"
-msgstr ""
+msgstr "Батьківської теки не існує"
 
 msgid "文件夹不存在"
-msgstr ""
+msgstr "Теки не існує"
 
 msgid "将自动创建文件夹"
-msgstr ""
+msgstr "Теки будуть створені автоматично"
 
 msgid "文件夹不为空，确定选择它吗？"
-msgstr ""
+msgstr "Тека не порожня, ви впевнені, що хочете її вибрати?"
 
 msgid "文件夹存在且为空"
-msgstr ""
+msgstr "Тека існує і порожня"
 
 msgid "网络请求失败，请重试"
-msgstr ""
+msgstr "Помилка мережевого запиту. Будь ласка, спробуйте ще раз"
 
 msgid "名称包含非法字符"
-msgstr ""
+msgstr "Ім'я містить недопустимі символи"
 
 msgid "路径不存在"
-msgstr ""
+msgstr "Шляху не існує"
 
 msgid "请选择版本"
-msgstr ""
+msgstr "Будь ласка, виберіть версію"
 
 msgid "'{0}'已存在，确定覆盖它吗？"
-msgstr ""
+msgstr "'{0}' вже існує. Ви впевнені, що хочете перевизначити його?"
 
 msgid "下载中..."
-msgstr ""
+msgstr "Завантаження..."
 
 msgid "提取中..."
-msgstr ""
+msgstr "Розпакування..."
 
 msgid "确定要删除账号 [color=#0078d7][b]{0}[/b][/color] 吗？"
 msgstr ""
+"Ви впевненні, що хочете видалити профіль [color=#0078d7][b]{0}[/b][/color]?"
 
 msgid "整合包名称:"
-msgstr ""
+msgstr "Назва Модпаку:"
 
 msgid "名称不能为空"
-msgstr ""
+msgstr "Назва не може бути порожнім"
 
 msgid "整合包路径:"
-msgstr ""
+msgstr "Шлях Модпаку:"
 
 msgid "创建文件夹"
-msgstr ""
+msgstr "Створення Тек"
 
 msgid "路径不能为空"
-msgstr ""
+msgstr "Шлях не може бути порожнім"
 
 msgid "游戏版本:"
-msgstr ""
+msgstr "Версія Гри:"
 
 msgid "版本名称:"
-msgstr ""
+msgstr "Назва Версії:"
 
 msgid "安装路径:"
-msgstr ""
+msgstr "Шлях Встановлення:"
 
 msgid "邮箱:"
-msgstr ""
+msgstr "Ел. адреса:"
 
 msgid "邮箱不能为空"
-msgstr ""
+msgstr "Ел. адреса не може бути порожня"
 
 msgid "密码:"
-msgstr ""
+msgstr "Пароль:"
 
 msgid "密码不能为空"
-msgstr ""
+msgstr "Пароль не може бути порожнім"
 
 msgid "离线模式"
-msgstr ""
+msgstr "Автономний Режим"
 
 msgid "访问代码:"
-msgstr ""
+msgstr "Код Доступу:"
 
 msgid "若账号开启了2FA，则不能为空"
-msgstr ""
+msgstr "Якщо в обліковому записі ввімкнена 2FA, воно не може бути порожнім"
 
 msgid "玩家名称:"
-msgstr ""
+msgstr "Ім'я Гравця:"
 
 msgid "玩家名称不能为空"
-msgstr ""
+msgstr "Ім'я гравця не може бути порожнім"
 
 msgid "选择版本"
-msgstr ""
+msgstr "Вибрати Версію"
 
 msgid "模组数量: {0}"
-msgstr ""
+msgstr "Кількість Модів: {0}"
 
 msgid "该名称已存在"
-msgstr ""
+msgstr "Назва вже існує"
 
 msgid "请输入邮箱"
-msgstr ""
+msgstr "Будь ласка, введіть вашу ел. адресу"
 
 msgid "请输入密码"
-msgstr ""
+msgstr "Будь ласка, введіть ваш пароль"
 
 msgid "请输入访问代码"
-msgstr ""
+msgstr "Будь ласка, введіть код доступу"
 
 msgid "正在登录..."
-msgstr ""
+msgstr "Здійснюється вхід..."
 
 msgid "请求失败"
-msgstr ""
+msgstr "Помилка Запиту"
 
 msgid "登录成功"
-msgstr ""
+msgstr "Вхід Успішний"
 
 msgid "访问代码错误"
-msgstr ""
+msgstr "Помилка Коду Доступу"
 
 msgid "登录失败: {0}"
-msgstr ""
+msgstr "Помилка Входу: {0}"
 
 msgid "如果启动器对您有所帮助且您财力有余，可以赞助一下开发者，您的支持将促进启动器的开发与完善: [color=#3c7fe1][url]https://afdian.com/a/MystiVaid[/url][/color]"
 msgstr ""
+"Якщо лаунчер видався вам корисним і у вас є змога, розгляньте можливість "
+"спонсорування розробника: Ваша підтримка допоможе надалі просунути та "
+"вдосконалити розробку лаунчера: [color=#3c7fe1][url]https://afdian.com/a/"
+"MystiVaid[/url][/color]"
 
 msgid "不喜欢MVL？那么您还可以试试另一款复古物语启动器: [wave][pulse][rainbow][url=https://vsldocs.xurxomf.xyz]VS Launcher[/url][/rainbow][/pulse][/wave]"
 msgstr ""
+"Не подобається MVL? Ви можете спробувати інший лаунчер для Vintage Story: "
+"[wave][pulse][rainbow][url=https://vsldocs.xurxomf.xyz]VS Launcher[/url][/"
+"rainbow][/pulse][/wave]"
 
 msgid "英语翻译"
-msgstr ""
+msgstr "Англійський Переклад"
 
 msgid "西班牙语翻译"
-msgstr ""
+msgstr "Іспанський Переклад"
 
 msgid "法语翻译"
-msgstr ""
+msgstr "Французький Переклад"
 
 msgid "俄语翻译"
-msgstr ""
+msgstr "Російський Переклад"
 
 msgid "印尼语翻译"
-msgstr ""
+msgstr "Індонезійський Переклад"
 
 msgid "界面"
-msgstr ""
+msgstr "Інтерфейс"
 
 msgid "显示语言"
-msgstr ""
+msgstr "Мови Відображення"
 
 msgid "显示缩放"
-msgstr ""
+msgstr "Масштаб Відображення"
 
 msgid "网络"
-msgstr ""
+msgstr "Мережа"
 
 msgid "代理地址"
-msgstr ""
+msgstr "Адреса Проксі"
 
 msgid "下载线程"
-msgstr ""
+msgstr "Кількість Потоків Завантаження"
 
 msgid "目录"
-msgstr ""
+msgstr "Тека"
 
 msgid "整合目录"
-msgstr ""
+msgstr "Тека Модпаків"
 
 msgid "版本目录"
-msgstr ""
+msgstr "Тека Релізів"
 
 msgid "若为空，则使用系统代理"
-msgstr ""
+msgstr "Якщо порожньо, використовувати системний проксі"
 
 msgid "若为无效路径，则使用默认目录"
-msgstr ""
+msgstr "Якщо шлях недійсний, буде використана стандартна тека"
 
 msgid "警告"
-msgstr ""
+msgstr "Увага"
 
 msgid "启动器运行中，无法重复启动"
-msgstr ""
+msgstr "Лаунчер вже працює і його неможливо запустити повторно"
 
 msgid "复古物语"
-msgstr ""
+msgstr "Vintage Story"
 
 msgid "一个免费、开源且由社区驱动的复古物语启动器"
 msgstr ""
+"Безкоштовний лаунчер Vintage Story з відкритим кодом, керований спільнотою"
 
 msgid "需要安装 [b].NET {1} (x64)[/b] 运行时\n请点击链接下载并安装：\n[color=#3c7fe1][url]https://dotnet.microsoft.com/download/dotnet/{1}[/url][/color]\n是否尝试强制启动游戏？"
 msgstr ""
+"Необхідне встановлення середовища виконання [b].NET {1} (x64)[/b]\n"
+"Перейдіть по посиланню для завантаження:\n"
+"[color=#3c7fe1][url]https://dotnet.microsoft.com/download/dotnet/{1}[/url][/"
+"color]\n"
+"Спробувати запустити гру примусово?"
 
 msgid "无法登录？检查您的游戏账号"
-msgstr ""
+msgstr "Не вдається увійти? Перевірте свій ігровий профіль"
 
 msgid "整合包模组管理"
-msgstr ""
+msgstr "Керування Модами Модпаку"
 
 msgid "输入模组名称"
-msgstr ""
+msgstr "Введіть назву мода"
 
 msgid "搜索模组"
-msgstr ""
+msgstr "Пошук модів"
 
 msgid "同步本地模组信息"
-msgstr ""
+msgstr "Синхронізувати інформацію модів локально"
 
 msgid "同步模组在线信息"
-msgstr ""
+msgstr "Синхронізувати інформацію модів онлайн"
 
 msgid "模组批量更新"
-msgstr ""
+msgstr "Пакетне оновлення модів"
 
 msgid "关闭"
-msgstr ""
+msgstr "Закрити"
 
 msgid "选择要下载的模组版本"
-msgstr ""
+msgstr "Виберіть версію мода для завантаження"
 
 msgid "跳转到ModDB网页"
-msgstr ""
+msgstr "Перейти на сторінку ModDB"
 
 msgid "更新到最新可用版本"
-msgstr ""
+msgstr "Оновити до останної доступної версії"
 
 msgid "查看所有发布版本"
-msgstr ""
+msgstr "Переглянути всі випущені версії"
 
 msgid "删除本地模组"
-msgstr ""
+msgstr "Видалити локальний мод"
 
 msgid "确定要删除 [b]{0}[/b] 吗？"
-msgstr ""
+msgstr "Ви впевнені що хочете видалити [b]{0}[/b]?"
 
 msgid "兼容的游戏版本高于整合包游戏版本，游戏不会加载"
 msgstr ""
+"Сумісна версія гри вища за версію гри, яка зазначена в модпаці, тому гра не "
+"зможе запуститися"
 
 msgid "兼容的游戏版本包含整合包游戏版本，能够安全使用"
 msgstr ""
+"Сумісні версії гри включають версії гри з модпака, що гарантує безпечне "
+"використання"
 
 msgid "兼容的游戏版本低于整合包游戏版本，可能已经过时"
 msgstr ""
+"Сумісна версія гри старіша за версію гри, яка зазначена в модпаці, та може "
+"бути застарілою"
 
 msgid "缺少以下依赖模组，是否尝试从ModDB获取？\n{0}"
 msgstr ""
+"Наступні залежні моди відсутні, спробувати отримати їх з ModDB?\n"
+"{0}"
 
 msgid "正在从ModDB获取模组信息..."
-msgstr ""
+msgstr "Отримання інформації про моди з ModDB..."
 
 msgid "模组作者"
-msgstr ""
+msgstr "Автор Мода"
 
 msgid "游戏版本"
-msgstr ""
+msgstr "Версії Гри"
 
 msgid "模组标签"
-msgstr ""
+msgstr "Теги Модів"
 
 msgid "排序依据"
-msgstr ""
+msgstr "Сортувати по"
 
 msgid "运行位置"
-msgstr ""
+msgstr "Сторона Роботи"
 
 msgid "安装状态"
-msgstr ""
+msgstr "Статус Встановлення"
 
 msgid "上一页"
-msgstr ""
+msgstr "Попередня сторінка"
 
 msgid "下一页"
-msgstr ""
+msgstr "Наступна сторінка"
 
 msgid "任意"
-msgstr ""
+msgstr "Любі"
 
 msgid "客户端"
-msgstr ""
+msgstr "Клієнт"
 
 msgid "服务端"
-msgstr ""
+msgstr "Сервер"
 
 msgid "双方"
-msgstr ""
+msgstr "Обидві"
 
 msgid "创建时间"
-msgstr ""
+msgstr "Час Створення"
 
 msgid "更新时间"
-msgstr ""
+msgstr "Час Оновлення"
 
 msgid "下载数量"
-msgstr ""
+msgstr "Кількість Завантажень"
 
 msgid "关注数量"
-msgstr ""
+msgstr "Кількість Підписників"
 
 msgid "热门趋势"
-msgstr ""
+msgstr "Трендові Теми"
 
 msgid "所有"
-msgstr ""
+msgstr "Усі"
 
 msgid "已安装"
-msgstr ""
+msgstr "Встановлено"
 
 msgid "未安装"
-msgstr ""
+msgstr "Не Встановлено"
 
 msgid "获取在线信息时发生错误，请检查网络连接"
 msgstr ""
+"Сталася помилка під час отримання інформації з Інтернету, будь ласка, "
+"перевірте ваше підключення до мережі"
 
 msgid "请先创建整合包"
-msgstr ""
+msgstr "Спочатку створіть Модпак, будь ласка"
 
 msgid "没有找到符合条件的模组"
-msgstr ""
+msgstr "Не знайдено жодного мода, що відповідає умовам пошуку"
 
 msgid "获取模组信息失败"
-msgstr ""
+msgstr "Не вдалося отримати інформацію про модифікацію"
 
 msgid "导入已安装游戏"
-msgstr ""
+msgstr "Імпортувати встановлену гру"
 
 msgid "渲染驱动"
-msgstr ""
+msgstr "Драйвер Рендерингу"
 
 msgid "浏览在线模组"
-msgstr ""
+msgstr "Шукати Онлайн Модифікації"
 
 msgid "菜单展开"
-msgstr ""
+msgstr "Розгортання Меню"
 
 msgid "已将渲染驱动更改为 [color=#3c7fe1]{0}[/color]\n需要重启才能生效，是否立即重启？"
 msgstr ""
+"Драйвер рендерингу змінено на [color=#3c7fe1]{0}[/color]\n"
+"Щоб зміни набули чинності, необхідне перезавантаження програми. Бажаєте "
+"перезавантажити зараз?"
 
 msgid "启动时展开菜单"
-msgstr ""
+msgstr "Розгортати меню під час запуску"
 
 msgid "翻译目录"
-msgstr ""
+msgstr "Тека Перекладів"
 
 msgid "更新"
-msgstr ""
+msgstr "Оновити"
 
 msgid "GitHub代理"
-msgstr ""
+msgstr "GitHub Проксі"
 
 msgid "自动检查"
-msgstr ""
+msgstr "Автоперевірка"
 
 msgid "最新版本"
-msgstr ""
+msgstr "Остання Версія"
 
 msgid "启动时检查版本"
-msgstr ""
+msgstr "Перевіряти версію під час запуску"
 
 msgid "正在获取最新版本"
-msgstr ""
+msgstr "Отримання останньої версії"
 
 msgid "重新获取"
-msgstr ""
+msgstr "Повторити Отримання"
 
 msgid "下载"
-msgstr ""
+msgstr "Завантажити"
 
 msgid "便携式可执行文件"
-msgstr ""
+msgstr "Портативний виконуваний файл"
 
 msgid "无新版本"
-msgstr ""
+msgstr "Немає нових версій"
 
 msgid "发现新版本"
-msgstr ""
+msgstr "Знайдена нова версія"
 
 msgid "没有找到可用的下载文件"
-msgstr ""
+msgstr "Доступних файлів для завантаження не знайдено"
 
 msgid "发生错误，请检查网络连接"
-msgstr ""
+msgstr "Сталась помилка. Будь ласка, перевірте підключення до мережі"
 
 msgid "获取最新版本失败"
-msgstr ""
+msgstr "Не вдалося отримати останню версію"
 
 msgid "整合包的游戏版本无效，无法判断是否兼容"
 msgstr ""
+"Версія гри, яка зазначена в модпаці, недійсна, сумісність визначити неможливо"
 
 msgid "请先为整合包选择游戏版本"
-msgstr ""
+msgstr "Спочатку виберіть версію гри для модпака, будь ласка"
 
 msgid "无法启动"
-msgstr ""
+msgstr "Неможливо грати"
 
 msgid "整合包作者:"
-msgstr ""
+msgstr "Автор Модпака:"
 
 msgid "未知"
-msgstr ""
+msgstr "Невідомий"
 
 msgid "整合包没有简介"
-msgstr ""
+msgstr "Модпак не має опису"
 
 msgid "整合包设置"
-msgstr ""
+msgstr "Налаштування Модпака"
 
 msgid "整合包图标"
-msgstr ""
+msgstr "Значок Модпака"
 
 msgid "整合包名称"
-msgstr ""
+msgstr "Назва Модпака"
 
 msgid "整合包简介"
-msgstr ""
+msgstr "Опис Модпака"
 
 msgid "额外设置"
-msgstr ""
+msgstr "Додаткові Налаштування"
 
 msgid "启动命令"
-msgstr ""
+msgstr "Команда Запуску"
 
 msgid "主程序集"
-msgstr ""
+msgstr "Головна Збірка"
 
 msgid "语言代码"
-msgstr ""
+msgstr "Код Мови"
 
 msgid "本地化文本"
-msgstr ""
+msgstr "Локалізований текст"
 
 msgid "修改"
-msgstr ""
+msgstr "Змінити"
 
 msgid "重置"
-msgstr ""
+msgstr "Скинути"
 
 msgid "第三方游戏下载"
-msgstr ""
+msgstr "Стороннє Завантаженгня Гри"
 
 msgid "使用第三方游戏下载"
-msgstr ""
+msgstr "Використання сторонніх розробників для завантаження гри"
 
 msgid "第三方游戏链接"
-msgstr ""
+msgstr "Стороннє посилання на гру"
 
 msgid "检测"
-msgstr ""
+msgstr "Виявлення"
 
 msgid "接口格式需与官方保持一致"
-msgstr ""
+msgstr "Формат api повинен відповідати офіційному формату"
 
 msgid "检测中..."
-msgstr ""
+msgstr "Виявлення..."
 
 msgid "链接格式错误，请输入有效的[b]http[/b]或[b]https[/b]链接"
 msgstr ""
+"Неправильний формат посилання. Будь ласка, введіть дійсне посилання у "
+"форматі [b]http[/b] або [b]https[/b]"
 
 msgid "返回内容解析成功，但版本列表为空"
-msgstr ""
+msgstr "Вміст успішно проаналізовано, але список версій порожній"
 
 msgid "检测成功，链接可访问且返回了有效内容"
-msgstr ""
+msgstr "Виявлення успішне: посилання доступне та повернуло дійсний вміст"
 
 msgid "连接超时，请检查网络连接或稍后重试"
 msgstr ""
+"Час очікування з’єднання минув. Будь ласка, перевірте ваше з’єднання з "
+"мережою або спробуйте ще раз пізніше"
 
 msgid "返回内容解析失败，接口格式不符合"
 msgstr ""
+"Не вдалося розібрати повернутий вміст, формат API не відповідає вимогам "
+"вмісту"
 
 msgid "确定要移除[b]{0}[/b]吗？"
-msgstr ""
+msgstr "Ви дійсно впевнені що хочете видалити [b]{0}[/b]?"
 
 msgid "删除文件夹"
-msgstr ""
+msgstr "Видалити теку"
 
 msgid "打开目录"
-msgstr ""
+msgstr "Відкрити Директорію"
 
 msgid "移除"
-msgstr ""
+msgstr "Видалити"
 
 msgid "移动中..."
-msgstr ""
+msgstr "Переміщення..."
 
 msgid "正在扫描文件总数: {0}"
-msgstr ""
+msgstr "Сканування загальної кількості файлів: {0}"
 
 msgid "InnoSetup版本不受支持"
-msgstr ""
+msgstr "Версія InnoSetup не підтримується"
 
 msgid "安装文件已损坏或不兼容"
-msgstr ""
+msgstr "Інсталяційний файл пошкоджений або несумісний"
 
 msgid "innounp发生内部或未知错误"
-msgstr ""
+msgstr "Внутрішня або невідома помилка innounp"
 
 msgid "innounp异常退出，状态码: {0}"
-msgstr ""
+msgstr "innounp аварійно завершився, код стану: {0}"
 
 msgid "提取游戏失败: {0}"
-msgstr ""
+msgstr "Не вдалось видобути гру: {0}"
