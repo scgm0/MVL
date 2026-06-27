@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: 神麤詭末的复古物语启动器\n"
-"PO-Revision-Date: 2026-06-27 04:40+0000\n"
+"PO-Revision-Date: 2026-06-27 04:47+0000\n"
 "Last-Translator: flexioo <maytsider@gmail.com>\n"
 "Language-Team: Ukrainian <https://hosted.weblate.org/projects/mvl/mvl/uk/>\n"
 "Language: uk\n"
@@ -59,7 +59,7 @@ msgid "贡献者"
 msgstr "Співавторство"
 
 msgid "赞助者"
-msgstr "Спонсор"
+msgstr "Спонсори"
 
 msgid "许可证"
 msgstr "Ліцензія"
@@ -198,7 +198,7 @@ msgid "玩家名称:"
 msgstr "Ім'я Гравця:"
 
 msgid "玩家名称不能为空"
-msgstr "Ім'я гравця не може бути порожнім"
+msgstr "Ім'я Гравця не може бути порожнє"
 
 msgid "选择版本"
 msgstr "Вибрати Версію"
@@ -378,7 +378,7 @@ msgstr ""
 "{0}"
 
 msgid "正在从ModDB获取模组信息..."
-msgstr "Отримання інформації про моди з ModDB..."
+msgstr "Отримання інформації з ModDB..."
 
 msgid "模组作者"
 msgstr "Автор Мода"
@@ -417,19 +417,19 @@ msgid "双方"
 msgstr "Обидві"
 
 msgid "创建时间"
-msgstr "Час створення"
+msgstr "Часу створення"
 
 msgid "更新时间"
-msgstr "Час оновлення"
+msgstr "Часу оновлення"
 
 msgid "下载数量"
-msgstr "Кількість завантажень"
+msgstr "Кількості завантажень"
 
 msgid "关注数量"
-msgstr "Кількість підписників"
+msgstr "Кількості підписників"
 
 msgid "热门趋势"
-msgstr "Трендові моди"
+msgstr "Трендовим модам"
 
 msgid "所有"
 msgstr "Усі"
