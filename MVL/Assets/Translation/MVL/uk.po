@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: 神麤詭末的复古物语启动器\n"
-"PO-Revision-Date: 2026-06-27 04:16+0000\n"
+"PO-Revision-Date: 2026-06-27 04:22+0000\n"
 "Last-Translator: flexioo <maytsider@gmail.com>\n"
 "Language-Team: Ukrainian <https://hosted.weblate.org/projects/mvl/mvl/uk/>\n"
 "Language: uk\n"
@@ -32,13 +32,13 @@ msgid "版本"
 msgstr "Релізи"
 
 msgid "浏览"
-msgstr "Перегляд"
+msgstr "Пошук"
 
 msgid "设置"
 msgstr "Налашт."
 
 msgid "关于"
-msgstr "Інфо"
+msgstr "Інф."
 
 msgid "点击登录账号"
 msgstr "Натисніть, щоб увійти в свій профіль"
@@ -50,7 +50,7 @@ msgid "停止游戏"
 msgstr "Зупинити"
 
 msgid "确定"
-msgstr "Добре"
+msgstr "Підтвердити"
 
 msgid "取消"
 msgstr "Відмінити"
@@ -150,13 +150,13 @@ msgstr ""
 "Ви впевненні, що хочете видалити профіль [color=#0078d7][b]{0}[/b][/color]?"
 
 msgid "整合包名称:"
-msgstr "Назва Модпаку:"
+msgstr "Назва Модпака:"
 
 msgid "名称不能为空"
 msgstr "Назва не може бути порожнім"
 
 msgid "整合包路径:"
-msgstr "Шлях Модпаку:"
+msgstr "Шлях Модпака:"
 
 msgid "创建文件夹"
 msgstr "Створення Тек"
