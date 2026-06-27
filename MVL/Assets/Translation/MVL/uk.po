@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: 神麤詭末的复古物语启动器\n"
-"PO-Revision-Date: 2026-06-27 04:47+0000\n"
+"PO-Revision-Date: 2026-06-27 04:54+0000\n"
 "Last-Translator: flexioo <maytsider@gmail.com>\n"
 "Language-Team: Ukrainian <https://hosted.weblate.org/projects/mvl/mvl/uk/>\n"
 "Language: uk\n"
@@ -101,7 +101,7 @@ msgid "选择已安装版本"
 msgstr "Виберіть встановлений реліз"
 
 msgid "请输入名称"
-msgstr "Будь ласка, введіть ім'я"
+msgstr "Будь ласка, введіть ім'я/назву"
 
 msgid "请输入路径"
 msgstr "Будь ласка, вкажіть шлях"
@@ -289,7 +289,7 @@ msgid "版本目录"
 msgstr "Тека Релізів"
 
 msgid "若为空，则使用系统代理"
-msgstr "Якщо порожньо, використовувати системний проксі"
+msgstr "Якщо порожня, використовуватиметься системний проксі"
 
 msgid "若为无效路径，则使用默认目录"
 msgstr "Якщо шлях недійсний, буде використана стандартна тека"
