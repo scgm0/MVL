@@ -30,3 +30,6 @@ msgstr "русский язык"
 
 msgid "Indonesian"
 msgstr "Bahasa Indonesia"
+
+msgid "Ukrainian"
+msgstr "українська мова"

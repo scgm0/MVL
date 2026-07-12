@@ -259,6 +259,9 @@ msgstr "Terjemahan Bahasa Rusia"
 msgid "印尼语翻译"
 msgstr "Terjemahan bahasa Indonesia"
 
+msgid "乌克兰语翻译"
+msgstr ""
+
 msgid "界面"
 msgstr "Antarmuka"
 

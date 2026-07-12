@@ -262,6 +262,9 @@ msgstr "Russian Translation"
 msgid "印尼语翻译"
 msgstr "Indonesian Translation"
 
+msgid "乌克兰语翻译"
+msgstr "Ukrainian Translation"
+
 msgid "界面"
 msgstr "Interface"
 

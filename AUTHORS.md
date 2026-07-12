@@ -42,3 +42,7 @@
 ## 印尼语翻译
 
     ArifBudiman <arifpedia@gmail.com>
+
+## 乌克兰语翻译
+
+    flexioo <https://linktr.ee/flexioo>
