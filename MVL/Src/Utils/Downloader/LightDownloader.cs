@@ -15,6 +15,10 @@ public sealed class LightDownloader : IDisposable {
 	private readonly LightDownloaderConfig _config;
 	private bool _disposed;
 	private long _completedBytes;
+
+	private long _latestBytesDelta;
+	private long _latestElapsedTicks;
+
 	public event Action<DownloadProgress>? ProgressChanged;
 
 	public LightDownloader(LightDownloaderConfig? config = null) {
@@ -48,16 +52,22 @@ public sealed class LightDownloader : IDisposable {
 		ArgumentException.ThrowIfNullOrWhiteSpace(url);
 		ArgumentException.ThrowIfNullOrWhiteSpace(destinationPath);
 
-		var uri = new Uri(url);
+		if (!Uri.TryCreate(url, UriKind.Absolute, out var uri)) {
+			throw new ArgumentException("无效的URL格式", nameof(url));
+		}
+
 		Directory.CreateDirectory(Path.GetDirectoryName(Path.GetFullPath(destinationPath))!);
 
 		var (fileLength, supportsRange) = await GetFileInfoAsync(uri, cancellationToken);
 
-		var progress = new Progress<DownloadProgress>(p => ProgressChanged?.Invoke(p));
+		_completedBytes = 0;
+		Interlocked.Exchange(ref _latestBytesDelta, 0);
+		Interlocked.Exchange(ref _latestElapsedTicks, 0);
+
 		if (!supportsRange || fileLength <= 0 || _config.ChunkCount <= 0) {
-			await DownloadSingleAsync(uri, destinationPath, fileLength, progress, cancellationToken);
+			await DownloadSingleAsync(uri, destinationPath, fileLength, cancellationToken);
 		} else {
-			await DownloadMultiAsync(uri, destinationPath, fileLength, progress, cancellationToken);
+			await DownloadMultiAsync(uri, destinationPath, fileLength, cancellationToken);
 		}
 	}
 
@@ -68,7 +78,8 @@ public sealed class LightDownloader : IDisposable {
 				await _httpClient.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, cancellationToken);
 
 			if (response.IsSuccessStatusCode) {
-				var supportsRange = response.Headers.AcceptRanges.Contains("bytes");
+				var supportsRange = response.Headers.AcceptRanges.ToString()
+					.Contains("bytes", StringComparison.OrdinalIgnoreCase);
 				var length = response.Content.Headers.ContentLength ?? -1;
 				return (length, supportsRange);
 			}
@@ -84,7 +95,9 @@ public sealed class LightDownloader : IDisposable {
 				await _httpClient.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, cancellationToken);
 
 			if (response.IsSuccessStatusCode) {
-				var supportsRange = response.Headers.AcceptRanges.Contains("bytes");
+				var supportsRange = response.Headers.AcceptRanges.ToString()
+						.Contains("bytes", StringComparison.OrdinalIgnoreCase)
+					|| response.StatusCode == HttpStatusCode.PartialContent;
 				var length = response.Content.Headers.ContentLength ?? -1;
 				return (length, supportsRange);
 			}
@@ -101,7 +114,6 @@ public sealed class LightDownloader : IDisposable {
 		Uri uri,
 		string destinationPath,
 		long fileLength,
-		IProgress<DownloadProgress>? progress,
 		CancellationToken cancellationToken
 	) {
 		using var response = await _httpClient.GetAsync(
@@ -119,27 +131,19 @@ public sealed class LightDownloader : IDisposable {
 			FileAccess.Write,
 			FileShare.None,
 			FileOptions.Asynchronous | FileOptions.SequentialScan,
-			preallocationSize: fileLength
+			preallocationSize: fileLength > 0 ? fileLength : 0
 		);
 		try {
 			var buffer = ArrayPool<byte>.Shared.Rent(_config.BufferSize);
 			var stopwatch = Stopwatch.StartNew();
-			Task? progressTask = null;
 			var progressCts = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken);
-			_completedBytes = 0;
+			Task? speedLoopTask = null;
+
 			try {
 				long fileOffset = 0;
 				int read;
 
-				if (progress != null && fileLength > 0) {
-					progressTask = ProgressLoopAsync(
-						progress,
-						stopwatch,
-						() => _completedBytes,
-						fileLength,
-						progressCts.Token
-					);
-				}
+				speedLoopTask = StartSpeedMonitorLoopAsync(stopwatch, fileLength, progressCts.Token);
 
 				while ((read = await contentStream.ReadAsync(
 						buffer.AsMemory(0, _config.BufferSize),
@@ -147,22 +151,19 @@ public sealed class LightDownloader : IDisposable {
 					)) > 0) {
 					await RandomAccess.WriteAsync(handle, buffer.AsMemory(0, read), fileOffset, cancellationToken);
 					fileOffset += read;
-					_completedBytes += read;
+					Interlocked.Add(ref _completedBytes, read);
+
+					ReportProgress(fileLength);
 				}
 
-				if (fileLength <= 0) {
-					progress?.Report(new(1, 1, 0, TimeSpan.Zero));
-				} else {
-					var finalBytes = Math.Min(_completedBytes, fileLength);
-					progress?.Report(new(finalBytes, fileLength, 0, TimeSpan.Zero));
-				}
+				ReportProgress(fileLength, isFinal: true);
 			} finally {
 				await progressCts.CancelAsync();
-				if (progressTask != null) {
+				if (speedLoopTask != null) {
 					try {
-						await progressTask;
+						await speedLoopTask;
 					} catch {
-						/* ignore */
+						// ignored
 					}
 				}
 
@@ -178,10 +179,8 @@ public sealed class LightDownloader : IDisposable {
 		Uri uri,
 		string destinationPath,
 		long fileLength,
-		IProgress<DownloadProgress>? progress,
 		CancellationToken cancellationToken
 	) {
-		_completedBytes = 0;
 		var chunks = CreateChunks(fileLength, _config.ChunkCount);
 		var stopwatch = Stopwatch.StartNew();
 
@@ -196,41 +195,34 @@ public sealed class LightDownloader : IDisposable {
 		try {
 			RandomAccess.SetLength(handle, fileLength);
 
-			Task? progressTask = null;
 			var progressCts = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken);
-			if (progress != null) {
-				progressTask = ProgressLoopAsync(
-					progress,
-					stopwatch,
-					() => Interlocked.Read(ref _completedBytes),
-					fileLength,
-					progressCts.Token
+			var speedLoopTask = StartSpeedMonitorLoopAsync(stopwatch, fileLength, progressCts.Token);
+
+			try {
+				await Parallel.ForEachAsync(
+					chunks,
+					new ParallelOptions {
+						MaxDegreeOfParallelism = Math.Min(_config.ParallelCount, chunks.Length),
+						CancellationToken = cancellationToken,
+					},
+					async (chunk, ct) => {
+						await DownloadChunkWithRetryAsync(
+							chunk.Index,
+							uri,
+							handle,
+							chunk.Start,
+							chunk.End,
+							fileLength,
+							ct
+						);
+					}
 				);
-			}
 
-			await Parallel.ForEachAsync(
-				chunks,
-				new ParallelOptions {
-					MaxDegreeOfParallelism = Math.Min(_config.ParallelCount, chunks.Length),
-					CancellationToken = cancellationToken,
-				},
-				async (chunk, ct) => {
-					await DownloadChunkWithRetryAsync(
-						chunk.Index,
-						uri,
-						handle,
-						chunk.Start,
-						chunk.End,
-						ct
-					);
-				}
-			);
-
-			progress?.Report(new(fileLength, fileLength, 0, TimeSpan.Zero));
-			await progressCts.CancelAsync();
-			if (progressTask != null) {
+				ReportProgress(fileLength, isFinal: true);
+			} finally {
+				await progressCts.CancelAsync();
 				try {
-					await progressTask;
+					await speedLoopTask;
 				} catch {
 					/* ignore */
 				}
@@ -247,39 +239,37 @@ public sealed class LightDownloader : IDisposable {
 		SafeFileHandle handle,
 		long start,
 		long end,
+		long totalBytes,
 		CancellationToken cancellationToken
 	) {
-		long attemptBytes = 0;
+		var currentStart = start;
+
 		for (var attempt = 0; attempt <= _config.MaxRetries; attempt++) {
 			try {
 				cancellationToken.ThrowIfCancellationRequested();
-				await DownloadChunkAsync(uri,
+
+				if (currentStart > end) {
+					return;
+				}
+
+				await DownloadChunkAsync(
+					uri,
 					handle,
-					start,
+					currentStart,
 					end,
 					read => {
 						Interlocked.Add(ref _completedBytes, read);
-						attemptBytes += read;
+						currentStart += read;
+						ReportProgress(totalBytes);
 					},
-					cancellationToken);
+					cancellationToken
+				);
 				return;
 			} catch (OperationCanceledException) {
 				throw;
-			} catch (HttpRequestException ex) when (IsTransientError(ex) && attempt < _config.MaxRetries) {
-				if (attemptBytes > 0) {
-					Interlocked.Add(ref _completedBytes, -attemptBytes);
-					attemptBytes = 0;
-				}
-
-				var delay = TimeSpan.FromSeconds(Math.Pow(2, attempt));
-				await Task.Delay(delay, cancellationToken);
-			} catch (IOException) when (attempt < _config.MaxRetries) {
-				if (attemptBytes > 0) {
-					Interlocked.Add(ref _completedBytes, -attemptBytes);
-					attemptBytes = 0;
-				}
-
-				var delay = TimeSpan.FromSeconds(Math.Pow(2, attempt));
+			} catch (Exception ex) when (IsTransientError(ex) && attempt < _config.MaxRetries) {
+				var delay = TimeSpan.FromSeconds(Math.Pow(2, attempt)) +
+					TimeSpan.FromMilliseconds(Random.Shared.Next(100, 1000));
 				await Task.Delay(delay, cancellationToken);
 			}
 		}
@@ -323,6 +313,59 @@ public sealed class LightDownloader : IDisposable {
 		}
 	}
 
+	private async Task StartSpeedMonitorLoopAsync(Stopwatch stopwatch, long totalBytes, CancellationToken token) {
+		long lastBytes = 0;
+		long lastTicks = 0;
+
+		while (!token.IsCancellationRequested) {
+			try {
+				await Task.Delay(200, token);
+			} catch (OperationCanceledException) {
+				break;
+			}
+
+			var currentBytes = Interlocked.Read(ref _completedBytes);
+			var currentTicks = stopwatch.Elapsed.Ticks;
+
+			var deltaBytes = currentBytes - lastBytes;
+			var deltaTicks = currentTicks - lastTicks;
+
+			Interlocked.Exchange(ref _latestBytesDelta, deltaBytes);
+			Interlocked.Exchange(ref _latestElapsedTicks, deltaTicks);
+
+			ReportProgress(totalBytes);
+
+			lastBytes = currentBytes;
+			lastTicks = currentTicks;
+		}
+	}
+
+	private void ReportProgress(long totalBytes, bool isFinal = false) {
+		if (ProgressChanged == null) {
+			return;
+		}
+
+		var currentBytes = Interlocked.Read(ref _completedBytes);
+
+		if (isFinal && totalBytes <= 0) {
+			totalBytes = currentBytes;
+		}
+
+		if (totalBytes > 0 && currentBytes > totalBytes) {
+			currentBytes = totalBytes;
+		}
+
+		var bytesDelta = Interlocked.Read(ref _latestBytesDelta);
+		var ticks = Interlocked.Read(ref _latestElapsedTicks);
+
+		ProgressChanged.Invoke(new(
+			currentBytes,
+			totalBytes,
+			bytesDelta,
+			TimeSpan.FromTicks(ticks)
+		));
+	}
+
 	static private (int Index, long Start, long End)[] CreateChunks(long totalLength, int chunkCount) {
 		var chunks = new (int Index, long Start, long End)[chunkCount];
 		var chunkSize = totalLength / chunkCount;
@@ -338,43 +381,32 @@ public sealed class LightDownloader : IDisposable {
 		return chunks;
 	}
 
-	static private async Task ProgressLoopAsync(
-		IProgress<DownloadProgress> progress,
-		Stopwatch stopwatch,
-		Func<long> getBytes,
-		long totalBytes,
-		CancellationToken token
-	) {
-		long lastBytes = 0;
-		var lastElapsed = TimeSpan.Zero;
-		while (!token.IsCancellationRequested) {
-			try {
-				await Task.Delay(200, token);
-			} catch (OperationCanceledException) {
-				break;
+	static private bool IsTransientError(Exception ex) {
+		if (ex is HttpRequestException httpEx) {
+			if (httpEx.StatusCode.HasValue) {
+				return httpEx.StatusCode switch {
+					HttpStatusCode.PreconditionRequired => true,
+					HttpStatusCode.TooManyRequests => true,
+					HttpStatusCode.RequestTimeout => true,
+					HttpStatusCode.BadGateway => true,
+					HttpStatusCode.ServiceUnavailable => true,
+					HttpStatusCode.GatewayTimeout => true,
+					_ => false
+				};
 			}
 
-			token.ThrowIfCancellationRequested();
-			var currentBytes = Math.Min(getBytes(), totalBytes);
-			var currentElapsed = stopwatch.Elapsed;
-			var deltaBytes = currentBytes - lastBytes;
-			var deltaElapsed = currentElapsed - lastElapsed;
-			progress.Report(new(currentBytes, totalBytes, deltaBytes, deltaElapsed));
-			lastBytes = currentBytes;
-			lastElapsed = currentElapsed;
+			return httpEx.HttpRequestError switch {
+				HttpRequestError.ConnectionError => true,
+				HttpRequestError.ResponseEnded => true,
+				HttpRequestError.HttpProtocolError => true,
+				HttpRequestError.SecureConnectionError => true,
+				HttpRequestError.NameResolutionError => true,
+				HttpRequestError.Unknown => true,
+				_ => false
+			};
 		}
-	}
 
-	static private bool IsTransientError(HttpRequestException ex) {
-		return ex.StatusCode switch {
-			HttpStatusCode.PreconditionRequired => true,
-			HttpStatusCode.TooManyRequests => true,
-			HttpStatusCode.RequestTimeout => true,
-			HttpStatusCode.BadGateway => true,
-			HttpStatusCode.ServiceUnavailable => true,
-			HttpStatusCode.GatewayTimeout => true,
-			_ => false
-		};
+		return ex is IOException or System.Net.Sockets.SocketException;
 	}
 
 	public void Dispose() {

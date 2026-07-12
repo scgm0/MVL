@@ -7,7 +7,7 @@ public sealed class LightDownloaderConfig {
 	public int ChunkCount { get; init; } = Environment.ProcessorCount * 2;
 	public int ParallelCount { get; init; } = Environment.ProcessorCount;
 	public int BufferSize { get; init; } = 65536;
-	public int MaxRetries { get; init; } = 10;
+	public int MaxRetries { get; init; } = 20;
 	public TimeSpan Timeout { get; init; } = TimeSpan.FromMinutes(10);
 	public TimeSpan ConnectTimeout { get; init; } = TimeSpan.FromSeconds(10);
 	public TimeSpan PooledConnectionLifetime { get; init; } = TimeSpan.FromMinutes(10);
