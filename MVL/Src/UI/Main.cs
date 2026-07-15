@@ -5,6 +5,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 using Flurl.Http;
@@ -571,6 +572,8 @@ public partial class Main : NativeWindowUtility {
 
 				RedirectStandardOutput = true,
 				RedirectStandardError = true,
+				StandardOutputEncoding = Encoding.UTF8,
+				StandardErrorEncoding = Encoding.UTF8,
 				UseShellExecute = false,
 				CreateNoWindow = true,
 				WorkingDirectory = runConfig.VintageStoryPath,
@@ -603,7 +606,7 @@ public partial class Main : NativeWindowUtility {
 					Log.Error("VSRun初始化失败");
 				}
 
-				Console.WriteLine("VS Run Initialize");
+				Console.WriteLine(line);
 				await outStream.CopyToAsync(outTarget);
 			}
 		} catch (Exception e) {
