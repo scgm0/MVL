@@ -108,7 +108,7 @@ public static class Tools {
 				continue;
 			}
 
-			if (installedVersion.Major < targetFrameworkVersion.Major) {
+			if (installedVersion.Major != targetFrameworkVersion.Major) {
 				continue;
 			}
 
