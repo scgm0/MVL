@@ -100,13 +100,13 @@ public static class Log {
 
 			if (File.Exists(LogPath)) {
 				var logFile = new FileInfo(LogPath);
-				var newPath = Paths.LogFolder.PathJoin($"{LogName}{logFile.CreationTime:yyyy-MM-ddTHH.mm.ss}.log");
-				File.Move(LogPath, newPath);
+				var newPath = Paths.LogFolder.PathJoin($"{LogName}{logFile.LastWriteTime:yyyy-MM-ddTHH.mm.ss}.log");
+				File.Move(LogPath, newPath, true);
 			}
 
 			var backups = Directory.GetFileSystemEntries(Paths.LogFolder, $"{LogName}*.log")
 				.Select(path => new FileInfo(path))
-				.OrderByDescending(f => f.CreationTime).Skip(5);
+				.OrderByDescending(f => f.LastWriteTime).Skip(5);
 			foreach (var backup in backups) {
 				backup.Delete();
 			}
