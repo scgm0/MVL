@@ -558,7 +558,13 @@ public partial class Main : NativeWindowUtility {
 
 	public static Process? VsRun(RunConfig runConfig, string command) {
 		Log.Debug($"执行命令: {command}");
-		Log.Debug($"运行配置: {runConfig}");
+		Log.Debug($"""
+				   运行配置:
+				       VintageStoryPath: {runConfig.VintageStoryPath}
+				       VintageStoryDataPath: {runConfig.VintageStoryDataPath}
+				       AssemblyPath: {runConfig.AssemblyPath}
+				       Offline: {runConfig.Account is { Offline: true }}
+				   """);
 
 		try {
 			var startInfo = new ProcessStartInfo {
