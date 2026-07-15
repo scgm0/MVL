@@ -72,7 +72,7 @@ public static class Tools {
 				return await HasMatchingRuntimeAsync(targetFrameworkVersion);
 			}
 
-			Log.Info("检测到DotNet，但其架构不是x64");
+			Log.Warn("检测到DotNet，但其架构不是x64");
 			return false;
 		} catch (Exception e) {
 			Log.Error("检查DotNet环境失败", e);
@@ -112,7 +112,7 @@ public static class Tools {
 				continue;
 			}
 
-			Log.Debug($"检测到可用的运行时: {parts[0]} {versionString}");
+			Log.Info($"检测到可用的运行时: {parts[0]} {versionString}");
 			has = true;
 		}
 

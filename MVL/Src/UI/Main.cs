@@ -356,11 +356,13 @@ public partial class Main : NativeWindowUtility {
 		BaseConfig.Save();
 	}
 
-	public async Task<bool> ValidateSessionKeyWithServer(Account account) {
+	public static async Task<bool> ValidateSessionKeyWithServer(Account account) {
 		if (account.Offline) {
+			Log.Debug("离线模式，跳过验证");
 			return true;
 		}
 
+		Log.Info("正在验证账号登录状态...");
 		var response = await "https://auth3.vintagestory.at/clientvalidate".PostUrlEncodedAsync(new {
 			uid = account.Uid,
 			sessionkey = account.SessionKey,
@@ -373,7 +375,9 @@ public partial class Main : NativeWindowUtility {
 		var token = await response.GetStringAsync();
 		Log.Debug(token);
 		var validateResponse = JsonSerializer.Deserialize(token, SourceGenerationContext.Default.ValidateResponse);
-		return validateResponse.Valid == 1;
+		var isValid = validateResponse.Valid == 1;
+		Log.Info($"验证结果: {isValid}");
+		return isValid;
 	}
 
 	public async void Init() {
@@ -650,7 +654,7 @@ public partial class Main : NativeWindowUtility {
 		}
 
 		var gameDotnetVersion = await releaseInfo.GetTargetFrameworkAsync();
-		Log.Debug($"游戏目标框架: {gameDotnetVersion.Version} VSRun目标框架: {Tools.VSRunTargetFramework}");
+		Log.Info($"游戏目标框架: {gameDotnetVersion.Version} VSRun目标框架: {Tools.VSRunTargetFramework}");
 		var targetFramework = gameDotnetVersion.Version >= Tools.VSRunTargetFramework
 			? gameDotnetVersion.Version
 			: Tools.VSRunTargetFramework;
