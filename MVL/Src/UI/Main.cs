@@ -574,7 +574,7 @@ public partial class Main : NativeWindowUtility {
 			var startInfo = new ProcessStartInfo {
 #if GODOT_WINDOWS
 				FileName = "cmd",
-				Arguments = $"/c \"{command}\"",
+				Arguments = $"/c \"chcp 65001 >nul & {command}\"",
 #else
 				FileName = "bash",
 				Arguments = $"-c \"{command}\"",

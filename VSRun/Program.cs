@@ -23,6 +23,7 @@ public static class Program {
 
 	[ModuleInitializer]
 	public static void Initialize() {
+		Console.OutputEncoding = Encoding.UTF8;
 		Console.WriteLine("VS Run Initialize");
 
 		var vsPath = Environment.GetEnvironmentVariable("VINTAGE_STORY_PATH")!;
