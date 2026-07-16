@@ -75,7 +75,6 @@ jobs:
         with:
           scons-flags: >-
             linker=mold
-            lto=full
             profile=../mvl-repo/MVL/GodotBuildProfile/custom.py
             build_profile=../mvl-repo/MVL/GodotBuildProfile/custom.build
           platform: linuxbsd
