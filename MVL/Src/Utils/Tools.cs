@@ -25,6 +25,21 @@ public static class Tools {
 	public static MessagePackSerializer PackSerializer { get; } = new();
 	public static bool IsEditorHint { get; } = Engine.IsEditorHint();
 	public static string UserAgent { get; } = $"MVL/{BuildInfo.InformationalVersion} ({OS.GetName()} {SystemInfo.OSVersion}; {RuntimeInformation.OSArchitecture})";
+	public static string DotNetPath { get; } = GetDotNetExecutablePath();
+
+	public static string GetDotNetExecutablePath() {
+#if GODOT_WINDOWS
+		var programFiles = Environment.GetEnvironmentVariable("ProgramW6432")
+			?? Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles);
+		var x64Path = Path.Combine(programFiles, "dotnet", "dotnet.exe");
+
+		if (File.Exists(x64Path)) {
+			return x64Path;
+		}
+#endif
+
+		return "dotnet";
+	}
 
 	public static void RichTextOpenUrl(Variant url) { Task.Run(() => OS.ShellOpen(url.AsString())); }
 
@@ -131,14 +146,14 @@ public static class Tools {
 			return output;
 		}
 
-		Log.Debug($"'dotnet {arguments}'返回了退出代码 {process.ExitCode}");
+		Log.Debug($"'{DotNetPath} {arguments}'返回了退出代码 {process.ExitCode}");
 		return null;
 	}
 
 	static private Process CreateDotNetProcess(string arguments) {
 		return new() {
 			StartInfo = new() {
-				FileName = "dotnet",
+				FileName = DotNetPath,
 				Arguments = arguments,
 				RedirectStandardOutput = true,
 				RedirectStandardError = true,

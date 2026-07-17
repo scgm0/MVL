@@ -633,7 +633,7 @@ public partial class Main : NativeWindowUtility {
 					VintageStoryDataPath = dataPath,
 					ExecutableType = ExecutableTypeEnum.InitData
 				},
-				$"dotnet \"{Path.Combine(tmp.GetCurrentDir(), "VSRun.dll").NormalizePath()}\"");
+				$"\"{Tools.DotNetPath}\" \"{Path.Combine(tmp.GetCurrentDir(), "VSRun.dll").NormalizePath()}\"");
 			CurrentGameProcess = process;
 			if (process != null) {
 				await process.WaitForExitAsync();
@@ -739,7 +739,7 @@ public partial class Main : NativeWindowUtility {
 				.Replace("%tmp_path%", tmp.GetCurrentDir())
 				.Replace("%data_path%", dataPath)
 				.Replace("%command%",
-					$"dotnet \"{Path.Combine(tmp.GetCurrentDir(), "VSRun.dll").NormalizePath()}\"");
+					$"\"{Tools.DotNetPath}\" \"{Path.Combine(tmp.GetCurrentDir(), "VSRun.dll").NormalizePath()}\"");
 
 			var process = VsRun(new() {
 					VintageStoryPath = gamePath,

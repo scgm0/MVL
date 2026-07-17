@@ -1,7 +1,6 @@
 using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
-using Flurl;
 using Flurl.Http;
 
 namespace MVL.Utils.GitHub;
