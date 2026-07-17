@@ -29,8 +29,8 @@ public static class Tools {
 
 	public static string GetDotNetExecutablePath() {
 #if GODOT_WINDOWS
-		var programFiles = Environment.GetEnvironmentVariable("ProgramW6432")
-			?? Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles);
+		var programFiles = System.Environment.GetEnvironmentVariable("ProgramW6432")
+			?? System.Environment.GetFolderPath(System.Environment.SpecialFolder.ProgramFiles);
 		var x64Path = Path.Combine(programFiles, "dotnet", "dotnet.exe");
 
 		if (File.Exists(x64Path)) {
