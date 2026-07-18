@@ -204,6 +204,7 @@ text = "关闭"
 [node name="Button3" type="Button" parent="PanelContainer/VBoxContainer/HBoxContainer3" index="1" unique_id=74169792]
 layout_mode = 2
 size_flags_horizontal = 4
+theme_type_variation = &"ProminentButton"
 text = "打开目录"
 
 [node name="Button2" parent="PanelContainer/VBoxContainer/HBoxContainer3" index="2" unique_id=1754640447]

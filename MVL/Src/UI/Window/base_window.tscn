@@ -32,56 +32,6 @@ corner_radius_bottom_right = 10
 corner_radius_bottom_left = 10
 shadow_size = 1
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_b82ki"]
-content_margin_left = 10.0
-content_margin_top = 10.0
-content_margin_right = 10.0
-content_margin_bottom = 10.0
-bg_color = Color(0.529067, 0.529067, 0.529067, 0.207843)
-corner_radius_top_left = 6
-corner_radius_top_right = 6
-corner_radius_bottom_right = 6
-corner_radius_bottom_left = 6
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_v5ddw"]
-content_margin_left = 10.0
-content_margin_top = 10.0
-content_margin_right = 10.0
-content_margin_bottom = 10.0
-bg_color = Color(0.225, 0.225, 0.225, 0.6)
-corner_radius_top_left = 6
-corner_radius_top_right = 6
-corner_radius_bottom_right = 6
-corner_radius_bottom_left = 6
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_bhu72"]
-content_margin_left = 10.0
-content_margin_top = 10.0
-content_margin_right = 10.0
-content_margin_bottom = 10.0
-bg_color = Color(0, 0, 0, 0.6)
-corner_radius_top_left = 6
-corner_radius_top_right = 6
-corner_radius_bottom_right = 6
-corner_radius_bottom_left = 6
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_syw1k"]
-content_margin_left = 10.0
-content_margin_top = 10.0
-content_margin_right = 10.0
-content_margin_bottom = 10.0
-bg_color = Color(0.0475577, 0.0475576, 0.0475576, 0.6)
-corner_radius_top_left = 6
-corner_radius_top_right = 6
-corner_radius_bottom_right = 6
-corner_radius_bottom_left = 6
-
-[sub_resource type="Theme" id="Theme_r1ufi"]
-Button/styles/disabled = SubResource("StyleBoxFlat_b82ki")
-Button/styles/hover = SubResource("StyleBoxFlat_v5ddw")
-Button/styles/normal = SubResource("StyleBoxFlat_bhu72")
-Button/styles/pressed = SubResource("StyleBoxFlat_syw1k")
-
 [sub_resource type="Animation" id="Animation_x7vct"]
 length = 0.001
 tracks/0/type = "bezier"
@@ -238,17 +188,18 @@ theme_override_constants/separation = 15
 [node name="HBoxContainer3" type="HBoxContainer" parent="PanelContainer/VBoxContainer" unique_id=522919472]
 layout_mode = 2
 size_flags_horizontal = 4
-theme = SubResource("Theme_r1ufi")
 theme_override_constants/separation = 125
 
 [node name="Button" type="Button" parent="PanelContainer/VBoxContainer/HBoxContainer3" unique_id=42009310]
 layout_mode = 2
 size_flags_horizontal = 6
+theme_type_variation = &"ProminentButton"
 text = "取消"
 
 [node name="Button2" type="Button" parent="PanelContainer/VBoxContainer/HBoxContainer3" unique_id=1754640447]
 layout_mode = 2
 size_flags_horizontal = 6
+theme_type_variation = &"ProminentButton"
 text = "确定"
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=1829304291]

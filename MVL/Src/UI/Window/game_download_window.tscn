@@ -158,6 +158,7 @@ vertical_alignment = 1
 
 [node name="Button3" type="Button" parent="PanelContainer/VBoxContainer/HBoxContainer3" parent_id_path=PackedInt32Array(522919472) index="1" unique_id=1666299990]
 layout_mode = 2
+theme_type_variation = &"ProminentButton"
 text = "导入已安装游戏"
 
 [node name="Button2" parent="PanelContainer/VBoxContainer/HBoxContainer3" parent_id_path=PackedInt32Array(522919472) index="2" unique_id=1754640447]

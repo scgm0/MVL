@@ -212,6 +212,50 @@ corner_radius_top_right = 5
 corner_radius_bottom_right = 5
 corner_radius_bottom_left = 5
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_b82ki"]
+content_margin_left = 10.0
+content_margin_top = 10.0
+content_margin_right = 10.0
+content_margin_bottom = 10.0
+bg_color = Color(0.529067, 0.529067, 0.529067, 0.207843)
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_v5ddw"]
+content_margin_left = 10.0
+content_margin_top = 10.0
+content_margin_right = 10.0
+content_margin_bottom = 10.0
+bg_color = Color(0.225, 0.225, 0.225, 0.6)
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_bhu72"]
+content_margin_left = 10.0
+content_margin_top = 10.0
+content_margin_right = 10.0
+content_margin_bottom = 10.0
+bg_color = Color(0, 0, 0, 0.6)
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_syw1k"]
+content_margin_left = 10.0
+content_margin_top = 10.0
+content_margin_right = 10.0
+content_margin_bottom = 10.0
+bg_color = Color(0.0475577, 0.0475576, 0.0475576, 0.6)
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
+
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_bgbrj"]
 bg_color = Color(0, 0, 0, 1)
 border_width_left = 1
@@ -311,6 +355,11 @@ PopupMenu/icons/radio_unchecked = SubResource("Texture2D_pur85")
 PopupMenu/icons/unchecked = SubResource("Texture2D_vje8o")
 PopupMenu/styles/hover = SubResource("StyleBoxFlat_7eosv")
 PopupMenu/styles/panel = SubResource("StyleBoxFlat_8ilox")
+ProminentButton/base_type = &"Button"
+ProminentButton/styles/disabled = SubResource("StyleBoxFlat_b82ki")
+ProminentButton/styles/hover = SubResource("StyleBoxFlat_v5ddw")
+ProminentButton/styles/normal = SubResource("StyleBoxFlat_bhu72")
+ProminentButton/styles/pressed = SubResource("StyleBoxFlat_syw1k")
 RichTextLabel/colors/selection_color = Color(0.6, 0.6, 0.6, 0.6)
 RichTextLabel/fonts/bold_font = ExtResource("2_h252r")
 ScrollContainer/constants/scrollbar_h_separation = 4
