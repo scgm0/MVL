@@ -11,6 +11,7 @@
     蛋糕
     呆狐老登
     Enochhcx
+    复古物语中文社区 <https://vintagestory.top>
     哈基米
     华月芊/绮裳(Qiayeb)
     开摆！！
@@ -22,6 +23,7 @@
     倾空 <QQ 2914746717>
     Rtpahtp
     SENKU1117
+    Slipperyt
     WILLY
     问问
     五行缺钱
