@@ -1,8 +1,10 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Text;
 using System.Text.Json;
+using System.Threading;
 using System.Threading.Tasks;
 using Flurl;
 using Flurl.Http;
@@ -19,7 +21,7 @@ public class EasyTier : IDisposable {
 
 	public event Action<bool>? OnReady;
 
-	public async Task Start(List<string> args) {
+	public async Task Start(List<string> args, CancellationToken token = default) {
 		RpcPort = Tools.GetAvailablePort();
 		var processStartInfo = new ProcessStartInfo(CorePath) {
 			WorkingDirectory = Paths.EasyTierFolder,
@@ -41,47 +43,52 @@ public class EasyTier : IDisposable {
 		processStartInfo.ArgumentList.Add("1");
 		processStartInfo.ArgumentList.Add("--file-log-level");
 		processStartInfo.ArgumentList.Add(LogLevel.ToString());
+		Log.Info($"EasyTier 启动参数: {string.Join(" ", processStartInfo.ArgumentList)}");
 
 		Process?.Kill();
 		Process?.Dispose();
 		Process = new();
 		Process.StartInfo = processStartInfo;
 		Process.Start();
-		Process.BeginOutputReadLine();
-		Process.BeginErrorReadLine();
+		// Process.BeginOutputReadLine();
+		// Process.BeginErrorReadLine();
 
 		var i = 0;
 		await Task.Run(async () => {
-			while (true) {
-				try {
-					var players = await GetPlayers();
-					if (players.Count <= 1) {
-						continue;
+				while (true) {
+					token.ThrowIfCancellationRequested();
+					await Task.Delay(1000, token);
+					try {
+						var players = await GetPlayers();
+						if (players.Count > 1) {
+							LocalPlayer = await GetLocalPlayer();
+							Log.Info("已连接EasyTier服务器");
+							OnReady?.Invoke(true);
+							return;
+						}
+					} catch (OperationCanceledException) {
+						throw;
+					} catch {
+						// ignored
+					} finally {
+						i++;
 					}
 
-					LocalPlayer = await GetLocalPlayer();
-					Log.Info("已连接EasyTier服务器");
-					OnReady?.Invoke(true);
-					return;
-				} catch {
-					// ignored
-				}
+					if (i > 6) {
+						Log.Error("EasyTier连接超时");
+						Kill();
+						OnReady?.Invoke(false);
+						return;
+					}
 
-				i++;
-				if (i > 6) {
-					Log.Error("EasyTier连接超时");
-					Kill();
-					OnReady?.Invoke(false);
-					return;
+					Log.Debug($"正在等待EasyTier服务器，已等待{i}秒");
 				}
-
-				await Task.Delay(1000);
-			}
-		});
+			},
+			token);
 	}
 
 	public async Task<List<EasyTierPlayerInfo>> GetPlayers() {
-		var json = await RunCli(["-p", $"127.0.0.1:{RpcPort}", "-o", "json", "peer"], false);
+		var json = await RunCli(["-p", $"127.0.0.1:{RpcPort}", "-o", "json", "peer"]);
 		var players = JsonSerializer.Deserialize(json, SourceGenerationContext.Default.ListEasyTierPlayerInfo);
 		return players ?? [];
 	}
@@ -102,7 +109,7 @@ public class EasyTier : IDisposable {
 			"-p", $"127.0.0.1:{RpcPort}", "port-forward", "add",
 			portForwarding.protocol, portForwarding.local, portForwarding.remote
 		]);
-		if (output.StartsWith("Port forward rule added", StringComparison.OrdinalIgnoreCase)) {
+		if (output.StartsWith("Port forward rule add", StringComparison.OrdinalIgnoreCase)) {
 			Log.Info($"已创建端口转发 {portForwarding.local} -> {portForwarding.remote}");
 			return true;
 		}
@@ -151,21 +158,22 @@ public class EasyTier : IDisposable {
 		process.Start();
 		var output = await process.StandardOutput.ReadToEndAsync();
 		if (print) {
-			Log.Debug(output.Trim());
+			Console.WriteLine(output.Trim());
 		}
 
 		await process.WaitForExitAsync();
 		return output;
 	}
 
-	static private readonly string[] FallbackServers = [
+	public static readonly string[] FallbackServers = [
 		"tcp://public.easytier.top:11010",
 		"tcp://public2.easytier.cn:54321",
-		"https://etnode.zkitefly.eu.org/node1",
-		"https://etnode.zkitefly.eu.org/node2"
+		// "https://etnode.zkitefly.eu.org/node1",
+		// "https://etnode.zkitefly.eu.org/node2",
 	];
 
-	public static async Task<List<string>> FetchPublicNodes(int limit = 5) {
+	public static async Task<List<string>> FetchPublicNodes(int limit = 5, CancellationToken token = default) {
+		return [.. FallbackServers];
 		var activeServers = new List<string>(200);
 		try {
 			var response = await "https://uptime.easytier.cn/api/nodes"
@@ -201,10 +209,16 @@ public class EasyTier : IDisposable {
 	}
 
 	public static async Task<string?> GetCoreVersion() {
+		Log.Debug("获取EasyTier Core版本");
+		if (!File.Exists(CorePath)) {
+			Log.Warn($"EasyTier Core不存在: {CorePath}");
+			return null;
+		}
+
 		try {
 			var output = await RunCli(["-V"], true, CorePath);
 			var version = output.Split(' ');
-			return version[0].Equals("easytier-core", StringComparison.OrdinalIgnoreCase) ? version[1] : null;
+			return version[0].Equals("easytier-core", StringComparison.OrdinalIgnoreCase) ? version[1].Trim() : null;
 		} catch (Exception ex) {
 			Log.Error("获取EasyTier Core版本失败", ex);
 			return null;
@@ -212,10 +226,16 @@ public class EasyTier : IDisposable {
 	}
 
 	public static async Task<string?> GetCliVersion() {
+		Log.Debug("获取EasyTier CLI版本");
+		if (!File.Exists(CliPath)) {
+			Log.Warn($"EasyTier CLI不存在: {CliPath}");
+			return null;
+		}
+
 		try {
 			var output = await RunCli(["-V"], true, CliPath);
 			var version = output.Split(' ');
-			return version[0].Equals("easytier-cli", StringComparison.OrdinalIgnoreCase) ? version[1] : null;
+			return version[0].Equals("easytier-cli", StringComparison.OrdinalIgnoreCase) ? version[1].Trim() : null;
 		} catch (Exception ex) {
 			Log.Error("获取EasyTier CLI版本失败", ex);
 			return null;

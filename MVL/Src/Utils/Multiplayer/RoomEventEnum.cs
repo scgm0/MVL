@@ -6,7 +6,8 @@ public enum RoomEventEnum {
 	AddGuest,
 	GuestLeft,
 	HostShutdown,
-	Ping,
-	Pong,
+	Heartbeat,
+	HeartbeatAck,
+	PlayerUpdate,
 	None = -1
 }
