@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Text.Json;
 using System.Text.Json.Nodes;
@@ -28,6 +29,9 @@ public class BaseConfig : BaseConfigV0 {
 
 	[JsonPropertyOrder(2)]
 	public string ThirdPartyGameLink { get; set; } = "";
+
+	[JsonPropertyOrder(2)]
+	public List<string> CustomEasyTierNodes { get; set; } = [];
 
 	public void Save() {
 		lock (_syncLock) {

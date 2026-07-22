@@ -1,7 +1,8 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Net;
+using System.Threading;
+using System.Threading.Tasks;
 using Godot;
 using MVL.UI;
 using NetMQ;
@@ -12,14 +13,15 @@ namespace MVL.Utils.Multiplayer;
 public partial record Room {
 	private DealerSocket? _dealerSocket;
 	private EasyTierPlayerInfo? _hostEasyTierInfo;
-	private NetMQTimer? _heartbeatTimer;
-	private NetMQTimer? _timeoutTimer;
-	private readonly TimeSpan _heartbeatIntervalMs = TimeSpan.FromSeconds(5);
-	private readonly TimeSpan _heartbeatTimeoutMs = TimeSpan.FromSeconds(15);
+	private NetMQTimer? _hostTimeoutTimer;
+	private readonly TimeSpan _hostTimeoutMs = TimeSpan.FromSeconds(15);
 	private volatile bool _isHostAlive = true;
 
 	public async void StartGuest() {
-		var args = await ComposeArgs();
+		_cts?.Dispose();
+		_cts = new();
+
+		var args = await ComposeArgs(_cts.Token);
 		args.AddRange([
 			"-d",
 			"--tcp-whitelist=0",
@@ -28,29 +30,56 @@ public partial record Room {
 
 		_easyTier = new();
 		_easyTier.OnReady += OnEasyTierReadyByGuest;
-		await _easyTier.Start(args);
+
+		try {
+			OnStateChanged?.Invoke(new(RoomState.Connecting));
+			await _easyTier.Start(args, _cts.Token);
+		} catch (OperationCanceledException) {
+			Log.Info("客机连接已取消");
+			Shutdown();
+		} catch (Exception e) {
+			Log.Error("EasyTier启动异常", e);
+			OnStateChanged?.Invoke(new(RoomState.Failed, "EasyTier 启动异常"));
+			Shutdown();
+		}
 	}
 
 	private async void OnEasyTierReadyByGuest(bool ready) {
 		if (!ready) {
-			OnReady?.Invoke(false);
+			Log.Error("EasyTier 启动失败");
+			OnStateChanged?.Invoke(new(RoomState.Failed, "EasyTier 启动失败"));
 			return;
 		}
 
-		_isHostAlive = true;
-		for (var i = 0; i < 3; i++) {
-			var players = await _easyTier!.GetPlayers();
-			foreach (var playerInfo in players) {
-				if (!playerInfo.HostName.Equals(NetworkName, StringComparison.OrdinalIgnoreCase)) {
-					continue;
-				}
+		try {
+			_isHostAlive = true;
+			OnStateChanged?.Invoke(new(RoomState.EasyTierReady));
+			OnStateChanged?.Invoke(new(RoomState.RoomJoining));
 
-				_hostEasyTierInfo = playerInfo;
+			for (var i = 0; i < 5; i++) {
+				Log.Info($"正在查找主机... (第 {i + 1}/5 次)");
+				var players = await _easyTier!.GetPlayers();
+				Log.Debug($"当前可见节点数: {players.Count}");
 
-				var localPort = Tools.GetAvailablePort();
-				var local = $"{IPAddress.Any}:{localPort}";
-				var remote = $"{playerInfo.IpV4}:{HostPort}";
-				if (await _easyTier!.AddPortForward((local, remote, "tcp"))) {
+				foreach (var playerInfo in players) {
+					if (!playerInfo.HostName.Equals(NetworkName, StringComparison.OrdinalIgnoreCase)) {
+						continue;
+					}
+
+					Log.Info($"已找到主机: {playerInfo.IpV4}");
+					_hostEasyTierInfo = playerInfo;
+
+					var localPort = Tools.GetAvailablePort();
+					var local = $"{IPAddress.Any}:{localPort}";
+					var remote = $"{playerInfo.IpV4}:{HostPort}";
+					Log.Info($"正在创建端口转发 {local} -> {remote}...");
+
+					if (!await _easyTier.AddPortForward((local, remote, "tcp"))) {
+						Log.Error($"端口转发失败: {local} -> {remote}");
+						OnStateChanged?.Invoke(new(RoomState.Failed, "端口转发失败"));
+						return;
+					}
+
 					_poller = new();
 					_poller.RunAsync("MVL-Room-Gust", true);
 					_dealerSocket = new();
@@ -63,38 +92,48 @@ public partial record Room {
 					_dealerSocket.Connect($"tcp://{IPAddress.Loopback}:{localPort}");
 					_poller.Add(_dealerSocket);
 
-					_heartbeatTimer = new(_heartbeatIntervalMs);
-					_timeoutTimer = new(_heartbeatTimeoutMs);
-					_heartbeatTimer.Elapsed += (_, _) => SendPing();
-					_timeoutTimer.Elapsed += (_, _) => HostTimedOut();
-					_poller.Add(_heartbeatTimer);
-					_poller.Add(_timeoutTimer);
-					_timeoutTimer.Enable = true;
+					_hostTimeoutTimer = new(_hostTimeoutMs);
+					_hostTimeoutTimer.Elapsed += (_, _) => HostTimedOut();
+					_poller.Add(_hostTimeoutTimer);
+					_hostTimeoutTimer.Enable = true;
 
 					_localPlayer = new(RoomType: RoomType.Guest,
-						Name: Main.BaseConfig.CurrentAccount,
-						Version: _easyTier.LocalPlayer.Version,
-						Port: 0,
-						Address: _easyTier.LocalPlayer.IpV4) { Identity = _easyTier.LocalPlayer.Id };
+							Name: Main.BaseConfig.CurrentAccount,
+							Version: _easyTier.LocalPlayer.Version,
+							Port: 0,
+							Address: _easyTier.LocalPlayer.IpV4,
+							Offline: Main.Accounts.TryGetValue(Main.BaseConfig.CurrentAccount, out var acc) && acc.Offline)
+						{ Identity = _easyTier.LocalPlayer.Id };
 
 					var message = new NetMQMessage();
 					message.Append(BitConverter.GetBytes((int)RoomEventEnum.GuestJoined));
 					message.Append(Tools.PackSerializer.Serialize(_localPlayer));
 
 					if (_dealerSocket.TrySendMultipartMessage(message)) {
-						Log.Info("请求主机信息中...");
+						Log.Info("已向主机发送加入请求");
 						return;
 					}
+
+					Log.Error("加入请求发送失败，DealerSocket 未就绪");
+					Shutdown();
+					OnStateChanged?.Invoke(new(RoomState.Failed, "连接主机失败"));
+					return;
 				}
 
-				Log.Error("请求主机信息失败");
-				OnReady?.Invoke(false);
-				return;
+				if (i < 4) {
+					await Task.Delay(2000, _cts?.Token ?? CancellationToken.None);
+				}
 			}
-		}
 
-		Log.Error("未找到主机");
-		OnReady?.Invoke(false);
+			Log.Error($"未找到主机 (已尝试 5 次，网络: {NetworkName})");
+			OnStateChanged?.Invoke(new(RoomState.Failed, "未找到主机"));
+		} catch (TaskCanceledException) {
+			Log.Debug("取消连接主机");
+		} catch (Exception e) {
+			Log.Error("客机连接主机时发生异常", e);
+			Shutdown();
+			OnStateChanged?.Invoke(new(RoomState.Failed, "连接主机异常"));
+		}
 	}
 
 	private async void DealerClientOnReceiveReady(object? sender, NetMQSocketEventArgs e) {
@@ -109,41 +148,49 @@ public partial record Room {
 		}
 
 		var eventCode = (RoomEventEnum)BitConverter.ToInt32(hostMessage[0].Buffer);
-		Log.Info($"收到来自主机的事件: {eventCode}");
+		Log.Debug($"收到来自主机的事件: {eventCode}");
+
 		switch (eventCode) {
 			case RoomEventEnum.JoinAccepted: {
-				Players =
+				var playerList =
 					Tools.PackSerializer.Deserialize<List<RoomPlayerInfo>, SourceGenerationContext>(hostMessage[1].Buffer)!;
+				lock (_playersLock) {
+					_players.Clear();
+					_players.AddRange(playerList);
+				}
+
+				OnPlayerListChanged?.Invoke();
 				Log.Info("已从主机接受到房间信息，准备创建端口转发...");
 
 				var local = $"{IPAddress.Any}:{LocalPort}";
-				var remote = $"{_hostEasyTierInfo.Value.IpV4}:{Players[0].Port}";
+				var snapshot = GetPlayersSnapshot();
+				var remote = $"{_hostEasyTierInfo.Value.IpV4}:{snapshot[0].Port}";
 				if (await _easyTier!.AddPortForward((local, remote, "tcp"))) {
-					OnReady?.Invoke(true);
-					_timeoutTimer!.Enable = false;
-					_timeoutTimer.Enable = true;
-					_heartbeatTimer!.Enable = true;
+					OnStateChanged?.Invoke(new(RoomState.Ready));
+					_hostTimeoutTimer!.Enable = false;
+					_hostTimeoutTimer.Enable = true;
 					return;
 				}
 
-				OnReady?.Invoke(false);
+				OnStateChanged?.Invoke(new(RoomState.Failed, "端口转发失败"));
 				return;
 			}
 			case RoomEventEnum.AddGuest: {
 				var playerInfo = Tools.PackSerializer.Deserialize<RoomPlayerInfo>(hostMessage[1].Buffer)!;
-				if (Players.Any(p => p.Identity == playerInfo.Identity)) {
+				if (GetPlayerByIdentityLocked(playerInfo.Identity) != null) {
 					return;
 				}
 
-				Players.Add(playerInfo);
+				AddPlayer(playerInfo);
+				OnPlayerListChanged?.Invoke();
 				Log.Info($"玩家 {playerInfo.Name} 已加入");
 				return;
 			}
 			case RoomEventEnum.GuestLeft: {
 				var playerInfo = Tools.PackSerializer.Deserialize<RoomPlayerInfo>(hostMessage[1].Buffer)!;
-				var leftPlayer = GetPlayerByIdentity(playerInfo.Identity);
-				if (leftPlayer is not null) {
-					Players.Remove(leftPlayer);
+				if (GetPlayerByIdentityLocked(playerInfo.Identity) is { } leftPlayer) {
+					RemovePlayer(leftPlayer);
+					OnPlayerListChanged?.Invoke();
 					Log.Info($"玩家 {playerInfo.Name} 已离开");
 				}
 
@@ -152,30 +199,34 @@ public partial record Room {
 			case RoomEventEnum.HostShutdown: {
 				Log.Info("主机已关闭房间。");
 				_isHostAlive = false;
-				Shutdown();
-				OnReady?.Invoke(false);
+				OnStateChanged?.Invoke(new(RoomState.Disconnected));
 				break;
 			}
-			case RoomEventEnum.Pong: {
-				_timeoutTimer!.Enable = false;
-				_timeoutTimer.Enable = true;
+			case RoomEventEnum.Heartbeat: {
+				var ackMessage = new NetMQMessage();
+				ackMessage.Append(BitConverter.GetBytes((int)RoomEventEnum.HeartbeatAck));
+				ackMessage.Append(hostMessage[1].Buffer);
+				_dealerSocket!.TrySendMultipartMessage(ackMessage);
+
+				_hostTimeoutTimer!.Enable = false;
+				_hostTimeoutTimer.Enable = true;
+				break;
+			}
+			case RoomEventEnum.PlayerUpdate: {
+				var updatedPlayer =
+					Tools.PackSerializer.Deserialize<RoomPlayerInfo>(hostMessage[1].Buffer);
+				if (updatedPlayer is not null && GetPlayerByIdentityLocked(updatedPlayer.Identity) is { } existing) {
+					existing.Latency = updatedPlayer.Latency;
+					OnPlayerListChanged?.Invoke();
+				}
+
 				break;
 			}
 			case RoomEventEnum.GuestJoined:
-			case RoomEventEnum.Ping:
+			case RoomEventEnum.HeartbeatAck:
 			case RoomEventEnum.None: break;
 			default: Log.Warn($"未知事件: {eventCode}"); break;
 		}
-	}
-
-	private void SendPing() {
-		if (!_isHostAlive || _dealerSocket is null) {
-			return;
-		}
-
-		var message = new NetMQMessage();
-		message.Append(BitConverter.GetBytes((int)RoomEventEnum.Ping));
-		_dealerSocket.TrySendMultipartMessage(message);
 	}
 
 	private void HostTimedOut() {
@@ -187,16 +238,16 @@ public partial record Room {
 		Log.Error("主机连接超时");
 		Dispatcher.SynchronizationContext.Post(_ => {
 				Shutdown();
-				OnReady?.Invoke(false);
+				OnStateChanged?.Invoke(new(RoomState.Failed, "主机连接超时"));
 			},
 			null);
 	}
 
 	private void ShutdownGuest() {
-		_heartbeatTimer?.Enable = false;
-		_heartbeatTimer = null;
-		_timeoutTimer?.Enable = false;
-		_timeoutTimer = null;
+		if (_hostTimeoutTimer != null) {
+			_poller?.Remove(_hostTimeoutTimer);
+			_hostTimeoutTimer = null;
+		}
 
 		if (_isHostAlive) {
 			Log.Info("客机正在关闭，通知主机...");
@@ -206,7 +257,9 @@ public partial record Room {
 		}
 
 		Log.Info("已离开房间。");
-		_dealerSocket?.Close();
-		_dealerSocket = null;
+		if (_dealerSocket != null) {
+			_poller?.RemoveAndDispose(_dealerSocket);
+			_dealerSocket = null;
+		}
 	}
 }

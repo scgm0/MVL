@@ -478,7 +478,6 @@ size_flags_vertical = 3
 mouse_filter = 2
 
 [node name="MultiplayerButton" type="Button" parent="HBoxContainer/MenuPanel/VBoxContainer" unique_id=1816883485 node_paths=PackedStringArray("Page")]
-visible = false
 layout_mode = 2
 toggle_mode = true
 button_group = ExtResource("4_megpf")

@@ -1,16 +1,30 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net;
 using System.Numerics;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Threading;
 using System.Threading.Tasks;
 using AsyncIO;
 using Godot;
+using MVL.UI;
 using NetMQ;
 using RandomNumberGenerator = System.Security.Cryptography.RandomNumberGenerator;
 
 namespace MVL.Utils.Multiplayer;
+
+public enum RoomState {
+	Disconnected,
+	Connecting,
+	EasyTierReady,
+	RoomJoining,
+	Ready,
+	Failed,
+}
+
+public readonly record struct RoomStateChange(RoomState State, string? ErrorMessage = null);
 
 public partial record Room : IDisposable {
 	public string Code { get; }
@@ -18,15 +32,64 @@ public partial record Room : IDisposable {
 	public string NetworkSecret { get; }
 	public ushort HostPort { get; private set; }
 	public ushort LocalPort { get; private set; }
-	public List<RoomPlayerInfo> Players { get; set; } = [];
-	public event Action<bool>? OnReady;
+	private readonly Lock _playersLock = new();
+	private readonly List<RoomPlayerInfo> _players = [];
+	public event Action<RoomStateChange>? OnStateChanged;
+	public event Action? OnPlayerListChanged;
 
 	private EasyTier? _easyTier;
 	private RoomPlayerInfo? _localPlayer;
 	private NetMQPoller? _poller;
+	// private NetMQMonitor? _monitor;
+	private CancellationTokenSource? _cts;
+	private volatile bool _shuttingDown;
+
+	public List<RoomPlayerInfo> GetPlayersSnapshot() {
+		lock (_playersLock) {
+			return [.. _players];
+		}
+	}
+
+	public void AddPlayer(RoomPlayerInfo player) {
+		lock (_playersLock) {
+			_players.Add(player);
+		}
+	}
+
+	public int GetPlayerCount() {
+		lock (_playersLock) {
+			return _players.Count;
+		}
+	}
+
+	public RoomPlayerInfo? GetPlayerByIdentityLocked(uint identity) {
+		lock (_playersLock) {
+			return identity == _localPlayer?.Identity ? _localPlayer : _players.Find(p => p.Identity == identity);
+		}
+	}
+
+	public bool RemovePlayer(RoomPlayerInfo player) {
+		lock (_playersLock) {
+			return _players.Remove(player);
+		}
+	}
+
+	public void ClearPlayers() {
+		lock (_playersLock) {
+			_players.Clear();
+		}
+	}
+
+	public List<RoomPlayerInfo> GetGuestsSnapshot() {
+		lock (_playersLock) {
+			return [.. _players.Where(p => p.RoomType == RoomType.Guest)];
+		}
+	}
 
 	[GeneratedRegex(@"^[0-9a-f]+-[0-9a-z]{9}-[0-9a-z]{9}$", RegexOptions.IgnoreCase)]
 	static private partial Regex CodeRegex();
+
+	public static bool IsValidCode(string code) { return !string.IsNullOrEmpty(code) && CodeRegex().IsMatch(code); }
 
 	private const string NetworkNameFormat = "{0}-vs-server-{1}";
 	private const int UniqueIdB36Length = 7;
@@ -50,42 +113,48 @@ public partial record Room : IDisposable {
 		HostPort = hostPort;
 		LocalPort = localPort;
 		ForceDotNet.Force();
-		Log.Debug($"房间已创建: {this}");
+		Log.Debug($"初始化房间数据: Code={Code}");
 	}
 
 	public void Shutdown() {
-		_poller?.Dispose();
+		if (_shuttingDown) {
+			return;
+		}
+
+		_shuttingDown = true;
+
+		_cts?.Cancel();
+		_cts?.Dispose();
+		_cts = null;
+
 		if (_routerSocket is not null) {
 			ShutdownHost();
 		} else if (_dealerSocket is not null) {
 			ShutdownGuest();
 		}
 
+		_poller?.Dispose();
+		_poller = null;
+
 		Dispatcher.SynchronizationContext.Send(_ => { _easyTier?.Dispose(); }, null);
 
-		Players.Clear();
+		ClearPlayers();
 		_localPlayer = null;
 	}
 
-	public RoomPlayerInfo? GetPlayerByIdentity(uint identity) {
-		foreach (var playerInfo in Players) {
-			if (playerInfo.Identity == identity) {
-				return playerInfo;
-			}
-		}
-
-		return null;
-	}
-
-	public async Task<List<string>> ComposeArgs() {
+	public async Task<List<string>> ComposeArgs(CancellationToken token = default) {
 		var args = new List<string>(PreArgs);
 		args.AddRange([
 			"--network-name", NetworkName,
 			"--network-secret", NetworkSecret
 		]);
 
-		var nodes = await EasyTier.FetchPublicNodes(10);
+		var nodes = await EasyTier.FetchPublicNodes(10, token);
 		foreach (var node in nodes) {
+			args.AddRange(["-p", node]);
+		}
+
+		foreach (var node in Main.BaseConfig.CustomEasyTierNodes) {
 			args.AddRange(["-p", node]);
 		}
 
