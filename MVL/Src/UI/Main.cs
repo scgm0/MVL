@@ -105,6 +105,7 @@ public partial class Main : NativeWindowUtility {
 	public static ConcurrentDictionary<string, Account> Accounts { get; } = new();
 
 	public static event Action? GameExitEvent;
+	public static bool AccountLocked { get; set; }
 	public Main() { Instance = this; }
 
 	public override void _Ready() {
@@ -216,6 +217,11 @@ public partial class Main : NativeWindowUtility {
 	}
 
 	private async void AccountButtonOnPressed() {
+		if (AccountLocked) {
+			_accountButton!.ButtonPressed = false;
+			return;
+		}
+
 		if (BaseConfig.Account.Count == 0) {
 			var loginWindow = await OpenAccountSelectWindow();
 			loginWindow.Login += window => {

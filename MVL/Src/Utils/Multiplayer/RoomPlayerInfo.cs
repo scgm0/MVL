@@ -10,9 +10,10 @@ public partial record RoomPlayerInfo(
 	string Name,
 	ushort Port,
 	string Address,
-	string Version) {
+	string Version,
+	bool Offline) {
 	public uint Identity { get; set; }
-
+	public TimeSpan Latency { get; set; }
 	[JsonIgnore]
 	[PropertyShape(Ignore = true)]
 	public DateTimeOffset LastHeartbeat { get; set; }
