@@ -21,7 +21,7 @@
         <PackageReference Include="CSemVer" Version="13.0.0" />
         <PackageReference Include="Flurl.Http" Version="4.0.2" />
         <PackageReference Include="Mono.Cecil" Version="0.11.6" />
-        <PackageReference Include="Nerdbank.MessagePack" Version="1.2.4" />
+        <PackageReference Include="Nerdbank.MessagePack" Version="1.3.29-beta" />
         <PackageReference Include="NetMQ" Version="4.0.4.2" />
         <PackageReference Include="PublishAotCross.LinuxToWin" Version="1.0.0" />
         <PackageReference Include="ZLogger" Version="2.5.10" />

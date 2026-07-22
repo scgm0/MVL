@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Net;
 using System.Net.Http;
+using System.Net.Sockets;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Win32.SafeHandles;
@@ -406,7 +407,7 @@ public sealed class LightDownloader : IDisposable {
 			};
 		}
 
-		return ex is IOException or System.Net.Sockets.SocketException;
+		return ex is IOException or SocketException;
 	}
 
 	public void Dispose() {
