@@ -192,8 +192,11 @@ public partial class ApiModReleaseItem : PanelContainer {
 		try {
 			await ApiModRelease.Value.DownloadMainFileAsync(path,
 				progress => {
-					_progressBar.SetValue(progress.Percentage);
-					_progressLabel.SetText($"{progress.Percentage:F1}%");
+					Dispatcher.SynchronizationContext.Post(_ => {
+							_progressBar.SetValue(progress.Percentage);
+							_progressLabel.SetText($"{progress.Percentage:F1}%");
+						},
+						null);
 				},
 				CancellationTokenSource?.Token ?? CancellationToken.None);
 		} catch (OperationCanceledException) {

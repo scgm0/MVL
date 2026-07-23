@@ -129,7 +129,7 @@ public partial class ModInfoItem : PanelContainer {
 		var path = Path.Combine(Mod!.ModPath.GetBaseDir(), ApiModRelease!.Value.FileName);
 		try {
 			await ApiModRelease.Value.DownloadMainFileAsync(path,
-				progress => { _progressBar.SetValue(progress.Percentage); },
+				progress => { Dispatcher.SynchronizationContext.Post(_ => _progressBar.SetValue(progress.Percentage), null); },
 				CancellationTokenSource?.Token ?? CancellationToken.None);
 		} catch (OperationCanceledException) {
 			Log.Info($"取消下载: {ApiModRelease!.Value.FileName}");

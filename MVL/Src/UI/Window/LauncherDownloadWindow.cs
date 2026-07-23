@@ -160,9 +160,11 @@ public partial class LauncherDownloadWindow : BaseWindow {
 	}
 
 	private void UpdateProgress(double percentage, ulong speed) {
-		_progressBar!.Value = percentage;
 		var (fmtSpeed, unit) = Tools.GetSizeAndUnit(speed);
-		_progressLabel!.Text = $"{fmtSpeed:F2} {unit}/s";
+		Dispatcher.SynchronizationContext.Post(_ => {
+			_progressBar!.Value = percentage;
+			_progressLabel!.Text = $"{fmtSpeed:F2} {unit}/s";
+		}, null);
 	}
 
 	private void OnPressed() {
