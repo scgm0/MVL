@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+using System.Collections.Frozen;
 using Godot;
 using MVL.Utils.Attribute;
 
@@ -66,6 +66,6 @@ public partial class IconTexture2D : Texture2D {
 
 	public override int _GetWidth() { return IconSize; }
 
-	[JsonDictionary("Assets/Icon/MD/icons.json")]
-	static private partial Dictionary<string, string> Icons { get; }
+	[IconDictionary("Assets/Icon/MD/icons.json")]
+	static private partial FrozenDictionary<string, string> Icons { get; }
 }
