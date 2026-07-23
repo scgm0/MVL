@@ -77,6 +77,9 @@ msgstr "主力開發人員"
 msgid "开发人员"
 msgstr "開發者"
 
+msgid "组织赞助"
+msgstr ""
+
 msgid "私人赞助"
 msgstr "私人機構的贊助"
 

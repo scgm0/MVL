@@ -75,6 +75,9 @@ msgstr "Desarrollador Principal"
 msgid "开发人员"
 msgstr "Desarolladores"
 
+msgid "组织赞助"
+msgstr ""
+
 msgid "私人赞助"
 msgstr "Patrocinador Privado"
 

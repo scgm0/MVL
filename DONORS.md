@@ -2,6 +2,10 @@
 
 此名单目前仅记录赞助过本人(神麤詭末)的人员。
 
+## 组织赞助
+
+    复古物语中文社区 <https://vintagestory.top>
+
 ## 私人赞助
 
     埃布尔怀特
@@ -11,7 +15,6 @@
     蛋糕
     呆狐老登
     Enochhcx
-    复古物语中文社区 <https://vintagestory.top>
     哈基米
     华月芊/绮裳(Qiayeb)
     开摆！！

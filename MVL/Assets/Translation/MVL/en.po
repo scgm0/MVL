@@ -15,6 +15,9 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
 "X-Generator: Weblate 5.15-dev\n"
 
+msgid "神麤詭末的复古物语启动器"
+msgstr "MystiVaid's VintageStory Launcher"
+
 msgid "菜单"
 msgstr "Menu"
 
@@ -72,23 +75,23 @@ msgstr "Main Developer"
 msgid "开发人员"
 msgstr "Developer"
 
-msgid "'{0}'已存在，确定覆盖它吗？"
-msgstr "'{0}' already exists, sure about overriding it?"
-
-msgid "下载中..."
-msgstr "Downloading..."
-
-msgid "邮箱:"
-msgstr "Email:"
+msgid "组织赞助"
+msgstr "Organization Sponsorship"
 
 msgid "私人赞助"
 msgstr "Private Sponsorship"
+
+msgid "添加整合包"
+msgstr "Add Modpack"
 
 msgid "选择游戏版本"
 msgstr "Select Game Version"
 
 msgid "账号登录"
 msgstr "Account Login"
+
+msgid "请先选择一个整合包"
+msgstr "Please select a modpack first"
 
 msgid "请先在整合界面添加一个整合包"
 msgstr "Please first add a modpack in the modpack interface"
@@ -117,32 +120,32 @@ msgstr "Folder does not exist"
 msgid "将自动创建文件夹"
 msgstr "Folders will be created automatically"
 
-msgid "神麤詭末的复古物语启动器"
-msgstr "MystiVaid's VintageStory Launcher"
-
 msgid "文件夹不为空，确定选择它吗？"
 msgstr "The folder is not empty, are you sure you want to select it?"
 
-msgid "请先选择一个整合包"
-msgstr "Please select a modpack first"
-
-msgid "游戏版本:"
-msgstr "Game Version:"
-
-msgid "密码:"
-msgstr "Password:"
+msgid "文件夹存在且为空"
+msgstr "Folder exists and is empty"
 
 msgid "网络请求失败，请重试"
 msgstr "Network request failed, please try again"
 
-msgid "文件夹存在且为空"
-msgstr "Folder exists and is empty"
+msgid "名称包含非法字符"
+msgstr "Name contains illegal characters"
 
 msgid "路径不存在"
 msgstr "Path does not exist"
 
 msgid "请选择版本"
 msgstr "Please select version"
+
+msgid "'{0}'已存在，确定覆盖它吗？"
+msgstr "'{0}' already exists, sure about overriding it?"
+
+msgid "下载中..."
+msgstr "Downloading..."
+
+msgid "提取中..."
+msgstr "Extracting..."
 
 msgid "确定要删除账号 [color=#0078d7][b]{0}[/b][/color] 吗？"
 msgstr ""
@@ -164,8 +167,23 @@ msgstr "Creating Folders"
 msgid "路径不能为空"
 msgstr "Path cannot be empty"
 
+msgid "游戏版本:"
+msgstr "Game Version:"
+
+msgid "版本名称:"
+msgstr "Version Name:"
+
+msgid "安装路径:"
+msgstr "Installation Path:"
+
+msgid "邮箱:"
+msgstr "Email:"
+
 msgid "邮箱不能为空"
 msgstr "Email cannot be empty"
+
+msgid "密码:"
+msgstr "Password:"
 
 msgid "密码不能为空"
 msgstr "Password cannot be empty"
@@ -191,32 +209,17 @@ msgstr "Select Version"
 msgid "模组数量: {0}"
 msgstr "Number of Mods: {0}"
 
-msgid "版本名称:"
-msgstr "Version Name:"
-
-msgid "添加整合包"
-msgstr "Add Modpack"
-
-msgid "名称包含非法字符"
-msgstr "Name contains illegal characters"
-
 msgid "该名称已存在"
 msgstr "Name already exists"
 
-msgid "安装路径:"
-msgstr "Installation Path:"
-
-msgid "提取中..."
-msgstr "Extracting..."
+msgid "请输入邮箱"
+msgstr "Please enter your email address"
 
 msgid "请输入密码"
 msgstr "Please enter your password"
 
 msgid "请输入访问代码"
 msgstr "Please enter the access code"
-
-msgid "请输入邮箱"
-msgstr "Please enter your email address"
 
 msgid "正在登录..."
 msgstr "Logging in..."
@@ -233,12 +236,6 @@ msgstr "Access Code Error"
 msgid "登录失败: {0}"
 msgstr "Login Failed: {0}"
 
-msgid "不喜欢MVL？那么您还可以试试另一款复古物语启动器: [wave][pulse][rainbow][url=https://vsldocs.xurxomf.xyz]VS Launcher[/url][/rainbow][/pulse][/wave]"
-msgstr ""
-"Don't like MVL? Then you can also try another Vintage Story launcher: "
-"[wave][pulse][rainbow][url=https://vsldocs.xurxomf.xyz]VS Launcher[/url][/"
-"rainbow][/pulse][/wave]"
-
 msgid "如果启动器对您有所帮助且您财力有余，可以赞助一下开发者，您的支持将促进启动器"
 "的开发与完善: [color=#3c7fe1][url]https://afdian.com/a/MystiVaid[/url][/color]"
 msgstr ""
@@ -246,6 +243,12 @@ msgstr ""
 "sponsoring the developer. Your support will help advance and refine the "
 "launcher's development: [color=#3c7fe1][url]https://afdian.com/a/MystiVaid[/"
 "url][/color]"
+
+msgid "不喜欢MVL？那么您还可以试试另一款复古物语启动器: [wave][pulse][rainbow][url=https://vsldocs.xurxomf.xyz]VS Launcher[/url][/rainbow][/pulse][/wave]"
+msgstr ""
+"Don't like MVL? Then you can also try another Vintage Story launcher: "
+"[wave][pulse][rainbow][url=https://vsldocs.xurxomf.xyz]VS Launcher[/url][/"
+"rainbow][/pulse][/wave]"
 
 msgid "英语翻译"
 msgstr "English Translation"
