@@ -80,7 +80,7 @@ public partial record Room : IDisposable {
 		}
 	}
 
-	public List<RoomPlayerInfo> GetGuestsSnapshot() {
+	public RoomPlayerInfo[] GetGuestsSnapshot() {
 		lock (_playersLock) {
 			return [.. _players.Where(p => p.RoomType == RoomType.Guest)];
 		}

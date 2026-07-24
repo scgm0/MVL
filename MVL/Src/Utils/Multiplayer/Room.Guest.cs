@@ -137,95 +137,104 @@ public partial record Room {
 	}
 
 	private async void DealerClientOnReceiveReady(object? sender, NetMQSocketEventArgs e) {
-		NetMQMessage? hostMessage = null;
-		if (!e.Socket.TryReceiveMultipartMessage(ref hostMessage)) {
-			return;
-		}
+		try {
+			NetMQMessage? hostMessage = null;
+			if (!e.Socket.TryReceiveMultipartMessage(ref hostMessage)) {
+				return;
+			}
 
-		if (_hostEasyTierInfo is null) {
-			Log.Error("收到来自主机的事件，但EasyTier主机信息丢失");
-			return;
-		}
+			if (_hostEasyTierInfo is null) {
+				Log.Error("收到来自主机的事件，但EasyTier主机信息丢失");
+				return;
+			}
 
-		var eventCode = (RoomEventEnum)BitConverter.ToInt32(hostMessage[0].Buffer);
-		Log.Debug($"收到来自主机的事件: {eventCode}");
+			var eventCode = (RoomEventEnum)BitConverter.ToInt32(hostMessage[0].Buffer);
+			if (!Enum.IsDefined(eventCode)) {
+				Log.Warn($"未知事件: {eventCode}");
+				return;
+			}
 
-		switch (eventCode) {
-			case RoomEventEnum.JoinAccepted: {
-				var playerList =
-					Tools.PackSerializer.Deserialize<List<RoomPlayerInfo>, SourceGenerationContext>(hostMessage[1].Buffer)!;
-				lock (_playersLock) {
-					_players.Clear();
-					_players.AddRange(playerList);
+			Log.Debug($"收到来自主机的事件: {eventCode}");
+
+			switch (eventCode) {
+				case RoomEventEnum.JoinAccepted: {
+					var playerList =
+						Tools.PackSerializer.Deserialize<List<RoomPlayerInfo>, SourceGenerationContext>(hostMessage[1].Buffer)!;
+					lock (_playersLock) {
+						_players.Clear();
+						_players.AddRange(playerList);
+					}
+
+					OnPlayerListChanged?.Invoke();
+					Log.Info("已从主机接受到房间信息，准备创建端口转发...");
+
+					var local = $"{IPAddress.Any}:{LocalPort}";
+					var snapshot = GetPlayersSnapshot();
+					var remote = $"{_hostEasyTierInfo.Value.IpV4}:{snapshot[0].Port}";
+					if (await _easyTier!.AddPortForward((local, remote, "tcp"))) {
+						OnStateChanged?.Invoke(new(RoomState.Ready));
+						_hostTimeoutTimer!.Enable = false;
+						_hostTimeoutTimer.Enable = true;
+						return;
+					}
+
+					OnStateChanged?.Invoke(new(RoomState.Failed, "端口转发失败"));
+					return;
 				}
+				case RoomEventEnum.AddGuest: {
+					var playerInfo = Tools.PackSerializer.Deserialize<RoomPlayerInfo>(hostMessage[1].Buffer)!;
+					if (GetPlayerByIdentityLocked(playerInfo.Identity) != null) {
+						return;
+					}
 
-				OnPlayerListChanged?.Invoke();
-				Log.Info("已从主机接受到房间信息，准备创建端口转发...");
+					AddPlayer(playerInfo);
+					OnPlayerListChanged?.Invoke();
+					Log.Info($"玩家 {playerInfo.Name} 已加入");
+					return;
+				}
+				case RoomEventEnum.GuestLeft: {
+					var playerInfo = Tools.PackSerializer.Deserialize<RoomPlayerInfo>(hostMessage[1].Buffer)!;
+					if (GetPlayerByIdentityLocked(playerInfo.Identity) is { } leftPlayer) {
+						RemovePlayer(leftPlayer);
+						OnPlayerListChanged?.Invoke();
+						Log.Info($"玩家 {playerInfo.Name} 已离开");
+					}
 
-				var local = $"{IPAddress.Any}:{LocalPort}";
-				var snapshot = GetPlayersSnapshot();
-				var remote = $"{_hostEasyTierInfo.Value.IpV4}:{snapshot[0].Port}";
-				if (await _easyTier!.AddPortForward((local, remote, "tcp"))) {
-					OnStateChanged?.Invoke(new(RoomState.Ready));
+					break;
+				}
+				case RoomEventEnum.HostShutdown: {
+					Log.Info("主机已关闭房间。");
+					_isHostAlive = false;
+					OnStateChanged?.Invoke(new(RoomState.Disconnected));
+					break;
+				}
+				case RoomEventEnum.Heartbeat: {
+					var ackMessage = new NetMQMessage();
+					ackMessage.Append(BitConverter.GetBytes((int)RoomEventEnum.HeartbeatAck));
+					ackMessage.Append(hostMessage[1].Buffer);
+					_dealerSocket!.TrySendMultipartMessage(ackMessage);
+
 					_hostTimeoutTimer!.Enable = false;
 					_hostTimeoutTimer.Enable = true;
-					return;
+					break;
 				}
+				case RoomEventEnum.PlayerUpdate: {
+					var updatedPlayer =
+						Tools.PackSerializer.Deserialize<RoomPlayerInfo>(hostMessage[1].Buffer);
+					if (updatedPlayer is not null && GetPlayerByIdentityLocked(updatedPlayer.Identity) is { } existing) {
+						existing.Latency = updatedPlayer.Latency;
+						OnPlayerListChanged?.Invoke();
+					}
 
-				OnStateChanged?.Invoke(new(RoomState.Failed, "端口转发失败"));
-				return;
-			}
-			case RoomEventEnum.AddGuest: {
-				var playerInfo = Tools.PackSerializer.Deserialize<RoomPlayerInfo>(hostMessage[1].Buffer)!;
-				if (GetPlayerByIdentityLocked(playerInfo.Identity) != null) {
-					return;
+					break;
 				}
-
-				AddPlayer(playerInfo);
-				OnPlayerListChanged?.Invoke();
-				Log.Info($"玩家 {playerInfo.Name} 已加入");
-				return;
+				case RoomEventEnum.GuestJoined:
+				case RoomEventEnum.HeartbeatAck:
+				case RoomEventEnum.None: break;
+				default: Log.Warn($"无效事件: {eventCode}"); break;
 			}
-			case RoomEventEnum.GuestLeft: {
-				var playerInfo = Tools.PackSerializer.Deserialize<RoomPlayerInfo>(hostMessage[1].Buffer)!;
-				if (GetPlayerByIdentityLocked(playerInfo.Identity) is { } leftPlayer) {
-					RemovePlayer(leftPlayer);
-					OnPlayerListChanged?.Invoke();
-					Log.Info($"玩家 {playerInfo.Name} 已离开");
-				}
-
-				break;
-			}
-			case RoomEventEnum.HostShutdown: {
-				Log.Info("主机已关闭房间。");
-				_isHostAlive = false;
-				OnStateChanged?.Invoke(new(RoomState.Disconnected));
-				break;
-			}
-			case RoomEventEnum.Heartbeat: {
-				var ackMessage = new NetMQMessage();
-				ackMessage.Append(BitConverter.GetBytes((int)RoomEventEnum.HeartbeatAck));
-				ackMessage.Append(hostMessage[1].Buffer);
-				_dealerSocket!.TrySendMultipartMessage(ackMessage);
-
-				_hostTimeoutTimer!.Enable = false;
-				_hostTimeoutTimer.Enable = true;
-				break;
-			}
-			case RoomEventEnum.PlayerUpdate: {
-				var updatedPlayer =
-					Tools.PackSerializer.Deserialize<RoomPlayerInfo>(hostMessage[1].Buffer);
-				if (updatedPlayer is not null && GetPlayerByIdentityLocked(updatedPlayer.Identity) is { } existing) {
-					existing.Latency = updatedPlayer.Latency;
-					OnPlayerListChanged?.Invoke();
-				}
-
-				break;
-			}
-			case RoomEventEnum.GuestJoined:
-			case RoomEventEnum.HeartbeatAck:
-			case RoomEventEnum.None: break;
-			default: Log.Warn($"未知事件: {eventCode}"); break;
+		} catch (Exception err) {
+			Log.Error("处理来自主机的事件时发生异常", err);
 		}
 	}
 
@@ -236,11 +245,8 @@ public partial record Room {
 
 		_isHostAlive = false;
 		Log.Error("主机连接超时");
-		Dispatcher.SynchronizationContext.Post(_ => {
-				Shutdown();
-				OnStateChanged?.Invoke(new(RoomState.Failed, "主机连接超时"));
-			},
-			null);
+		OnStateChanged?.Invoke(new(RoomState.Failed, "主机连接超时"));
+		Shutdown();
 	}
 
 	private void ShutdownGuest() {

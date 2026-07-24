@@ -85,91 +85,98 @@ public partial record Room {
 	}
 
 	private void RouterSocketOnReceiveReady(object? sender, NetMQSocketEventArgs e) {
-		NetMQMessage? guestMessage = null;
-		if (!e.Socket.TryReceiveMultipartMessage(ref guestMessage)) {
-			return;
-		}
-
-		var clientIdentity = BitConverter.ToUInt32(guestMessage[0].Buffer);
-		var eventCode = (RoomEventEnum)BitConverter.ToInt32(guestMessage[1].Buffer);
-		var player = GetPlayerByIdentityLocked(clientIdentity);
-		if (player is not null) {
-			player.LastHeartbeat = DateTimeOffset.UtcNow;
-		}
-
-		Log.Debug($"收到来自 {player?.Name} 的时间: {eventCode}");
-
-		switch (eventCode) {
-			case RoomEventEnum.GuestJoined: {
-				player = Tools.PackSerializer.Deserialize<RoomPlayerInfo>(guestMessage[2].Buffer)!;
-				if (GetPlayerByIdentityLocked(player.Identity) == null) {
-					player.LastHeartbeat = DateTimeOffset.UtcNow;
-					AddPlayer(player);
-					OnPlayerListChanged?.Invoke();
-					Log.Info($"玩家 {player.Name} 已加入房间。 当前玩家数: {GetPlayerCount()}");
-				}
-
-				var responseMessage = new NetMQMessage();
-				responseMessage.Append(guestMessage[0].Buffer);
-				responseMessage.Append(BitConverter.GetBytes((int)RoomEventEnum.JoinAccepted));
-				responseMessage.Append(
-					Tools.PackSerializer.Serialize<List<RoomPlayerInfo>, SourceGenerationContext>(GetPlayersSnapshot()));
-				if (_routerSocket!.TrySendMultipartMessage(responseMessage)) {
-					Log.Debug($"已向新访客 {player.Name} 发送房间信息。");
-				}
-
-				foreach (var roomPlayerInfo in GetPlayersSnapshot()) {
-					if (roomPlayerInfo.RoomType != RoomType.Guest || roomPlayerInfo.Identity == clientIdentity) {
-						continue;
-					}
-
-					responseMessage = new();
-					responseMessage.Append(BitConverter.GetBytes(roomPlayerInfo.Identity));
-					responseMessage.Append(BitConverter.GetBytes((int)RoomEventEnum.GuestJoined));
-					responseMessage.Append(Tools.PackSerializer.Serialize(player));
-
-					if (_routerSocket!.TrySendMultipartMessage(responseMessage)) {
-						Log.Debug("已广播更新访客信息。");
-					}
-				}
-
-				break;
-			}
-			case RoomEventEnum.GuestLeft:
-				if (player != null) {
-					HandleClientDisconnect(player);
-				}
-
+		try {
+			NetMQMessage? guestMessage = null;
+			if (!e.Socket.TryReceiveMultipartMessage(ref guestMessage)) {
 				return;
-			case RoomEventEnum.HeartbeatAck: {
-				if (player is not null) {
-					var sentTimestamp = BitConverter.ToInt64(guestMessage[2].Buffer);
-					var rttTicks = (double)(Stopwatch.GetTimestamp() - sentTimestamp);
-					var rttMs = rttTicks / Stopwatch.Frequency * 1000;
-					player.Latency = TimeSpan.FromMilliseconds(rttMs / 2);
-
-					OnPlayerListChanged?.Invoke();
-					Log.Debug($"玩家 {player.Name} 心跳响应: {player.Latency.TotalMilliseconds:F0}ms");
-
-					var serializedPlayer = Tools.PackSerializer.Serialize(player);
-					foreach (var guest in GetGuestsSnapshot()) {
-						var updateMessage = new NetMQMessage();
-						updateMessage.Append(BitConverter.GetBytes(guest.Identity));
-						updateMessage.Append(BitConverter.GetBytes((int)RoomEventEnum.PlayerUpdate));
-						updateMessage.Append(serializedPlayer);
-						_routerSocket!.TrySendMultipartMessage(updateMessage);
-					}
-				}
-
-				break;
 			}
-			case RoomEventEnum.JoinAccepted:
-			case RoomEventEnum.AddGuest:
-			case RoomEventEnum.HostShutdown:
-			case RoomEventEnum.Heartbeat:
-			case RoomEventEnum.PlayerUpdate:
-			case RoomEventEnum.None: break;
-			default: Log.Warn($"未知事件: {eventCode}"); break;
+
+			var clientIdentity = BitConverter.ToUInt32(guestMessage[0].Buffer);
+			var eventCode = (RoomEventEnum)BitConverter.ToInt32(guestMessage[1].Buffer);
+			if (!Enum.IsDefined(eventCode)) {
+				Log.Warn($"未知事件: {eventCode}");
+				return;
+			}
+
+			var player = GetPlayerByIdentityLocked(clientIdentity);
+			player?.LastHeartbeat = DateTimeOffset.UtcNow;
+
+			Log.Debug($"收到来自 {player?.Name} 的事件: {eventCode}");
+
+			switch (eventCode) {
+				case RoomEventEnum.GuestJoined: {
+					player = Tools.PackSerializer.Deserialize<RoomPlayerInfo>(guestMessage[2].Buffer)!;
+					if (GetPlayerByIdentityLocked(player.Identity) == null) {
+						player.LastHeartbeat = DateTimeOffset.UtcNow;
+						AddPlayer(player);
+						OnPlayerListChanged?.Invoke();
+						Log.Info($"玩家 {player.Name} 已加入房间。 当前玩家数: {GetPlayerCount()}");
+					}
+
+					var responseMessage = new NetMQMessage();
+					responseMessage.Append(guestMessage[0].Buffer);
+					responseMessage.Append(BitConverter.GetBytes((int)RoomEventEnum.JoinAccepted));
+					responseMessage.Append(
+						Tools.PackSerializer.Serialize<List<RoomPlayerInfo>, SourceGenerationContext>(GetPlayersSnapshot()));
+					if (_routerSocket!.TrySendMultipartMessage(responseMessage)) {
+						Log.Debug($"已向新访客 {player.Name} 发送房间信息。");
+					}
+
+					foreach (var roomPlayerInfo in GetPlayersSnapshot()) {
+						if (roomPlayerInfo.RoomType != RoomType.Guest || roomPlayerInfo.Identity == clientIdentity) {
+							continue;
+						}
+
+						responseMessage = new();
+						responseMessage.Append(BitConverter.GetBytes(roomPlayerInfo.Identity));
+						responseMessage.Append(BitConverter.GetBytes((int)RoomEventEnum.GuestJoined));
+						responseMessage.Append(Tools.PackSerializer.Serialize(player));
+
+						if (_routerSocket!.TrySendMultipartMessage(responseMessage)) {
+							Log.Debug("已广播更新访客信息。");
+						}
+					}
+
+					break;
+				}
+				case RoomEventEnum.GuestLeft:
+					if (player != null) {
+						HandleClientDisconnect(player);
+					}
+
+					return;
+				case RoomEventEnum.HeartbeatAck: {
+					if (player is not null) {
+						var sentTimestamp = BitConverter.ToInt64(guestMessage[2].Buffer);
+						var rttTicks = (double)(Stopwatch.GetTimestamp() - sentTimestamp);
+						var rttMs = rttTicks / Stopwatch.Frequency * 1000;
+						player.Latency = TimeSpan.FromMilliseconds(rttMs / 2);
+
+						OnPlayerListChanged?.Invoke();
+						Log.Debug($"玩家 {player.Name} 心跳响应: {player.Latency.TotalMilliseconds:F0}ms");
+
+						var serializedPlayer = Tools.PackSerializer.Serialize(player);
+						foreach (var guest in GetGuestsSnapshot()) {
+							var updateMessage = new NetMQMessage();
+							updateMessage.Append(BitConverter.GetBytes(guest.Identity));
+							updateMessage.Append(BitConverter.GetBytes((int)RoomEventEnum.PlayerUpdate));
+							updateMessage.Append(serializedPlayer);
+							_routerSocket!.TrySendMultipartMessage(updateMessage);
+						}
+					}
+
+					break;
+				}
+				case RoomEventEnum.JoinAccepted:
+				case RoomEventEnum.AddGuest:
+				case RoomEventEnum.HostShutdown:
+				case RoomEventEnum.Heartbeat:
+				case RoomEventEnum.PlayerUpdate:
+				case RoomEventEnum.None: break;
+				default: Log.Warn($"无效事件: {eventCode}"); break;
+			}
+		} catch (Exception ex) {
+			Log.Error("处理客户端消息时发生异常", ex);
 		}
 	}
 
@@ -215,7 +222,7 @@ public partial record Room {
 
 	private void SendHeartbeatToGuests() {
 		var guests = GetGuestsSnapshot();
-		if (guests.Count == 0) {
+		if (guests.Length == 0) {
 			return;
 		}
 
