@@ -50,8 +50,8 @@ public class EasyTier : IDisposable {
 		Process = new();
 		Process.StartInfo = processStartInfo;
 		Process.Start();
-		// Process.BeginOutputReadLine();
-		// Process.BeginErrorReadLine();
+		Process.BeginOutputReadLine();
+		Process.BeginErrorReadLine();
 
 		var i = 0;
 		await Task.Run(async () => {

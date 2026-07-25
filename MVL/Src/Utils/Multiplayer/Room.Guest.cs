@@ -246,7 +246,6 @@ public partial record Room {
 		_isHostAlive = false;
 		Log.Error("主机连接超时");
 		OnStateChanged?.Invoke(new(RoomState.Failed, "主机连接超时"));
-		Shutdown();
 	}
 
 	private void ShutdownGuest() {
