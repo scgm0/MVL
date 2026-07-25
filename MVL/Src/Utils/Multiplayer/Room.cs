@@ -64,7 +64,7 @@ public partial record Room : IDisposable {
 
 	public RoomPlayerInfo? GetPlayerByIdentityLocked(uint identity) {
 		lock (_playersLock) {
-			return identity == _localPlayer?.Identity ? _localPlayer : _players.Find(p => p.Identity == identity);
+			return _players.Find(p => p.Identity == identity);
 		}
 	}
 
@@ -133,10 +133,15 @@ public partial record Room : IDisposable {
 			ShutdownGuest();
 		}
 
-		_poller?.Dispose();
+		var poller = _poller;
+		var easyTier = _easyTier;
+		_easyTier = null;
 		_poller = null;
-
-		Dispatcher.SynchronizationContext.Send(_ => { _easyTier?.Dispose(); }, null);
+		Dispatcher.SynchronizationContext.Send(_ => {
+				poller?.Dispose();
+				easyTier?.Dispose();
+			},
+			null);
 
 		ClearPlayers();
 		_localPlayer = null;
@@ -244,7 +249,11 @@ public partial record Room : IDisposable {
 			var networkName = string.Format(NetworkNameFormat, prefix, Convert.ToHexStringLower(paddedUniqueId));
 			var networkSecret = Convert.ToHexStringLower(secretBytes);
 
-			return new(code, networkName, networkSecret, port, Tools.GetAvailablePort());
+			return new(code,
+				networkName,
+				networkSecret,
+				port,
+				Tools.PortIsAvailable(42420) ? (ushort)42420 : Tools.GetAvailablePort());
 		} catch (Exception) {
 			return null;
 		}
