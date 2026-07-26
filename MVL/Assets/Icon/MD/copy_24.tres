@@ -1,0 +1,10 @@
+[gd_resource type="Texture2D" script_class="IconTexture2D" format=3 uid="uid://xms28be25du"]
+
+[ext_resource type="Script" uid="uid://bk3tot6c35bwu" path="res://Src/Utils/IconTexture2D.cs" id="1_fs1ev"]
+
+[resource]
+resource_local_to_scene = false
+resource_name = ""
+script = ExtResource("1_fs1ev")
+IconName = "content-copy"
+metadata/_custom_type_script = "uid://bk3tot6c35bwu"

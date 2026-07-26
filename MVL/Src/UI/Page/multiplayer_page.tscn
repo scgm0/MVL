@@ -6,6 +6,7 @@
 [ext_resource type="Script" uid="uid://b7h0k2h2qwlqv" path="res://addons/SmoothScroll/scroll_damper/expo_scroll_damper.gd" id="4_yoik7"]
 [ext_resource type="Script" uid="uid://bk3tot6c35bwu" path="res://Src/Utils/IconTexture2D.cs" id="5_jxrox"]
 [ext_resource type="PackedScene" uid="uid://bxx7x6k5lpy1w" path="res://Src/UI/Item/player_item.tscn" id="6_player_item"]
+[ext_resource type="Texture2D" uid="uid://xms28be25du" path="res://Assets/Icon/MD/copy_24.tres" id="7_b15ww"]
 
 [sub_resource type="Texture2D" id="Texture2D_ufe8e"]
 resource_local_to_scene = false
@@ -21,6 +22,28 @@ script = ExtResource("4_yoik7")
 [sub_resource type="Resource" id="Resource_scroll2"]
 script = ExtResource("4_yoik7")
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_pteqr"]
+content_margin_left = 5.0
+content_margin_top = 5.0
+content_margin_right = 5.0
+content_margin_bottom = 5.0
+bg_color = Color(0.101961, 0.101961, 0.101961, 1)
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_b15ww"]
+content_margin_left = 5.0
+content_margin_top = 5.0
+content_margin_right = 5.0
+content_margin_bottom = 5.0
+draw_center = false
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+
 [sub_resource type="Texture2D" id="Texture2D_n8wox"]
 resource_local_to_scene = false
 resource_name = ""
@@ -29,21 +52,35 @@ IconName = "circle"
 IconSize = 16
 metadata/_custom_type_script = "uid://bk3tot6c35bwu"
 
-[node name="MultiplayerPage" type="Control" unique_id=1452598718 node_paths=PackedStringArray("_createButton", "_joinButton", "_resetButton", "_downloadButton", "_codeLineEdit", "_tooltip", "_versionLabel", "_roomInfoPanel", "_playerCountLabel", "_playerListContainer", "_lanPortSpinBox", "_customNodeInput", "_addNodeButton", "_nodeListContainer", "_connectionIndicator", "_nodePanel", "_statusLabel", "_statusDetailLabel", "_openFolderButton", "_officialSiteButton", "_customNodeSectionLabel", "_noCustomNodeLabel", "_customNodeRowsContainer", "_presetSectionLabel", "Main")]
+[sub_resource type="Resource" id="Resource_pteqr"]
+script = ExtResource("4_yoik7")
+
+[sub_resource type="Resource" id="Resource_b15ww"]
+script = ExtResource("4_yoik7")
+
+[sub_resource type="Resource" id="Resource_nfw6y"]
+script = ExtResource("4_yoik7")
+
+[sub_resource type="Resource" id="Resource_j6glx"]
+script = ExtResource("4_yoik7")
+
+[node name="MultiplayerPage" type="Control" unique_id=1452598718 node_paths=PackedStringArray("_createButton", "_joinButton", "_resetButton", "_downloadButton", "_codeLineEdit", "_copyButton", "_tooltip", "_versionLabel", "_roomInfoPanel", "_playerCountLabel", "_playerListContainer", "_lanPortSpinBox", "_customNodeInput", "_addNodeButton", "_nodeListContainer", "_connectionIndicator", "_nodePanel", "_statusLabel", "_statusDetailLabel", "_openFolderButton", "_officialSiteButton", "_customNodeSectionLabel", "_noCustomNodeLabel", "_customNodeRowsContainer", "_presetSectionLabel", "Main")]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+mouse_filter = 2
 script = ExtResource("1_rwkqc")
 _playerItemScene = ExtResource("6_player_item")
 _removeIcon = SubResource("Texture2D_ufe8e")
 _createButton = NodePath("MarginContainer/ScrollContainer/VBoxContainer/PanelContainer2/VBoxContainer/MarginContainer/VBoxContainer/VBoxContainer/HBoxContainer/Button")
 _joinButton = NodePath("MarginContainer/ScrollContainer/VBoxContainer/PanelContainer2/VBoxContainer/MarginContainer/VBoxContainer/VBoxContainer/HBoxContainer/Button2")
-_resetButton = NodePath("MarginContainer/ScrollContainer/VBoxContainer/PanelContainer2/VBoxContainer/MarginContainer/VBoxContainer/ResetButton")
-_downloadButton = NodePath("MarginContainer/ScrollContainer/VBoxContainer/HBoxContainer/PanelContainer/VBoxContainer/MarginContainer/VBoxContainer/DownloadButton")
+_resetButton = NodePath("MarginContainer/ScrollContainer/VBoxContainer/PanelContainer2/VBoxContainer/MarginContainer/VBoxContainer/Button")
+_downloadButton = NodePath("MarginContainer/ScrollContainer/VBoxContainer/HBoxContainer/PanelContainer/VBoxContainer/MarginContainer/VBoxContainer/Button")
 _codeLineEdit = NodePath("MarginContainer/ScrollContainer/VBoxContainer/PanelContainer2/VBoxContainer/MarginContainer/VBoxContainer/VBoxContainer/LineEdit")
+_copyButton = NodePath("MarginContainer/ScrollContainer/VBoxContainer/PanelContainer2/VBoxContainer/MarginContainer/VBoxContainer/VBoxContainer/LineEdit/Button")
 _tooltip = NodePath("MarginContainer/ScrollContainer/VBoxContainer/PanelContainer2/VBoxContainer/MarginContainer/VBoxContainer/RichTextLabel")
 _versionLabel = NodePath("MarginContainer/ScrollContainer/VBoxContainer/HBoxContainer/PanelContainer/VBoxContainer/MarginContainer/VBoxContainer/Label")
 _roomInfoPanel = NodePath("MarginContainer/ScrollContainer/VBoxContainer/HBoxContainer/MarginContainer/PanelContainer2")
@@ -53,16 +90,16 @@ _lanPortSpinBox = NodePath("MarginContainer/ScrollContainer/VBoxContainer/PanelC
 _customNodeInput = NodePath("MarginContainer/ScrollContainer/VBoxContainer/HBoxContainer/MarginContainer/PanelContainer/VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer/LineEdit")
 _addNodeButton = NodePath("MarginContainer/ScrollContainer/VBoxContainer/HBoxContainer/MarginContainer/PanelContainer/VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer/Button")
 _nodeListContainer = NodePath("MarginContainer/ScrollContainer/VBoxContainer/HBoxContainer/MarginContainer/PanelContainer/VBoxContainer/MarginContainer/VBoxContainer/ScrollContainer/VBoxContainer")
-_connectionIndicator = NodePath("MarginContainer/ScrollContainer/VBoxContainer/HBoxContainer/PanelContainer/VBoxContainer/MarginContainer/VBoxContainer/StatusRow/ConnectionIndicator")
+_connectionIndicator = NodePath("MarginContainer/ScrollContainer/VBoxContainer/HBoxContainer/PanelContainer/VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer2/TextureRect")
 _nodePanel = NodePath("MarginContainer/ScrollContainer/VBoxContainer/HBoxContainer/MarginContainer/PanelContainer")
-_statusLabel = NodePath("MarginContainer/ScrollContainer/VBoxContainer/HBoxContainer/PanelContainer/VBoxContainer/MarginContainer/VBoxContainer/StatusRow/StatusLabel")
-_statusDetailLabel = NodePath("MarginContainer/ScrollContainer/VBoxContainer/HBoxContainer/PanelContainer/VBoxContainer/MarginContainer/VBoxContainer/StatusDetailLabel")
-_openFolderButton = NodePath("MarginContainer/ScrollContainer/VBoxContainer/HBoxContainer/PanelContainer/VBoxContainer/MarginContainer/VBoxContainer/ActionsRow/OpenFolderButton")
-_officialSiteButton = NodePath("MarginContainer/ScrollContainer/VBoxContainer/HBoxContainer/PanelContainer/VBoxContainer/MarginContainer/VBoxContainer/ActionsRow/OfficialSiteButton")
-_customNodeSectionLabel = NodePath("MarginContainer/ScrollContainer/VBoxContainer/HBoxContainer/MarginContainer/PanelContainer/VBoxContainer/MarginContainer/VBoxContainer/ScrollContainer/VBoxContainer/CustomNodeSectionLabel")
-_noCustomNodeLabel = NodePath("MarginContainer/ScrollContainer/VBoxContainer/HBoxContainer/MarginContainer/PanelContainer/VBoxContainer/MarginContainer/VBoxContainer/ScrollContainer/VBoxContainer/NoCustomNodeLabel")
-_customNodeRowsContainer = NodePath("MarginContainer/ScrollContainer/VBoxContainer/HBoxContainer/MarginContainer/PanelContainer/VBoxContainer/MarginContainer/VBoxContainer/ScrollContainer/VBoxContainer/CustomNodeRowsContainer")
-_presetSectionLabel = NodePath("MarginContainer/ScrollContainer/VBoxContainer/HBoxContainer/MarginContainer/PanelContainer/VBoxContainer/MarginContainer/VBoxContainer/ScrollContainer/VBoxContainer/PresetSectionLabel")
+_statusLabel = NodePath("MarginContainer/ScrollContainer/VBoxContainer/HBoxContainer/PanelContainer/VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer2/Label")
+_statusDetailLabel = NodePath("MarginContainer/ScrollContainer/VBoxContainer/HBoxContainer/PanelContainer/VBoxContainer/MarginContainer/VBoxContainer/Label2")
+_openFolderButton = NodePath("MarginContainer/ScrollContainer/VBoxContainer/HBoxContainer/PanelContainer/VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer/Button")
+_officialSiteButton = NodePath("MarginContainer/ScrollContainer/VBoxContainer/HBoxContainer/PanelContainer/VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer/Button2")
+_customNodeSectionLabel = NodePath("MarginContainer/ScrollContainer/VBoxContainer/HBoxContainer/MarginContainer/PanelContainer/VBoxContainer/MarginContainer/VBoxContainer/ScrollContainer/VBoxContainer/Label")
+_noCustomNodeLabel = NodePath("MarginContainer/ScrollContainer/VBoxContainer/HBoxContainer/MarginContainer/PanelContainer/VBoxContainer/MarginContainer/VBoxContainer/ScrollContainer/VBoxContainer/Label2")
+_customNodeRowsContainer = NodePath("MarginContainer/ScrollContainer/VBoxContainer/HBoxContainer/MarginContainer/PanelContainer/VBoxContainer/MarginContainer/VBoxContainer/ScrollContainer/VBoxContainer/VBoxContainer")
+_presetSectionLabel = NodePath("MarginContainer/ScrollContainer/VBoxContainer/HBoxContainer/MarginContainer/PanelContainer/VBoxContainer/MarginContainer/VBoxContainer/ScrollContainer/VBoxContainer/Label3")
 Main = NodePath("MarginContainer")
 metadata/_tab_index = 4
 
@@ -176,26 +213,47 @@ value = 42420.0
 alignment = 2
 
 [node name="LineEdit" type="LineEdit" parent="MarginContainer/ScrollContainer/VBoxContainer/PanelContainer2/VBoxContainer/MarginContainer/VBoxContainer/VBoxContainer" unique_id=137824308]
-custom_minimum_size = Vector2(480, 46)
+custom_minimum_size = Vector2(0, 46)
 layout_mode = 2
-size_flags_horizontal = 4
+theme_override_colors/font_uneditable_color = Color(0.875, 0.875, 0.875, 1)
 theme_override_font_sizes/font_size = 20
+theme_override_styles/normal = SubResource("StyleBoxFlat_pteqr")
+theme_override_styles/read_only = SubResource("StyleBoxFlat_b15ww")
 placeholder_text = "在此输入房间码"
 alignment = 1
+expand_to_text_length = true
 caret_blink = true
 
+[node name="Button" type="Button" parent="MarginContainer/ScrollContainer/VBoxContainer/PanelContainer2/VBoxContainer/MarginContainer/VBoxContainer/VBoxContainer/LineEdit" unique_id=728615871]
+visible = false
+layout_mode = 1
+anchors_preset = 11
+anchor_left = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = 46.0
+grow_horizontal = 0
+grow_vertical = 2
+mouse_default_cursor_shape = 2
+icon = ExtResource("7_b15ww")
+flat = true
+icon_alignment = 1
+
 [node name="RichTextLabel" type="RichTextLabel" parent="MarginContainer/ScrollContainer/VBoxContainer/PanelContainer2/VBoxContainer/MarginContainer/VBoxContainer" unique_id=1619313548]
-clip_contents = false
 layout_mode = 2
 size_flags_vertical = 6
 focus_mode = 2
+theme_override_constants/underline_alpha = 100
+bbcode_enabled = true
 fit_content = true
 scroll_active = false
 context_menu_enabled = true
 horizontal_alignment = 1
+vertical_alignment = 1
+meta_underlined = false
 selection_enabled = true
 
-[node name="ResetButton" type="Button" parent="MarginContainer/ScrollContainer/VBoxContainer/PanelContainer2/VBoxContainer/MarginContainer/VBoxContainer" unique_id=1650000001]
+[node name="Button" type="Button" parent="MarginContainer/ScrollContainer/VBoxContainer/PanelContainer2/VBoxContainer/MarginContainer/VBoxContainer" unique_id=1650000001]
 visible = false
 custom_minimum_size = Vector2(200, 36)
 layout_mode = 2
@@ -245,46 +303,46 @@ size_flags_vertical = 2
 mouse_filter = 1
 text = "版本信息"
 
-[node name="StatusRow" type="HBoxContainer" parent="MarginContainer/ScrollContainer/VBoxContainer/HBoxContainer/PanelContainer/VBoxContainer/MarginContainer/VBoxContainer" unique_id=1650100051]
+[node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer/ScrollContainer/VBoxContainer/HBoxContainer/PanelContainer/VBoxContainer/MarginContainer/VBoxContainer" unique_id=1650100051]
 layout_mode = 2
 size_flags_vertical = 2
 theme_override_constants/separation = 6
 
-[node name="ConnectionIndicator" type="TextureRect" parent="MarginContainer/ScrollContainer/VBoxContainer/HBoxContainer/PanelContainer/VBoxContainer/MarginContainer/VBoxContainer/StatusRow" unique_id=1650100037]
+[node name="TextureRect" type="TextureRect" parent="MarginContainer/ScrollContainer/VBoxContainer/HBoxContainer/PanelContainer/VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer2" unique_id=1650100037]
 texture_filter = 4
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
 texture = SubResource("Texture2D_n8wox")
 
-[node name="StatusLabel" type="Label" parent="MarginContainer/ScrollContainer/VBoxContainer/HBoxContainer/PanelContainer/VBoxContainer/MarginContainer/VBoxContainer/StatusRow" unique_id=1650100052]
+[node name="Label" type="Label" parent="MarginContainer/ScrollContainer/VBoxContainer/HBoxContainer/PanelContainer/VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer2" unique_id=1650100052]
 layout_mode = 2
 size_flags_horizontal = 3
 mouse_filter = 1
 
-[node name="StatusDetailLabel" type="Label" parent="MarginContainer/ScrollContainer/VBoxContainer/HBoxContainer/PanelContainer/VBoxContainer/MarginContainer/VBoxContainer" unique_id=1650100053]
+[node name="Label2" type="Label" parent="MarginContainer/ScrollContainer/VBoxContainer/HBoxContainer/PanelContainer/VBoxContainer/MarginContainer/VBoxContainer" unique_id=1650100053]
 layout_mode = 2
 size_flags_vertical = 2
 mouse_filter = 1
 clip_text = true
 
-[node name="ActionsRow" type="HBoxContainer" parent="MarginContainer/ScrollContainer/VBoxContainer/HBoxContainer/PanelContainer/VBoxContainer/MarginContainer/VBoxContainer" unique_id=1650100054]
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/ScrollContainer/VBoxContainer/HBoxContainer/PanelContainer/VBoxContainer/MarginContainer/VBoxContainer" unique_id=1650100054]
 layout_mode = 2
 size_flags_vertical = 10
 theme_override_constants/separation = 8
 alignment = 1
 
-[node name="OpenFolderButton" type="Button" parent="MarginContainer/ScrollContainer/VBoxContainer/HBoxContainer/PanelContainer/VBoxContainer/MarginContainer/VBoxContainer/ActionsRow" unique_id=1650100055]
+[node name="Button" type="Button" parent="MarginContainer/ScrollContainer/VBoxContainer/HBoxContainer/PanelContainer/VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer" unique_id=1650100055]
 layout_mode = 2
 size_flags_horizontal = 3
 text = "本地文件夹"
 
-[node name="OfficialSiteButton" type="Button" parent="MarginContainer/ScrollContainer/VBoxContainer/HBoxContainer/PanelContainer/VBoxContainer/MarginContainer/VBoxContainer/ActionsRow" unique_id=1650100056]
+[node name="Button2" type="Button" parent="MarginContainer/ScrollContainer/VBoxContainer/HBoxContainer/PanelContainer/VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer" unique_id=1650100056]
 layout_mode = 2
 size_flags_horizontal = 3
 text = "EasyTier 官网"
 
-[node name="DownloadButton" type="Button" parent="MarginContainer/ScrollContainer/VBoxContainer/HBoxContainer/PanelContainer/VBoxContainer/MarginContainer/VBoxContainer" unique_id=1650100009]
+[node name="Button" type="Button" parent="MarginContainer/ScrollContainer/VBoxContainer/HBoxContainer/PanelContainer/VBoxContainer/MarginContainer/VBoxContainer" unique_id=1650100009]
 visible = false
 layout_mode = 2
 text = "下载 EasyTier"
@@ -333,23 +391,28 @@ placeholder_text = "输入中继节点地址 如 tcp://example.com:11010"
 layout_mode = 2
 text = "添加"
 
-[node name="ScrollContainer" type="ScrollContainer" parent="MarginContainer/ScrollContainer/VBoxContainer/HBoxContainer/MarginContainer/PanelContainer/VBoxContainer/MarginContainer/VBoxContainer" unique_id=1650100042]
+[node name="ScrollContainer" type="ScrollContainer" parent="MarginContainer/ScrollContainer/VBoxContainer/HBoxContainer/MarginContainer/PanelContainer/VBoxContainer/MarginContainer/VBoxContainer" unique_id=449419707]
 custom_minimum_size = Vector2(0, 120)
 layout_mode = 2
 size_flags_vertical = 3
-horizontal_scroll_mode = 3
+horizontal_scroll_mode = 0
+vertical_scroll_mode = 3
+script = ExtResource("3_4s13v")
+wheel_scroll_damper = SubResource("Resource_pteqr")
+dragging_scroll_damper = SubResource("Resource_b15ww")
+metadata/_custom_type_script = "uid://bgqglerkcylxx"
 
 [node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/ScrollContainer/VBoxContainer/HBoxContainer/MarginContainer/PanelContainer/VBoxContainer/MarginContainer/VBoxContainer/ScrollContainer" unique_id=1650100043]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="CustomNodeSectionLabel" type="Label" parent="MarginContainer/ScrollContainer/VBoxContainer/HBoxContainer/MarginContainer/PanelContainer/VBoxContainer/MarginContainer/VBoxContainer/ScrollContainer/VBoxContainer" unique_id=881979007]
+[node name="Label" type="Label" parent="MarginContainer/ScrollContainer/VBoxContainer/HBoxContainer/MarginContainer/PanelContainer/VBoxContainer/MarginContainer/VBoxContainer/ScrollContainer/VBoxContainer" unique_id=881979007]
 layout_mode = 2
 mouse_filter = 1
 theme_override_font_sizes/font_size = 14
 text = "自定义中继节点"
 
-[node name="NoCustomNodeLabel" type="Label" parent="MarginContainer/ScrollContainer/VBoxContainer/HBoxContainer/MarginContainer/PanelContainer/VBoxContainer/MarginContainer/VBoxContainer/ScrollContainer/VBoxContainer" unique_id=881979008]
+[node name="Label2" type="Label" parent="MarginContainer/ScrollContainer/VBoxContainer/HBoxContainer/MarginContainer/PanelContainer/VBoxContainer/MarginContainer/VBoxContainer/ScrollContainer/VBoxContainer" unique_id=881979008]
 visible = false
 layout_mode = 2
 mouse_filter = 1
@@ -357,14 +420,14 @@ theme_override_colors/font_color = Color(0.6, 0.6, 0.6, 1)
 theme_override_font_sizes/font_size = 12
 text = "暂无自定义节点"
 
-[node name="CustomNodeRowsContainer" type="VBoxContainer" parent="MarginContainer/ScrollContainer/VBoxContainer/HBoxContainer/MarginContainer/PanelContainer/VBoxContainer/MarginContainer/VBoxContainer/ScrollContainer/VBoxContainer" unique_id=881979009]
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/ScrollContainer/VBoxContainer/HBoxContainer/MarginContainer/PanelContainer/VBoxContainer/MarginContainer/VBoxContainer/ScrollContainer/VBoxContainer" unique_id=881979009]
 layout_mode = 2
 
-[node name="HSeparator2" type="HSeparator" parent="MarginContainer/ScrollContainer/VBoxContainer/HBoxContainer/MarginContainer/PanelContainer/VBoxContainer/MarginContainer/VBoxContainer/ScrollContainer/VBoxContainer" unique_id=881979010]
+[node name="HSeparator" type="HSeparator" parent="MarginContainer/ScrollContainer/VBoxContainer/HBoxContainer/MarginContainer/PanelContainer/VBoxContainer/MarginContainer/VBoxContainer/ScrollContainer/VBoxContainer" unique_id=881979010]
 layout_mode = 2
 theme_override_constants/separation = 6
 
-[node name="PresetSectionLabel" type="Label" parent="MarginContainer/ScrollContainer/VBoxContainer/HBoxContainer/MarginContainer/PanelContainer/VBoxContainer/MarginContainer/VBoxContainer/ScrollContainer/VBoxContainer" unique_id=881979011]
+[node name="Label3" type="Label" parent="MarginContainer/ScrollContainer/VBoxContainer/HBoxContainer/MarginContainer/PanelContainer/VBoxContainer/MarginContainer/VBoxContainer/ScrollContainer/VBoxContainer" unique_id=881979011]
 layout_mode = 2
 mouse_filter = 1
 theme_override_font_sizes/font_size = 14
@@ -410,11 +473,16 @@ text = "当前在线玩家: 0 人"
 layout_mode = 2
 theme_override_constants/separation = 8
 
-[node name="ScrollContainer" type="ScrollContainer" parent="MarginContainer/ScrollContainer/VBoxContainer/HBoxContainer/MarginContainer/PanelContainer2/VBoxContainer/MarginContainer/VBoxContainer" unique_id=881979006]
+[node name="ScrollContainer" type="ScrollContainer" parent="MarginContainer/ScrollContainer/VBoxContainer/HBoxContainer/MarginContainer/PanelContainer2/VBoxContainer/MarginContainer/VBoxContainer" unique_id=1682023980]
 custom_minimum_size = Vector2(0, 120)
 layout_mode = 2
 size_flags_vertical = 3
 horizontal_scroll_mode = 0
+vertical_scroll_mode = 3
+script = ExtResource("3_4s13v")
+wheel_scroll_damper = SubResource("Resource_nfw6y")
+dragging_scroll_damper = SubResource("Resource_j6glx")
+metadata/_custom_type_script = "uid://bgqglerkcylxx"
 
 [node name="VBoxContainer2" type="VBoxContainer" parent="MarginContainer/ScrollContainer/VBoxContainer/HBoxContainer/MarginContainer/PanelContainer2/VBoxContainer/MarginContainer/VBoxContainer/ScrollContainer" unique_id=1650100030]
 layout_mode = 2
