@@ -41,6 +41,9 @@ public partial class MultiplayerPage : MenuPage {
 	private LineEdit? _codeLineEdit;
 
 	[Export]
+	private Button? _copyButton;
+
+	[Export]
 	private RichTextLabel? _tooltip;
 
 	[Export]
@@ -127,6 +130,7 @@ public partial class MultiplayerPage : MenuPage {
 		_resetButton.NotNull();
 		_downloadButton.NotNull();
 		_codeLineEdit.NotNull();
+		_copyButton.NotNull();
 		_tooltip.NotNull();
 		_versionLabel.NotNull();
 		_roomInfoPanel.NotNull();
@@ -160,6 +164,8 @@ public partial class MultiplayerPage : MenuPage {
 		_officialSiteButton.Pressed += OpenEasyTierSite;
 		_codeLineEdit.TextChanged += OnCodeLineEditTextChanged;
 		_codeLineEdit.TextSubmitted += OnCodeLineEditTextSubmitted;
+		_copyButton.Pressed += OnCopyButtonPressed;
+		_tooltip.MetaClicked += OnTooltipMetaClicked;
 
 		VisibilityChanged += OnVisibilityChanged;
 		Tools.SceneTree.Root.TreeExiting += OnExit;
@@ -186,6 +192,7 @@ public partial class MultiplayerPage : MenuPage {
 		_lanPortSpinBox!.GetParent<Control>()!.Visible = false;
 		_codeLineEdit!.Visible = false;
 		_codeLineEdit.Editable = false;
+		_copyButton!.Visible = false;
 		_nodePanel!.Visible = false;
 		_connectionIndicator!.Visible = false;
 	}
@@ -322,6 +329,7 @@ public partial class MultiplayerPage : MenuPage {
 				_resetButton.Visible = true;
 				_codeLineEdit!.Visible = true;
 				_codeLineEdit.Editable = false;
+				_copyButton!.Visible = true;
 				_connectionIndicator!.Visible = true;
 				_connectionIndicator.Modulate = Colors.MediumSeaGreen;
 				_statusLabel!.Text = "已连接";
@@ -351,11 +359,11 @@ public partial class MultiplayerPage : MenuPage {
 				kvp.Value.QueueFree();
 			}
 
-			_playerCountLabel!.Text = string.Format(Tr("当前在线玩家: {0} 人"), 0);
+			_playerCountLabel!.Text = string.Format(Tr("当前在线玩家: {0}"), 0);
 			return;
 		}
 
-		_playerCountLabel!.Text = string.Format(Tr("当前在线玩家: {0} 人"), players.Count);
+		_playerCountLabel!.Text = string.Format(Tr("当前在线玩家: {0}"), players.Count);
 
 		var nameStats = new Dictionary<string, (int Count, bool HasOffline)>();
 		foreach (var p in players) {
@@ -446,6 +454,10 @@ public partial class MultiplayerPage : MenuPage {
 		_joinButton!.Disabled = !Room.IsValidCode(code);
 		_joinButton.TooltipText = _joinButton.Disabled ? "请输入有效的房间码" : string.Empty;
 	}
+
+	private void OnTooltipMetaClicked(Variant meta) { DisplayServer.ClipboardSet($"127.0.0.1:{_room?.LocalPort}"); }
+
+	private void OnCopyButtonPressed() { DisplayServer.ClipboardSet(_room?.Code); }
 
 	private void OnCodeLineEditTextChanged(string newText) => UpdateJoinButtonState();
 
@@ -556,7 +568,8 @@ public partial class MultiplayerPage : MenuPage {
 							_codeLineEdit!.Text = _room!.Code;
 							_tooltip!.Text = "房间已创建，请复制房间码给其他人用于加入房间";
 						} else {
-							_tooltip!.Text = $"已进入房间，请在游戏中添加服务器: 127.0.0.1:{_room!.LocalPort}";
+							_tooltip!.Text =
+								$"{Tr("已加入房间，请在游戏中添加服务器:")} [url][color=light_blue][hint={Tr("点击复制")}]127.0.0.1:{_room!.LocalPort}[/hint][/color] [img height=1.2em]{_copyButton!.Icon.ResourcePath}[/img][/url]";
 						}
 
 						_tooltip.Modulate = Colors.White;
@@ -595,7 +608,7 @@ public partial class MultiplayerPage : MenuPage {
 
 		_playerRows.Clear();
 
-		_playerCountLabel!.Text = string.Format(Tr("当前在线玩家: {0} 人"), 0);
+		_playerCountLabel!.Text = string.Format(Tr("当前在线玩家: {0}"), 0);
 		foreach (var child in _playerListContainer!.GetChildren()) {
 			child.QueueFree();
 		}
@@ -844,7 +857,7 @@ public partial class MultiplayerPage : MenuPage {
 		var publicCount = EasyTier.FallbackServers.Length;
 		var customCount = UI.Main.BaseConfig.CustomEasyTierNodes.Count;
 		var total = publicCount + customCount;
-		return $"启用节点: {total} 个 (公共 {publicCount} + 自定义 {customCount})";
+		return string.Format(Tr("启用节点: {0} (公共 {1} + 自定义 {2})"), total, publicCount, customCount);
 	}
 
 	private void StartIndicatorPulse() {
