@@ -19,9 +19,9 @@ jobs:
 
     steps:
       - name: Checkout MVL Repository
-        uses: actions/checkout@v5
+        uses: actions/checkout@v7
         with:
-          path: mvl-repo
+          path: MVL
 
       - name: 1. Setup Dependencies
         run: |
@@ -53,13 +53,13 @@ jobs:
         run: git clone https://github.com/scgm0/godot.git --branch MVL
 
       - name: 4.2. Restore Godot build cache
-        uses: ./mvl-repo/.github/actions/godot-cache-restore
+        uses: ./MVL/.github/actions/godot-cache-restore
         with:
           cache-name: ${{ matrix.cache-name }}
         continue-on-error: true
 
       - name: 4.3 Compilation Editor
-        uses: ./mvl-repo/.github/actions/godot-build
+        uses: ./MVL/.github/actions/godot-build
         with:
           scons-flags: >-
             linker=mold
@@ -71,17 +71,17 @@ jobs:
           target: editor
 
       - name: 4.4 Compilation Release
-        uses: ./mvl-repo/.github/actions/godot-build
+        uses: ./MVL/.github/actions/godot-build
         with:
           scons-flags: >-
             linker=mold
-            profile=../mvl-repo/MVL/GodotBuildProfile/custom.py
-            build_profile=../mvl-repo/MVL/GodotBuildProfile/custom.build
+            profile=../MVL/MVL/GodotBuildProfile/custom.py
+            build_profile=../MVL/MVL/GodotBuildProfile/custom.build
           platform: linuxbsd
           target: template_release
 
       - name: 4.5. Save Godot build cache
-        uses: ./mvl-repo/.github/actions/godot-cache-save
+        uses: ./MVL/.github/actions/godot-cache-save
         with:
           cache-name: ${{ matrix.cache-name }}
         continue-on-error: true
@@ -95,20 +95,20 @@ jobs:
       - name: 5.1 Build and Export MVL Project
         run: |
           echo "Building MVL solution..."
-          dotnet build mvl-repo/MVL
+          dotnet build MVL/MVL
 
           echo "Importing assets with Godot..."
-          ${{ matrix.bin }} --path mvl-repo/MVL --import --headless
+          ${{ matrix.bin }} --path MVL/MVL --import --headless
 
-          sed -i "s|custom_template/release=.*|custom_template/release=\"$(pwd)/godot/bin/godot.linuxbsd.template_release.x86_64.mono\"|" mvl-repo/MVL/export_presets.cfg
+          sed -i "s|custom_template/release=.*|custom_template/release=\"$(pwd)/godot/bin/godot.linuxbsd.template_release.x86_64.mono\"|" MVL/MVL/export_presets.cfg
 
           echo "--- Verifying export_presets.cfg ---"
-          cat mvl-repo/MVL/export_presets.cfg
+          cat MVL/MVL/export_presets.cfg
           echo "------------------------------------"
 
           mkdir -p export_build
           mkdir -p export_build/linux
-          ${{ matrix.bin }} --path mvl-repo/MVL --headless --export-release "Linux" $(pwd)/export_build/linux/MVL.x86_64
+          ${{ matrix.bin }} --path MVL/MVL --headless --export-release "Linux" $(pwd)/export_build/linux/MVL.x86_64
 
           echo "Export finished."
 
@@ -152,7 +152,7 @@ jobs:
           Categories=Game;Utility;
           EOF
 
-          cp mvl-repo/MVL/Assets/Icon/icon.svg AppDir/icon.svg
+          cp MVL/MVL/Assets/Icon/icon.svg AppDir/icon.svg
 
           echo "Generating AppImage..."
           appimagetool AppDir MVL-x86_64.AppImage --comp zstd --mksquashfs-opt -Xcompression-level --mksquashfs-opt 22

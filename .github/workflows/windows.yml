@@ -25,12 +25,12 @@ jobs:
 
     steps:
       - name: Checkout MVL Repository
-        uses: actions/checkout@v5
+        uses: actions/checkout@v7
         with:
-          path: mvl-repo
+          path: MVL
 
       - name: 1.1. Setup Python for SCons
-        uses: actions/setup-python@v6
+        uses: actions/setup-python@v7
         with:
           python-version: '3.x'
 
@@ -89,7 +89,7 @@ jobs:
         run: git clone https://github.com/scgm0/godot.git --branch MVL
 
       - name: 4.2. Restore Godot build cache
-        uses: ./mvl-repo/.github/actions/godot-cache-restore
+        uses: ./MVL/.github/actions/godot-cache-restore
         with:
           cache-name: ${{ matrix.cache-name }}
         continue-on-error: true
@@ -127,7 +127,7 @@ jobs:
         continue-on-error: true
 
       - name: 4.6. Compilation Editor
-        uses: ./mvl-repo/.github/actions/godot-build
+        uses: ./MVL/.github/actions/godot-build
         with:
           scons-flags: >-
             vsc=yes
@@ -140,19 +140,19 @@ jobs:
           target: editor
 
       - name: 4.7. Compilation Release Template
-        uses: ./mvl-repo/.github/actions/godot-build
+        uses: ./MVL/.github/actions/godot-build
         with:
           scons-flags: >-
             vsc=yes
             d3d12=yes
-            profile=../mvl-repo/MVL/GodotBuildProfile/custom.py
-            build_profile=../mvl-repo/MVL/GodotBuildProfile/custom.build
+            profile=../MVL/MVL/GodotBuildProfile/custom.py
+            build_profile=../MVL/MVL/GodotBuildProfile/custom.build
             angle=${{ steps.angle-sdk.outputs.ANGLE_ENABLED }}
           platform: windows
           target: template_release
 
       - name: 4.8. Save Godot build cache
-        uses: ./mvl-repo/.github/actions/godot-cache-save
+        uses: ./MVL/.github/actions/godot-cache-save
         with:
           cache-name: ${{ matrix.cache-name }}
         continue-on-error: true
@@ -167,14 +167,14 @@ jobs:
       - name: 5.1. Build and Export MVL Project
         run: |
           echo "Building MVL solution..."
-          dotnet build mvl-repo/MVL
+          dotnet build MVL/MVL
 
           echo "Importing assets with Godot..."
-          ${{ matrix.bin }} --path mvl-repo/MVL --import --headless
+          ${{ matrix.bin }} --path MVL/MVL --import --headless
 
           echo "Exporting project..."
           $ReleaseTemplatePath = "$((Get-Location).Path)\godot\bin\godot.windows.template_release.x86_64.mono.exe".Replace("\", "/")
-          $ConfigFile = "mvl-repo/MVL/export_presets.cfg"
+          $ConfigFile = "MVL/MVL/export_presets.cfg"
 
           (Get-Content -Path $ConfigFile -Raw) -replace 'custom_template/release=.*', "custom_template/release=`"$ReleaseTemplatePath`"" | Set-Content -Path $ConfigFile
 
@@ -185,7 +185,7 @@ jobs:
           New-Item -ItemType Directory -Force -Path "export_build"
           New-Item -ItemType Directory -Force -Path "export_build/windows"
 
-          ${{ matrix.bin }} --path mvl-repo/MVL --headless --export-release "Windows Desktop" "$((Get-Location).Path)\export_build\windows\MVL.exe"
+          ${{ matrix.bin }} --path MVL/MVL --headless --export-release "Windows Desktop" "$((Get-Location).Path)\export_build\windows\MVL.exe"
 
           echo "Export finished."
 
@@ -201,7 +201,7 @@ jobs:
           !include "FileFunc.nsh"
 
           OutFile "MVL-x86_64.exe"
-          Icon ".\mvl-repo\MVL\Assets\Icon\icon.ico"
+          Icon ".\MVL\MVL\Assets\Icon\icon.ico"
 
           SilentInstall silent
           SetCompress off
