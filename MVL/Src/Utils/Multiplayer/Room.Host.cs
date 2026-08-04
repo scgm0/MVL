@@ -30,6 +30,7 @@ public partial record Room {
 		args.AddRange([
 			"--hostname", NetworkName,
 			"--ipv4", "10.144.144.1",
+			"--need-p2p",
 			$"--tcp-whitelist={LocalPort}",
 			$"--tcp-whitelist={HostPort}",
 			$"--udp-whitelist={LocalPort}"
