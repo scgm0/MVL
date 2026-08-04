@@ -24,6 +24,7 @@ public partial record Room {
 		var args = await ComposeArgs(_cts.Token);
 		args.AddRange([
 			"-d",
+			"--disable-p2p",
 			"--tcp-whitelist=0",
 			"--udp-whitelist=0"
 		]);
