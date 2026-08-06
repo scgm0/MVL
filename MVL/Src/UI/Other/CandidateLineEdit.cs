@@ -2,6 +2,7 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 using Godot;
+using MVL.Utils;
 using MVL.Utils.Help;
 
 namespace MVL.UI.Other;
@@ -18,7 +19,7 @@ public abstract partial class CandidateLineEdit<T> : LineEdit {
 	[Export]
 	private VBoxContainer? _vboxContainer;
 
-	private CancellationTokenSource? _cts;
+	private readonly AsyncDebouncer _debouncer;
 
 	public T[] Candidates { get; set; } = [];
 
@@ -26,7 +27,9 @@ public abstract partial class CandidateLineEdit<T> : LineEdit {
 
 	public int MaxShow { get; set; } = 5;
 
-	public int Delay { get; set; } = 150;
+	public TimeSpan Delay { get; set; } = TimeSpan.FromMilliseconds(150);
+
+	public CandidateLineEdit() { _debouncer = new(Delay); }
 
 	public override void _Ready() {
 		Bg.NotNull();
@@ -42,30 +45,11 @@ public abstract partial class CandidateLineEdit<T> : LineEdit {
 
 	public override void _ExitTree() {
 		base._ExitTree();
-		_cts?.Cancel();
-		_cts?.Dispose();
+		_debouncer.Cancel();
 	}
 
 	private async void OnTextChanged(string newText) {
-		if (_cts != null) {
-			await _cts.CancelAsync();
-			_cts.Dispose();
-		}
-
-		_cts = new();
-		var token = _cts.Token;
-
-		try {
-			await Task.Delay(Delay, token);
-
-			if (!IsInstanceValid(this)) {
-				return;
-			}
-
-			UpdateCandidates();
-		} catch (TaskCanceledException) { } catch (Exception e) {
-			Log.Error(e);
-		}
+		await _debouncer.DebounceAsync(UpdateCandidates);
 	}
 
 	private void BgOnVisibilityChanged() {
@@ -82,6 +66,10 @@ public abstract partial class CandidateLineEdit<T> : LineEdit {
 	public abstract Button GetItemContainer(T candidate);
 
 	public void UpdateCandidates() {
+		if (!IsInstanceValid(this)) {
+			return;
+		}
+
 		Selected = default;
 
 		foreach (var child in _vboxContainer!.GetChildren()) {
