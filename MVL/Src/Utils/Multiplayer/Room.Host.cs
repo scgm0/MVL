@@ -16,7 +16,7 @@ public partial record Room {
 	private readonly TimeSpan _clientTimeoutMs = TimeSpan.FromSeconds(18);
 	private readonly TimeSpan _heartbeatSendIntervalMs = TimeSpan.FromSeconds(5);
 
-	public async void StartHost() {
+	public async void StartHost(SharedNode[]? nodes) {
 		_cts?.Dispose();
 		_cts = new();
 
@@ -26,7 +26,7 @@ public partial record Room {
 		_routerSocket.ReceiveReady += RouterSocketOnReceiveReady;
 		_poller.Add(_routerSocket);
 
-		var args = await ComposeArgs(_cts.Token);
+		var args = ComposeArgs(nodes ?? []);
 		args.AddRange([
 			"--hostname", NetworkName,
 			"--ipv4", "10.144.144.1",

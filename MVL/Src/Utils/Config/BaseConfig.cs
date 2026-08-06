@@ -7,6 +7,7 @@ using System.Text.Json.Serialization;
 using System.Threading;
 using System.Threading.Tasks;
 using MVL.Utils.GitHub;
+using MVL.Utils.Multiplayer;
 
 namespace MVL.Utils.Config;
 
@@ -31,7 +32,10 @@ public class BaseConfig : BaseConfigV0 {
 	public string ThirdPartyGameLink { get; set; } = "";
 
 	[JsonPropertyOrder(2)]
-	public List<string> CustomEasyTierNodes { get; set; } = [];
+	public List<SharedNode> CustomSharedNodes { get; set; } = [];
+
+	[JsonPropertyOrder(2)]
+	public List<string> CustomNodeSubscriptions { get; set; } = [];
 
 	public void Save() {
 		lock (_syncLock) {
@@ -114,9 +118,9 @@ public class BaseConfig : BaseConfigV0 {
 			DownloadThreads = config.DownloadThreads,
 			ModpackFolder = config.ModpackFolder,
 			ReleaseFolder = config.ReleaseFolder,
-			Release = [..config.Release],
-			Modpack = [..config.Modpack],
-			Account = [..config.Account]
+			Release = [.. config.Release],
+			Modpack = [.. config.Modpack],
+			Account = [.. config.Account]
 		};
 		if (config.ExtensionData == null) {
 			return baseConfig;

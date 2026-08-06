@@ -6,10 +6,8 @@ using System.Numerics;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
-using System.Threading.Tasks;
 using AsyncIO;
 using Godot;
-using MVL.UI;
 using NetMQ;
 using RandomNumberGenerator = System.Security.Cryptography.RandomNumberGenerator;
 
@@ -39,7 +37,9 @@ public partial record Room : IDisposable {
 
 	private EasyTier? _easyTier;
 	private RoomPlayerInfo? _localPlayer;
+
 	private NetMQPoller? _poller;
+
 	// private NetMQMonitor? _monitor;
 	private CancellationTokenSource? _cts;
 	private volatile bool _shuttingDown;
@@ -112,6 +112,7 @@ public partial record Room : IDisposable {
 		NetworkSecret = networkSecret;
 		HostPort = hostPort;
 		LocalPort = localPort;
+
 		ForceDotNet.Force();
 		Log.Debug($"初始化房间数据: Code={Code}");
 	}
@@ -147,20 +148,15 @@ public partial record Room : IDisposable {
 		_localPlayer = null;
 	}
 
-	public async Task<List<string>> ComposeArgs(CancellationToken token = default) {
+	public List<string> ComposeArgs(ReadOnlySpan<SharedNode> nodes) {
 		var args = new List<string>(PreArgs);
 		args.AddRange([
 			"--network-name", NetworkName,
 			"--network-secret", NetworkSecret
 		]);
 
-		var nodes = await EasyTier.FetchPublicNodes(10, token);
 		foreach (var node in nodes) {
-			args.AddRange(["-p", node]);
-		}
-
-		foreach (var node in Main.BaseConfig.CustomEasyTierNodes) {
-			args.AddRange(["-p", node]);
+			args.AddRange(["-p", node.GetDecodedAddress()]);
 		}
 
 		return args;
