@@ -18,7 +18,10 @@ public partial class SubscriptionPanel : FoldableContainer {
 	private PackedScene? _addSharedNodeWindowScene;
 
 	[Export]
-	private IconTexture2D? _warningIcon;
+	private IconTexture2D? _okIcon;
+
+	[Export]
+	private IconTexture2D? _errIcon;
 
 	[Export]
 	private IconTexture2D? _removeIcon;
@@ -50,6 +53,8 @@ public partial class SubscriptionPanel : FoldableContainer {
 	public override void _Ready() {
 		_sharedNodeItemScene.NotNull();
 		_addSharedNodeWindowScene.NotNull();
+		_okIcon.NotNull();
+		_errIcon.NotNull();
 		_removeIcon.NotNull();
 		_addIcon.NotNull();
 		_reloadIcon.NotNull();
@@ -65,17 +70,16 @@ public partial class SubscriptionPanel : FoldableContainer {
 			hBox.AddThemeConstantOverride(StringNames.Separation, 0);
 
 			_warningButton = new() {
-				CustomMinimumSize = new(28, 28),
+				CustomMinimumSize = new(28 * 2, 28),
 				Disabled = true,
 				Visible = false,
-				Icon = _warningIcon,
 				ExpandIcon = true,
-				TooltipText = "订阅节点获取失败",
+				IconAlignment = HorizontalAlignment.Right,
 				Flat = true,
 				SizeFlagsHorizontal = SizeFlags.ExpandFill,
 				SizeFlagsVertical = SizeFlags.ExpandFill
 			};
-			_warningButton.AddThemeColorOverride(StringNames.IconDisabledColor, Colors.Red);
+			_warningButton.AddThemeColorOverride(StringNames.FontDisabledColor, Colors.White);
 			hBox.AddChild(_warningButton);
 
 			_reloadButton = new() {
@@ -189,6 +193,9 @@ public partial class SubscriptionPanel : FoldableContainer {
 				return;
 			}
 
+			_warningButton.Text = Subscription.Nodes.Length.ToString();
+			_warningButton.Icon = _okIcon;
+			_warningButton.AddThemeColorOverride(StringNames.IconDisabledColor, Colors.MediumSeaGreen);
 			Title = Subscription.Name ?? GetLastValidPartSpan(SubscriptionUrl);
 			foreach (var sharedNode in Subscription.Nodes) {
 				var sharedNodeItem = _sharedNodeItemScene!.Instantiate<SharedNodeItem>();
@@ -198,11 +205,14 @@ public partial class SubscriptionPanel : FoldableContainer {
 
 			Update();
 		} catch (Exception e) {
-			_warningButton!.Visible = true;
 			_tip!.Text = "获取订阅节点失败";
+			_warningButton.Text = "0";
+			_warningButton.Icon = _errIcon;
+			_warningButton.AddThemeColorOverride(StringNames.IconDisabledColor, Colors.Red);
 			Log.Error("获取订阅节点失败", e);
 		}
 
+		_warningButton!.Visible = true;
 		_reloadButton!.Disabled = false;
 		_removeButton?.Disabled = false;
 		SharedNodesChanged?.Invoke();

@@ -104,6 +104,7 @@ public partial class MultiplayerPage : MenuPage {
 	private Tween? _indicatorTween;
 	private readonly Dictionary<uint, PlayerItem> _playerRows = new();
 	private bool _isGetSubscription;
+	private readonly AsyncDebouncer _debouncer = new(TimeSpan.FromMilliseconds(150));
 
 	private enum UiState {
 		None,
@@ -167,14 +168,15 @@ public partial class MultiplayerPage : MenuPage {
 	}
 
 	private void CustomSubscriptionUrlLineEditOnTextChanged(string newText) {
-		if (string.IsNullOrEmpty(newText) ||
-			!Uri.TryCreate(newText, UriKind.Absolute, out var uri) || uri.HostNameType is UriHostNameType.Unknown ||
-			string.IsNullOrEmpty(uri.Host) || uri.Scheme is not ("http" or "https")) {
-			_addCustomSubscriptionButton!.Disabled = true;
-			return;
-		}
+		_ = _debouncer.DebounceAsync(() => {
+			if (!Uri.TryCreate(newText, UriKind.Absolute, out var uri) || uri.HostNameType is UriHostNameType.Unknown ||
+				string.IsNullOrEmpty(uri.Host) || !(uri.Scheme == Uri.UriSchemeHttp || uri.Scheme == Uri.UriSchemeHttps)) {
+				_addCustomSubscriptionButton!.Disabled = true;
+				return;
+			}
 
-		_addCustomSubscriptionButton!.Disabled = false;
+			_addCustomSubscriptionButton!.Disabled = false;
+		});
 	}
 
 	private void AddCustomSubscriptionButtonOnPressed() {
@@ -286,6 +288,7 @@ public partial class MultiplayerPage : MenuPage {
 					UpdateSubscriptionPanel();
 					_isGetSubscription = true;
 				}
+
 				CheckAccount();
 				break;
 

@@ -9,7 +9,6 @@
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_jix3m"]
 content_margin_left = 2.0
 content_margin_top = 2.0
-content_margin_right = 2.0
 content_margin_bottom = 2.0
 bg_color = Color(0.1, 0.1, 0.1, 0.6)
 border_color = Color(0.875, 0.875, 0.875, 0.6)
@@ -19,7 +18,6 @@ corner_radius_top_right = 3
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_0i5w5"]
 content_margin_left = 2.0
 content_margin_top = 2.0
-content_margin_right = 2.0
 content_margin_bottom = 2.0
 bg_color = Color(0, 0, 0, 1)
 corner_radius_top_left = 3
@@ -30,7 +28,6 @@ corner_radius_bottom_left = 3
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_xxgs0"]
 content_margin_left = 2.0
 content_margin_top = 2.0
-content_margin_right = 2.0
 content_margin_bottom = 2.0
 bg_color = Color(0.207843, 0.207843, 0.207843, 1)
 corner_radius_top_left = 3
@@ -43,7 +40,14 @@ bg_color = Color(0.1, 0.1, 0.1, 0.6)
 corner_radius_bottom_right = 5
 corner_radius_bottom_left = 5
 
-[sub_resource type="Texture2D" id="Texture2D_jix3m"]
+[sub_resource type="Texture2D" id="Texture2D_e8sl1"]
+resource_local_to_scene = false
+resource_name = ""
+script = ExtResource("3_8b5wo")
+IconName = "check-circle-outline"
+metadata/_custom_type_script = "uid://bk3tot6c35bwu"
+
+[sub_resource type="Texture2D" id="Texture2D_ctvg8"]
 resource_local_to_scene = false
 resource_name = ""
 script = ExtResource("3_8b5wo")
@@ -90,7 +94,8 @@ title_text_overrun_behavior = 3
 script = ExtResource("1_arjvq")
 _sharedNodeItemScene = ExtResource("2_arjvq")
 _addSharedNodeWindowScene = ExtResource("3_eax20")
-_warningIcon = SubResource("Texture2D_jix3m")
+_okIcon = SubResource("Texture2D_e8sl1")
+_errIcon = SubResource("Texture2D_ctvg8")
 _removeIcon = SubResource("Texture2D_nfw6y")
 _addIcon = SubResource("Texture2D_j6glx")
 _reloadIcon = SubResource("Texture2D_4red3")

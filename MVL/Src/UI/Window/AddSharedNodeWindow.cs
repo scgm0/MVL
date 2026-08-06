@@ -1,5 +1,6 @@
 using Godot;
 using System;
+using MVL.Utils;
 using MVL.Utils.Help;
 using MVL.Utils.Multiplayer;
 
@@ -20,6 +21,8 @@ public partial class AddSharedNodeWindow : BaseWindow {
 
 	[Export]
 	private Label? _tip;
+
+	private readonly AsyncDebouncer _debouncer = new(TimeSpan.FromMilliseconds(150));
 
 	public event Action<SharedNode>? AddSharedNode;
 
@@ -58,30 +61,32 @@ public partial class AddSharedNodeWindow : BaseWindow {
 	}
 
 	private void AddressOnTextChanged(string newText) {
-		if (string.IsNullOrEmpty(newText)) {
-			_tip?.Text = "节点地址不可为空";
-			OkButton?.Disabled = true;
-			return;
-		}
-
-		if (!Uri.TryCreate(newText, UriKind.Absolute, out var uri) || uri.HostNameType is UriHostNameType.Unknown ||
-			string.IsNullOrEmpty(uri.Host)) {
-			_tip?.Text = "节点地址格式不正确";
-			OkButton?.Disabled = true;
-			return;
-		}
-
-		foreach (var customPublicServer in Main.BaseConfig.CustomSharedNodes) {
-			if (customPublicServer.GetDecodedAddress() != newText) {
-				continue;
+		_ = _debouncer.DebounceAsync(() => {
+			if (string.IsNullOrEmpty(newText)) {
+				_tip?.Text = "节点地址不可为空";
+				OkButton?.Disabled = true;
+				return;
 			}
 
-			_tip?.Text = "节点地址已存在";
-			OkButton?.Disabled = true;
-			return;
-		}
+			if (!Uri.TryCreate(newText, UriKind.Absolute, out var uri) || uri.HostNameType is UriHostNameType.Unknown ||
+				string.IsNullOrEmpty(uri.Host)) {
+				_tip?.Text = "节点地址格式不正确";
+				OkButton?.Disabled = true;
+				return;
+			}
 
-		_tip?.Text = "";
-		OkButton?.Disabled = false;
+			foreach (var customPublicServer in Main.BaseConfig.CustomSharedNodes) {
+				if (customPublicServer.GetDecodedAddress() != newText) {
+					continue;
+				}
+
+				_tip?.Text = "节点地址已存在";
+				OkButton?.Disabled = true;
+				return;
+			}
+
+			_tip?.Text = "";
+			OkButton?.Disabled = false;
+		});
 	}
 }
