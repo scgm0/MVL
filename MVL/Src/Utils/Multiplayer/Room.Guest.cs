@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
-using Godot;
 using MVL.UI;
 using NetMQ;
 using NetMQ.Sockets;
@@ -17,11 +16,11 @@ public partial record Room {
 	private readonly TimeSpan _hostTimeoutMs = TimeSpan.FromSeconds(15);
 	private volatile bool _isHostAlive = true;
 
-	public async void StartGuest() {
+	public async void StartGuest(SharedNode[]? nodes) {
 		_cts?.Dispose();
 		_cts = new();
 
-		var args = await ComposeArgs(_cts.Token);
+		var args = ComposeArgs(nodes ?? []);
 		args.AddRange([
 			"-d",
 			"--disable-p2p",
@@ -127,7 +126,7 @@ public partial record Room {
 			}
 
 			Log.Error($"未找到主机 (已尝试 5 次，网络: {NetworkName})");
-			OnStateChanged?.Invoke(new(RoomState.Failed, "未找到主机"));
+			OnStateChanged?.Invoke(new(RoomState.Failed, "未找到主机，请确保拥有相同的可用共享节点"));
 		} catch (TaskCanceledException) {
 			Log.Debug("取消连接主机");
 		} catch (Exception e) {

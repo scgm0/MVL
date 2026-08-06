@@ -26,6 +26,8 @@ namespace MVL.Utils;
 [JsonSerializable(typeof(GameVersion))]
 [JsonSerializable(typeof(LoginResponse))]
 [JsonSerializable(typeof(ModInfo))]
+[JsonSerializable(typeof(SharedNode))]
+[JsonSerializable(typeof(NodeSubscription))]
 [JsonSerializable(typeof(ModDependency))]
 [JsonSerializable(typeof(ApiStatusModInfo))]
 [JsonSerializable(typeof(DateTimeOffset))]
@@ -35,7 +37,6 @@ namespace MVL.Utils;
 [JsonSerializable(typeof(ApiStatusModTags))]
 [JsonSerializable(typeof(ApiStatusModsList))]
 [JsonSerializable(typeof(ApiRelease))]
-[JsonSerializable(typeof(ApiResponse))]
 [JsonSerializable(typeof(List<EasyTierPlayerInfo>))]
 [JsonSerializable(typeof(GhProxyEnum))]
 [JsonSourceGenerationOptions(JsonSerializerDefaults.Web,

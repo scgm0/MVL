@@ -1,0 +1,67 @@
+[gd_scene format=3 uid="uid://4i3xcgbp277s"]
+
+[ext_resource type="PackedScene" uid="uid://bu4hwijkbc8sm" path="res://Src/UI/Window/base_window.tscn" id="1_0qi4q"]
+[ext_resource type="Script" uid="uid://c0a5s3wiruo5a" path="res://Src/UI/Window/AddNodeInfoWindow.cs" id="2_q802l"]
+[ext_resource type="Script" uid="uid://bk3tot6c35bwu" path="res://Src/Utils/IconTexture2D.cs" id="3_lwj8v"]
+
+[sub_resource type="Texture2D" id="Texture2D_5jy5j"]
+resource_local_to_scene = false
+resource_name = ""
+script = ExtResource("3_lwj8v")
+IconName = "alert-circle-outline"
+metadata/_custom_type_script = "uid://bk3tot6c35bwu"
+
+[node name="AddSharedNodeWindow" unique_id=1805424548 node_paths=PackedStringArray("_address", "_name", "_remark", "_codec", "_tip") instance=ExtResource("1_0qi4q")]
+script = ExtResource("2_q802l")
+_address = NodePath("PanelContainer/VBoxContainer/VBoxContainer/LineEdit")
+_name = NodePath("PanelContainer/VBoxContainer/VBoxContainer/LineEdit2")
+_remark = NodePath("PanelContainer/VBoxContainer/VBoxContainer/LineEdit3")
+_codec = NodePath("PanelContainer/VBoxContainer/VBoxContainer/HBoxContainer/OptionButton")
+_tip = NodePath("PanelContainer/VBoxContainer/VBoxContainer/Label")
+
+[node name="PanelContainer" parent="." index="2" unique_id=1939254484]
+custom_minimum_size = Vector2(400, 0)
+
+[node name="Label" parent="PanelContainer/VBoxContainer" parent_id_path=PackedInt32Array(1085092068) index="0" unique_id=45475559]
+text = "添加自定义节点"
+
+[node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer/VBoxContainer" parent_id_path=PackedInt32Array(1085092068) index="2" unique_id=1198277295]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="LineEdit" type="LineEdit" parent="PanelContainer/VBoxContainer/VBoxContainer" index="0" unique_id=86381381]
+layout_mode = 2
+placeholder_text = "节点地址"
+clear_button_enabled = true
+right_icon = SubResource("Texture2D_5jy5j")
+icon_expand_mode = 1
+
+[node name="LineEdit2" type="LineEdit" parent="PanelContainer/VBoxContainer/VBoxContainer" index="1" unique_id=1020311261]
+layout_mode = 2
+placeholder_text = "节点名称（可选）"
+clear_button_enabled = true
+
+[node name="LineEdit3" type="LineEdit" parent="PanelContainer/VBoxContainer/VBoxContainer" index="2" unique_id=1233418477]
+layout_mode = 2
+placeholder_text = "节点备注（可选）"
+clear_button_enabled = true
+
+[node name="HBoxContainer" type="HBoxContainer" parent="PanelContainer/VBoxContainer/VBoxContainer" index="3" unique_id=1285241456]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="PanelContainer/VBoxContainer/VBoxContainer/HBoxContainer" index="0" unique_id=1235211229]
+layout_mode = 2
+text = "编解码器"
+
+[node name="OptionButton" type="OptionButton" parent="PanelContainer/VBoxContainer/VBoxContainer/HBoxContainer" index="1" unique_id=1641591853]
+layout_mode = 2
+size_flags_horizontal = 10
+
+[node name="Label" type="Label" parent="PanelContainer/VBoxContainer/VBoxContainer" index="4" unique_id=2110872235]
+layout_mode = 2
+theme_override_font_sizes/font_size = 14
+text = "节点地址不可为空"
+horizontal_alignment = 1
+
+[node name="Button2" parent="PanelContainer/VBoxContainer/HBoxContainer3" parent_id_path=PackedInt32Array(522919472) index="1" unique_id=1754640447]
+disabled = true

@@ -6,8 +6,6 @@ using System.Text;
 using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
-using Flurl;
-using Flurl.Http;
 using Godot;
 
 namespace MVL.Utils.Multiplayer;
@@ -163,49 +161,6 @@ public class EasyTier : IDisposable {
 
 		await process.WaitForExitAsync();
 		return output;
-	}
-
-	public static readonly string[] FallbackServers = [
-		"tcp://public.easytier.top:11010",
-		"tcp://public2.easytier.cn:54321",
-		// "https://etnode.zkitefly.eu.org/node1",
-		// "https://etnode.zkitefly.eu.org/node2",
-	];
-
-	public static async Task<List<string>> FetchPublicNodes(int limit = 5, CancellationToken token = default) {
-		return [.. FallbackServers];
-		var activeServers = new List<string>(200);
-		try {
-			var response = await "https://uptime.easytier.cn/api/nodes"
-				.SetQueryParams(new {
-					is_active = "true",
-					page = "1",
-					per_page = "200"
-				})
-				.GetStreamAsync();
-
-			var apiResponse = await JsonSerializer.DeserializeAsync(response, SourceGenerationContext.Default.ApiResponse);
-			foreach (var item in apiResponse.Data.Items) {
-				if (item is { IsActive: true, AllowRelay: true } && !FallbackServers.Contains(item.Address)) {
-					activeServers.Add(item.Address);
-				}
-			}
-		} catch (Exception ex) {
-			Log.Error("获取公共节点失败", ex);
-		}
-
-		var count = activeServers.Count;
-		var n = Math.Min(limit, count);
-		var finalServers = new List<string>(n + FallbackServers.Length);
-		for (var i = 0; i < n; i++) {
-			var j = Random.Shared.Next(i, count);
-			finalServers.Add(activeServers[j]);
-
-			(activeServers[i], activeServers[j]) = (activeServers[j], activeServers[i]);
-		}
-
-		finalServers.AddRange(FallbackServers);
-		return finalServers;
 	}
 
 	public static async Task<string?> GetCoreVersion() {

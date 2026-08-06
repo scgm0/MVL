@@ -10,6 +10,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Godot;
 using MVL.UI.Item;
+using MVL.UI.Panel;
 using MVL.Utils;
 using MVL.Utils.Downloader;
 using MVL.Utils.GitHub;
@@ -20,10 +21,13 @@ namespace MVL.UI.Page;
 
 public partial class MultiplayerPage : MenuPage {
 	[Export]
+	private PackedScene? _subscriptionPanelScene;
+
+	[Export]
 	private PackedScene? _playerItemScene;
 
 	[Export]
-	private IconTexture2D? _removeIcon;
+	private FoldableGroup _subscriptionGroup = new();
 
 	[Export]
 	private Button? _createButton;
@@ -62,19 +66,22 @@ public partial class MultiplayerPage : MenuPage {
 	private SpinBox? _lanPortSpinBox;
 
 	[Export]
-	private LineEdit? _customNodeInput;
-
-	[Export]
-	private Button? _addNodeButton;
-
-	[Export]
-	private VBoxContainer? _nodeListContainer;
-
-	[Export]
 	private TextureRect? _connectionIndicator;
 
 	[Export]
 	private PanelContainer? _nodePanel;
+
+	[Export]
+	private LineEdit? _customSubscriptionUrlLineEdit;
+
+	[Export]
+	private Button? _addCustomSubscriptionButton;
+
+	[Export]
+	private SubscriptionPanel? _customNodePanel;
+
+	[Export]
+	private VBoxContainer? _subscriptionList;
 
 	[Export]
 	private Label? _statusLabel;
@@ -88,18 +95,6 @@ public partial class MultiplayerPage : MenuPage {
 	[Export]
 	private Button? _officialSiteButton;
 
-	[Export]
-	private Label? _customNodeSectionLabel;
-
-	[Export]
-	private Label? _noCustomNodeLabel;
-
-	[Export]
-	private VBoxContainer? _customNodeRowsContainer;
-
-	[Export]
-	private Label? _presetSectionLabel;
-
 	private UiState _uiState = UiState.None;
 	private Room? _room;
 	private bool _isHost;
@@ -108,6 +103,7 @@ public partial class MultiplayerPage : MenuPage {
 	private CancellationTokenSource? _cancellationTokenSource;
 	private Tween? _indicatorTween;
 	private readonly Dictionary<uint, PlayerItem> _playerRows = new();
+	private bool _isGetSubscription;
 
 	private enum UiState {
 		None,
@@ -122,9 +118,11 @@ public partial class MultiplayerPage : MenuPage {
 		Error,
 	}
 
+	private const string BaseSubscriptionUrl =
+		"https://cdn.jsdelivr.net/gh/scgm0/MVL-OnlineResources@main/easytier-shared-nodes.json";
+
 	public override void _Ready() {
 		_playerItemScene.NotNull();
-		_removeIcon.NotNull();
 		_createButton.NotNull();
 		_joinButton.NotNull();
 		_resetButton.NotNull();
@@ -137,50 +135,62 @@ public partial class MultiplayerPage : MenuPage {
 		_playerCountLabel.NotNull();
 		_playerListContainer.NotNull();
 		_lanPortSpinBox.NotNull();
-		_customNodeInput.NotNull();
-		_addNodeButton.NotNull();
-		_nodeListContainer.NotNull();
 		_connectionIndicator.NotNull();
 		_nodePanel.NotNull();
+		_customSubscriptionUrlLineEdit.NotNull();
+		_addCustomSubscriptionButton.NotNull();
+		_customNodePanel.NotNull();
 		_statusLabel.NotNull();
 		_statusDetailLabel.NotNull();
 		_openFolderButton.NotNull();
 		_officialSiteButton.NotNull();
 		_playerItemScene.NotNull();
-		_customNodeSectionLabel.NotNull();
-		_noCustomNodeLabel.NotNull();
-		_customNodeRowsContainer.NotNull();
-		_presetSectionLabel.NotNull();
 		base._Ready();
 
 		_createButton.Pressed += HostButtonOnPressed;
 		_joinButton.Pressed += JoinButtonOnPressed;
 		_resetButton.Pressed += ResetButtonOnPressed;
 		_downloadButton.Pressed += DownloadButtonOnPressed;
-		_customNodeInput.TextChanged += _ => UpdateAddButtonState();
-		_customNodeInput.TextSubmitted += _ => TryAddCustomNode();
-		_addNodeButton.Pressed += TryAddCustomNode;
 		_openFolderButton.Pressed += OpenEasyTierFolder;
 		_officialSiteButton.Pressed += OpenEasyTierSite;
 		_codeLineEdit.TextChanged += OnCodeLineEditTextChanged;
 		_codeLineEdit.TextSubmitted += OnCodeLineEditTextSubmitted;
 		_copyButton.Pressed += OnCopyButtonPressed;
 		_tooltip.MetaClicked += OnTooltipMetaClicked;
+		_customSubscriptionUrlLineEdit.TextChanged += CustomSubscriptionUrlLineEditOnTextChanged;
+		_addCustomSubscriptionButton.Pressed += AddCustomSubscriptionButtonOnPressed;
+		_customNodePanel.FoldableGroup = _subscriptionGroup;
+		_customNodePanel.SharedNodesChanged += OnSharedNodesChanged;
 
 		VisibilityChanged += OnVisibilityChanged;
 		Tools.SceneTree.Root.TreeExiting += OnExit;
-
-		foreach (var node in EasyTier.FallbackServers) {
-			var label = new Label {
-				Text = node,
-				MouseFilter = MouseFilterEnum.Pass,
-				ClipText = true,
-				LabelSettings = new() { FontSize = 12, FontColor = new(0.55f, 0.55f, 0.55f) }
-			};
-			label.AddThemeConstantOverride("margin_left", 4);
-			_nodeListContainer!.AddChild(label);
-		}
 	}
+
+	private void CustomSubscriptionUrlLineEditOnTextChanged(string newText) {
+		if (string.IsNullOrEmpty(newText) ||
+			!Uri.TryCreate(newText, UriKind.Absolute, out var uri) || uri.HostNameType is UriHostNameType.Unknown ||
+			string.IsNullOrEmpty(uri.Host) || uri.Scheme is not ("http" or "https")) {
+			_addCustomSubscriptionButton!.Disabled = true;
+			return;
+		}
+
+		_addCustomSubscriptionButton!.Disabled = false;
+	}
+
+	private void AddCustomSubscriptionButtonOnPressed() {
+		var customNodeSubscriptionUrl = _customSubscriptionUrlLineEdit!.Text;
+		UI.Main.BaseConfig.CustomNodeSubscriptions.Insert(0, customNodeSubscriptionUrl);
+		var customSubscriptionPanel = _subscriptionPanelScene!.Instantiate<SubscriptionPanel>();
+		customSubscriptionPanel.FoldableGroup = _subscriptionGroup;
+		customSubscriptionPanel.SubscriptionUrl = customNodeSubscriptionUrl;
+		customSubscriptionPanel.SharedNodesChanged += OnSharedNodesChanged;
+		customSubscriptionPanel.TreeExited += OnSharedNodesChanged;
+		_subscriptionList!.AddChild(customSubscriptionPanel);
+		_subscriptionList.MoveChild(customSubscriptionPanel, 0);
+		_customSubscriptionUrlLineEdit.Text = string.Empty;
+	}
+
+	private void OnSharedNodesChanged() { _statusDetailLabel!.Text = GetNodeCountText(); }
 
 	private void ResetVisibility() {
 		_createButton!.Visible = false;
@@ -272,7 +282,6 @@ public partial class MultiplayerPage : MenuPage {
 				_statusLabel!.Text = "已就绪";
 				_statusLabel.Modulate = Colors.DarkGray;
 				_statusDetailLabel!.Text = GetNodeCountText();
-				RefreshNodeList();
 				CheckAccount();
 				break;
 
@@ -281,7 +290,6 @@ public partial class MultiplayerPage : MenuPage {
 				_tooltip.Modulate = Colors.LightCoral;
 				_resetButton!.Text = "返回";
 				_resetButton.Visible = true;
-				RefreshNodeList();
 				break;
 
 			case UiState.HostPreCheck:
@@ -302,7 +310,6 @@ public partial class MultiplayerPage : MenuPage {
 				_statusLabel!.Text = "等待创建";
 				_statusLabel.Modulate = Colors.Gold;
 				_statusDetailLabel!.Text = GetNodeCountText();
-				RefreshNodeList();
 				break;
 
 			case UiState.Connecting:
@@ -350,6 +357,24 @@ public partial class MultiplayerPage : MenuPage {
 				StopIndicatorPulse();
 				break;
 		}
+	}
+
+	private void UpdateSubscriptionPanel() {
+		foreach (var customNodeSubscriptionUrl in UI.Main.BaseConfig.CustomNodeSubscriptions) {
+			var customSubscriptionPanel = _subscriptionPanelScene!.Instantiate<SubscriptionPanel>();
+			customSubscriptionPanel.FoldableGroup = _subscriptionGroup;
+			customSubscriptionPanel.SubscriptionUrl = customNodeSubscriptionUrl;
+			customSubscriptionPanel.SharedNodesChanged += OnSharedNodesChanged;
+			customSubscriptionPanel.TreeExited += OnSharedNodesChanged;
+			_subscriptionList!.AddChild(customSubscriptionPanel);
+		}
+
+		var baseSubscriptionPanel = _subscriptionPanelScene!.Instantiate<SubscriptionPanel>();
+		baseSubscriptionPanel.FoldableGroup = _subscriptionGroup;
+		baseSubscriptionPanel.SubscriptionUrl = BaseSubscriptionUrl;
+		baseSubscriptionPanel.CanRemove = false;
+		baseSubscriptionPanel.SharedNodesChanged += OnSharedNodesChanged;
+		_subscriptionList!.AddChild(baseSubscriptionPanel);
 	}
 
 	private void SyncPlayerList() {
@@ -491,12 +516,19 @@ public partial class MultiplayerPage : MenuPage {
 	}
 
 	private async Task CheckVersion(bool showChecking = true) {
-		if (showChecking) SetState(UiState.Checking);
+		if (showChecking) {
+			SetState(UiState.Checking);
+		}
+
 		_coreVersion = await EasyTier.GetCoreVersion();
 		_cliVersion = await EasyTier.GetCliVersion();
 		SetState(_coreVersion == null || _cliVersion == null
 			? UiState.EasyTierNotInstalled
 			: UiState.EasyTierInstalled);
+		if (!_isGetSubscription) {
+			UpdateSubscriptionPanel();
+			_isGetSubscription = true;
+		}
 	}
 
 	private void JoinButtonOnPressed() {
@@ -504,7 +536,7 @@ public partial class MultiplayerPage : MenuPage {
 		var room = Room.Parse(_codeLineEdit!.Text);
 		if (room != null) {
 			AttachRoom(room);
-			_room!.StartGuest();
+			_room!.StartGuest(GetSharedNodes());
 		} else {
 			_tooltip!.Text = "房间码解析失败";
 			_tooltip.Modulate = Colors.LightCoral;
@@ -532,7 +564,7 @@ public partial class MultiplayerPage : MenuPage {
 		var port = (ushort)_lanPortSpinBox!.Value;
 		var room = Room.Create(port, "mvl");
 		AttachRoom(room);
-		_room!.StartHost();
+		_room!.StartHost(GetSharedNodes());
 	}
 
 	private void OnPlayerListChanged() {
@@ -783,81 +815,48 @@ public partial class MultiplayerPage : MenuPage {
 		return null;
 	}
 
-	private void UpdateAddButtonState() { _addNodeButton!.Disabled = string.IsNullOrWhiteSpace(_customNodeInput!.Text); }
-
-	private void TryAddCustomNode() {
-		var text = _customNodeInput!.Text.Trim();
-		if (string.IsNullOrEmpty(text)) {
-			return;
-		}
-
-		if (!Uri.TryCreate(text, UriKind.Absolute, out _)) {
-			_tooltip!.Text = "节点地址格式无效";
-			_tooltip.Modulate = Colors.LightCoral;
-			return;
-		}
-
-		if (UI.Main.BaseConfig.CustomEasyTierNodes.Contains(text)) {
-			_tooltip!.Text = "该节点已存在";
-			_tooltip.Modulate = Colors.Gold;
-			return;
-		}
-
-		_tooltip!.Text = string.Empty;
-		UI.Main.BaseConfig.CustomEasyTierNodes.Add(text);
-		UI.Main.BaseConfig.SaveAsync();
-		_customNodeInput.Clear();
-		UpdateAddButtonState();
-		RefreshNodeList();
-		_statusDetailLabel!.Text = GetNodeCountText();
-	}
-
-	private void RefreshNodeList() {
-		foreach (var child in _customNodeRowsContainer!.GetChildren()) {
-			child.QueueFree();
-		}
-
-		var hasCustomNodes = UI.Main.BaseConfig.CustomEasyTierNodes.Count > 0;
-		_noCustomNodeLabel!.Visible = !hasCustomNodes;
-
-		foreach (var node in UI.Main.BaseConfig.CustomEasyTierNodes) {
-			var row = new HBoxContainer();
-			row.AddThemeConstantOverride("separation", 4);
-
-			var label = new Label {
-				Text = node,
-				SizeFlagsHorizontal = SizeFlags.ExpandFill,
-				MouseFilter = MouseFilterEnum.Pass,
-				ClipText = true
-			};
-			label.AddThemeConstantOverride("margin_left", 4);
-			row.AddChild(label);
-
-			var removeBtn = new Button {
-				Icon = _removeIcon,
-				SizeFlagsHorizontal = SizeFlags.ShrinkCenter,
-				SizeFlagsVertical = SizeFlags.ShrinkCenter
-			};
-			removeBtn.Pressed += () => {
-				UI.Main.BaseConfig.CustomEasyTierNodes.Remove(node);
-				UI.Main.BaseConfig.SaveAsync();
-				RefreshNodeList();
-			};
-			row.AddChild(removeBtn);
-
-			_customNodeRowsContainer.AddChild(row);
-		}
-	}
-
 	static private void OpenEasyTierFolder() { OS.ShellOpen(Paths.EasyTierFolder); }
 
-	static private void OpenEasyTierSite() { OS.ShellOpen("https://github.com/EasyTier/EasyTier"); }
+	static private void OpenEasyTierSite() { OS.ShellOpen("https://easytier.cn"); }
+
+	private SharedNode[] GetSharedNodes() {
+		var nodes = new List<SharedNode>();
+		nodes.AddRange(UI.Main.BaseConfig.CustomSharedNodes);
+		foreach (var child in _subscriptionList!.GetChildren()) {
+			var subPanel = (SubscriptionPanel)child;
+			var sub = subPanel.Subscription;
+			if (sub?.Nodes != null) {
+				nodes.AddRange(sub.Nodes);
+			}
+		}
+
+		return [.. nodes];
+	}
 
 	private string GetNodeCountText() {
-		var publicCount = EasyTier.FallbackServers.Length;
-		var customCount = UI.Main.BaseConfig.CustomEasyTierNodes.Count;
-		var total = publicCount + customCount;
-		return string.Format(Tr("启用节点: {0} (公共 {1} + 自定义 {2})"), total, publicCount, customCount);
+		var customCount = UI.Main.BaseConfig.CustomSharedNodes.Count;
+		var customSubCount = 0;
+		var baseSubCount = 0;
+		foreach (var child in _subscriptionList!.GetChildren()) {
+			var subPanel = (SubscriptionPanel)child;
+			var sub = subPanel.Subscription;
+			if (sub?.Nodes == null) {
+				continue;
+			}
+
+			if (subPanel.SubscriptionUrl == BaseSubscriptionUrl) {
+				baseSubCount += sub.Nodes.Length;
+			} else {
+				customSubCount += sub.Nodes.Length;
+			}
+		}
+
+		var total = customCount + baseSubCount + customSubCount;
+		return string.Format(Tr("节点数量: {0}\n自定义节点: {1}, 自定义订阅: {2}, 基础订阅: {3}"),
+			total,
+			customCount,
+			customSubCount,
+			baseSubCount);
 	}
 
 	private void StartIndicatorPulse() {

@@ -18,4 +18,5 @@ public static class StringNames {
 	public static readonly StringName Scroll = new("scroll");
 	public static readonly StringName EnsureControlVisible = new("ensure_control_visible");
 	public static readonly StringName Separation = new("separation");
+	public static readonly StringName IconDisabledColor = new("icon_disabled_color");
 }
