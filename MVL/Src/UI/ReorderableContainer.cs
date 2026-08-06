@@ -215,7 +215,10 @@ public partial class ReorderableContainer : Container {
 		var childCount = GetChildCount();
 		for (var i = 0; i < childCount; i++) {
 			var node = GetChild(i);
-			if (node == _focusChild) break;
+			if (node == _focusChild) {
+				break;
+			}
+
 			if (node is Control { Visible: true } c && c != _control) {
 				currentIndex++;
 			}

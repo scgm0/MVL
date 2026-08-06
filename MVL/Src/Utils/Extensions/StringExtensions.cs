@@ -190,14 +190,19 @@ public static class StringExtensions {
 			var searchStart = 0;
 			while (searchStart < remainingLine.Length) {
 				var p = remainingLine[searchStart..].IndexOf("https://github.com/");
-				if (p == -1) break;
+				if (p == -1) {
+					break;
+				}
+
 				p += searchStart;
 
 				var urlEnd = p;
 				while (urlEnd < remainingLine.Length) {
 					var c = remainingLine[urlEnd];
-					if (char.IsWhiteSpace(c) || c == '<' || c == '>' || c == ')' || c == ']' || c == '(' || c == '[')
+					if (char.IsWhiteSpace(c) || c == '<' || c == '>' || c == ')' || c == ']' || c == '(' || c == '[') {
 						break;
+					}
+
 					urlEnd++;
 				}
 
@@ -283,8 +288,10 @@ public static class StringExtensions {
 					var urlEnd = 0;
 					while (urlEnd < remainingLine.Length) {
 						var c = remainingLine[urlEnd];
-						if (char.IsWhiteSpace(c) || c == '<' || c == '>' || c == ')' || c == ']' || c == '(' || c == '[')
+						if (char.IsWhiteSpace(c) || c == '<' || c == '>' || c == ')' || c == ']' || c == '(' || c == '[') {
 							break;
+						}
+
 						urlEnd++;
 					}
 
@@ -355,7 +362,10 @@ public static class StringExtensions {
 						inList = false;
 					}
 
-					if (sb.Length > 0) sb.AppendLine();
+					if (sb.Length > 0) {
+						sb.AppendLine();
+					}
+
 					continue;
 				}
 

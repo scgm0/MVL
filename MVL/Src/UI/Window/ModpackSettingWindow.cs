@@ -141,6 +141,7 @@ public partial class ModpackSettingWindow : BaseWindow {
 		confirmationWindow.ExpandContainer!.AddChild(checkButton);
 		confirmationWindow.Hidden += confirmationWindow.QueueFree;
 		confirmationWindow.Confirm += async () => {
+			confirmationWindow.OkButton?.Disabled = true;
 			if (Main.BaseConfig.CurrentModpack == ModpackConfig!.Path) {
 				Main.BaseConfig.CurrentModpack = string.Empty;
 				await Main.BaseConfig.SaveAsync();

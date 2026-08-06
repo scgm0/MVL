@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=3 uid="uid://ccfq2fesgeykj"]
+[gd_scene format=3 uid="uid://ccfq2fesgeykj"]
 
 [ext_resource type="PackedScene" uid="uid://bu4hwijkbc8sm" path="res://Src/UI/Window/base_window.tscn" id="1_fvt7b"]
 [ext_resource type="Script" uid="uid://dstnk40xqjp6x" path="res://Src/UI/Window/AddModpackWindow.cs" id="1_vgayu"]
@@ -10,7 +10,6 @@ resource_local_to_scene = false
 resource_name = ""
 script = ExtResource("3_i7wln")
 IconName = "alert-circle-outline"
-IconSize = 16
 metadata/_custom_type_script = "uid://bk3tot6c35bwu"
 
 [sub_resource type="Texture2D" id="Texture2D_2ju0j"]
@@ -27,7 +26,7 @@ script = ExtResource("3_i7wln")
 IconName = "file-settings-outline"
 metadata/_custom_type_script = "uid://bk3tot6c35bwu"
 
-[node name="AddModpackWindow" node_paths=PackedStringArray("_modpackName", "_modpackPath", "_createPath", "_folderButton", "_fileDialog", "_gameVersion", "_releasePath", "_tooltip") instance=ExtResource("1_fvt7b")]
+[node name="AddModpackWindow" unique_id=314885164 node_paths=PackedStringArray("_modpackName", "_modpackPath", "_createPath", "_folderButton", "_fileDialog", "_gameVersion", "_releasePath", "_tooltip") instance=ExtResource("1_fvt7b")]
 script = ExtResource("1_vgayu")
 _modpackName = NodePath("PanelContainer/VBoxContainer/VBoxContainer/LineEdit")
 _modpackPath = NodePath("PanelContainer/VBoxContainer/VBoxContainer2/HBoxContainer/LineEdit")
@@ -38,41 +37,41 @@ _gameVersion = NodePath("PanelContainer/VBoxContainer/VBoxContainer3/HBoxContain
 _releasePath = NodePath("PanelContainer/VBoxContainer/VBoxContainer3/HBoxContainer2/OptionButton2")
 _tooltip = NodePath("PanelContainer/VBoxContainer/VBoxContainer2/Label")
 
-[node name="PanelContainer" parent="." index="2"]
+[node name="PanelContainer" parent="." index="2" unique_id=1939254484]
 custom_minimum_size = Vector2(475, 250)
 
-[node name="Label" parent="PanelContainer/VBoxContainer" index="0"]
+[node name="Label" parent="PanelContainer/VBoxContainer" parent_id_path=PackedInt32Array(1085092068) index="0" unique_id=45475559]
 text = "添加整合包"
 
-[node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer/VBoxContainer" index="2"]
+[node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer/VBoxContainer" parent_id_path=PackedInt32Array(1085092068) index="2" unique_id=1390587218]
 layout_mode = 2
 
-[node name="Name" type="Label" parent="PanelContainer/VBoxContainer/VBoxContainer" index="0"]
+[node name="Name" type="Label" parent="PanelContainer/VBoxContainer/VBoxContainer" index="0" unique_id=1403755074]
 layout_mode = 2
 theme_override_fonts/font = ExtResource("4_vgayu")
 text = "整合包名称:"
 
-[node name="LineEdit" type="LineEdit" parent="PanelContainer/VBoxContainer/VBoxContainer" index="1"]
+[node name="LineEdit" type="LineEdit" parent="PanelContainer/VBoxContainer/VBoxContainer" index="1" unique_id=1226980448]
 layout_mode = 2
 text = "VintagestoryData"
 placeholder_text = "名称不能为空"
 clear_button_enabled = true
-right_icon = SubResource("Texture2D_5jy5j")
 caret_blink = true
+right_icon = SubResource("Texture2D_5jy5j")
 
-[node name="VBoxContainer2" type="VBoxContainer" parent="PanelContainer/VBoxContainer" index="3"]
+[node name="VBoxContainer2" type="VBoxContainer" parent="PanelContainer/VBoxContainer" parent_id_path=PackedInt32Array(1085092068) index="3" unique_id=374808306]
 layout_mode = 2
 
-[node name="HBoxContainer2" type="HBoxContainer" parent="PanelContainer/VBoxContainer/VBoxContainer2" index="0"]
+[node name="HBoxContainer2" type="HBoxContainer" parent="PanelContainer/VBoxContainer/VBoxContainer2" index="0" unique_id=393973631]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="PanelContainer/VBoxContainer/VBoxContainer2/HBoxContainer2" index="0"]
+[node name="Label" type="Label" parent="PanelContainer/VBoxContainer/VBoxContainer2/HBoxContainer2" index="0" unique_id=1580858499]
 layout_mode = 2
 size_flags_vertical = 8
 theme_override_fonts/font = ExtResource("4_vgayu")
 text = "整合包路径:"
 
-[node name="CheckButton" type="CheckButton" parent="PanelContainer/VBoxContainer/VBoxContainer2/HBoxContainer2" index="1"]
+[node name="CheckButton" type="CheckButton" parent="PanelContainer/VBoxContainer/VBoxContainer2/HBoxContainer2" index="1" unique_id=1339482793]
 layout_mode = 2
 size_flags_horizontal = 10
 size_flags_vertical = 4
@@ -80,31 +79,32 @@ button_pressed = true
 text = "创建文件夹"
 icon = SubResource("Texture2D_2ju0j")
 
-[node name="HBoxContainer" type="HBoxContainer" parent="PanelContainer/VBoxContainer/VBoxContainer2" index="1"]
+[node name="HBoxContainer" type="HBoxContainer" parent="PanelContainer/VBoxContainer/VBoxContainer2" index="1" unique_id=789849357]
 layout_mode = 2
 
-[node name="LineEdit" type="LineEdit" parent="PanelContainer/VBoxContainer/VBoxContainer2/HBoxContainer" index="0"]
+[node name="LineEdit" type="LineEdit" parent="PanelContainer/VBoxContainer/VBoxContainer2/HBoxContainer" index="0" unique_id=939784009]
 layout_mode = 2
 size_flags_horizontal = 3
 placeholder_text = "路径不能为空"
 clear_button_enabled = true
-right_icon = SubResource("Texture2D_5jy5j")
 caret_blink = true
+right_icon = SubResource("Texture2D_5jy5j")
+icon_expand_mode = 1
 
-[node name="Button" type="Button" parent="PanelContainer/VBoxContainer/VBoxContainer2/HBoxContainer" index="1"]
+[node name="Button" type="Button" parent="PanelContainer/VBoxContainer/VBoxContainer2/HBoxContainer" index="1" unique_id=857001461]
 layout_mode = 2
 icon = SubResource("Texture2D_vgayu")
 
-[node name="Label" type="Label" parent="PanelContainer/VBoxContainer/VBoxContainer2" index="2"]
+[node name="Label" type="Label" parent="PanelContainer/VBoxContainer/VBoxContainer2" index="2" unique_id=2036839553]
 layout_mode = 2
 size_flags_horizontal = 4
 theme_override_font_sizes/font_size = 14
 text = "将自动创建文件夹"
 
-[node name="VBoxContainer3" type="VBoxContainer" parent="PanelContainer/VBoxContainer" index="4"]
+[node name="VBoxContainer3" type="VBoxContainer" parent="PanelContainer/VBoxContainer" parent_id_path=PackedInt32Array(1085092068) index="4" unique_id=1433256513]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="PanelContainer/VBoxContainer/VBoxContainer3" index="0"]
+[node name="Label" type="Label" parent="PanelContainer/VBoxContainer/VBoxContainer3" index="0" unique_id=1911536495]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 1
@@ -112,25 +112,25 @@ theme_override_fonts/font = ExtResource("4_vgayu")
 text = "游戏版本:"
 vertical_alignment = 1
 
-[node name="HBoxContainer2" type="HBoxContainer" parent="PanelContainer/VBoxContainer/VBoxContainer3" index="1"]
+[node name="HBoxContainer2" type="HBoxContainer" parent="PanelContainer/VBoxContainer/VBoxContainer3" index="1" unique_id=342493458]
 auto_translate_mode = 2
 layout_mode = 2
 
-[node name="OptionButton" type="OptionButton" parent="PanelContainer/VBoxContainer/VBoxContainer3/HBoxContainer2" index="0"]
+[node name="OptionButton" type="OptionButton" parent="PanelContainer/VBoxContainer/VBoxContainer3/HBoxContainer2" index="0" unique_id=1165541290]
 layout_mode = 2
 size_flags_horizontal = 3
 alignment = 1
 text_overrun_behavior = 3
 clip_text = true
 
-[node name="OptionButton2" type="OptionButton" parent="PanelContainer/VBoxContainer/VBoxContainer3/HBoxContainer2" index="1"]
+[node name="OptionButton2" type="OptionButton" parent="PanelContainer/VBoxContainer/VBoxContainer3/HBoxContainer2" index="1" unique_id=1371943289]
 layout_mode = 2
 size_flags_horizontal = 3
 alignment = 1
 text_overrun_behavior = 3
 clip_text = true
 
-[node name="FileDialog" type="FileDialog" parent="." index="3"]
+[node name="FileDialog" type="FileDialog" parent="." index="3" unique_id=1791165436]
 title = "Open a Directory"
 ok_button_text = "Select Current Folder"
 file_mode = 2

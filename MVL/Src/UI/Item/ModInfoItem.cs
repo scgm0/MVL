@@ -102,6 +102,7 @@ public partial class ModInfoItem : PanelContainer {
 		var confirmationWindow = Main.Instance!.OpenConfirmationWindow(string.Format(Tr("确定要删除 [b]{0}[/b] 吗？"), Mod!.Name));
 		confirmationWindow.Hidden += confirmationWindow.QueueFree;
 		confirmationWindow.Confirm += async () => {
+			confirmationWindow.OkButton?.Disabled = true;
 			try {
 				Mod.DeleteMod();
 				QueueFree();

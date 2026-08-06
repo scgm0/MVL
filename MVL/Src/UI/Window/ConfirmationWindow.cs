@@ -1,3 +1,4 @@
+using System;
 using System.Threading.Tasks;
 using Godot;
 using MVL.Utils;
@@ -11,9 +12,8 @@ public partial class ConfirmationWindow : BaseWindow {
 	
 	[Export]
 	public VBoxContainer? ExpandContainer { get; set; }
-
-	[Signal]
-	public delegate void ConfirmEventHandler();
+	
+	public event Action? Confirm;
 
 	public string? Message {
 		get => _messageLabel?.Text ?? field;
@@ -33,7 +33,7 @@ public partial class ConfirmationWindow : BaseWindow {
 		_messageLabel.Text = Message;
 		_messageLabel.MetaClicked += Tools.RichTextOpenUrl;
 
-		OkButton.Pressed += EmitSignalConfirm;
+		OkButton.Pressed += () => Confirm?.Invoke();
 		CancelButton.Pressed += CancelButtonOnPressed;
 	}
 

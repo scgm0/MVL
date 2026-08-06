@@ -279,6 +279,7 @@ public partial class Main : NativeWindowUtility {
 		var confirmationWindow =
 			OpenConfirmationWindow(string.Format(Tr("确定要删除账号 [color=#0078d7][b]{0}[/b][/color] 吗？"), item.Account!.PlayerName));
 		confirmationWindow.Confirm += async () => {
+			confirmationWindow.OkButton?.Disabled = true;
 			await confirmationWindow.Hide();
 			BaseConfig.Account.Remove(item.Account);
 
@@ -675,6 +676,7 @@ public partial class Main : NativeWindowUtility {
 					Tools.VSRunTargetFramework);
 			confirmationWindow.Hidden += confirmationWindow.QueueFree;
 			confirmationWindow.Confirm += async () => {
+				confirmationWindow.OkButton?.Disabled = true;
 				await confirmationWindow.Hide();
 				StartGame(releaseInfo.Path, modpackConfig.Path!, modpackConfig.Command, modpackConfig.MainAssembly);
 			};
@@ -702,6 +704,7 @@ public partial class Main : NativeWindowUtility {
 						BaseConfig.CurrentAccount);
 				confirmationWindow.Hidden += confirmationWindow.QueueFree;
 				confirmationWindow.Confirm += async () => {
+					confirmationWindow.OkButton?.Disabled = true;
 					await confirmationWindow.Hide();
 					StartGame(releaseInfo.Path, modpackConfig.Path!, modpackConfig.Command, modpackConfig.MainAssembly);
 				};

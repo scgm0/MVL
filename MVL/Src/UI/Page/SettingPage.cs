@@ -200,6 +200,7 @@ public partial class SettingPage : MenuPage {
 			UI.Main.Instance!.OpenConfirmationWindow(string.Format(Tr("已将渲染驱动更改为 [color=#3c7fe1]{0}[/color]\n需要重启才能生效，是否立即重启？"),
 				driverDisplayName));
 		confirmationWindow.Confirm += () => {
+			confirmationWindow.OkButton?.Disabled = true;
 			OS.SetRestartOnExit(true);
 			Tools.SceneTree.Quit();
 		};
