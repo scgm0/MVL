@@ -282,6 +282,10 @@ public partial class MultiplayerPage : MenuPage {
 				_statusLabel!.Text = "已就绪";
 				_statusLabel.Modulate = Colors.DarkGray;
 				_statusDetailLabel!.Text = GetNodeCountText();
+				if (!_isGetSubscription) {
+					UpdateSubscriptionPanel();
+					_isGetSubscription = true;
+				}
 				CheckAccount();
 				break;
 
@@ -525,10 +529,6 @@ public partial class MultiplayerPage : MenuPage {
 		SetState(_coreVersion == null || _cliVersion == null
 			? UiState.EasyTierNotInstalled
 			: UiState.EasyTierInstalled);
-		if (!_isGetSubscription) {
-			UpdateSubscriptionPanel();
-			_isGetSubscription = true;
-		}
 	}
 
 	private void JoinButtonOnPressed() {
