@@ -16,6 +16,7 @@
 [![GitHub last commit](https://img.shields.io/github/last-commit/scgm0/MVL)](https://github.com/scgm0/MVL/commits/main)
 [![GitHub issues](https://img.shields.io/github/issues/scgm0/MVL)](https://github.com/scgm0/MVL/issues)
 [![GitHub Test Actions](https://github.com/scgm0/MVL/actions/workflows/runner.yml/badge.svg)](https://github.com/scgm0/MVL/actions/workflows/runner.yml)
+[![GitHub Download Total](https://img.shields.io/github/downloads/scgm0/MVL/total)](https://github.com/scgm0/MVL/releases/latest)
 
 神麤詭末的复古物语启动器（`MVL`）是一个免费、开源、由社区驱动的复古物语启动器，支持`Windows`与`Linux`系统
 
