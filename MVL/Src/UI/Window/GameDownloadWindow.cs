@@ -11,6 +11,8 @@ using System.Threading;
 using System.Threading.Tasks;
 using Flurl.Http;
 using Godot;
+using InnoUnpack.NET;
+using InnoUnpack.NET.Metadata;
 using MVL.UI.Item;
 using MVL.Utils;
 using MVL.Utils.Downloader;
@@ -495,7 +497,7 @@ public partial class GameDownloadWindow : BaseWindow {
 					extractedFiles++;
 
 					if (extractProgress != null) {
-						var currentPercent = (int)((double)extractedFiles / totalFiles * 100);
+						var currentPercent = extractedFiles * 100 / (double)totalFiles;
 						extractProgress.Invoke(currentPercent, $"{extractedFiles} / {totalFiles}");
 					}
 
@@ -516,64 +518,30 @@ public partial class GameDownloadWindow : BaseWindow {
 
 	public async Task ExtractInnoSetupAsync(
 		string filePath,
-		string appDir,
+		string tmpDir,
 		Action<double, string?>? extractProgress = null,
 		CancellationToken cancellationToken = default) {
-		using var tmp = DirAccess.CreateTemp("InnoExtract");
-		var tmpRunPath = tmp.GetCurrentDir();
-		const string innoExtractPath = "res://Misc/InnoUnp-2/innounp.exe";
-		var innoExtract = tmpRunPath.PathJoin("innounp.exe");
-		tmp.Copy(innoExtractPath, innoExtract.NormalizePath());
-
 		var str = Tr("正在扫描文件总数: {0}");
 		extractProgress?.Invoke(0, string.Format(str, 0));
 		var totalFiles = 0;
 
-		using (Process countProcess = new()) {
-			countProcess.StartInfo = new() {
-				FileName = innoExtract,
-				Arguments = $"-s -b -h \"{filePath}\"",
-				UseShellExecute = false,
-				RedirectStandardOutput = true,
-				RedirectStandardError = true,
-				CreateNoWindow = true
-			};
-
-			countProcess.Start();
-
-			try {
-				var errReader = countProcess.StandardError;
-				var errorReadTask = Task.Run(async () => {
-						while (await errReader.ReadLineAsync(CancellationToken.None).ConfigureAwait(false) is { } errLine) {
-							if (!string.IsNullOrWhiteSpace(errLine)) {
-								Log.Error(errLine);
-							}
-						}
-					},
-					cancellationToken);
-
-				var reader = countProcess.StandardOutput;
-				while (await reader.ReadLineAsync(cancellationToken).ConfigureAwait(false) is { } line) {
-					cancellationToken.ThrowIfCancellationRequested();
-					if (line.AsSpan().TrimStart().StartsWith("{app}")) {
-						totalFiles++;
-						extractProgress?.Invoke(0, string.Format(str, totalFiles));
-					}
+		await using var innoExtract = await InnoSetupArchive.OpenAsync(filePath,
+			new() {
+				PathMappings = new Dictionary<string, string> {
+					{ "app", "./" }
 				}
+			},
+			cancellationToken);
 
-				await Task.WhenAll(countProcess.WaitForExitAsync(cancellationToken), errorReadTask).ConfigureAwait(false);
-			} finally {
-				countProcess.Kill();
+		foreach (var f in innoExtract.EnumerateFiles()) {
+			cancellationToken.ThrowIfCancellationRequested();
+			if (!f.Destination.StartsWith("{app}", StringComparison.OrdinalIgnoreCase) ||
+				f.Type is not InnoFileType.UserFile) {
+				continue;
 			}
 
-			switch (countProcess.ExitCode) {
-				case 0: break;
-				case 1: throw new NotSupportedException("InnoSetup版本不受支持");
-				case 2: throw new InvalidDataException("安装文件已损坏或不兼容");
-				case 3: throw new("innounp发生内部或未知错误");
-				default:
-					throw new(string.Format(TranslationServer.Translate("innounp异常退出，状态码: {0}"), countProcess.ExitCode));
-			}
+			totalFiles++;
+			extractProgress?.Invoke(0, string.Format(str, totalFiles));
 		}
 
 		cancellationToken.ThrowIfCancellationRequested();
@@ -581,62 +549,23 @@ public partial class GameDownloadWindow : BaseWindow {
 			throw new InvalidOperationException("未找到可提取文件");
 		}
 
-		var extractedFiles = 0;
-
-		using Process extractProcess = new();
-		extractProcess.StartInfo = new() {
-			FileName = innoExtract,
-			Arguments = $"-x -y -b -h -c{{app}} -d\"{appDir}\" \"{filePath}\"",
-			UseShellExecute = false,
-			RedirectStandardOutput = true,
-			RedirectStandardError = true,
-			CreateNoWindow = true
+		var opts = new ExtractionOptions {
+			VerifyChecksums = false,
+			ExtractTemporaryFiles = false,
+			FileFilter = f =>
+				f.Destination.StartsWith("{app}", StringComparison.OrdinalIgnoreCase) && f.Type is InnoFileType.UserFile
 		};
 
-		extractProcess.Start();
-
-
-		try {
-			var errReader = extractProcess.StandardError;
-			var errorReadTask = Task.Run(async () => {
-					while (await errReader.ReadLineAsync(CancellationToken.None).ConfigureAwait(false) is { } errLine) {
-						if (!string.IsNullOrWhiteSpace(errLine)) {
-							Log.Error(errLine);
-						}
-					}
-				},
-				cancellationToken);
-
-			var outReader = extractProcess.StandardOutput;
-			while (await outReader.ReadLineAsync(cancellationToken).ConfigureAwait(false) is { } line) {
-				cancellationToken.ThrowIfCancellationRequested();
-				if (string.IsNullOrWhiteSpace(line) || !line.AsSpan().TrimStart().EndsWith("extracted")) {
-					continue;
-				}
-
-				extractedFiles++;
-
-				if (extractProgress != null) {
-					var currentPercent = (int)((double)extractedFiles / totalFiles * 100);
-					extractProgress.Invoke(currentPercent, $"{extractedFiles} / {totalFiles}");
-				}
+		opts.ProgressChanged += p => {
+			if (extractProgress == null) {
+				return;
 			}
 
-			await Task.WhenAll(extractProcess.WaitForExitAsync(cancellationToken), errorReadTask).ConfigureAwait(false);
-		} finally {
-			extractProcess.Kill(true);
-		}
+			var currentPercent = p.FilesExtracted * 100 / (double)totalFiles;
+			extractProgress.Invoke(currentPercent, $"{p.FilesExtracted} / {totalFiles}");
+		};
 
-		cancellationToken.ThrowIfCancellationRequested();
-
-		switch (extractProcess.ExitCode) {
-			case 0: break;
-			case 1: throw new NotSupportedException("InnoSetup版本不受支持");
-			case 2: throw new InvalidDataException("安装文件已损坏或不兼容");
-			case 3: throw new("innounp发生内部或未知错误");
-			default:
-				throw new(string.Format(TranslationServer.Translate("innounp异常退出，状态码: {0}"), extractProcess.ExitCode));
-		}
+		await Task.Run(() => innoExtract.ExtractToDirectory(tmpDir, opts, cancellationToken), cancellationToken);
 
 		extractProgress?.Invoke(100, $"{totalFiles} / {totalFiles}");
 	}
