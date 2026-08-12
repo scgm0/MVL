@@ -521,6 +521,9 @@ public partial class GameDownloadWindow : BaseWindow {
 		string tmpDir,
 		Action<double, string?>? extractProgress = null,
 		CancellationToken cancellationToken = default) {
+		var str = TranslationServer.Translate("正在扫描文件总数: {0}");
+		extractProgress?.Invoke(0, string.Format(str, 0));
+
 		await using var innoExtract = await InnoSetupArchive.OpenAsync(filePath,
 			new() {
 				PathMappings = new Dictionary<string, string> {
@@ -529,8 +532,10 @@ public partial class GameDownloadWindow : BaseWindow {
 			},
 			cancellationToken);
 
-		var totalFiles = innoExtract.EnumerateFiles(f =>
-			f.Destination.StartsWith("{app}", StringComparison.OrdinalIgnoreCase) && f.Type is InnoFileType.UserFile).Count();
+		var totalFiles = await Task.Run(() => innoExtract.EnumerateFiles(f =>
+					f.Destination.StartsWith("{app}", StringComparison.OrdinalIgnoreCase) && f.Type is InnoFileType.UserFile)
+				.Count(),
+			cancellationToken);
 
 		cancellationToken.ThrowIfCancellationRequested();
 		if (totalFiles == 0) {
@@ -611,7 +616,7 @@ public partial class GameDownloadWindow : BaseWindow {
 				File.Move(file, destFile, overwrite);
 
 				if (progress != null) {
-					var currentPercent = (int)((double)(i + 1) / totalFiles * 100);
+					var currentPercent = (i + 1) * 100 / (double)totalFiles;
 					progress.Invoke(currentPercent, $"{i + 1} / {totalFiles}");
 				}
 			}
