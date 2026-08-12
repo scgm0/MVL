@@ -1,4 +1,5 @@
 using System;
+using System.Buffers;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Formats.Tar;
@@ -6,6 +7,7 @@ using System.IO;
 using System.IO.Compression;
 using System.Linq;
 using System.Net;
+using System.Security.Cryptography;
 using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
@@ -270,8 +272,70 @@ public partial class GameDownloadWindow : BaseWindow {
 
 		var path = _releasePath!.Text.NormalizePath();
 		var name = _releaseName!.Text;
+		var filePath = downloadDir.PathJoin(downloadInfo.FileName);
 
-		ExtractGame(downloadDir.PathJoin(downloadInfo.FileName), path, name);
+		try {
+			if (downloadInfo.Md5 is not { Length: > 0 }) {
+				Log.Warn($"未提供MD5，跳过校验: {downloadInfo.FileName}");
+			} else {
+				TitleLabel!.Text = "校验中...";
+				UpdateProgress(0, "校验MD5中...");
+				Log.Info($"开始校验MD5: {downloadInfo.FileName}");
+				if (!await VerifyInstallerAsync(filePath,
+					downloadInfo.Md5,
+					UpdateProgress,
+					_cancellation.Token)) {
+					throw new InvalidDataException("MD5校验失败");
+				}
+			}
+		} catch (OperationCanceledException) {
+			Log.Info($"校验取消 {downloadInfo.FileName}");
+			return;
+		} catch (Exception e) {
+			Log.Error("校验安装包失败", e);
+			_lastException = "安装包校验失败，请重新下载";
+			ValidateInputs();
+			return;
+		}
+
+		ExtractGame(filePath, path, name);
+	}
+
+	static private async Task<bool> VerifyInstallerAsync(
+		string filePath,
+		byte[] expectedMd5,
+		Action<double, string?>? progress = null,
+		CancellationToken cancellationToken = default) {
+		const int bufferSize = 131072;
+		const FileOptions fileOpts = FileOptions.Asynchronous | FileOptions.SequentialScan;
+
+		using var hash = IncrementalHash.CreateHash(HashAlgorithmName.MD5);
+		await using var stream = new FileStream(filePath, FileMode.Open, FileAccess.Read, FileShare.Read, bufferSize, fileOpts);
+
+		var buffer = ArrayPool<byte>.Shared.Rent(bufferSize);
+		var totalBytes = stream.Length;
+		var totalRead = 0L;
+		var (totalSize, totalUnit) = Tools.GetSizeAndUnit((ulong)totalBytes);
+
+		try {
+			int read;
+			while ((read = await stream.ReadAsync(buffer.AsMemory(), cancellationToken).ConfigureAwait(false)) > 0) {
+				hash.AppendData(buffer.AsSpan(0, read));
+				totalRead += read;
+
+				if (progress != null) {
+					var percent = totalRead * 100.0 / totalBytes;
+					var (size, unit) = Tools.GetSizeAndUnit((ulong)totalRead);
+					progress.Invoke(percent, $"{size:F2} {unit} / {totalSize:F2} {totalUnit}");
+				}
+			}
+		} finally {
+			ArrayPool<byte>.Shared.Return(buffer);
+		}
+
+		Span<byte> actual = stackalloc byte[16];
+		hash.TryGetHashAndReset(actual, out _);
+		return CryptographicOperations.FixedTimeEquals(actual, expectedMd5);
 	}
 
 	private void UpdateProgress(double p, string? n) {
@@ -497,7 +561,7 @@ public partial class GameDownloadWindow : BaseWindow {
 					extractedFiles++;
 
 					if (extractProgress != null) {
-						var currentPercent = extractedFiles * 100 / (double)totalFiles;
+						var currentPercent = extractedFiles * 100.0 / totalFiles;
 						extractProgress.Invoke(currentPercent, $"{extractedFiles} / {totalFiles}");
 					}
 
@@ -554,7 +618,7 @@ public partial class GameDownloadWindow : BaseWindow {
 				return;
 			}
 
-			var currentPercent = p.FilesExtracted * 100 / (double)totalFiles;
+			var currentPercent = p.FilesExtracted * 100.0 / totalFiles;
 			extractProgress.Invoke(currentPercent, $"{p.FilesExtracted} / {totalFiles}");
 		};
 
@@ -616,7 +680,7 @@ public partial class GameDownloadWindow : BaseWindow {
 				File.Move(file, destFile, overwrite);
 
 				if (progress != null) {
-					var currentPercent = (i + 1) * 100 / (double)totalFiles;
+					var currentPercent = (i + 1) * 100.0 / totalFiles;
 					progress.Invoke(currentPercent, $"{i + 1} / {totalFiles}");
 				}
 			}
