@@ -310,7 +310,9 @@ public partial class GameDownloadWindow : BaseWindow {
 		const FileOptions fileOpts = FileOptions.Asynchronous | FileOptions.SequentialScan;
 
 		using var hash = IncrementalHash.CreateHash(HashAlgorithmName.MD5);
-		await using var stream = new FileStream(filePath, FileMode.Open, FileAccess.Read, FileShare.Read, bufferSize, fileOpts);
+		await using var stream =
+			await Task.Run(() => new FileStream(filePath, FileMode.Open, FileAccess.Read, FileShare.Read, bufferSize, fileOpts),
+				cancellationToken);
 
 		var buffer = ArrayPool<byte>.Shared.Rent(bufferSize);
 		var totalBytes = stream.Length;
