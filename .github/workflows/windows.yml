@@ -48,11 +48,17 @@ jobs:
           echo $GETTEXT_PATH | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
 
       - name: 1.4. Install 7Z And NSIS
+        shell: powershell
         run: |
-          echo "Install 7Z And NSIS And CCache And Mingw..."
+          echo "Install 7Z..."
           choco install 7zip -y
-          choco install nsis -y
 
+          echo "Install NSIS Directly..."
+          $ProgressPreference = 'SilentlyContinue'
+          Invoke-WebRequest -Uri "https://prdownloads.sourceforge.net/nsis/nsis-3.10-setup.exe" -OutFile "nsis-setup.exe"
+          Start-Process -FilePath ".\nsis-setup.exe" -ArgumentList "/S" -Wait -NoNewWindow
+
+          echo "Download and install Nsis7z plugin..."
           $PluginUrl = "https://nsis.sourceforge.io/mediawiki/images/9/93/Nsis7z.zip"
           $ZipFile = "Nsis7z.zip"
           Invoke-WebRequest -Uri $PluginUrl -OutFile $ZipFile
@@ -61,7 +67,6 @@ jobs:
 
           echo "C:\Program Files (x86)\NSIS" >> $env:GITHUB_PATH
           echo "C:\ProgramData\chocolatey\lib\7zip" >> $env:GITHUB_PATH
-          echo "C:\ProgramData\chocolatey\lib\nsis" >> $env:GITHUB_PATH
 
       - name: 2.1. Setup .NET8 SDK
         uses: actions/setup-dotnet@v5
