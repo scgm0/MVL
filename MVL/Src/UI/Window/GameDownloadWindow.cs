@@ -423,12 +423,12 @@ public partial class GameDownloadWindow : BaseWindow {
 		}
 	}
 
-	public async Task ExtractTarGzAsync(
+	public static async Task ExtractTarGzAsync(
 		string filePath,
 		string tempDir,
 		Action<double, string?>? extractProgress = null,
 		CancellationToken cancellationToken = default) {
-		var str = Tr("正在扫描文件总数: {0}");
+		var str = TranslationServer.Translate("正在扫描文件总数: {0}");
 		extractProgress?.Invoke(0, string.Format(str, 0));
 
 		const int bufferSize = 131072;
@@ -516,15 +516,11 @@ public partial class GameDownloadWindow : BaseWindow {
 		extractProgress?.Invoke(100, $"{totalFiles} / {totalFiles}");
 	}
 
-	public async Task ExtractInnoSetupAsync(
+	public static async Task ExtractInnoSetupAsync(
 		string filePath,
 		string tmpDir,
 		Action<double, string?>? extractProgress = null,
 		CancellationToken cancellationToken = default) {
-		var str = Tr("正在扫描文件总数: {0}");
-		extractProgress?.Invoke(0, string.Format(str, 0));
-		var totalFiles = 0;
-
 		await using var innoExtract = await InnoSetupArchive.OpenAsync(filePath,
 			new() {
 				PathMappings = new Dictionary<string, string> {
@@ -533,16 +529,8 @@ public partial class GameDownloadWindow : BaseWindow {
 			},
 			cancellationToken);
 
-		foreach (var f in innoExtract.EnumerateFiles()) {
-			cancellationToken.ThrowIfCancellationRequested();
-			if (!f.Destination.StartsWith("{app}", StringComparison.OrdinalIgnoreCase) ||
-				f.Type is not InnoFileType.UserFile) {
-				continue;
-			}
-
-			totalFiles++;
-			extractProgress?.Invoke(0, string.Format(str, totalFiles));
-		}
+		var totalFiles = innoExtract.EnumerateFiles(f =>
+			f.Destination.StartsWith("{app}", StringComparison.OrdinalIgnoreCase) && f.Type is InnoFileType.UserFile).Count();
 
 		cancellationToken.ThrowIfCancellationRequested();
 		if (totalFiles == 0) {
@@ -565,7 +553,7 @@ public partial class GameDownloadWindow : BaseWindow {
 			extractProgress.Invoke(currentPercent, $"{p.FilesExtracted} / {totalFiles}");
 		};
 
-		await Task.Run(() => innoExtract.ExtractToDirectory(tmpDir, opts, cancellationToken), cancellationToken);
+		await innoExtract.ExtractToDirectoryAsync(tmpDir, opts, cancellationToken);
 
 		extractProgress?.Invoke(100, $"{totalFiles} / {totalFiles}");
 	}
