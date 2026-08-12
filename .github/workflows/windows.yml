@@ -50,8 +50,7 @@ jobs:
       - name: 1.4. Install NSIS
         uses: negrutiu/nsis-install@v2
         with:
-          version: 3.10
-          arch: x86
+          arch: x64
 
       - name: 1.5. Install 7Z and Nsis7z Plugin
         shell: powershell
@@ -65,8 +64,7 @@ jobs:
           Invoke-WebRequest -Uri $PluginUrl -OutFile $ZipFile
           Expand-Archive -Path $ZipFile -DestinationPath "$((Get-Location).Path)\Nsis7z"
 
-          xcopy "$((Get-Location).Path)\Nsis7z\Plugins" "C:\Program Files (x86)\NSIS\Plugins" /E /I /Y
-
+          xcopy "$((Get-Location).Path)\Nsis7z\Plugins" "C:\Program Files\NSIS\Plugins" /E /I /Y
           echo "C:\ProgramData\chocolatey\lib\7zip" >> $env:GITHUB_PATH
 
       - name: 2.1. Setup .NET8 SDK
@@ -213,7 +211,7 @@ jobs:
           SetCompress off
           RequestExecutionLevel user
 
-          !addplugindir "C:\Program Files (x86)\NSIS\Plugins\x86-unicode"
+          !addplugindir "C:\Program Files\NSIS\Plugins\x64-unicode"
 
           Function .onInit
             System::Call 'Kernel32::AttachConsole(i -1)'
