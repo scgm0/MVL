@@ -47,25 +47,26 @@ jobs:
           $GETTEXT_PATH = (Get-Location).Path + "\gettext-tools\bin"
           echo $GETTEXT_PATH | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
 
-      - name: 1.4. Install 7Z And NSIS
+      - name: 1.4. Install NSIS
+        uses: negrutiu/nsis-install@v2
+        with:
+          version: 3.10
+          arch: x86
+
+      - name: 1.5. Install 7Z and Nsis7z Plugin
         shell: powershell
         run: |
           echo "Install 7Z..."
           choco install 7zip -y
-
-          echo "Install NSIS Directly..."
-          $ProgressPreference = 'SilentlyContinue'
-          Invoke-WebRequest -Uri "https://prdownloads.sourceforge.net/nsis/nsis-3.10-setup.exe" -OutFile "nsis-setup.exe"
-          Start-Process -FilePath ".\nsis-setup.exe" -ArgumentList "/S" -Wait -NoNewWindow
 
           echo "Download and install Nsis7z plugin..."
           $PluginUrl = "https://nsis.sourceforge.io/mediawiki/images/9/93/Nsis7z.zip"
           $ZipFile = "Nsis7z.zip"
           Invoke-WebRequest -Uri $PluginUrl -OutFile $ZipFile
           Expand-Archive -Path $ZipFile -DestinationPath "$((Get-Location).Path)\Nsis7z"
+
           xcopy "$((Get-Location).Path)\Nsis7z\Plugins" "C:\Program Files (x86)\NSIS\Plugins" /E /I /Y
 
-          echo "C:\Program Files (x86)\NSIS" >> $env:GITHUB_PATH
           echo "C:\ProgramData\chocolatey\lib\7zip" >> $env:GITHUB_PATH
 
       - name: 2.1. Setup .NET8 SDK
