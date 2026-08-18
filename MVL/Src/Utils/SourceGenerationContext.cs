@@ -38,6 +38,7 @@ namespace MVL.Utils;
 [JsonSerializable(typeof(List<EasyTierPlayerInfo>))]
 [JsonSerializable(typeof(GhProxyEnum))]
 [JsonSourceGenerationOptions(JsonSerializerDefaults.Web,
+	NewLine = "\n",
 	AllowTrailingCommas = true,
 	UseStringEnumConverter = true,
 	WriteIndented = true,

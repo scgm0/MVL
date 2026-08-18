@@ -234,7 +234,7 @@ public partial class ModpackSettingWindow : BaseWindow {
 		string language,
 		string key,
 		string localizedName,
-		Dictionary<string, string> localizations) {
+		OrderedDictionary<string, string> localizations) {
 		var item = _modpackLocalizedItemScene!.Instantiate<ModpackLocalizedItem>();
 		item.EditMode = ModpackLocalizedItem.EditModeEnum.View;
 		item.Language = language;
@@ -267,7 +267,7 @@ public partial class ModpackSettingWindow : BaseWindow {
 		string language,
 		string key,
 		string localizedName,
-		Dictionary<string, string>? localizations) {
+		OrderedDictionary<string, string>? localizations) {
 		var item = _modpackLocalizedItemScene!.Instantiate<ModpackLocalizedItem>();
 		item.EditMode = ModpackLocalizedItem.EditModeEnum.View;
 		item.Language = language;

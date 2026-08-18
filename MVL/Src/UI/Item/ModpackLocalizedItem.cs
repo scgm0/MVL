@@ -50,7 +50,7 @@ public partial class ModpackLocalizedItem : HBoxContainer {
 	} = string.Empty;
 
 	public string Key { get; set; } = string.Empty;
-	public Dictionary<string, string>? Localizations { get; set; }
+	public OrderedDictionary<string, string>? Localizations { get; set; }
 	public event Action? LocalizedNameChanged;
 	public event Action? AddLocalizedName;
 	public event Action? RemoveLocalizedName;

@@ -1,5 +1,4 @@
 using System;
-using System.Buffers;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.IO;
@@ -13,6 +12,7 @@ using CSemVer;
 using Godot;
 using MVL.UI;
 using MVL.Utils.Game;
+using MVL.Utils.Help;
 
 namespace MVL.Utils.Config;
 
@@ -254,37 +254,11 @@ public class ModpackConfig {
 
 	public void Save() {
 		lock (Lock) {
-			InjectLocalizations(ModpackName, "modpackName");
-			InjectLocalizations(ModpackSummary, "modpackSummary");
-			InjectLocalizations(ModpackDescription, "modpackDescription");
-
-			var data = JsonSerializer.SerializeToUtf8Bytes(this, SourceGenerationContext.Default.ModpackConfig);
-			File.WriteAllBytes(_configPath, data);
-
-			RemoveLocalizations(ModpackName, "modpackName");
-			RemoveLocalizations(ModpackSummary, "modpackSummary");
-			RemoveLocalizations(ModpackDescription, "modpackDescription");
-		}
-	}
-
-	private void InjectLocalizations(LocalizedString ls, string baseKey) {
-		if (ls.Localizations == null || ls.Localizations.Count == 0) {
-			return;
-		}
-
-		foreach (var (lang, text) in ls.Localizations) {
-			var val = JsonSerializer.SerializeToElement(text, SourceGenerationContext.Default.String);
-			ExtensionData[$"{baseKey}[{lang}]"] = val;
-		}
-	}
-
-	private void RemoveLocalizations(LocalizedString ls, string baseKey) {
-		if (ls.Localizations == null || ls.Localizations.Count == 0) {
-			return;
-		}
-
-		foreach (var (lang, _) in ls.Localizations) {
-			ExtensionData.Remove($"{baseKey}[{lang}]");
+			LocalizedStringJsonHelper.SaveWithOrderedLocalizations(
+				this,
+				_configPath,
+				SourceGenerationContext.Default.ModpackConfig
+			);
 		}
 	}
 
@@ -387,60 +361,12 @@ public class ModpackConfig {
 	public void OnDeserialized() {
 		TranslationDomain.Clear();
 
-		string[]? keysToRemove = null;
 		try {
-			if (ExtensionData is { Count: not 0 }) {
-				var removeCount = 0;
-				foreach (var kvp in ExtensionData) {
-					if (kvp.Value.ValueKind != JsonValueKind.String) {
-						continue;
-					}
-
-					var key = kvp.Key.AsSpan();
-					var openBracket = key.IndexOf('[');
-
-					if (openBracket <= 0 || key[^1] is not ']') {
-						continue;
-					}
-
-					var prefix = key[..openBracket];
-
-					var isName = prefix is "modpackName";
-					var isSummary = !isName && prefix is "modpackSummary";
-					var isDesc = !isName && !isSummary && prefix is "modpackDescription";
-
-					if (!isName && !isSummary && !isDesc) {
-						continue;
-					}
-
-					keysToRemove ??= ArrayPool<string>.Shared.Rent(ExtensionData.Count);
-					keysToRemove[removeCount++] = kvp.Key;
-
-					var lang = TranslationServer.StandardizeLocale(key.Slice(openBracket + 1, key.Length - openBracket - 2)
-						.ToString());
-					var val = kvp.Value.GetString() ?? string.Empty;
-
-					if (isName) {
-						var ls = ModpackName;
-						(ls.Localizations ??= [])[lang] = val;
-						ModpackName = ls;
-					} else if (isSummary) {
-						var ls = ModpackSummary;
-						(ls.Localizations ??= [])[lang] = val;
-						ModpackSummary = ls;
-					} else {
-						var ls = ModpackDescription;
-						(ls.Localizations ??= [])[lang] = val;
-						ModpackDescription = ls;
-					}
-				}
-
-				if (keysToRemove != null) {
-					for (var i = 0; i < removeCount; i++) {
-						ExtensionData.Remove(keysToRemove[i]);
-					}
-				}
-			}
+			LocalizedStringJsonHelper.RestoreLocalizationsFromExtensionData(
+				this,
+				SourceGenerationContext.Default.ModpackConfig,
+				ExtensionData
+			);
 
 			var summary = ModpackSummary;
 			var summaryUpdated = false;
@@ -467,10 +393,6 @@ public class ModpackConfig {
 			AddLocalizationTranslations(ModpackDescription);
 		} catch (Exception e) {
 			Log.Error($"解析整合包本地化字段失败: {Path}", e);
-		} finally {
-			if (keysToRemove != null) {
-				ArrayPool<string>.Shared.Return(keysToRemove);
-			}
 		}
 	}
 
