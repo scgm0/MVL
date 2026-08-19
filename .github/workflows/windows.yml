@@ -123,14 +123,7 @@ jobs:
             echo "ANGLE_ENABLED=no" >> "$GITHUB_OUTPUT"
           fi
 
-      - name: 4.5. Download WinRT components
-        shell: sh
-        run: |
-          cd ./godot
-          python ./misc/scripts/install_winrt.py
-        continue-on-error: true
-
-      - name: 4.6. Compilation Editor
+      - name: 4.5. Compilation Editor
         uses: ./MVL/.github/actions/godot-build
         with:
           scons-flags: >-
@@ -143,7 +136,7 @@ jobs:
           platform: windows
           target: editor
 
-      - name: 4.7. Compilation Release Template
+      - name: 4.6. Compilation Release Template
         uses: ./MVL/.github/actions/godot-build
         with:
           scons-flags: >-
@@ -155,13 +148,13 @@ jobs:
           platform: windows
           target: template_release
 
-      - name: 4.8. Save Godot build cache
+      - name: 4.7. Save Godot build cache
         uses: ./MVL/.github/actions/godot-cache-save
         with:
           cache-name: ${{ matrix.cache-name }}
         continue-on-error: true
 
-      - name: 4.9. Generate C# glue
+      - name: 4.8. Generate C# glue
         shell: powershell
         run: |
           & ${{ matrix.bin }} --headless --generate-mono-glue ./godot/modules/mono/glue
