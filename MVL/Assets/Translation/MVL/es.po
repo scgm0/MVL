@@ -5,15 +5,15 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: 神麤詭末的复古物语启动器\n"
-"PO-Revision-Date: 2025-12-07 00:54+0000\n"
-"Last-Translator: Anonymous <noreply@weblate.org>\n"
+"PO-Revision-Date: 2026-09-23 21:51+0000\n"
+"Last-Translator: Juan Benites <benitesjn@gmail.com>\n"
 "Language-Team: Spanish <https://hosted.weblate.org/projects/mvl/mvl/es/>\n"
 "Language: es\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8-bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.15-dev\n"
+"X-Generator: Weblate 2026.10.dev0\n"
 
 msgid "神麤詭末的复古物语启动器"
 msgstr "Vintage Story Launcher de MystiVaid"
@@ -76,7 +76,7 @@ msgid "开发人员"
 msgstr "Desarolladores"
 
 msgid "组织赞助"
-msgstr ""
+msgstr "Patrocinio institucional"
 
 msgid "私人赞助"
 msgstr "Patrocinador Privado"
@@ -260,10 +260,10 @@ msgid "俄语翻译"
 msgstr "Traducción al ruso"
 
 msgid "印尼语翻译"
-msgstr ""
+msgstr "Traducción al indonesio"
 
 msgid "乌克兰语翻译"
-msgstr ""
+msgstr "Traducción al ucraniano"
 
 msgid "界面"
 msgstr "Interfaz"
@@ -314,6 +314,11 @@ msgstr ""
 
 msgid "需要安装 [b].NET {1} (x64)[/b] 运行时\n请点击链接下载并安装：\n[color=#3c7fe1][url]https://dotnet.microsoft.com/download/dotnet/{1}[/url][/color]\n是否尝试强制启动游戏？"
 msgstr ""
+"Se necesita instalar el entorno de ejecución [b].NET {1} (x64)[/b].\n"
+"Haz clic en el enlace para descargarlo e instalarlo:\n"
+"[color=#3c7fe1][url]https://dotnet.microsoft.com/download/dotnet/{1}\\(/url\\"
+")[/color]\n"
+"¿Intentar iniciar el juego de forma forzada?"
 
 msgid "无法登录？检查您的游戏账号"
 msgstr "¿No puedes iniciar sesión? Comprueba tu cuenta de juego"
@@ -465,172 +470,184 @@ msgid "浏览在线模组"
 msgstr "Buscar Mods Online"
 
 msgid "菜单展开"
-msgstr ""
+msgstr "Menú expandido"
 
 msgid "已将渲染驱动更改为 [color=#3c7fe1]{0}[/color]\n需要重启才能生效，是否立即重启？"
 msgstr ""
+"El controlador de renderizado se ha cambiado a [color=#3c7fe1]{0}[/color].\n"
+"Es necesario reiniciar para que el cambio surta efecto. ¿Reiniciar ahora?"
 
 msgid "启动时展开菜单"
-msgstr ""
+msgstr "Expandir el menú al iniciar"
 
 msgid "翻译目录"
-msgstr ""
+msgstr "Directorio de traducción"
 
 msgid "更新"
-msgstr ""
+msgstr "Actualizar"
 
 msgid "GitHub代理"
-msgstr ""
+msgstr "Proxy de GitHub"
 
 msgid "自动检查"
-msgstr ""
+msgstr "Comprobar automáticamente"
 
 msgid "最新版本"
-msgstr ""
+msgstr "Última versión"
 
 msgid "启动时检查版本"
-msgstr ""
+msgstr "Comprobar la versión al iniciar"
 
 msgid "正在获取最新版本"
-msgstr ""
+msgstr "Obteniendo la última versión"
 
 msgid "重新获取"
-msgstr ""
+msgstr "Volver a obtener"
 
 msgid "下载"
-msgstr ""
+msgstr "Descargar"
 
 msgid "便携式可执行文件"
-msgstr ""
+msgstr "Ejecutable portátil"
 
 msgid "无新版本"
-msgstr ""
+msgstr "No hay nuevas versiones"
 
 msgid "发现新版本"
-msgstr ""
+msgstr "Nueva versión disponible"
 
 msgid "没有找到可用的下载文件"
-msgstr ""
+msgstr "No se encontraron archivos de descarga disponibles"
 
 msgid "发生错误，请检查网络连接"
-msgstr ""
+msgstr "Se produjo un error, comprueba tu conexión a Internet"
 
 msgid "获取最新版本失败"
-msgstr ""
+msgstr "No se pudo obtener la última versión"
 
 msgid "整合包的游戏版本无效，无法判断是否兼容"
 msgstr ""
+"La versión del juego del modpack no es válida, no se puede determinar si es "
+"compatible"
 
 msgid "请先为整合包选择游戏版本"
-msgstr ""
+msgstr "Por favor, selecciona primero una versión de juego para el modpack"
 
 msgid "无法启动"
-msgstr ""
+msgstr "No se puede iniciar"
 
 msgid "整合包作者:"
-msgstr ""
+msgstr "Autor del modpack:"
 
 msgid "未知"
-msgstr ""
+msgstr "Desconocido"
 
 msgid "整合包没有简介"
-msgstr ""
+msgstr "El modpack no tiene descripción"
 
 msgid "整合包设置"
-msgstr ""
+msgstr "Ajustes del modpack"
 
 msgid "整合包图标"
-msgstr ""
+msgstr "Icono del modpack"
 
 msgid "整合包名称"
-msgstr ""
+msgstr "Nombre del modpack"
 
 msgid "整合包简介"
-msgstr ""
+msgstr "Descripción del modpack"
 
 msgid "额外设置"
-msgstr ""
+msgstr "Ajustes adicionales"
 
 msgid "启动命令"
-msgstr ""
+msgstr "Comando de inicio"
 
 msgid "主程序集"
-msgstr ""
+msgstr "Ensamblaje principal"
 
 msgid "语言代码"
-msgstr ""
+msgstr "Código de idioma"
 
 msgid "本地化文本"
-msgstr ""
+msgstr "Texto localizado"
 
 msgid "修改"
-msgstr ""
+msgstr "Editar"
 
 msgid "重置"
-msgstr ""
+msgstr "Restablecer"
 
 msgid "第三方游戏下载"
-msgstr ""
+msgstr "Descarga de juegos de terceros"
 
 msgid "使用第三方游戏下载"
-msgstr ""
+msgstr "Usar descarga de juegos de terceros"
 
 msgid "第三方游戏链接"
-msgstr ""
+msgstr "Enlace de juego de terceros"
 
 msgid "检测"
-msgstr ""
+msgstr "Comprobar"
 
 msgid "接口格式需与官方保持一致"
-msgstr ""
+msgstr "El formato de la interfaz debe mantenerse coherente con el oficial"
 
 msgid "检测中..."
-msgstr ""
+msgstr "Comprobando..."
 
 msgid "链接格式错误，请输入有效的[b]http[/b]或[b]https[/b]链接"
 msgstr ""
+"Formato de enlace incorrecto, introduce un enlace [b]http[/b] o [b]https[/b] "
+"válido"
 
 msgid "返回内容解析成功，但版本列表为空"
 msgstr ""
+"Contenido devuelto analizado con éxito, pero la lista de versiones está vacía"
 
 msgid "检测成功，链接可访问且返回了有效内容"
 msgstr ""
+"Verificación exitosa, el enlace es accesible y devolvió contenido válido"
 
 msgid "连接超时，请检查网络连接或稍后重试"
 msgstr ""
+"Tiempo de espera agotado, comprueba tu conexión de red o inténtalo de nuevo "
+"más tarde"
 
 msgid "返回内容解析失败，接口格式不符合"
 msgstr ""
+"Error al analizar el contenido devuelto, el formato de la interfaz no "
+"coincide"
 
 msgid "确定要移除[b]{0}[/b]吗？"
-msgstr ""
+msgstr "¿Estás seguro de que quieres eliminar [b]{0}[/b]?"
 
 msgid "删除文件夹"
-msgstr ""
+msgstr "Eliminar carpeta"
 
 msgid "打开目录"
-msgstr ""
+msgstr "Abrir carpeta"
 
 msgid "移除"
-msgstr ""
+msgstr "Eliminar"
 
 msgid "移动中..."
-msgstr ""
+msgstr "Moviendo..."
 
 msgid "正在扫描文件总数: {0}"
-msgstr ""
+msgstr "Escaneando el total de archivos: {0}"
 
 msgid "InnoSetup版本不受支持"
-msgstr ""
+msgstr "Versión de InnoSetup no compatible"
 
 msgid "安装文件已损坏或不兼容"
-msgstr ""
+msgstr "El archivo de instalación está dañado o no es compatible"
 
 msgid "innounp发生内部或未知错误"
-msgstr ""
+msgstr "Error interno o desconocido en innounp"
 
 msgid "innounp异常退出，状态码: {0}"
-msgstr ""
+msgstr "innounp se ha cerrado inesperadamente, código de estado: {0}"
 
 msgid "提取游戏失败: {0}"
-msgstr ""
+msgstr "Error al extraer el juego: {0}"
