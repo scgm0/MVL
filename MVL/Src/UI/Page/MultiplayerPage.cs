@@ -505,6 +505,10 @@ public partial class MultiplayerPage : MenuPage {
 			return;
 		}
 
+		if (_uiState == UiState.Error) {
+			return;
+		}
+
 		if (_uiState == UiState.NoAccount) {
 			CheckAccount();
 			return;
