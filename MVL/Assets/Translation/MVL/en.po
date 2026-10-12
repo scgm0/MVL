@@ -639,3 +639,6 @@ msgstr "innounp exited abnormally, status code: {0}"
 
 msgid "提取游戏失败: {0}"
 msgstr "Failed to extract game: {0}"
+
+msgid "[b]{0}[/b] 的账号信息已失效，需要重新登录\n是否尝试强制启动游戏？"
+msgstr "The account information for [b]{0}[/b] has expired and re-login is required.\nWould you like to attempt to force-start the game?"

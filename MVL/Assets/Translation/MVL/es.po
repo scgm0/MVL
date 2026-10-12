@@ -651,3 +651,6 @@ msgstr "innounp se ha cerrado inesperadamente, código de estado: {0}"
 
 msgid "提取游戏失败: {0}"
 msgstr "Error al extraer el juego: {0}"
+
+msgid "[b]{0}[/b] 的账号信息已失效，需要重新登录\n是否尝试强制启动游戏？"
+msgstr ""
