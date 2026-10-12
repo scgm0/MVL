@@ -7,6 +7,7 @@ using System.Linq;
 using System.Net;
 using System.Text;
 using System.Text.Json;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Flurl.Http;
 using Godot;
@@ -727,6 +728,19 @@ public partial class Main : NativeWindowUtility {
 		StartGame(releaseInfo.Path, modpackConfig.Path!, modpackConfig.Command, modpackConfig.MainAssembly);
 	}
 
+	static private readonly Regex StartupHooksPattern = StartupHooksRegex();
+
+	static private string ExtractStartupHooks(ref string command) {
+		var match = StartupHooksPattern.Match(command);
+		if (!match.Success) {
+			return string.Empty;
+		}
+
+		var value = match.Groups["value"].Value.Trim('"', '\'');
+		command = command.Remove(match.Index, match.Length);
+		return value;
+	}
+
 	public static void StartGame(
 		string gamePath,
 		string dataPath,
@@ -744,16 +758,23 @@ public partial class Main : NativeWindowUtility {
 				assembleName = "Vintagestory.dll";
 			}
 
+			var mainAssembly = assembleName.Replace("%game_path%", gamePath).Replace("%data_path", dataPath);
+			var vsRunHook = Path.Combine(tmp.GetCurrentDir(), "VSRun.dll").NormalizePath();
 			command = command.Replace("%game_path%", gamePath)
 				.Replace("%tmp_path%", tmp.GetCurrentDir())
-				.Replace("%data_path%", dataPath)
-				.Replace("%command%",
-					$"\"{Tools.DotNetPath}\" \"{Path.Combine(tmp.GetCurrentDir(), "VSRun.dll").NormalizePath()}\"");
+				.Replace("%data_path%", dataPath);
+
+			var packHooks = ExtractStartupHooks(ref command);
+			var startupHooks = string.IsNullOrEmpty(packHooks)
+				? vsRunHook
+				: vsRunHook + Path.PathSeparator + packHooks;
+			command = command.Replace("%command%",
+				$"DOTNET_STARTUP_HOOKS=\"{startupHooks}\" \"{Tools.DotNetPath}\" \"{vsRunHook}\"");
 
 			var process = VsRun(new() {
 					VintageStoryPath = gamePath,
 					VintageStoryDataPath = dataPath,
-					AssemblyPath = assembleName.Replace("%game_path%", gamePath).Replace("%data_path", dataPath),
+					AssemblyPath = mainAssembly,
 					ExecutableType = ExecutableTypeEnum.StartGame,
 					Account = string.IsNullOrEmpty(BaseConfig.CurrentAccount) ? null : Accounts[BaseConfig.CurrentAccount]
 				},
@@ -780,4 +801,7 @@ public partial class Main : NativeWindowUtility {
 			Log.Error(e);
 		}
 	}
+
+	[GeneratedRegex("""DOTNET_STARTUP_HOOKS=(?<value>"[^"]*"|'[^']*'|\S+)""", RegexOptions.Compiled)]
+	static private partial Regex StartupHooksRegex();
 }

@@ -17,27 +17,13 @@ namespace VSRun;
 public static class Program {
 	public static RunConfig Config { get; set; }
 
-	public static string[] AssemblyPaths { get; set; } = [];
+	static private readonly JsonSerializerOptions ConfigJson = new(JsonSerializerDefaults.Web) {
+		AllowTrailingCommas = true,
+		WriteIndented = true,
+		Converters = { new JsonStringEnumConverter() }
+	};
 
-	public static Harmony Harmony { get; } = new("VSRun");
-
-	[ModuleInitializer]
-	public static void Initialize() {
-		Console.OutputEncoding = Encoding.UTF8;
-		Console.WriteLine("VS Run Initialize");
-
-		var vsPath = Environment.GetEnvironmentVariable("VINTAGE_STORY_PATH")!;
-		AppContext.SetData("APP_CONTEXT_BASE_DIRECTORY", vsPath);
-
-		AssemblyPaths = [
-			vsPath,
-			Path.Combine(vsPath, "Mods"),
-			Path.Combine(vsPath, "Lib"),
-			Path.Combine(vsPath, "Mods")
-		];
-		AppDomain.CurrentDomain.AssemblyResolve += AssemblyResolve;
-		AppDomain.CurrentDomain.UnhandledException += CurrentDomainOnUnhandledException;
-	}
+	static private Harmony Harmony { get; } = new("VSRun");
 
 	static private void CurrentDomainOnUnhandledException(object sender, UnhandledExceptionEventArgs e) {
 		LogExceptionDetails(e.ExceptionObject as Exception, "UnhandledException: " + sender);
@@ -47,14 +33,7 @@ public static class Program {
 		Console.WriteLine("VS Run Main");
 		Console.WriteLine($"Dotnet Version: {RuntimeInformation.FrameworkDescription}");
 		try {
-			Config = JsonSerializer.Deserialize<RunConfig>(Environment.GetEnvironmentVariable("RUN_CONFIG")!,
-				new JsonSerializerOptions(JsonSerializerDefaults.Web) {
-					AllowTrailingCommas = true,
-					WriteIndented = true,
-					Converters = {
-						new JsonStringEnumConverter()
-					}
-				});
+			Config = JsonSerializer.Deserialize<RunConfig>(Environment.GetEnvironmentVariable("RUN_CONFIG")!, ConfigJson);
 
 			GamePaths.DataPath = Config.VintageStoryDataPath;
 			ClientSettings.ModPaths = ["Mods", GamePaths.DataPathMods];
@@ -74,7 +53,6 @@ public static class Program {
 		} catch (Exception? ex) {
 			LogExceptionDetails(ex, "Main");
 		} finally {
-			AppDomain.CurrentDomain.AssemblyResolve -= AssemblyResolve;
 			SafeConsoleErrorWriteLine("VSRun: Main finished.");
 		}
 	}
@@ -86,7 +64,7 @@ public static class Program {
 		didDeserialize.Invoke(ClientSettings.Inst, null);
 	}
 
-	public static void StartGame(string[] args) {
+	static private void ApplyAccountAndPatches() {
 		Harmony.PatchCategory("ServerSystemLoadConfig");
 
 		if (Config.UseAnsiLogger) {
@@ -129,7 +107,9 @@ public static class Program {
 				Harmony.PatchCategory("Offline");
 			}
 		}
+	}
 
+	public static void StartGame(string[] args) {
 		var harmonyAssembly = typeof(Harmony).Assembly;
 		var harmonySharedStateType = harmonyAssembly.GetType("HarmonyLib.HarmonySharedState");
 		var stateFieldInfo = harmonySharedStateType?.GetField("state", BindingFlags.Static | BindingFlags.NonPublic);
@@ -152,20 +132,52 @@ public static class Program {
 		mainMethod?.Invoke(null, [args]);
 	}
 
-	public static Assembly? AssemblyResolve(object? sender, ResolveEventArgs args) {
-		var dll = new AssemblyName(args.Name).Name + ".dll";
-		foreach (var folder in AssemblyPaths) {
-			var dllPath = Path.Combine(folder, dll);
-			var path = File.Exists(dllPath) ? dllPath : null;
-			if (path == null) continue;
-			try {
-				return Assembly.LoadFrom(path);
-			} catch (Exception ex) {
-				throw new($"无法从'{path}'加载程序集'{args.Name}'", ex);
+	internal static void OnStartupHook() {
+		try {
+			AppDomain.CurrentDomain.UnhandledException += CurrentDomainOnUnhandledException;
+
+			var raw = Environment.GetEnvironmentVariable("RUN_CONFIG");
+			if (string.IsNullOrEmpty(raw)) {
+				return;
 			}
+
+			Config = JsonSerializer.Deserialize<RunConfig>(raw, ConfigJson);
+			var assemblyPath = string.IsNullOrEmpty(Config.AssemblyPath) ? "Vintagestory.dll" : Config.AssemblyPath;
+			var game = Assembly.LoadFrom(Path.Combine(Config.VintageStoryPath, assemblyPath));
+			AdoptGameIdentity(game, Config.VintageStoryPath);
+
+			if (Config.ExecutableType != ExecutableTypeEnum.StartGame) {
+				return;
+			}
+
+			GamePaths.DataPath = Config.VintageStoryDataPath;
+			ClientSettings.ModPaths = ["Mods", GamePaths.DataPathMods];
+			ApplyAccountAndPatches();
+		} catch (Exception e) {
+			LogExceptionDetails(e, "StartupHook");
+		}
+	}
+
+	static private void AdoptGameIdentity(Assembly game, string gameDirectory) {
+		try {
+			Assembly.SetEntryAssembly(game);
+		} catch (Exception e) {
+			Console.Error.WriteLine("VSRun: SetEntryAssembly failed: " + e.Message);
 		}
 
-		return null;
+		OverrideProcessPath(gameDirectory);
+	}
+
+	static private void OverrideProcessPath(string gameDirectory) {
+		try {
+			var executable = Path.Combine(gameDirectory,
+				RuntimeInformation.IsOSPlatform(OSPlatform.Windows) ? "Vintagestory.exe" : "Vintagestory");
+			typeof(Environment)
+				.GetField("s_processPath", BindingFlags.Static | BindingFlags.NonPublic)
+				?.SetValue(null, executable);
+		} catch (Exception e) {
+			Console.Error.WriteLine("VSRun: process path override failed: " + e.Message);
+		}
 	}
 
 	static private string GenerateSha256Uid(string input) {
@@ -196,7 +208,10 @@ public static class Program {
 		var currentEx = ex;
 		var level = 0;
 		while (currentEx != null) {
-			if (level > 0) SafeConsoleErrorWriteLine($"--- VSRun: Inner Exception (Level {level}) ---");
+			if (level > 0) {
+				SafeConsoleErrorWriteLine($"--- VSRun: Inner Exception (Level {level}) ---");
+			}
+
 			SafeConsoleErrorWriteLine($"VSRun: Type: {currentEx.GetType().FullName}");
 			SafeConsoleErrorWriteLine($"VSRun: Message: {currentEx.Message}");
 			SafeConsoleErrorWriteLine($"VSRun: StackTrace: {currentEx.StackTrace}");
@@ -205,7 +220,10 @@ public static class Program {
 				SafeConsoleErrorWriteLine("VSRun: ReflectionTypeLoadException LoaderExceptions:");
 				if (rtle.LoaderExceptions != null) {
 					foreach (var loaderEx in rtle.LoaderExceptions) {
-						if (loaderEx == null) continue;
+						if (loaderEx == null) {
+							continue;
+						}
+
 						SafeConsoleErrorWriteLine($"  LoaderEx Type: {loaderEx.GetType().FullName}");
 						SafeConsoleErrorWriteLine($"  LoaderEx Message: {loaderEx.Message}");
 						SafeConsoleErrorWriteLine($"  LoaderEx StackTrace: {loaderEx.StackTrace}");
@@ -240,14 +258,20 @@ public static class Program {
 			currentEx = ex;
 			level = 0;
 			while (currentEx != null) {
-				if (level > 0) sb.AppendLine($"--- Inner Exception (Level {level}) ---");
+				if (level > 0) {
+					sb.AppendLine($"--- Inner Exception (Level {level}) ---");
+				}
+
 				sb.AppendLine($"Type: {currentEx.GetType().FullName}");
 				sb.AppendLine($"Message: {currentEx.Message}");
 				sb.AppendLine($"StackTrace: {currentEx.StackTrace}");
 				if (currentEx is ReflectionTypeLoadException rtle && rtle.LoaderExceptions != null) {
 					sb.AppendLine("ReflectionTypeLoadException LoaderExceptions:");
 					foreach (var loaderEx in rtle.LoaderExceptions) {
-						if (loaderEx == null) continue;
+						if (loaderEx == null) {
+							continue;
+						}
+
 						sb.AppendLine($"  LoaderEx Type: {loaderEx.GetType().FullName}");
 						sb.AppendLine($"  LoaderEx Message: {loaderEx.Message}");
 					}
