@@ -1,14 +1,17 @@
-<Project Sdk="Godot.NET.Sdk/4.8.0-dev">
+<Project Sdk="Godot.NET.Sdk/4.8.0-beta">
     <PropertyGroup>
-        <TargetFramework>net10.0</TargetFramework>
+        <TargetFramework>net11.0</TargetFramework>
         <Nullable>enable</Nullable>
         <EnableDynamicLoading>true</EnableDynamicLoading>
         <PublishAot>true</PublishAot>
+        <UseNativeLibPrefix>false</UseNativeLibPrefix>
+        <EnableSourceLink Condition="'$(RuntimeIdentifier)' != '' And $(RuntimeIdentifier.StartsWith('win'))">false</EnableSourceLink>
         <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
         <LangVersion>preview</LangVersion>
         <InvariantGlobalization>true</InvariantGlobalization>
         <OptimizationPreference>Size</OptimizationPreference>
         <InformationalVersion>1.1.0-dev</InformationalVersion>
+        <Features>$(Features);runtime-async=on</Features>
     </PropertyGroup>
 
     <ItemGroup>
@@ -20,12 +23,12 @@
         <PackageReference Include="ComputerInfo" Version="0.2.0" />
         <PackageReference Include="CSemVer" Version="13.0.0" />
         <PackageReference Include="Flurl.Http" Version="4.0.2" />
-        <PackageReference Include="InnoUnpack.NET" Version="1.0.3" />
+        <PackageReference Include="InnoUnpack.NET" Version="1.0.4" />
         <PackageReference Include="Mono.Cecil" Version="0.11.6" />
-        <PackageReference Include="Nerdbank.MessagePack" Version="1.3.29-beta" />
-        <PackageReference Include="NetMQ" Version="4.0.4.3" />
+        <PackageReference Include="Nerdbank.MessagePack" Version="1.5.70-alpha" />
+        <PackageReference Include="NetMQ" Version="4.0.4.5" />
         <PackageReference Include="PublishAotCross.LinuxToWin" Version="1.0.0" />
-        <PackageReference Include="ZLogger" Version="2.5.10" />
+        <PackageReference Include="ZLogger" Version="2.6.2" />
     </ItemGroup>
 
     <ItemGroup>
@@ -91,5 +94,32 @@
             <AppCommitHash>$(GitShortHash)</AppCommitHash>
             <AppBuildTime>$([System.DateTimeOffset]::UtcNow)</AppBuildTime>
         </PropertyGroup>
+    </Target>
+
+    <Target Name="FixMsvcImportLibCase" BeforeTargets="LinkNative"
+            Condition="'$(RuntimeIdentifier)' != '' And $(RuntimeIdentifier.StartsWith('win')) And !$([MSBuild]::IsOSPlatform('Windows'))">
+        <PropertyGroup>
+            <_MsvcBinDir Condition="'$(MSVCWineBinPath)' != ''">$(MSVCWineBinPath)</_MsvcBinDir>
+            <_MsvcBinDir Condition="'$(_MsvcBinDir)' == ''">/opt/msvc/bin</_MsvcBinDir>
+            <_MsvcSdkLibRoot>$([System.IO.Path]::GetFullPath('$(_MsvcBinDir)/../Windows Kits/10/Lib'))</_MsvcSdkLibRoot>
+            <_WinTargetArch Condition="$(RuntimeIdentifier.EndsWith('-x64'))">x64</_WinTargetArch>
+            <_WinTargetArch Condition="$(RuntimeIdentifier.EndsWith('-x86'))">x86</_WinTargetArch>
+            <_WinTargetArch Condition="$(RuntimeIdentifier.EndsWith('-arm64'))">arm64</_WinTargetArch>
+        </PropertyGroup>
+
+        <ItemGroup>
+            <_SynchronizationLib Include="$(_MsvcSdkLibRoot)/*/um/$(_WinTargetArch)/synchronization.lib" />
+        </ItemGroup>
+
+        <PropertyGroup>
+            <_SynchronizationLibPath>@(_SynchronizationLib)</_SynchronizationLibPath>
+        </PropertyGroup>
+
+        <ItemGroup Condition="'$(_SynchronizationLibPath)' != ''">
+            <LinkerArg Remove="&quot;Synchronization.lib&quot;" />
+            <LinkerArg Include="&quot;$(_SynchronizationLibPath)&quot;" />
+        </ItemGroup>
+
+        <Message Importance="normal" Text="FixMsvcImportLibCase: Synchronization.lib -> $(_SynchronizationLibPath)" />
     </Target>
 </Project>

@@ -67,15 +67,15 @@ jobs:
           xcopy "$((Get-Location).Path)\Nsis7z\Plugins" "C:\Program Files\NSIS\Plugins" /E /I /Y
           echo "C:\ProgramData\chocolatey\lib\7zip" >> $env:GITHUB_PATH
 
-      - name: 2.1. Setup .NET8 SDK
-        uses: actions/setup-dotnet@v5
-        with:
-          dotnet-version: '8.0.x'
-
-      - name: 2.2. Setup .NET10 SDK
+      - name: 2.1. Setup .NET10 SDK
         uses: actions/setup-dotnet@v5
         with:
           dotnet-version: '10.0.x'
+
+      - name: 2.2. Setup .NET11 SDK
+        uses: actions/setup-dotnet@v5
+        with:
+          dotnet-version: '11.0.x'
 
       - name: 3. Download and Setup Vintage Story Clients
         shell: powershell
