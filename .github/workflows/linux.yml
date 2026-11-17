@@ -26,7 +26,7 @@ jobs:
       - name: 1. Setup Dependencies
         run: |
           sudo apt-get update
-          sudo apt-get install -y build-essential gettext llvm mold scons pkg-config libx11-dev libxcursor-dev libxinerama-dev libgl1-mesa-dev libglu1-mesa-dev libasound2-dev libpulse-dev libudev-dev libxi-dev libxrandr-dev libwayland-dev
+          sudo apt-get install -y build-essential gettext llvm mold scons pkg-config librsvg2-bin libx11-dev libxcursor-dev libxinerama-dev libgl1-mesa-dev libglu1-mesa-dev libasound2-dev libpulse-dev libudev-dev libxi-dev libxrandr-dev libwayland-dev
 
       - name: 2.1. Setup .NET10 SDK
         uses: actions/setup-dotnet@v5
@@ -116,14 +116,16 @@ jobs:
 
           echo "Export finished."
 
-      - name: 5.2 Setup AppimageTool
-        uses: AnimMouse/setup-appimage@v2
-        with:
-          filename: appimagetool
-          url: https://github.com/AppImage/appimagetool/releases/download/continuous/appimagetool-x86_64.AppImage
-          cache_key: continuous
+      - name: 5.2. Setup AppImageTool
+        run: |
+          mkdir -p "$HOME/.local/bin"
+          wget -qO "$HOME/.local/bin/appimagetool" \
+            "https://github.com/AppImage/appimagetool/releases/download/continuous/appimagetool-x86_64.AppImage"
+          chmod +x "$HOME/.local/bin/appimagetool"
+          echo "$HOME/.local/bin" >> "$GITHUB_PATH"
+          echo "APPIMAGE_EXTRACT_AND_RUN=1" >> "$GITHUB_ENV"
 
-      - name: 5.3 Package as AppImage
+      - name: 5.3. Package as AppImage
         run: |
           echo "Creating AppImage structure..."
           mkdir -p AppDir
@@ -145,21 +147,17 @@ jobs:
           EOF
           chmod +x AppDir/AppRun
 
-          cat > AppDir/mvl.desktop <<EOF
-          [Desktop Entry]
-          Name=MVL
-          Name[zh_CN]=神麤詭末的复古物语启动器
-          Exec=MVL
-          Icon=icon
-          Type=Application
-          Comment=一个开源的复古物语启动器
-          Categories=Game;Utility;
-          EOF
+          echo "Adding desktop entry and icons..."
+          rsvg-convert -w 256 -h 256 MVL/MVL/Assets/Icon/icon.svg -o AppDir/icon.png
+          install -Dm644 AppDir/icon.png AppDir/usr/share/icons/hicolor/256x256/apps/icon.png
+          install -Dm644 MVL/MVL/Assets/Icon/icon.svg AppDir/icon.svg
+          install -Dm644 MVL/MVL/Assets/Icon/icon.svg AppDir/usr/share/icons/hicolor/scalable/apps/icon.svg
 
-          cp MVL/MVL/Assets/Icon/icon.svg AppDir/icon.svg
+          install -Dm644 MVL/.github/appimage/mvl.desktop AppDir/mvl.desktop
+          install -Dm644 MVL/.github/appimage/mvl.desktop AppDir/usr/share/applications/mvl.desktop
 
           echo "Generating AppImage..."
-          appimagetool AppDir MVL-x86_64.AppImage --comp zstd --mksquashfs-opt -Xcompression-level --mksquashfs-opt 22
+          ARCH=x86_64 appimagetool --no-appstream AppDir MVL-x86_64.AppImage --comp zstd --mksquashfs-opt -Xcompression-level --mksquashfs-opt 22
 
       - name: 6.1. Upload AppImage Artifact
         uses: actions/upload-artifact@v7

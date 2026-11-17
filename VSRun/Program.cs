@@ -65,10 +65,10 @@ public static class Program {
 	}
 
 	static private void ApplyAccountAndPatches() {
-		Harmony.PatchCategory("ServerSystemLoadConfig");
+		Harmony.PatchCategory(typeof(Program).Assembly, "ServerSystemLoadConfig");
 
 		if (Config.UseAnsiLogger) {
-			Harmony.PatchCategory(nameof(Console));
+			Harmony.PatchCategory(typeof(Program).Assembly, nameof(Console));
 		}
 
 		if (Config.Account is not null) {
@@ -104,7 +104,7 @@ public static class Program {
 			if (account.Offline) {
 				ClientSettings.PlayerUID = account.PlayerName!;
 				Console.WriteLine("离线模式");
-				Harmony.PatchCategory("Offline");
+				Harmony.PatchCategory(typeof(Program).Assembly, "Offline");
 			}
 		}
 	}

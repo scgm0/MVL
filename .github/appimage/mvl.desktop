@@ -1,0 +1,10 @@
+[Desktop Entry]
+Type=Application
+Name=MVL
+Name[zh_CN]=神麤詭末的复古物语启动器
+Comment=An open source Vintage Story launcher
+Comment[zh_CN]=一个开源的复古物语启动器
+Exec=MVL
+Icon=icon
+Terminal=false
+Categories=Game;Utility;
