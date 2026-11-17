@@ -92,6 +92,13 @@ jobs:
       - name: 4.1. Clone Godot
         run: git clone https://github.com/scgm0/godot.git --branch MVL
 
+      - name: 4.1.1. Register local Godot NuGet feed
+        shell: powershell
+        run: |
+          New-Item -ItemType Directory -Force -Path "godot\bin\GodotSharp\Tools\nupkgs" | Out-Null
+          $Nupkgs = "$((Get-Location).Path)\godot\bin\GodotSharp\Tools\nupkgs"
+          dotnet nuget add source $Nupkgs -n godot-local
+
       - name: 4.2. Restore Godot build cache
         uses: ./MVL/.github/actions/godot-cache-restore
         with:
@@ -159,12 +166,11 @@ jobs:
         run: |
           & ${{ matrix.bin }} --headless --generate-mono-glue ./godot/modules/mono/glue
           python ./godot/modules/mono/build_scripts/build_assemblies.py --godot-output-dir=./godot/bin --push-nupkgs-local ./godot/bin/GodotSharp/Tools/nupkgs --godot-platform=windows
-          dotnet nuget add source "$((Get-Location).Path)\godot\bin\GodotSharp\Tools\nupkgs"
 
       - name: 5.1. Build and Export MVL Project
         run: |
           echo "Building MVL solution..."
-          dotnet build MVL/MVL
+          dotnet build MVL/MVL --disable-build-servers
 
           echo "Importing assets with Godot..."
           ${{ matrix.bin }} --path MVL/MVL --import --headless

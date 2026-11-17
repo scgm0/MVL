@@ -52,6 +52,11 @@ jobs:
         id: godot-build
         run: git clone https://github.com/scgm0/godot.git --branch MVL
 
+      - name: 4.1.1. Register local Godot NuGet feed
+        run: |
+          mkdir -p godot/bin/GodotSharp/Tools/nupkgs
+          dotnet nuget add source "$(pwd)/godot/bin/GodotSharp/Tools/nupkgs" -n godot-local
+
       - name: 4.2. Restore Godot build cache
         uses: ./MVL/.github/actions/godot-cache-restore
         with:
@@ -90,12 +95,11 @@ jobs:
         run: |
           ${{ matrix.bin }} --headless --generate-mono-glue ./godot/modules/mono/glue
           ./godot/modules/mono/build_scripts/build_assemblies.py --godot-output-dir=./godot/bin --push-nupkgs-local ./godot/bin/GodotSharp/Tools/nupkgs --godot-platform=linuxbsd
-          dotnet nuget add source $(pwd)/godot/bin/GodotSharp/Tools/nupkgs
 
       - name: 5.1 Build and Export MVL Project
         run: |
           echo "Building MVL solution..."
-          dotnet build MVL/MVL
+          dotnet build MVL/MVL --disable-build-servers
 
           echo "Importing assets with Godot..."
           ${{ matrix.bin }} --path MVL/MVL --import --headless
