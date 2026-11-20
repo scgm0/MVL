@@ -1,4 +1,5 @@
 using System;
+using System.Buffers;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
@@ -166,168 +167,104 @@ public static class StringExtensions {
 		}
 	}
 
-	private enum InlineFormatType {
-		None = 0,
-		Bold,
-		Code,
-		MarkdownLink,
-		GitHubCompare,
-		BracketLink
-	}
+	static private readonly SearchValues<string> InlineFormatTokens = SearchValues.Create(
+		["**", "`", "[", "<https://", "<http://", "https://github.com/"], StringComparison.Ordinal);
 
 	static private void ProcessInlineFormatting(StringBuilder sb, ReadOnlySpan<char> line) {
-		var remainingLine = line;
-		while (!remainingLine.IsEmpty) {
-			var boldPos = remainingLine.IndexOf("**");
-			var codePos = remainingLine.IndexOf('`');
-			var mdLinkPos = remainingLine.IndexOf('[');
-			var bracketUrlPos1 = remainingLine.IndexOf("<https://");
-			var bracketUrlPos2 = remainingLine.IndexOf("<http://");
-
-			var bracketUrlPos = GetValidMin(bracketUrlPos1, bracketUrlPos2);
-
-			var ghComparePos = -1;
-			var searchStart = 0;
-			while (searchStart < remainingLine.Length) {
-				var p = remainingLine[searchStart..].IndexOf("https://github.com/");
-				if (p == -1) {
-					break;
-				}
-
-				p += searchStart;
-
-				var urlEnd = p;
-				while (urlEnd < remainingLine.Length) {
-					var c = remainingLine[urlEnd];
-					if (char.IsWhiteSpace(c) || c == '<' || c == '>' || c == ')' || c == ']' || c == '(' || c == '[') {
-						break;
-					}
-
-					urlEnd++;
-				}
-
-				var candidate = remainingLine[p..urlEnd];
-				if (candidate.IndexOf("/compare/") != -1) {
-					ghComparePos = p;
-					break;
-				}
-
-				searchStart = urlEnd;
+		while (!line.IsEmpty) {
+			var tokenPos = line.IndexOfAny(InlineFormatTokens);
+			if (tokenPos < 0) {
+				sb.Append(line);
+				return;
 			}
 
-			var firstPos = -1;
-			var currentType = InlineFormatType.None;
+			sb.Append(line[..tokenPos]);
+			line = line[tokenPos..];
 
-			CheckPos(boldPos, InlineFormatType.Bold);
-			CheckPos(codePos, InlineFormatType.Code);
-			CheckPos(mdLinkPos, InlineFormatType.MarkdownLink);
-			CheckPos(ghComparePos, InlineFormatType.GitHubCompare);
-			CheckPos(bracketUrlPos, InlineFormatType.BracketLink);
+			if (line.StartsWith("**")) {
+				var content = line[2..];
+				var closingPos = content.IndexOf("**");
+				if (closingPos != -1) {
+					sb.Append("[b]").Append(content[..closingPos]).Append("[/b]");
+					line = content[(closingPos + 2)..];
+					continue;
+				}
 
-			if (firstPos == -1) {
-				sb.Append(remainingLine);
-				break;
+				sb.Append("**");
+				line = content;
+				continue;
 			}
 
-			sb.Append(remainingLine[..firstPos]);
-			remainingLine = remainingLine[firstPos..];
-
-			switch (currentType) {
-				case InlineFormatType.Bold: {
-					var contentSpan = remainingLine[2..];
-					var closingPos = contentSpan.IndexOf("**");
-					if (closingPos != -1) {
-						sb.Append("[b]").Append(contentSpan[..closingPos]).Append("[/b]");
-						remainingLine = contentSpan[(closingPos + 2)..];
-					} else {
-						sb.Append(remainingLine[..2]);
-						remainingLine = remainingLine[2..];
-					}
-
-					break;
+			if (line[0] == '`') {
+				var content = line[1..];
+				var closingPos = content.IndexOf('`');
+				if (closingPos != -1) {
+					sb.Append("[img width=3 height=1 color=0000]uid://cg2dshwidpbbv[/img][code][fgcolor=0007]")
+						.Append(content[..closingPos])
+						.Append("[/fgcolor][/code][img width=3 height=1 color=0000]uid://cg2dshwidpbbv[/img]");
+					line = content[(closingPos + 1)..];
+					continue;
 				}
-				case InlineFormatType.Code: {
-					var contentSpan = remainingLine[1..];
-					var closingPos = contentSpan.IndexOf('`');
-					if (closingPos != -1) {
-						sb.Append("[img width=3 height=1 color=0000]uid://cg2dshwidpbbv[/img][code][fgcolor=0007]")
-							.Append(contentSpan[..closingPos])
-							.Append("[/fgcolor][/code][img width=3 height=1 color=0000]uid://cg2dshwidpbbv[/img]");
-						remainingLine = contentSpan[(closingPos + 1)..];
-					} else {
-						sb.Append(remainingLine[..1]);
-						remainingLine = remainingLine[1..];
-					}
 
-					break;
-				}
-				case InlineFormatType.MarkdownLink: {
-					var closeBracket = remainingLine.IndexOf(']');
-					if (closeBracket != -1 && remainingLine.Length > closeBracket + 1 &&
-						remainingLine[closeBracket + 1] == '(') {
-						var afterParen = remainingLine[(closeBracket + 2)..];
-						var closeParen = afterParen.IndexOf(')');
-						if (closeParen != -1) {
-							var text = remainingLine[1..closeBracket];
-							var url = afterParen[..closeParen];
-
-							sb.Append("[color=#3c7fe1][url=").Append(url).Append(']');
-							ProcessInlineFormatting(sb, text);
-							sb.Append("[/url][/color]");
-
-							remainingLine = afterParen[(closeParen + 1)..];
-							continue;
-						}
-					}
-
-					sb.Append(remainingLine[..1]);
-					remainingLine = remainingLine[1..];
-					break;
-				}
-				case InlineFormatType.GitHubCompare: {
-					var urlEnd = 0;
-					while (urlEnd < remainingLine.Length) {
-						var c = remainingLine[urlEnd];
-						if (char.IsWhiteSpace(c) || c == '<' || c == '>' || c == ')' || c == ']' || c == '(' || c == '[') {
-							break;
-						}
-
-						urlEnd++;
-					}
-
-					var urlSpan = remainingLine[..urlEnd];
-					var lastSlash = urlSpan.LastIndexOf('/');
-					var versionText = urlSpan[(lastSlash + 1)..]; // 截取 compare/ 后的版本范围字符
-
-					sb.Append("[url=").Append(urlSpan).Append(']').Append(versionText).Append("[/url]");
-					remainingLine = remainingLine[urlEnd..];
-					break;
-				}
-				case InlineFormatType.BracketLink: {
-					var closeBracket = remainingLine.IndexOf('>');
-					if (closeBracket != -1) {
-						var url = remainingLine[1..closeBracket];
-						sb.Append("[color=#3c7fe1][url]").Append(url).Append("[/url][/color]");
-						remainingLine = remainingLine[(closeBracket + 1)..];
-					} else {
-						sb.Append(remainingLine[..1]);
-						remainingLine = remainingLine[1..];
-					}
-
-					break;
-				}
+				sb.Append('`');
+				line = content;
+				continue;
 			}
 
-			continue;
-
-			void CheckPos(int pos, InlineFormatType type) {
-				if (pos != -1 && (firstPos == -1 || pos < firstPos)) {
-					firstPos = pos;
-					currentType = type;
+			if (line[0] == '[') {
+				var closeBracket = line.IndexOf(']');
+				if (closeBracket != -1 && line.Length > closeBracket + 1 && line[closeBracket + 1] == '(') {
+					var afterParen = line[(closeBracket + 2)..];
+					var closeParen = afterParen.IndexOf(')');
+					if (closeParen != -1) {
+						sb.Append("[color=#3c7fe1][url=").Append(afterParen[..closeParen]).Append(']');
+						ProcessInlineFormatting(sb, line[1..closeBracket]);
+						sb.Append("[/url][/color]");
+						line = afterParen[(closeParen + 1)..];
+						continue;
+					}
 				}
+
+				sb.Append('[');
+				line = line[1..];
+				continue;
 			}
 
-			int GetValidMin(int a, int b) => a != -1 && b != -1 ? Math.Min(a, b) : Math.Max(a, b);
+			if (line.StartsWith("<https://") || line.StartsWith("<http://")) {
+				var closeBracket = line.IndexOf('>');
+				if (closeBracket != -1) {
+					sb.Append("[color=#3c7fe1][url]").Append(line[1..closeBracket]).Append("[/url][/color]");
+					line = line[(closeBracket + 1)..];
+					continue;
+				}
+
+				sb.Append('<');
+				line = line[1..];
+				continue;
+			}
+
+			var urlEnd = 0;
+			while (urlEnd < line.Length) {
+				var c = line[urlEnd];
+				if (char.IsWhiteSpace(c) || c is '<' or '>' or ')' or ']' or '(' or '[') {
+					break;
+				}
+
+				urlEnd++;
+			}
+
+			var url = line[..urlEnd];
+			if (url.IndexOf("/compare/", StringComparison.Ordinal) != -1) {
+				var lastSlash = url.LastIndexOf('/');
+				var versionText = url[(lastSlash + 1)..]; // 截取 compare/ 后的版本范围字符
+
+				sb.Append("[url=").Append(url).Append(']').Append(versionText).Append("[/url]");
+				line = line[urlEnd..];
+				continue;
+			}
+
+			sb.Append('h');
+			line = line[1..];
 		}
 	}
 
