@@ -545,15 +545,23 @@ public partial class Main : NativeWindowUtility {
 
 	public static string? GetGameConfigName(string gamePath) {
 		try {
-			var assembly = AssemblyDefinition.ReadAssembly(Path.Combine(gamePath, "VintagestoryLib.dll"));
+			using var assembly = AssemblyDefinition.ReadAssembly(Path.Combine(gamePath, "VintagestoryLib.dll"));
 			var type = assembly.MainModule.GetType("Vintagestory.Client.NoObf.ClientSettings");
-			var properties = type.Properties.ToDictionary(definition => definition.Name, definition => definition.GetMethod);
-			return properties["FileName"].Body.Instructions.ToArray()
-				.Where(instruction => instruction.OpCode.OperandType == OperandType.InlineString)
-				.Select(instruction => (string)instruction.Operand).FirstOrDefault();
+			var getMethod = type.Properties.FirstOrDefault(definition => definition.Name == "FileName")?.GetMethod;
+			if (getMethod is null) {
+				return null;
+			}
+
+			foreach (var instruction in getMethod.Body.Instructions) {
+				if (instruction.OpCode.OperandType == OperandType.InlineString) {
+					return (string)instruction.Operand;
+				}
+			}
 		} catch {
 			return null;
 		}
+
+		return null;
 	}
 
 	public static DirAccess CopyVsRun() {

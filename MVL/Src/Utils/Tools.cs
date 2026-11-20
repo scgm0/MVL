@@ -1,5 +1,6 @@
 using System;
 using System.Buffers;
+using System.Collections.Concurrent;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -303,18 +304,16 @@ public static class Tools {
 		return ImageTexture.CreateFromImage(image);
 	}
 
-	static private readonly byte[] Bmp = "BM"u8.ToArray();
-	static private readonly byte[] Webp = "RIFF"u8.ToArray();
-	static private readonly byte[] Png = [0x89, 0x50, 0x4E, 0x47];
-	static private readonly byte[] Jpeg = [0xFF, 0xD8];
-	static private readonly byte[] Jpeg2 = [0xFF, 0xD9];
+	static private ReadOnlySpan<byte> PngSignature => [0x89, 0x50, 0x4E, 0x47];
+	static private ReadOnlySpan<byte> JpegStart => [0xFF, 0xD8];
+	static private ReadOnlySpan<byte> JpegEnd => [0xFF, 0xD9];
 
 	public static ImageFormat GetImageFormat(ReadOnlySpan<byte> fileHeader) {
 		return fileHeader switch {
-			_ when fileHeader.StartsWith(Bmp) => ImageFormat.Bmp,
-			_ when fileHeader.StartsWith(Png) => ImageFormat.Png,
-			_ when fileHeader.StartsWith(Jpeg) && fileHeader.EndsWith(Jpeg2) => ImageFormat.Jpg,
-			_ when fileHeader.StartsWith(Webp) => ImageFormat.Webp,
+			_ when fileHeader.StartsWith("BM"u8) => ImageFormat.Bmp,
+			_ when fileHeader.StartsWith(PngSignature) => ImageFormat.Png,
+			_ when fileHeader.StartsWith(JpegStart) && fileHeader.EndsWith(JpegEnd) => ImageFormat.Jpg,
+			_ when fileHeader.StartsWith("RIFF"u8) => ImageFormat.Webp,
 			_ => ImageFormat.Unknown,
 		};
 	}
@@ -367,39 +366,53 @@ public static class Tools {
 		return await LoadTextureFromPath(fileInfo);
 	}
 
+	static private readonly ConcurrentDictionary<string, (long Length, DateTime LastWriteTimeUtc, DateTime CreationTimeUtc, string Sha256)> FileSha256Cache = new(StringComparer.Ordinal);
+
+	static private async Task<string> GetFileSha256Async(FileInfo fileInfo) {
+		fileInfo.Refresh();
+		var fullName = fileInfo.FullName;
+		if (FileSha256Cache.TryGetValue(fullName, out var cached) &&
+			cached.Length == fileInfo.Length &&
+			cached.LastWriteTimeUtc == fileInfo.LastWriteTimeUtc &&
+			cached.CreationTimeUtc == fileInfo.CreationTimeUtc) {
+			return cached.Sha256;
+		}
+
+		await using var fs = fileInfo.OpenRead();
+		var hash = new byte[32];
+		await CryptographicOperations.HashDataAsync(HashAlgorithmName.SHA256, fs, hash);
+		var sha256 = Convert.ToHexStringLower(hash);
+		FileSha256Cache[fullName] = (fileInfo.Length, fileInfo.LastWriteTimeUtc, fileInfo.CreationTimeUtc, sha256);
+		return sha256;
+	}
+
 	public static async Task<ImageTexture?> LoadTextureFromPath(FileInfo fileInfo) {
 		if (!fileInfo.Exists || fileInfo.Length == 0) {
 			return null;
 		}
 
 		var path = fileInfo.FullName;
-		var hashBuffer = ArrayPool<byte>.Shared.Rent(32);
 		try {
-			await using var fs = fileInfo.OpenRead();
-
-			var hashMemory = hashBuffer.AsMemory(0, 32);
-			await CryptographicOperations.HashDataAsync(HashAlgorithmName.SHA256, fs, hashMemory);
-			var fileSha256 = Convert.ToHexStringLower(hashMemory.Span);
+			var fileSha256 = await GetFileSha256Async(fileInfo);
 			var shaPath = $"{path}.{fileSha256}";
 			if (ResourceLoader.Exists(shaPath)) {
 				return ResourceLoader.Load<ImageTexture>(shaPath);
 			}
 
-			fs.Seek(0, SeekOrigin.Begin);
+			await using var fs = fileInfo.OpenRead();
 			var texture = await LoadTextureFromStream(fs);
 			texture?.TakeOverPath(shaPath);
 			return texture;
 		} catch (Exception e) {
 			Log.Warn($"加载贴图失败: {path}", e);
 			return null;
-		} finally {
-			ArrayPool<byte>.Shared.Return(hashBuffer);
 		}
 	}
 
 	public static async Task<ImageTexture?> LoadTextureFromUrl(string url) {
 		try {
-			var name = $"{new Guid(url.Sha256Buffer().Take(16).ToArray())}.png";
+			var hash = url.Sha256Buffer();
+			var name = $"{new Guid(hash.AsSpan(0, 16))}.png";
 			var path = Path.Join(Paths.CacheFolder, name);
 			if (File.Exists(path)) {
 				return await LoadTextureFromPath(path);

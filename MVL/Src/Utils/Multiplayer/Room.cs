@@ -173,8 +173,10 @@ public partial record Room : IDisposable {
 		}
 
 		var hostPort = Tools.GetAvailablePort();
-		var uniqueIdBytes = RandomNumberGenerator.GetBytes(4);
-		var secretBytes = RandomNumberGenerator.GetBytes(4);
+		Span<byte> uniqueIdBytes = stackalloc byte[4];
+		Span<byte> secretBytes = stackalloc byte[4];
+		RandomNumberGenerator.Fill(uniqueIdBytes);
+		RandomNumberGenerator.Fill(secretBytes);
 		Span<byte> combinedBytes = stackalloc byte[6];
 		BitConverter.TryWriteBytes(combinedBytes[..2], hostPort);
 		if (BitConverter.IsLittleEndian) {
@@ -186,21 +188,23 @@ public partial record Room : IDisposable {
 		var uniqueIdBigInt = new BigInteger(uniqueIdBytes, isUnsigned: true, isBigEndian: true);
 		var combinedBigInt = new BigInteger(combinedBytes, isUnsigned: true, isBigEndian: true);
 
-		var uniqueIdB36Padded = Base36Converter.ToBase36String(uniqueIdBigInt).PadLeft(UniqueIdB36Length, '0');
-		var combinedB36Padded = Base36Converter.ToBase36String(combinedBigInt).PadLeft(CombinedB36Length, '0');
-
-		var fullB36Data = string.Concat(uniqueIdB36Padded, combinedB36Padded);
-		var part1 = fullB36Data.AsSpan(0, FinalPartLength);
-		var part2 = fullB36Data.AsSpan(FinalPartLength);
+		Span<char> fullB36Data = stackalloc char[UniqueIdB36Length + CombinedB36Length];
+		PadLeft(Base36Converter.ToBase36String(uniqueIdBigInt), fullB36Data[..UniqueIdB36Length]);
+		PadLeft(Base36Converter.ToBase36String(combinedBigInt), fullB36Data[UniqueIdB36Length..]);
 
 		var prefixHex = Convert.ToHexStringLower(Encoding.UTF8.GetBytes(prefix));
 		var uniqueIdHex = Convert.ToHexStringLower(uniqueIdBytes);
 
-		var code = $"{prefixHex}-{part1.ToString()}-{part2.ToString()}".ToUpperInvariant();
+		var code = $"{prefixHex}-{fullB36Data[..FinalPartLength]}-{fullB36Data[FinalPartLength..]}".ToUpperInvariant();
 		var networkName = string.Format(NetworkNameFormat, prefix, uniqueIdHex);
 		var networkSecret = Convert.ToHexStringLower(secretBytes);
 
 		return new(code, networkName, networkSecret, hostPort, localPort);
+	}
+
+	static private void PadLeft(ReadOnlySpan<char> value, Span<char> destination) {
+		destination.Fill('0');
+		value.CopyTo(destination[(destination.Length - value.Length)..]);
 	}
 
 	public static Room? Parse(string code) {
@@ -209,21 +213,23 @@ public partial record Room : IDisposable {
 		}
 
 		try {
-			var parts = code.Split('-');
-			if (parts.Length != 3) {
-				return null;
-			}
+			var span = code.AsSpan();
+			var firstDash = span.IndexOf('-');
+			var secondDash = span[(firstDash + 1)..].IndexOf('-') + firstDash + 1;
 
-			var prefixHex = parts[0];
-			var part1 = parts[1];
-			var part2 = parts[2];
+			var prefixHex = span[..firstDash];
+			var part1 = span[(firstDash + 1)..secondDash];
+			var part2 = span[(secondDash + 1)..];
 
-			var fullB36Data = string.Concat(part1, part2);
-			var uniqueIdB36 = fullB36Data.AsSpan(0, UniqueIdB36Length);
-			var combinedB36 = fullB36Data.AsSpan(UniqueIdB36Length);
+			Span<char> fullB36Data = stackalloc char[UniqueIdB36Length + CombinedB36Length];
+			part1.CopyTo(fullB36Data);
+			part2.CopyTo(fullB36Data[part1.Length..]);
 
-			var uniqueIdBigInt = Base36Converter.ParseBase36(uniqueIdB36.ToString());
-			var combinedBigInt = Base36Converter.ParseBase36(combinedB36.ToString());
+			var uniqueIdB36 = fullB36Data[..UniqueIdB36Length];
+			var combinedB36 = fullB36Data[UniqueIdB36Length..];
+
+			var uniqueIdBigInt = Base36Converter.ParseBase36(uniqueIdB36);
+			var combinedBigInt = Base36Converter.ParseBase36(combinedB36);
 
 			var uniqueIdBytes = uniqueIdBigInt.ToByteArray(isUnsigned: true, isBigEndian: true);
 			var combinedBytes = combinedBigInt.ToByteArray(isUnsigned: true, isBigEndian: true);

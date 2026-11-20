@@ -11,14 +11,19 @@ namespace MVL.Utils.Game;
 
 [JsonConverter(typeof(GameVersionJsonConverter))]
 public readonly record struct GameVersion {
+	private const int MaxVersionParts = 32;
+
 	public GameVersion(string ShortGameVersion) {
 		if (ShortGameVersion.StartsWith('v')) {
 			ShortGameVersion = ShortGameVersion[1..];
 		}
 
 		this.ShortGameVersion = ShortGameVersion;
-		OverallVersion = SplitVersionString(ShortGameVersion)[..2].Join(".");
-		ReleaseType = GetReleaseType(this.ShortGameVersion);
+
+		Span<int> parts = stackalloc int[MaxVersionParts];
+		SplitVersionString(ShortGameVersion, parts);
+		OverallVersion = $"{parts[0]}.{parts[1]}";
+		ReleaseType = ReleaseTypeFromParts(parts[3]);
 		Branch = ReleaseType == EnumGameReleaseType.Stable ? EnumGameBranch.Stable : EnumGameBranch.Unstable;
 	}
 
@@ -27,15 +32,10 @@ public readonly record struct GameVersion {
 	public string ShortGameVersion { get; }
 	public EnumGameReleaseType ReleaseType { get; }
 
-	static private readonly string[] Separators = [
-		".",
-		"-"
-	];
-
 	public static readonly Comparer<GameVersion> Comparer = Comparer<GameVersion>.Create(ComparerVersion);
 
-	public static EnumGameReleaseType GetReleaseType(string version) {
-		return SplitVersionString(version)[3] switch {
+	static private EnumGameReleaseType ReleaseTypeFromParts(int value) {
+		return value switch {
 			0 => EnumGameReleaseType.Development,
 			1 => EnumGameReleaseType.Preview,
 			2 => EnumGameReleaseType.Candidate,
@@ -44,31 +44,56 @@ public readonly record struct GameVersion {
 		};
 	}
 
-	public static int[] SplitVersionString(string version) {
-		var num = version.IndexOf('-');
-		var text = num < 1 ? version : version[..num];
-		if (text.Count(t => t == '.') == 1) {
-			var str = text + ".0";
-			version = num < 1 ? str : string.Concat(str, version.AsSpan(num));
-		}
+	public static EnumGameReleaseType GetReleaseType(string version) {
+		Span<int> parts = stackalloc int[MaxVersionParts];
+		SplitVersionString(version, parts);
+		return ReleaseTypeFromParts(parts[3]);
+	}
 
-		var array = version.Split(Separators, StringSplitOptions.None).ToList();
-		if (array.Count <= 3) {
-			array.Add("3");
-		} else {
-			array[3] = array[3] != "rc" ? array[3] != "pre" ? "0" : "1" : "2";
-		}
+	static private int SplitVersionString(ReadOnlySpan<char> version, Span<int> parts) {
+		var dash = version.IndexOf('-');
+		var hasDash = dash >= 1;
+		var head = hasDash ? version[..dash] : version;
+		var padZero = head.Count('.') == 1;
 
-		var numArray = new int[array.Count];
-		for (var index = 0; index < array.Count; ++index) {
-			if (!int.TryParse(array[index], out var result)) {
-				continue;
+		var count = 0;
+		var start = 0;
+		ReadOnlySpan<char> fourth = default;
+		for (var index = 0; index <= version.Length && count < parts.Length; index++) {
+			if (index < version.Length) {
+				var c = version[index];
+				if (c != '.' && c != '-') {
+					continue;
+				}
 			}
 
-			numArray[index] = result;
+			var token = version[start..index];
+			if (count == 3) {
+				fourth = token;
+			}
+
+			parts[count++] = int.TryParse(token, out var value) ? value : 0;
+
+			if (hasDash && index == dash && padZero) {
+				parts[count++] = 0;
+			}
+
+			start = index + 1;
 		}
 
-		return numArray;
+		if (!hasDash && padZero) {
+			parts[count++] = 0;
+		}
+
+		if (count <= 3) {
+			while (count < 4 && count < parts.Length) {
+				parts[count++] = 3;
+			}
+		} else {
+			parts[3] = fourth is "rc" ? 2 : fourth is "pre" ? 1 : 0;
+		}
+
+		return count;
 	}
 
 	public static bool IsLowerVersionThan(string version, string reference) {
@@ -76,12 +101,14 @@ public readonly record struct GameVersion {
 	}
 
 	public static bool IsNewerVersionThan(string version, string reference) {
-		var numArray1 = SplitVersionString(reference);
-		var numArray2 = SplitVersionString(version);
+		Span<int> referenceParts = stackalloc int[MaxVersionParts];
+		Span<int> versionParts = stackalloc int[MaxVersionParts];
+		var referenceCount = SplitVersionString(reference, referenceParts);
+		var versionCount = SplitVersionString(version, versionParts);
 		for (var index = 0;
-			index < numArray1.Length && index < numArray2.Length && numArray1[index] <= numArray2[index];
+			index < referenceCount && index < versionCount && referenceParts[index] <= versionParts[index];
 			++index) {
-			if (numArray1[index] < numArray2[index]) {
+			if (referenceParts[index] < versionParts[index]) {
 				return true;
 			}
 		}
@@ -90,14 +117,16 @@ public readonly record struct GameVersion {
 	}
 
 	public static int ComparerVersion(GameVersion version, GameVersion reference) {
-		var numArray1 = SplitVersionString(reference.ShortGameVersion);
-		var numArray2 = SplitVersionString(version.ShortGameVersion);
-		for (var index = 0; index < numArray1.Length; ++index) {
-			if (index >= numArray2.Length || numArray1[index] > numArray2[index]) {
+		Span<int> referenceParts = stackalloc int[MaxVersionParts];
+		Span<int> versionParts = stackalloc int[MaxVersionParts];
+		var referenceCount = SplitVersionString(reference.ShortGameVersion, referenceParts);
+		var versionCount = SplitVersionString(version.ShortGameVersion, versionParts);
+		for (var index = 0; index < referenceCount; ++index) {
+			if (index >= versionCount || referenceParts[index] > versionParts[index]) {
 				return -1;
 			}
 
-			if (numArray1[index] < numArray2[index]) {
+			if (referenceParts[index] < versionParts[index]) {
 				return 1;
 			}
 		}

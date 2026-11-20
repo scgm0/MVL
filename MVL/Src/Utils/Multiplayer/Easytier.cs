@@ -163,36 +163,32 @@ public class EasyTier : IDisposable {
 		return output;
 	}
 
-	public static async Task<string?> GetCoreVersion() {
-		Log.Debug("获取EasyTier Core版本");
-		if (!File.Exists(CorePath)) {
-			Log.Warn($"EasyTier Core不存在: {CorePath}");
-			return null;
-		}
-
-		try {
-			var output = await RunCli(["-V"], true, CorePath);
-			var version = output.Split(' ');
-			return version[0].Equals("easytier-core", StringComparison.OrdinalIgnoreCase) ? version[1].Trim() : null;
-		} catch (Exception ex) {
-			Log.Error("获取EasyTier Core版本失败", ex);
-			return null;
-		}
+	public static Task<string?> GetCoreVersion() {
+		return GetVersion(CorePath, "easytier-core", "EasyTier Core");
 	}
 
-	public static async Task<string?> GetCliVersion() {
-		Log.Debug("获取EasyTier CLI版本");
-		if (!File.Exists(CliPath)) {
-			Log.Warn($"EasyTier CLI不存在: {CliPath}");
+	public static Task<string?> GetCliVersion() {
+		return GetVersion(CliPath, "easytier-cli", "EasyTier CLI");
+	}
+
+	static private async Task<string?> GetVersion(string path, string executableName, string displayName) {
+		Log.Debug($"获取{displayName}版本");
+		if (!File.Exists(path)) {
+			Log.Warn($"{displayName}不存在: {path}");
 			return null;
 		}
 
 		try {
-			var output = await RunCli(["-V"], true, CliPath);
-			var version = output.Split(' ');
-			return version[0].Equals("easytier-cli", StringComparison.OrdinalIgnoreCase) ? version[1].Trim() : null;
+			var output = await RunCli(["-V"], true, path);
+			var span = output.AsSpan().Trim();
+			var space = span.IndexOf(' ');
+			if (space < 0 || !span[..space].Equals(executableName, StringComparison.OrdinalIgnoreCase)) {
+				return null;
+			}
+
+			return span[(space + 1)..].Trim().ToString();
 		} catch (Exception ex) {
-			Log.Error("获取EasyTier CLI版本失败", ex);
+			Log.Error($"获取{displayName}版本失败", ex);
 			return null;
 		}
 	}

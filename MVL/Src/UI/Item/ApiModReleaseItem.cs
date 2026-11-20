@@ -139,22 +139,23 @@ public partial class ApiModReleaseItem : PanelContainer {
 			child.QueueFree();
 		}
 
+		var gameVersion = ModpackConfig?.GameVersion;
+
 		foreach (var tag in ApiModRelease.Value.Tags.Reverse()) {
 			var label = new Label { Text = tag };
 			label.Modulate = Colors.DarkRed;
 			label.ThemeTypeVariation = "ModReleaseTag";
 			_tagsContainer!.AddChild(label);
 
-			var gameVersion = ModpackConfig?.GameVersion;
 			if (gameVersion != null) {
-				if (GameVersion.ComparerVersion(gameVersion.Value, new(tag)) == 0) {
+				var comparison = GameVersion.ComparerVersion(gameVersion.Value, new(tag));
+				if (comparison == 0) {
 					_downloadButton.Modulate = Colors.Green;
 					_downloadButton.TooltipText = "兼容的游戏版本包含整合包游戏版本，能够安全使用";
 					_checkBox!.Modulate = Colors.Green;
 					_checkBox.TooltipText = "兼容的游戏版本包含整合包游戏版本，能够安全使用";
 					label.Modulate = Colors.Green;
-				} else if (GameVersion.ComparerVersion(gameVersion.Value, new(tag)) > 0 ||
-					GameVersion.ComparerVersion(gameVersion.Value, new(tag)) > 0) {
+				} else if (comparison > 0) {
 					label.Modulate = Colors.DarkSeaGreen;
 					if (_downloadButton.Modulate != Colors.DarkRed) {
 						continue;
