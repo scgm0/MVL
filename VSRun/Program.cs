@@ -59,10 +59,11 @@ public static class Program {
 
 	public static void InitData() {
 		GamePaths.EnsurePathsExist();
-		var type = typeof(ClientSettings);
-		var didDeserialize = type.GetMethod("DidDeserialize", BindingFlags.NonPublic | BindingFlags.Instance)!;
-		didDeserialize.Invoke(ClientSettings.Inst, null);
+		DidDeserialize(ClientSettings.Inst);
 	}
+
+	[UnsafeAccessor(UnsafeAccessorKind.Method, Name = "DidDeserialize")]
+	static extern void DidDeserialize(ClientSettings inst);
 
 	static private void ApplyAccountAndPatches() {
 		Harmony.PatchCategory(typeof(Program).Assembly, "ServerSystemLoadConfig");
@@ -109,12 +110,16 @@ public static class Program {
 		}
 	}
 
+	[UnsafeAccessor(UnsafeAccessorKind.StaticField, Name = "state")]
+	static extern ref Dictionary<MethodBase, byte[]>? HarmonySharedState(
+		[UnsafeAccessorType("HarmonyLib.HarmonySharedState, 0Harmony")] object? _);
+
 	public static void StartGame(string[] args) {
-		var harmonyAssembly = typeof(Harmony).Assembly;
-		var harmonySharedStateType = harmonyAssembly.GetType("HarmonyLib.HarmonySharedState");
-		var stateFieldInfo = harmonySharedStateType?.GetField("state", BindingFlags.Static | BindingFlags.NonPublic);
-		var stateInstance = stateFieldInfo?.GetValue(null) as Dictionary<MethodBase, byte[]>;
-		stateInstance?.Clear();
+		try {
+			HarmonySharedState(null)?.Clear();
+		} catch (Exception e) {
+			Console.Error.WriteLine("VSRun: harmony shared state reset failed: " + e.Message);
+		}
 
 		var assembly = Assembly.LoadFrom(Path.Combine(Config.VintageStoryPath, Config.AssemblyPath));
 		var assemblyName = assembly.GetName().Name;
@@ -172,13 +177,14 @@ public static class Program {
 		try {
 			var executable = Path.Combine(gameDirectory,
 				RuntimeInformation.IsOSPlatform(OSPlatform.Windows) ? "Vintagestory.exe" : "Vintagestory");
-			typeof(Environment)
-				.GetField("s_processPath", BindingFlags.Static | BindingFlags.NonPublic)
-				?.SetValue(null, executable);
+			ProcessPath(null) = executable;
 		} catch (Exception e) {
 			Console.Error.WriteLine("VSRun: process path override failed: " + e.Message);
 		}
 	}
+
+	[UnsafeAccessor(UnsafeAccessorKind.StaticField, Name = "s_processPath")]
+	static extern ref string? ProcessPath([UnsafeAccessorType("System.Environment")] object? _);
 
 	static private string GenerateSha256Uid(string input) {
 		var inputBytes = Encoding.UTF8.GetBytes(input);
