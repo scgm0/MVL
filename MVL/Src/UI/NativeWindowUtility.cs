@@ -10,7 +10,6 @@ namespace MVL.UI;
 public partial class NativeWindowUtility : Control {
 	static private readonly TimeSpan DoubleClickInterval = TimeSpan.FromMilliseconds(300);
 	private DisplayServer.WindowResizeEdge _windowEdge;
-	private bool _isResizable;
 	private bool _pressed;
 	private long _pressedLastTime;
 
@@ -25,9 +24,9 @@ public partial class NativeWindowUtility : Control {
 
 	[Export]
 	public bool IsResizable {
-		get => _isResizable;
+		get => field;
 		set {
-			_isResizable = value;
+			field = value;
 			WindowEdge = _windowEdge;
 		}
 	}

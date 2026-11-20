@@ -63,10 +63,7 @@
     </ItemGroup>
 
     <Target Name="PreBuild" BeforeTargets="Build">
-        <ItemGroup>
-            <FilesToDelete Include="Misc/VSRun/**/*" />
-        </ItemGroup>
-        <Delete Files="@(FilesToDelete)" />
+        <RemoveDir Directories="Misc/VSRun" />
 
         <Exec Command="dotnet build &quot;../VSRun/VSRun.csproj&quot; /p:Configuration=Release /p:Platform=$(Platform)" />
 
@@ -81,7 +78,7 @@
             <FilesToCopy Include="$(_VSRunOutputPath)/*.pdb" />
         </ItemGroup>
 
-        <Copy SourceFiles="@(FilesToCopy)" DestinationFolder="Misc/VSRun/%(RecursiveDir)" />
+        <Copy SourceFiles="@(FilesToCopy)" DestinationFolder="Misc/VSRun" />
     </Target>
 
     <Target Name="SetBuildInfoProperties" BeforeTargets="GenerateMSBuildEditorConfigFileShouldRun">

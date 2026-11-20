@@ -7,19 +7,34 @@ using System.Net;
 using System.Net.Sockets;
 using System.Numerics;
 using System.Runtime.InteropServices;
+using System.Runtime.Versioning;
 using System.Security.Cryptography;
 using System.Threading.Tasks;
 using CSemVer;
 using Flurl.Http;
 using Godot;
+using Mono.Cecil;
 using Nerdbank.MessagePack;
 using FileAccess = Godot.FileAccess;
 
 namespace MVL.Utils;
 
 public static class Tools {
-	public static readonly Version VSRunTargetFramework = Version.Parse("11.0");
+	public const string VSRunDirPath = "res://Misc/VSRun";
+
 	static private readonly string[] Units = ["B", "KB", "MB", "GB", "TB", "PB", "EB"];
+
+	public static Version VSRunTargetFramework {
+		get {
+			if (field is null) {
+				var version = GetTargetFramework(VSRunDirPath.PathJoin("VSRun.dll")).Version;
+				field = version.Major > 0 ? version : new(System.Environment.Version.Major, System.Environment.Version.Minor);
+			}
+
+			return field;
+		}
+	}
+
 	public static ulong MainThreadId { get; } = OS.GetMainThreadId();
 	public static SceneTree SceneTree { get; } = (SceneTree)Engine.GetMainLoop();
 	public static MessagePackSerializer PackSerializer { get; } = new();
@@ -79,6 +94,107 @@ public static class Tools {
 		}
 
 		return value - Math.Floor(value);
+	}
+
+	public static async Task<(string? FrameworkName, Version Version)> GetTargetFrameworkAsync(string assemblyPath) {
+		return await Task.Run(() => GetTargetFramework(assemblyPath));
+	}
+
+	public static (string? FrameworkName, Version Version) GetTargetFramework(string assemblyPath) {
+		try {
+			if (assemblyPath.StartsWith("res://", StringComparison.Ordinal) ||
+				assemblyPath.StartsWith("user://", StringComparison.Ordinal)) {
+				using var file = FileAccess.Open(assemblyPath, FileAccess.ModeFlags.Read);
+				if (file is null) {
+					Log.Error($"无法打开 {assemblyPath}");
+					return (null, new());
+				}
+
+				using var stream = new MemoryStream(file.GetBuffer((long)file.GetLength()), writable: false);
+				using var godotAssembly = AssemblyDefinition.ReadAssembly(stream);
+				return ReadTargetFramework(godotAssembly);
+			}
+
+			using var assembly = AssemblyDefinition.ReadAssembly(assemblyPath);
+			return ReadTargetFramework(assembly);
+		} catch (Exception ex) {
+			Log.Error($"无法从 {assemblyPath} 读取目标框架", ex);
+		}
+
+		return (null, new());
+	}
+
+	static private (string? FrameworkName, Version Version) ReadTargetFramework(AssemblyDefinition assembly) {
+		var targetFrameworkAttributeName = typeof(TargetFrameworkAttribute).FullName;
+
+		foreach (var attribute in assembly.CustomAttributes) {
+			if (attribute.AttributeType.FullName != targetFrameworkAttributeName) {
+				continue;
+			}
+
+			if (attribute.ConstructorArguments.Count > 0 &&
+				attribute.ConstructorArguments[0].Value is string frameworkString) {
+				return ParseTargetFrameworkInfo(frameworkString);
+			}
+
+			break;
+		}
+
+		return (null, new());
+	}
+
+	static private (string? FrameworkName, Version Version) ParseTargetFrameworkInfo(ReadOnlySpan<char> frameworkSpan) {
+		ReadOnlySpan<char> nameSpan;
+		ReadOnlySpan<char> versionSpan = [];
+
+		var commaIndex = frameworkSpan.IndexOf(',');
+		if (commaIndex != -1) {
+			nameSpan = frameworkSpan[..commaIndex];
+			versionSpan = frameworkSpan[(commaIndex + 1)..];
+		} else {
+			nameSpan = frameworkSpan;
+		}
+
+		var finalName = ParseFrameworkName(nameSpan);
+		var finalVersion = new Version();
+
+		if (versionSpan.IsEmpty) {
+			return (finalName.ToString(), finalVersion);
+		}
+
+		const string versionPrefix = "Version=";
+		var versionPart = versionSpan.Trim();
+		var prefixIndex = versionPart.IndexOf(versionPrefix, StringComparison.OrdinalIgnoreCase);
+
+		if (prefixIndex == -1) {
+			return (finalName.ToString(), finalVersion);
+		}
+
+		var versionValueSpan = versionPart[(prefixIndex + versionPrefix.Length)..];
+		if (versionValueSpan.Length > 0 && (versionValueSpan[0] == 'v' || versionValueSpan[0] == 'V')) {
+			versionValueSpan = versionValueSpan[1..];
+		}
+
+		if (Version.TryParse(versionValueSpan, out finalVersion)) {
+			return (finalName.ToString(), finalVersion);
+		}
+
+		Log.Error($"无法从 {versionSpan} 解析版本");
+		return (finalName.ToString(), new());
+	}
+
+	static private ReadOnlySpan<char> ParseFrameworkName(ReadOnlySpan<char> nameSpan) {
+		var processedSpan = nameSpan.Trim();
+
+		if (!processedSpan.IsEmpty && processedSpan[0] == '.') {
+			processedSpan = processedSpan[1..];
+		}
+
+		if (processedSpan.EndsWith("App", StringComparison.Ordinal)) {
+			processedSpan = processedSpan[..^3];
+		}
+
+		return processedSpan;
 	}
 
 	public static async Task<bool> HasRequiredDotNetVersionInstalledAsync(Version targetFrameworkVersion) {

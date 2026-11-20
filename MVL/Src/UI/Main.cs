@@ -559,7 +559,7 @@ public partial class Main : NativeWindowUtility {
 	public static DirAccess CopyVsRun() {
 		var tmp = DirAccess.CreateTemp("VSRun");
 		var tmpRunPath = tmp.GetCurrentDir();
-		var vsRunPath = $"res://Misc/VSRun/net{Tools.VSRunTargetFramework}";
+		var vsRunPath = Tools.VSRunDirPath;
 		foreach (var file in DirAccess.GetFilesAt(vsRunPath)) {
 			var fromPath = vsRunPath.PathJoin(file);
 			tmp.Copy(fromPath, tmpRunPath.PathJoin(file).NormalizePath());
@@ -661,7 +661,7 @@ public partial class Main : NativeWindowUtility {
 			return;
 		}
 
-		var gameDotnetVersion = await releaseInfo.GetTargetFrameworkAsync();
+		var gameDotnetVersion = await Tools.GetTargetFrameworkAsync(Path.Combine(releaseInfo.Path, "VintagestoryAPI.dll"));
 		Log.Info($"游戏目标框架: {gameDotnetVersion.Version} VSRun目标框架: {Tools.VSRunTargetFramework}");
 		var targetFramework = gameDotnetVersion.Version >= Tools.VSRunTargetFramework
 			? gameDotnetVersion.Version
