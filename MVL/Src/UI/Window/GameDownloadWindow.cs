@@ -516,7 +516,7 @@ public partial class GameDownloadWindow : BaseWindow {
 
 		cancellationToken.ThrowIfCancellationRequested();
 		if (totalFiles == 0) {
-			throw new InvalidOperationException("未找到可提取文件");
+			throw new InvalidOperationException(TranslationServer.Translate("未找到可提取文件"));
 		}
 
 		var extractedFiles = 0;
@@ -604,7 +604,7 @@ public partial class GameDownloadWindow : BaseWindow {
 
 		cancellationToken.ThrowIfCancellationRequested();
 		if (totalFiles == 0) {
-			throw new InvalidOperationException("未找到可提取文件");
+			throw new InvalidOperationException(TranslationServer.Translate("未找到可提取文件"));
 		}
 
 		var opts = new ExtractionOptions {

@@ -632,20 +632,311 @@ msgstr "Memindahkan..."
 msgid "正在扫描文件总数: {0}"
 msgstr "Memindai jumlah total berkas: {0}"
 
-msgid "InnoSetup版本不受支持"
-msgstr "Versi InnoSetup tidak didukung"
-
-msgid "安装文件已损坏或不兼容"
-msgstr "Berkas instalasi rusak atau tidak kompatibel"
-
-msgid "innounp发生内部或未知错误"
-msgstr "Terjadi kesalahan internal atau tidak diketahui di innounp"
-
-msgid "innounp异常退出，状态码: {0}"
-msgstr "innounp keluar secara tidak normal, kode status: {0}"
-
 msgid "提取游戏失败: {0}"
 msgstr "Gagal mengekstrak game: {0}"
 
 msgid "[b]{0}[/b] 的账号信息已失效，需要重新登录\n是否尝试强制启动游戏？"
+msgstr ""
+
+msgid "无可下载文件"
+msgstr ""
+
+msgid "下载失败"
+msgstr ""
+
+msgid "稳定版"
+msgstr ""
+
+msgid "测试版"
+msgstr ""
+
+msgid "删除模组失败: {0}"
+msgstr ""
+
+msgid "名称可能引起冲突"
+msgstr ""
+
+msgid "加密节点"
+msgstr ""
+
+msgid "无备注"
+msgstr ""
+
+msgid "确定要删除节点 {0} 吗？"
+msgstr ""
+
+msgid "获取模组列表失败，请检查筛选条件或网络"
+msgstr ""
+
+msgid "获取在线信息时发生错误"
+msgstr ""
+
+msgid "版本信息"
+msgstr ""
+
+msgid "正在检查 EasyTier 环境..."
+msgstr ""
+
+msgid "正在检查..."
+msgstr ""
+
+msgid "正在检查环境..."
+msgstr ""
+
+msgid "EasyTier 未安装，请下载后使用联机功能"
+msgstr ""
+
+msgid "下载 EasyTier"
+msgstr ""
+
+msgid "正在下载 EasyTier..."
+msgstr ""
+
+msgid "取消下载"
+msgstr ""
+
+msgid "正在下载..."
+msgstr ""
+
+msgid "创建房间"
+msgstr ""
+
+msgid "输入房间码或创建新房间"
+msgstr ""
+
+msgid "已就绪"
+msgstr ""
+
+msgid "使用多人联机前请先登录账号"
+msgstr ""
+
+msgid "返回"
+msgstr ""
+
+msgid "确认创建"
+msgstr ""
+
+msgid "请输入局域网端口并点击确认创建"
+msgstr ""
+
+msgid "等待创建"
+msgstr ""
+
+msgid "正在连接..."
+msgstr ""
+
+msgid "连接中..."
+msgstr ""
+
+msgid "正在连接中继网络"
+msgstr ""
+
+msgid "关闭房间"
+msgstr ""
+
+msgid "退出房间"
+msgstr ""
+
+msgid "已连接"
+msgstr ""
+
+msgid "连接失败"
+msgstr ""
+
+msgid "当前在线玩家: {0}"
+msgstr ""
+
+msgid "端口检测通过，正在创建房间..."
+msgstr ""
+
+msgid "端口无法连接，请先在游戏内开启局域网联机"
+msgstr ""
+
+msgid "请输入有效的房间码"
+msgstr ""
+
+msgid "房间码解析失败"
+msgstr ""
+
+msgid "正在连接 EasyTier 中继网络..."
+msgstr ""
+
+msgid "已连接中继网络，正在建立房间..."
+msgstr ""
+
+msgid "正在加入房间..."
+msgstr ""
+
+msgid "房间已创建，请复制房间码给其他人用于加入房间"
+msgstr ""
+
+msgid "已加入房间，请在游戏中添加服务器:"
+msgstr ""
+
+msgid "点击复制"
+msgstr ""
+
+msgid "主机已关闭房间"
+msgstr ""
+
+msgid "未找到适用于当前系统的 EasyTier 版本"
+msgstr ""
+
+msgid "正在解压 EasyTier..."
+msgstr ""
+
+msgid "解压中..."
+msgstr ""
+
+msgid "下载已取消"
+msgstr ""
+
+msgid "下载失败，请检查网络连接"
+msgstr ""
+
+msgid "节点数量: {0}\n自定义节点: {1}, 自定义订阅: {2}, 基础订阅: {3}"
+msgstr ""
+
+msgid "EasyTier 启动异常"
+msgstr ""
+
+msgid "EasyTier 启动失败"
+msgstr ""
+
+msgid "端口转发失败"
+msgstr ""
+
+msgid "连接主机失败"
+msgstr ""
+
+msgid "未找到主机，请确保拥有相同的可用共享节点"
+msgstr ""
+
+msgid "连接主机异常"
+msgstr ""
+
+msgid "主机连接超时"
+msgstr ""
+
+msgid "刷新订阅"
+msgstr ""
+
+msgid "删除订阅"
+msgstr ""
+
+msgid "添加节点"
+msgstr ""
+
+msgid "确定要删除订阅 {0} 吗？"
+msgstr ""
+
+msgid "获取订阅节点中..."
+msgstr ""
+
+msgid "获取订阅节点失败"
+msgstr ""
+
+msgid "暂无可用节点"
+msgstr ""
+
+msgid "节点地址不可为空"
+msgstr ""
+
+msgid "节点地址格式不正确"
+msgstr ""
+
+msgid "节点地址已存在"
+msgstr ""
+
+msgid "下载失败，请重试"
+msgstr ""
+
+msgid "校验中..."
+msgstr ""
+
+msgid "校验MD5中..."
+msgstr ""
+
+msgid "安装包校验失败，请重新下载"
+msgstr ""
+
+msgid "未找到可提取文件"
+msgstr ""
+
+msgid "确定吗？"
+msgstr ""
+
+msgid "已下载 {0}%  {1} {2}/s"
+msgstr ""
+
+msgid "无法自动将“{0}”转换为模组ID，因其以数字开头，不符合命名规范"
+msgstr ""
+
+msgid "联机"
+msgstr ""
+
+msgid "测\n试\n版"
+msgstr ""
+
+msgid "房主"
+msgstr ""
+
+msgid "联机操作"
+msgstr ""
+
+msgid "加入房间"
+msgstr ""
+
+msgid "局域网端口:"
+msgstr ""
+
+msgid "在此输入房间码"
+msgstr ""
+
+msgid "返回 / 关闭"
+msgstr ""
+
+msgid "本地文件夹"
+msgstr ""
+
+msgid "EasyTier 官网"
+msgstr ""
+
+msgid "共享节点"
+msgstr ""
+
+msgid "自定义订阅链接"
+msgstr ""
+
+msgid "添加订阅"
+msgstr ""
+
+msgid "自定义节点"
+msgstr ""
+
+msgid "房间信息"
+msgstr ""
+
+msgid "当前在线玩家: 0 人"
+msgstr ""
+
+msgid "点击获取"
+msgstr ""
+
+msgid "节点订阅"
+msgstr ""
+
+msgid "添加自定义节点"
+msgstr ""
+
+msgid "节点地址"
+msgstr ""
+
+msgid "节点名称（可选）"
+msgstr ""
+
+msgid "节点备注（可选）"
+msgstr ""
+
+msgid "编解码器"
 msgstr ""

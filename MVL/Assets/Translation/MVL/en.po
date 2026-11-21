@@ -625,20 +625,311 @@ msgstr "Moving..."
 msgid "正在扫描文件总数: {0}"
 msgstr "Scanning total number of files: {0}"
 
-msgid "InnoSetup版本不受支持"
-msgstr "InnoSetup version is not supported"
-
-msgid "安装文件已损坏或不兼容"
-msgstr "The installation file is corrupt or incompatible"
-
-msgid "innounp发生内部或未知错误"
-msgstr "Internal or unknown error occurred in innounp"
-
-msgid "innounp异常退出，状态码: {0}"
-msgstr "innounp exited abnormally, status code: {0}"
-
 msgid "提取游戏失败: {0}"
 msgstr "Failed to extract game: {0}"
 
 msgid "[b]{0}[/b] 的账号信息已失效，需要重新登录\n是否尝试强制启动游戏？"
 msgstr "The account information for [b]{0}[/b] has expired and re-login is required.\nWould you like to attempt to force-start the game?"
+
+msgid "无可下载文件"
+msgstr "No downloadable files"
+
+msgid "下载失败"
+msgstr "Download failed"
+
+msgid "稳定版"
+msgstr "Stable"
+
+msgid "测试版"
+msgstr "Unstable"
+
+msgid "删除模组失败: {0}"
+msgstr "Failed to delete mod: {0}"
+
+msgid "名称可能引起冲突"
+msgstr "The name may cause conflicts"
+
+msgid "加密节点"
+msgstr "Encrypted node"
+
+msgid "无备注"
+msgstr "No note"
+
+msgid "确定要删除节点 {0} 吗？"
+msgstr "Are you sure you want to delete node {0}?"
+
+msgid "获取模组列表失败，请检查筛选条件或网络"
+msgstr "Failed to get the mod list. Please check your filters or network connection"
+
+msgid "获取在线信息时发生错误"
+msgstr "An error occurred while fetching online information"
+
+msgid "版本信息"
+msgstr "Version info"
+
+msgid "正在检查 EasyTier 环境..."
+msgstr "Checking EasyTier environment..."
+
+msgid "正在检查..."
+msgstr "Checking..."
+
+msgid "正在检查环境..."
+msgstr "Checking environment..."
+
+msgid "EasyTier 未安装，请下载后使用联机功能"
+msgstr "EasyTier is not installed. Download it to use multiplayer"
+
+msgid "下载 EasyTier"
+msgstr "Download EasyTier"
+
+msgid "正在下载 EasyTier..."
+msgstr "Downloading EasyTier..."
+
+msgid "取消下载"
+msgstr "Cancel download"
+
+msgid "正在下载..."
+msgstr "Downloading..."
+
+msgid "创建房间"
+msgstr "Create room"
+
+msgid "输入房间码或创建新房间"
+msgstr "Enter a room code or create a new room"
+
+msgid "已就绪"
+msgstr "Ready"
+
+msgid "使用多人联机前请先登录账号"
+msgstr "Please log in before using multiplayer"
+
+msgid "返回"
+msgstr "Back"
+
+msgid "确认创建"
+msgstr "Confirm"
+
+msgid "请输入局域网端口并点击确认创建"
+msgstr "Enter a LAN port and click Confirm"
+
+msgid "等待创建"
+msgstr "Waiting to create"
+
+msgid "正在连接..."
+msgstr "Connecting..."
+
+msgid "连接中..."
+msgstr "Connecting..."
+
+msgid "正在连接中继网络"
+msgstr "Connecting to relay network"
+
+msgid "关闭房间"
+msgstr "Close room"
+
+msgid "退出房间"
+msgstr "Leave room"
+
+msgid "已连接"
+msgstr "Connected"
+
+msgid "连接失败"
+msgstr "Connection failed"
+
+msgid "当前在线玩家: {0}"
+msgstr "Online players: {0}"
+
+msgid "端口检测通过，正在创建房间..."
+msgstr "Port check passed, creating room..."
+
+msgid "端口无法连接，请先在游戏内开启局域网联机"
+msgstr "Port unreachable. Please enable LAN multiplayer in the game first"
+
+msgid "请输入有效的房间码"
+msgstr "Please enter a valid room code"
+
+msgid "房间码解析失败"
+msgstr "Failed to parse room code"
+
+msgid "正在连接 EasyTier 中继网络..."
+msgstr "Connecting to EasyTier relay network..."
+
+msgid "已连接中继网络，正在建立房间..."
+msgstr "Connected to relay network, establishing room..."
+
+msgid "正在加入房间..."
+msgstr "Joining room..."
+
+msgid "房间已创建，请复制房间码给其他人用于加入房间"
+msgstr "Room created. Copy the room code for others to join"
+
+msgid "已加入房间，请在游戏中添加服务器:"
+msgstr "Joined the room. Add the server in the game:"
+
+msgid "点击复制"
+msgstr "Click to copy"
+
+msgid "主机已关闭房间"
+msgstr "The host has closed the room"
+
+msgid "未找到适用于当前系统的 EasyTier 版本"
+msgstr "No EasyTier version found for the current system"
+
+msgid "正在解压 EasyTier..."
+msgstr "Extracting EasyTier..."
+
+msgid "解压中..."
+msgstr "Extracting..."
+
+msgid "下载已取消"
+msgstr "Download cancelled"
+
+msgid "下载失败，请检查网络连接"
+msgstr "Download failed. Please check your network connection"
+
+msgid "节点数量: {0}\n自定义节点: {1}, 自定义订阅: {2}, 基础订阅: {3}"
+msgstr "Node count: {0}\nCustom nodes: {1}, Custom subscriptions: {2}, Basic subscriptions: {3}"
+
+msgid "EasyTier 启动异常"
+msgstr "EasyTier startup error"
+
+msgid "EasyTier 启动失败"
+msgstr "Failed to start EasyTier"
+
+msgid "端口转发失败"
+msgstr "Port forwarding failed"
+
+msgid "连接主机失败"
+msgstr "Failed to connect to host"
+
+msgid "未找到主机，请确保拥有相同的可用共享节点"
+msgstr "Host not found. Make sure you have the same available shared node"
+
+msgid "连接主机异常"
+msgstr "Error while connecting to host"
+
+msgid "主机连接超时"
+msgstr "Host connection timed out"
+
+msgid "刷新订阅"
+msgstr "Refresh subscription"
+
+msgid "删除订阅"
+msgstr "Delete subscription"
+
+msgid "添加节点"
+msgstr "Add node"
+
+msgid "确定要删除订阅 {0} 吗？"
+msgstr "Are you sure you want to delete subscription {0}?"
+
+msgid "获取订阅节点中..."
+msgstr "Fetching subscription nodes..."
+
+msgid "获取订阅节点失败"
+msgstr "Failed to fetch subscription nodes"
+
+msgid "暂无可用节点"
+msgstr "No nodes available"
+
+msgid "节点地址不可为空"
+msgstr "Node address cannot be empty"
+
+msgid "节点地址格式不正确"
+msgstr "Invalid node address format"
+
+msgid "节点地址已存在"
+msgstr "Node address already exists"
+
+msgid "下载失败，请重试"
+msgstr "Download failed, please try again"
+
+msgid "校验中..."
+msgstr "Verifying..."
+
+msgid "校验MD5中..."
+msgstr "Verifying MD5..."
+
+msgid "安装包校验失败，请重新下载"
+msgstr "Installer verification failed. Please download it again"
+
+msgid "未找到可提取文件"
+msgstr "No extractable files found"
+
+msgid "确定吗？"
+msgstr "Are you sure?"
+
+msgid "已下载 {0}%  {1} {2}/s"
+msgstr "Downloaded {0}%  {1} {2}/s"
+
+msgid "无法自动将“{0}”转换为模组ID，因其以数字开头，不符合命名规范"
+msgstr "Cannot automatically convert \"{0}\" to a mod ID because it starts with a digit, which does not follow the naming convention"
+
+msgid "联机"
+msgstr "Multiplayer"
+
+msgid "测\n试\n版"
+msgstr "Unstable"
+
+msgid "房主"
+msgstr "Host"
+
+msgid "联机操作"
+msgstr "Multiplayer"
+
+msgid "加入房间"
+msgstr "Join room"
+
+msgid "局域网端口:"
+msgstr "LAN port:"
+
+msgid "在此输入房间码"
+msgstr "Enter room code here"
+
+msgid "返回 / 关闭"
+msgstr "Back / Close"
+
+msgid "本地文件夹"
+msgstr "Local folder"
+
+msgid "EasyTier 官网"
+msgstr "EasyTier website"
+
+msgid "共享节点"
+msgstr "Shared nodes"
+
+msgid "自定义订阅链接"
+msgstr "Custom subscription URL"
+
+msgid "添加订阅"
+msgstr "Add subscription"
+
+msgid "自定义节点"
+msgstr "Custom nodes"
+
+msgid "房间信息"
+msgstr "Room info"
+
+msgid "当前在线玩家: 0 人"
+msgstr "Online players: 0"
+
+msgid "点击获取"
+msgstr "Click to get"
+
+msgid "节点订阅"
+msgstr "Node subscription"
+
+msgid "添加自定义节点"
+msgstr "Add custom node"
+
+msgid "节点地址"
+msgstr "Node address"
+
+msgid "节点名称（可选）"
+msgstr "Node name (optional)"
+
+msgid "节点备注（可选）"
+msgstr "Node note (optional)"
+
+msgid "编解码器"
+msgstr "Codec"

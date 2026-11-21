@@ -731,7 +731,7 @@ public partial class MultiplayerPage : MenuPage {
 			downloader.ProgressChanged += progress => {
 				Dispatcher.SynchronizationContext.Post(_ => {
 						var (fmtSpeed, unit) = Tools.GetSizeAndUnit((ulong)progress.SpeedBytesPerSecond);
-						_statusDetailLabel!.Text = $"已下载 {progress.Percentage:F1}%  {fmtSpeed:F2} {unit}/s";
+						_statusDetailLabel!.Text = string.Format(Tr("已下载 {0}%  {1} {2}/s"), $"{progress.Percentage:F1}", $"{fmtSpeed:F2}", unit);
 					},
 					null);
 			};

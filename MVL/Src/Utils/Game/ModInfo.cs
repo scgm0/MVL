@@ -124,7 +124,7 @@ public record ModInfo : IComparable<ModInfo> {
 
 			if (flag && index == 0) {
 				throw new ArgumentException(
-					$"无法自动将“{name}”转换为模组ID，因其以数字开头，不符合命名规范",
+					string.Format(TranslationServer.Translate("无法自动将“{0}”转换为模组ID，因其以数字开头，不符合命名规范"), name),
 					nameof(name));
 			}
 		}

@@ -52,11 +52,11 @@ public partial class InstalledGameItem : MarginContainer {
 		_gameVersion.Text = GameVersion.ShortGameVersion;
 		switch (GameVersion.Branch) {
 			case EnumGameBranch.Stable:
-				_gameVersion.TooltipText = "稳定版";
+				_gameVersion.TooltipText = Tr("稳定版");
 				_gameVersion.AddThemeColorOverride("font_color", _stableColor);
 				break;
 			case EnumGameBranch.Unstable:
-				_gameVersion.TooltipText = "测试版";
+				_gameVersion.TooltipText = Tr("测试版");
 				_gameVersion.AddThemeColorOverride("font_color", _unStableColor);
 				break;
 			default: throw new ArgumentOutOfRangeException();
