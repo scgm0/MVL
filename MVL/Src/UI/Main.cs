@@ -766,7 +766,7 @@ public partial class Main : NativeWindowUtility {
 				assembleName = "Vintagestory.dll";
 			}
 
-			var mainAssembly = assembleName.Replace("%game_path%", gamePath).Replace("%data_path", dataPath);
+			var mainAssembly = assembleName.Replace("%game_path%", gamePath).Replace("%data_path%", dataPath);
 			var vsRunHook = Path.Combine(tmp.GetCurrentDir(), "VSRun.dll").NormalizePath();
 			command = command.Replace("%game_path%", gamePath)
 				.Replace("%tmp_path%", tmp.GetCurrentDir())
