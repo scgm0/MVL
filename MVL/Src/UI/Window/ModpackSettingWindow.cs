@@ -200,11 +200,9 @@ public partial class ModpackSettingWindow : BaseWindow {
 		}
 
 		var ls = ModpackConfig!.ModpackName;
-		var old = ls.Value;
 		ls = ls with { Value = _modpackNamEdit!.Text };
 		ModpackConfig!.ModpackName = ls;
-		ModpackConfig.RemoveLocalizationTranslations(old);
-		ModpackConfig.AddLocalizationTranslations(ls);
+		ModpackConfig.NotifyLocalizedTextUpdated();
 		ModpackConfig.Save();
 
 		foreach (var node in _modpackNameLocalizedContainer!.GetChildren()) {
@@ -217,10 +215,10 @@ public partial class ModpackSettingWindow : BaseWindow {
 		var ls = ModpackConfig!.ModpackName;
 		var language = _addModpackNameLocalizedItem!.Language;
 		var localizedName = _addModpackNameLocalizedItem.LocalizedName;
-		var localizations = ls.Localizations!;
+		var localizations = ls.Localizations ??= [];
 		localizations[language] = localizedName;
 		ModpackConfig!.ModpackName = ls;
-		ModpackConfig.AddLocalizationTranslation(ls.Value, localizedName, language);
+		ModpackConfig.NotifyLocalizedTextUpdated();
 		ModpackConfig.Save();
 
 		_addModpackNameLocalizedItem.Language = string.Empty;
@@ -250,10 +248,10 @@ public partial class ModpackSettingWindow : BaseWindow {
 		var ls = ModpackConfig!.ModpackSummary;
 		var language = _addModpackSummaryLocalizedItem!.Language;
 		var localizedName = _addModpackSummaryLocalizedItem!.LocalizedName;
-		var localizations = ls.Localizations!;
+		var localizations = ls.Localizations ??= [];
 		localizations[language] = localizedName;
 		ModpackConfig!.ModpackSummary = ls;
-		ModpackConfig.AddLocalizationTranslation(ls.Value, localizedName, language);
+		ModpackConfig.NotifyLocalizedTextUpdated();
 		ModpackConfig.Save();
 
 		_addModpackSummaryLocalizedItem.Language = string.Empty;
@@ -285,11 +283,9 @@ public partial class ModpackSettingWindow : BaseWindow {
 		}
 
 		var ls = ModpackConfig!.ModpackSummary;
-		var old = ls.Value;
 		ls = ls with { Value = _modpackSummaryEdit!.Text };
 		ModpackConfig!.ModpackSummary = ls;
-		ModpackConfig.RemoveLocalizationTranslations(old);
-		ModpackConfig.AddLocalizationTranslations(ls);
+		ModpackConfig.NotifyLocalizedTextUpdated();
 		ModpackConfig.Save();
 
 		foreach (var node in _modpackSummaryLocalizedContainer!.GetChildren()) {
@@ -300,13 +296,13 @@ public partial class ModpackSettingWindow : BaseWindow {
 
 	private void OnItemOnLocalizedChanged(ModpackLocalizedItem item) {
 		item.Localizations![item.Language] = item.LocalizedName;
-		ModpackConfig!.AddLocalizationTranslation(item.Key, item.LocalizedName, item.Language);
+		ModpackConfig!.NotifyLocalizedTextUpdated();
 		ModpackConfig.Save();
 	}
 
 	private void OnItemOnRemoveLocalized(ModpackLocalizedItem item) {
 		item.Localizations!.Remove(item.Language);
-		ModpackConfig!.RemoveLocalizationTranslation(item.Key, item.Language);
+		ModpackConfig!.NotifyLocalizedTextUpdated();
 		ModpackConfig.Save();
 		item.QueueFree();
 		UpdateUi();

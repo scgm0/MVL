@@ -87,6 +87,7 @@ public partial class SubscriptionPanel : FoldableContainer {
 				Icon = _reloadIcon,
 				ExpandIcon = true,
 				TooltipText = "刷新订阅",
+				AutoTranslateMode = Node.AutoTranslateModeEnum.Always,
 				Flat = true,
 				SizeFlagsHorizontal = SizeFlags.ExpandFill,
 				SizeFlagsVertical = SizeFlags.ExpandFill
@@ -100,6 +101,7 @@ public partial class SubscriptionPanel : FoldableContainer {
 					Icon = _removeIcon,
 					ExpandIcon = true,
 					TooltipText = "删除订阅",
+					AutoTranslateMode = Node.AutoTranslateModeEnum.Always,
 					Flat = true,
 					SizeFlagsHorizontal = SizeFlags.ExpandFill,
 					SizeFlagsVertical = SizeFlags.ExpandFill
@@ -112,11 +114,14 @@ public partial class SubscriptionPanel : FoldableContainer {
 
 			GetSubscription();
 		} else {
+			Title = Tr("节点订阅");
+
 			var addButton = new Button {
 				CustomMinimumSize = new(28, 28),
 				Icon = _addIcon,
 				ExpandIcon = true,
 				TooltipText = "添加节点",
+				AutoTranslateMode = Node.AutoTranslateModeEnum.Always,
 				Flat = true,
 				SizeFlagsHorizontal = SizeFlags.ExpandFill,
 				SizeFlagsVertical = SizeFlags.ExpandFill
@@ -151,6 +156,35 @@ public partial class SubscriptionPanel : FoldableContainer {
 	}
 
 	public override void _ExitTree() { NodeList!.ChildOrderChanged -= Update; }
+
+	public override void _Notification(int what) {
+		if (what != (int)NotificationTranslationChanged || !IsInstanceValid(this)) {
+			return;
+		}
+
+		if (Subscription is not null) {
+			UpdateTitle();
+		} else if (IsCustomized) {
+			Title = Tr("节点订阅");
+		}
+	}
+
+	private string GetSubscriptionTitle() {
+		var fallback = SubscriptionUrl is null ? string.Empty : GetLastValidPartSpan(SubscriptionUrl);
+		if (Subscription is null) {
+			return fallback;
+		}
+
+		var name = Subscription.Name.GetText();
+		return string.IsNullOrEmpty(name) ? fallback : name;
+	}
+
+	private void UpdateTitle() {
+		Title = GetSubscriptionTitle();
+
+		var rawName = Subscription?.Name.Value;
+		TooltipText = string.IsNullOrEmpty(rawName) ? string.Empty : rawName;
+	}
 
 	private void AddButtonOnPressed() {
 		var addSharedNodeWindow = _addSharedNodeWindowScene!.Instantiate<AddSharedNodeWindow>();
@@ -187,8 +221,12 @@ public partial class SubscriptionPanel : FoldableContainer {
 			Log.Debug($"正在获取订阅节点：{GetLastValidPartSpan(SubscriptionUrl)}");
 			await using var result = await SubscriptionUrl.GetStreamAsync();
 			Subscription = await JsonSerializer.DeserializeAsync(result, SourceGenerationContext.Default.NodeSubscription);
+			if (Subscription is null) {
+				throw new JsonException("订阅数据为空");
+			}
+
 			Log.Debug(
-				$"获取订阅节点成功：{Subscription!.Name ?? GetLastValidPartSpan(SubscriptionUrl)}，节点数量：{Subscription.Nodes.Length}");
+				$"获取订阅节点成功：{GetSubscriptionTitle()}，节点数量：{Subscription.Nodes.Length}");
 			if (!IsInstanceValid(this)) {
 				return;
 			}
@@ -196,8 +234,12 @@ public partial class SubscriptionPanel : FoldableContainer {
 			_warningButton.Text = Subscription.Nodes.Length.ToString();
 			_warningButton.Icon = _okIcon;
 			_warningButton.AddThemeColorOverride(StringNames.IconDisabledColor, Colors.MediumSeaGreen);
-			Title = Subscription.Name ?? GetLastValidPartSpan(SubscriptionUrl);
+			UpdateTitle();
 			foreach (var sharedNode in Subscription.Nodes) {
+				if (sharedNode is null) {
+					continue;
+				}
+
 				var sharedNodeItem = _sharedNodeItemScene!.Instantiate<SharedNodeItem>();
 				sharedNodeItem.SharedNode = sharedNode;
 				NodeList!.AddChild(sharedNodeItem);
@@ -205,11 +247,20 @@ public partial class SubscriptionPanel : FoldableContainer {
 
 			Update();
 		} catch (Exception e) {
+			if (!IsInstanceValid(this)) {
+				return;
+			}
+
 			_tip!.Text = "获取订阅节点失败";
 			_warningButton.Text = "0";
 			_warningButton.Icon = _errIcon;
 			_warningButton.AddThemeColorOverride(StringNames.IconDisabledColor, Colors.Red);
 			Log.Error("获取订阅节点失败", e);
+			UpdateTitle();
+		}
+
+		if (!IsInstanceValid(this)) {
+			return;
 		}
 
 		_warningButton!.Visible = true;

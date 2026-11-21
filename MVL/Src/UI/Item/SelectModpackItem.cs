@@ -35,10 +35,7 @@ public partial class SelectModpackItem : PanelContainer {
 		_selectButton.NotNull();
 		ModpackConfig.NotNull();
 
-		_modpackNameLabel.SetTranslationDomain(ModpackConfig.Path!);
-
-		_modpackNameLabel.Text = ModpackConfig.ModpackName.Value;
-		_modpackNameLabel.TooltipText = ModpackConfig.ModpackName.Value;
+		UpdateModpackName();
 
 		if (ModpackConfig.GameVersion is { } gameVersion) {
 			_releaseVersionLabel.Text = gameVersion.ShortGameVersion;
@@ -61,6 +58,20 @@ public partial class SelectModpackItem : PanelContainer {
 		_selectButton.Pressed += SelectButtonOnPressed;
 
 		_modpackIconTexture.Texture = await ModpackConfig.GetModpackIconAsync();
+	}
+
+	public override void _Notification(int what) {
+		if (what == (int)NotificationTranslationChanged && IsInstanceValid(this) && ModpackConfig is not null &&
+			_modpackNameLabel is not null) {
+			UpdateModpackName();
+		}
+	}
+
+	private void UpdateModpackName() {
+		var name = ModpackConfig!.ModpackName.GetText();
+		var rawName = ModpackConfig.ModpackName.Value;
+		_modpackNameLabel!.Text = name;
+		_modpackNameLabel.TooltipText = string.IsNullOrEmpty(rawName) ? name : rawName;
 	}
 
 	public override void _GuiInput(InputEvent @event) {

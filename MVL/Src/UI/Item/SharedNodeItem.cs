@@ -25,15 +25,37 @@ public partial class SharedNodeItem : PanelContainer {
 		_removeButton.NotNull();
 		SharedNode.NotNull();
 
-		if (string.IsNullOrEmpty(SharedNode.Name)) {
-			_name.Text = SharedNode.Codec is CodecType.None or null ? SharedNode.Address : "加密节点";
-		} else {
-			_name.Text = SharedNode.Name;
-		}
-
-		_remark.Text = string.IsNullOrEmpty(SharedNode.Remark) ? "无备注" : SharedNode.Remark;
+		UpdateText();
 		_removeButton.Visible = IsCustomized;
 		_removeButton.Pressed += RemoveButtonOnPressed;
+	}
+
+	public override void _Notification(int what) {
+		if (what != (int)NotificationTranslationChanged || !IsInstanceValid(this)) {
+			return;
+		}
+
+		if (SharedNode is null || _name is null || _remark is null) {
+			return;
+		}
+
+		UpdateText();
+	}
+
+	private void UpdateText() {
+		var name = SharedNode!.Name.GetText();
+		_name!.Text = string.IsNullOrEmpty(name)
+			? SharedNode.Codec is CodecType.None or null ? SharedNode.Address : Tr("加密节点")
+			: name;
+
+		var rawName = SharedNode.Name.Value;
+		_name.TooltipText = string.IsNullOrEmpty(rawName) ? _name.Text : rawName;
+
+		var remark = SharedNode.Remark.GetText();
+		_remark!.Text = string.IsNullOrEmpty(remark) ? Tr("无备注") : remark;
+
+		var rawRemark = SharedNode.Remark.Value;
+		_remark.TooltipText = string.IsNullOrEmpty(rawRemark) ? _remark.Text : rawRemark;
 	}
 
 	private void RemoveButtonOnPressed() {

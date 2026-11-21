@@ -169,8 +169,7 @@ public partial class SelectModpackButton : Button {
 			}
 		}
 
-		_name!.SetTranslationDomain(ModpackConfig.Path!);
-		_name.Text = ModpackConfig.ModpackName.Value;
+		_name!.Text = ModpackConfig.ModpackName.GetText();
 		if (ModpackConfig.ReleaseInfo is { } releaseInfo) {
 			_version!.Text = $"{releaseInfo.Name} ({releaseInfo.Version.ShortGameVersion})";
 		} else if (ModpackConfig.GameVersion is { } gameVersion) {
@@ -180,5 +179,12 @@ public partial class SelectModpackButton : Button {
 		}
 
 		_hBoxContainer!.Show();
+	}
+
+	public override void _Notification(int what) {
+		if (what == (int)NotificationTranslationChanged && IsInstanceValid(this) && _name is not null &&
+			ModpackConfig is not null) {
+			_name.Text = ModpackConfig.ModpackName.GetText();
+		}
 	}
 }

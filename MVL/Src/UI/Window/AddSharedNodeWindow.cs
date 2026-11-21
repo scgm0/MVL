@@ -51,8 +51,8 @@ public partial class AddSharedNodeWindow : BaseWindow {
 		var codec = (CodecType)_codec!.Selected;
 		var sharedNode = new SharedNode {
 			Address = string.Empty,
-			Name = string.IsNullOrEmpty(name) ? null : name,
-			Remark = string.IsNullOrEmpty(remark) ? null : remark,
+			Name = string.IsNullOrEmpty(name) ? LocalizedString.Empty : new LocalizedString(name),
+			Remark = string.IsNullOrEmpty(remark) ? LocalizedString.Empty : new LocalizedString(remark),
 			Codec = codec == CodecType.None ? null : codec
 		};
 		sharedNode.UpdateAddress(address);

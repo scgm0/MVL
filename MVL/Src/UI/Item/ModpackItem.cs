@@ -58,8 +58,6 @@ public partial class ModpackItem : PanelContainer {
 		_playButton.NotNull();
 		ModpackConfig.NotNull();
 
-		_modpackName!.SetTranslationDomain(ModpackConfig!.Path!);
-
 		ModpackConfig.ModsUpdated += ModpackConfigOnModsUpdated;
 		ModpackConfig.LocalizedTextUpdated += OnModpackConfigOnLocalizedTextUpdated;
 		ModpackConfig.ModpackIconUpdated += ModpackConfigOnModpackIconUpdated;
@@ -83,6 +81,15 @@ public partial class ModpackItem : PanelContainer {
 		}
 
 		Main.GameExitEvent -= MainOnGameExitEvent;
+	}
+
+	public override void _Notification(int what) {
+		if (what == (int)NotificationTranslationChanged && IsInstanceValid(this) && ModpackConfig is not null &&
+			_modpackName is not null && _modpackSummary is not null) {
+			UpdateModpackText();
+			UpdateModpackAuthor();
+			UpdateModCount();
+		}
 	}
 
 	private async void ModpackConfigOnModpackIconUpdated() {
@@ -116,21 +123,39 @@ public partial class ModpackItem : PanelContainer {
 	}
 
 	public void UpdateModpackText() {
-		_modpackName!.Text = ModpackConfig!.ModpackName.Value;
-		_modpackName.TooltipText = ModpackConfig.ModpackName.Value;
-
-		if (!string.IsNullOrEmpty(ModpackConfig.ModpackSummary.Value)) {
-			_modpackSummary!.SetTranslationDomain(ModpackConfig.Path!);
-			_modpackSummary!.Text = ModpackConfig.ModpackSummary.Value;
-		} else {
-			_modpackSummary!.SetTranslationDomain(null);
-			_modpackSummary!.Text = "整合包没有简介";
+		if (ModpackConfig is null || _modpackName is null || _modpackSummary is null) {
+			return;
 		}
 
-		_modpackSummary.TooltipText = ModpackConfig.ModpackSummary.Value;
+		var name = ModpackConfig.ModpackName.GetText();
+		var rawName = ModpackConfig.ModpackName.Value;
+		_modpackName.Text = name;
+		_modpackName.TooltipText = string.IsNullOrEmpty(rawName) ? name : rawName;
 
-		_modpackName!.Notification((int)NotificationTranslationChanged);
-		_modpackSummary!.Notification((int)NotificationTranslationChanged);
+		var summary = ModpackConfig.ModpackSummary.GetText();
+		var rawSummary = ModpackConfig.ModpackSummary.Value;
+		_modpackSummary.Text = string.IsNullOrEmpty(summary) ? Tr("整合包没有简介") : summary;
+		_modpackSummary.TooltipText = string.IsNullOrEmpty(rawSummary) ? summary : rawSummary;
+	}
+
+	private void UpdateModpackAuthor() {
+		if (ModpackConfig is null || _modpackAuthor is null) {
+			return;
+		}
+
+		_modpackAuthor.Text = ModpackConfig.ModpackAuthors.Count switch {
+			0 => $"{Tr("整合包作者:")} {Tr("未知")}",
+			1 => $"{Tr("整合包作者:")} {ModpackConfig.ModpackAuthors[0]}",
+			_ => $"{Tr("整合包作者:")} {string.Join(", ", ModpackConfig.ModpackAuthors)}"
+		};
+	}
+
+	private void UpdateModCount() {
+		if (ModpackConfig is null || _modCount is null) {
+			return;
+		}
+
+		_modCount.Text = string.Format(Tr("模组数量: {0}"), ModpackConfig.Mods.Count);
 	}
 
 	public async Task UpdateUI() {
@@ -139,16 +164,10 @@ public partial class ModpackItem : PanelContainer {
 		}
 
 		UpdateModpackText();
+		UpdateModpackAuthor();
+		UpdateModCount();
 
-		if (ModpackConfig!.ModpackAuthors.Count == 0) {
-			_modpackAuthor!.Text = $"{Tr("整合包作者:")} {Tr("未知")}";
-		} else if (ModpackConfig.ModpackAuthors.Count == 1) {
-			_modpackAuthor!.Text = $"{Tr("整合包作者:")} {ModpackConfig.ModpackAuthors[0]}";
-		} else {
-			_modpackAuthor!.Text = $"{Tr("整合包作者:")} {string.Join(", ", ModpackConfig.ModpackAuthors)}";
-		}
-
-		_modpackVersion!.Text = $"v{ModpackConfig.ModpackVersion}";
+		_modpackVersion!.Text = $"v{ModpackConfig!.ModpackVersion}";
 		_versionButton!.Text = ModpackConfig.GameVersion?.ShortGameVersion ?? "选择版本";
 
 		if (ModpackConfig.GameVersion is null) {
@@ -172,7 +191,7 @@ public partial class ModpackItem : PanelContainer {
 			return;
 		}
 
-		_modCount!.Text = string.Format(Tr("模组数量: {0}"), modpackConfig.Mods.Count);
+		UpdateModCount();
 	}
 
 	private async void ModCountOnPressed() {

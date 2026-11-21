@@ -79,6 +79,7 @@ metadata/_custom_type_script = "uid://bk3tot6c35bwu"
 content_margin_bottom = 8.0
 
 [node name="SubscriptionPanel" type="FoldableContainer" unique_id=1113816434 node_paths=PackedStringArray("NodeList", "_tip")]
+auto_translate_mode = 2
 anchors_preset = 10
 anchor_right = 1.0
 offset_bottom = 47.0
@@ -106,6 +107,7 @@ _tip = NodePath("Label")
 layout_mode = 2
 
 [node name="Label" type="Label" parent="." unique_id=2112823996]
+auto_translate_mode = 1
 layout_mode = 2
 size_flags_horizontal = 4
 theme_override_colors/font_color = Color(0.875, 0.875, 0.875, 0.6)

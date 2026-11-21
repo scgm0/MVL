@@ -72,6 +72,13 @@ public partial class HomePage : MenuPage {
 		Dispatcher.SynchronizationContext.Post(async void (_) => { await UpdateInfo(); }, null);
 	}
 
+	public override void _Notification(int what) {
+		if (what == (int)NotificationTranslationChanged && IsInstanceValid(this) && _modPackNameLabel is not null &&
+			UI.Main.ModpackConfigs.TryGetValue(UI.Main.BaseConfig.CurrentModpack, out var modpackConfig)) {
+			_modPackNameLabel.Text = modpackConfig.ModpackName.GetText();
+		}
+	}
+
 	private async void StartButtonOnPressed() {
 		if (UI.Main.CurrentRunModpack is null) {
 			var modpackConfig = UI.Main.ModpackConfigs[UI.Main.BaseConfig.CurrentModpack];
@@ -173,8 +180,7 @@ public partial class HomePage : MenuPage {
 		if (UI.Main.ModpackConfigs.TryGetValue(UI.Main.BaseConfig.CurrentModpack, out var modpackConfig)) {
 			_playButton!.Disabled = false; 
 
-			_modPackNameLabel!.SetTranslationDomain(modpackConfig.Path!);
-			_modPackNameLabel.Text = modpackConfig.ModpackName.Value;
+			_modPackNameLabel!.Text = modpackConfig.ModpackName.GetText();
 
 			if (modpackConfig.GameVersion is { } gameVersion) {
 				_gameVersionLabel!.Text = gameVersion.ShortGameVersion;

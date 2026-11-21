@@ -75,16 +75,7 @@ public class ModpackConfig {
 	}
 
 	[JsonIgnore]
-	public TranslationDomain TranslationDomain { get; set; } = TranslationServer.GetOrAddDomain("");
-
-	[JsonIgnore]
-	public string LocalizeModpackName => GetLocalizedText(ModpackName);
-
-	[JsonIgnore]
-	public string LocalizeModpackSummary => GetLocalizedText(ModpackSummary);
-
-	[JsonIgnore]
-	public string LocalizeModpackDescription => GetLocalizedText(ModpackDescription);
+	public string LocalizeModpackName => ModpackName.GetText();
 
 	[JsonExtensionData]
 	public Dictionary<string, JsonElement> ExtensionData { get; set; } = [];
@@ -248,10 +239,6 @@ public class ModpackConfig {
 		}
 	}
 
-	public string GetLocalizedText(LocalizedString key) { return GetLocalizedText(key.Value); }
-
-	public string GetLocalizedText(string key) { return TranslationDomain.Translate(key); }
-
 	public void Save() {
 		lock (Lock) {
 			LocalizedStringJsonHelper.SaveWithOrderedLocalizations(
@@ -262,55 +249,7 @@ public class ModpackConfig {
 		}
 	}
 
-	public void AddLocalizationTranslations(LocalizedString ls) {
-		var localizations = ls.Localizations;
-		if (localizations is not { Count: not 0 }) {
-			return;
-		}
-
-		foreach (var (lang, text) in localizations) {
-			var translation = TranslationDomain.HasTranslationForLocale(lang, true)
-				? TranslationDomain.FindTranslations(lang, true)[0]
-				: new() {
-					Locale = lang
-				};
-			translation.EraseMessage(ls.Value);
-			translation.AddMessage(ls.Value, text);
-			TranslationDomain.AddTranslation(translation);
-		}
-
-		LocalizedTextUpdated?.Invoke();
-	}
-
-	public void AddLocalizationTranslation(string key, string text, string lang) {
-		var translation = TranslationDomain.HasTranslationForLocale(lang, true)
-			? TranslationDomain.FindTranslations(lang, true)[0]
-			: new() {
-				Locale = lang
-			};
-		translation.EraseMessage(key);
-		translation.AddMessage(key, text);
-		TranslationDomain.AddTranslation(translation);
-		LocalizedTextUpdated?.Invoke();
-	}
-
-	public void RemoveLocalizationTranslations(string key) {
-		foreach (var translation in TranslationDomain.GetTranslations()) {
-			translation.EraseMessage(key);
-		}
-
-		LocalizedTextUpdated?.Invoke();
-	}
-
-	public void RemoveLocalizationTranslation(string key, string lang) {
-		if (TranslationDomain.HasTranslationForLocale(lang, true)) {
-			var translation = TranslationDomain.FindTranslations(lang, true)[0];
-			translation.EraseMessage(key);
-			TranslationDomain.AddTranslation(translation);
-		}
-
-		LocalizedTextUpdated?.Invoke();
-	}
+	public void NotifyLocalizedTextUpdated() { LocalizedTextUpdated?.Invoke(); }
 
 	static private readonly Lock Lock = new();
 
@@ -339,7 +278,6 @@ public class ModpackConfig {
 
 		modPackConfig ??= new();
 		modPackConfig.Path = modpackPath;
-		modPackConfig.TranslationDomain = TranslationServer.GetOrAddDomain(modpackPath);
 		modPackConfig.OnDeserialized();
 		modPackConfig.Save();
 		return modPackConfig;
@@ -359,8 +297,6 @@ public class ModpackConfig {
 	}
 
 	public void OnDeserialized() {
-		TranslationDomain.Clear();
-
 		try {
 			LocalizedStringJsonHelper.RestoreLocalizationsFromExtensionData(
 				this,
@@ -387,10 +323,6 @@ public class ModpackConfig {
 			if (summaryUpdated) {
 				ModpackSummary = summary;
 			}
-
-			AddLocalizationTranslations(ModpackName);
-			AddLocalizationTranslations(ModpackSummary);
-			AddLocalizationTranslations(ModpackDescription);
 		} catch (Exception e) {
 			Log.Error($"解析整合包本地化字段失败: {Path}", e);
 		}

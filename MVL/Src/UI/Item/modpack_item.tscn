@@ -133,6 +133,7 @@ theme_override_constants/separation = 6
 layout_mode = 2
 
 [node name="Label" type="Label" parent="HBoxContainer/VBoxContainer/HBoxContainer2" unique_id=1964015766]
+auto_translate_mode = 2
 layout_mode = 2
 size_flags_vertical = 3
 tooltip_auto_translate_mode = 2
@@ -177,6 +178,7 @@ theme_override_font_sizes/font_size = 12
 text = "v0.0.0"
 
 [node name="Label" type="Label" parent="HBoxContainer/VBoxContainer/HBoxContainer" unique_id=873845475]
+auto_translate_mode = 2
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 8
@@ -188,6 +190,7 @@ text = "整合包没有简介"
 text_overrun_behavior = 5
 
 [node name="Button" type="Button" parent="HBoxContainer/VBoxContainer/HBoxContainer" unique_id=970320624]
+auto_translate_mode = 2
 custom_minimum_size = Vector2(100, 15)
 layout_mode = 2
 size_flags_horizontal = 8

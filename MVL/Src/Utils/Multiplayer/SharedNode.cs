@@ -1,13 +1,27 @@
 using System;
+using System.Collections.Generic;
 using System.Text;
+using System.Text.Json;
+using System.Text.Json.Serialization;
+using MVL.Utils.Help;
 
 namespace MVL.Utils.Multiplayer;
 
-public record SharedNode {
+public record SharedNode : IJsonOnDeserialized {
 	public required string Address { get; set; }
-	public string? Name { get; set; }
-	public string? Remark { get; set; }
+	public LocalizedString Name { get; set; }
+	public LocalizedString Remark { get; set; }
 	public CodecType? Codec { get; set; }
+
+	[JsonExtensionData]
+	public Dictionary<string, JsonElement>? ExtensionData { get; set; }
+
+	public void RestoreLocalizations() {
+		LocalizedStringJsonHelper.RestoreLocalizationsFromExtensionData(this, SourceGenerationContext.Default.SharedNode,
+			ExtensionData, keepExtensionData: true);
+	}
+
+	void IJsonOnDeserialized.OnDeserialized() { RestoreLocalizations(); }
 
 	public void UpdateAddress(string address) {
 		Address = Codec switch {

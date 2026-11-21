@@ -45,7 +45,7 @@ expand_mode = 1
 stretch_mode = 5
 
 [node name="Label" type="Label" parent="HBoxContainer" unique_id=1956916068]
-auto_translate_mode = 1
+auto_translate_mode = 2
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_stretch_ratio = 1.5
