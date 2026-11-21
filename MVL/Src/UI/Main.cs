@@ -576,7 +576,10 @@ public partial class Main : NativeWindowUtility {
 		return tmp;
 	}
 
-	public static Process? VsRun(RunConfig runConfig, string command) {
+	public static Process? VsRun(
+		RunConfig runConfig,
+		string command,
+		IReadOnlyDictionary<string, string?>? environment = null) {
 		Log.Debug($"执行命令: {command}");
 		Log.Debug($"""
 				   运行配置:
@@ -585,6 +588,9 @@ public partial class Main : NativeWindowUtility {
 				       AssemblyPath: {runConfig.AssemblyPath}
 				       Offline: {runConfig.Account is { Offline: true }}
 				   """);
+		if (environment is { Count: > 0 }) {
+			Log.Debug($"注入环境变量: {string.Join(", ", environment.Keys)}");
+		}
 
 		try {
 			var startInfo = new ProcessStartInfo {
@@ -602,13 +608,19 @@ public partial class Main : NativeWindowUtility {
 				StandardErrorEncoding = Encoding.UTF8,
 				UseShellExecute = false,
 				CreateNoWindow = true,
-				WorkingDirectory = runConfig.VintageStoryPath,
-				Environment = {
-					["VINTAGE_STORY"] = runConfig.VintageStoryPath,
-					["VINTAGE_STORY_PATH"] = runConfig.VintageStoryPath,
-					["RUN_CONFIG"] = JsonSerializer.Serialize(runConfig, SourceGenerationContext.Default.RunConfig)
-				}
+				WorkingDirectory = runConfig.VintageStoryPath
 			};
+
+			if (environment is not null) {
+				foreach (var (key, value) in environment) {
+					startInfo.Environment[key] = value;
+				}
+			}
+
+			startInfo.Environment["VINTAGE_STORY"] = runConfig.VintageStoryPath;
+			startInfo.Environment["VINTAGE_STORY_PATH"] = runConfig.VintageStoryPath;
+			startInfo.Environment["RUN_CONFIG"] =
+				JsonSerializer.Serialize(runConfig, SourceGenerationContext.Default.RunConfig);
 
 			var process = new Process {
 				StartInfo = startInfo,
@@ -749,6 +761,30 @@ public partial class Main : NativeWindowUtility {
 		return value;
 	}
 
+	static private void AddHooks(List<string> hooks, string? value) {
+		if (string.IsNullOrWhiteSpace(value)) {
+			return;
+		}
+
+		var span = value.AsSpan();
+		while (true) {
+			var index = span.IndexOf(Path.PathSeparator);
+			if (index < 0) {
+				if (!span.IsEmpty) {
+					hooks.Add(span.ToString());
+				}
+
+				return;
+			}
+
+			if (index > 0) {
+				hooks.Add(span[..index].ToString());
+			}
+
+			span = span[(index + 1)..];
+		}
+	}
+
 	public static void StartGame(
 		string gamePath,
 		string dataPath,
@@ -760,6 +796,8 @@ public partial class Main : NativeWindowUtility {
 			var tmp = CopyVsRun();
 			if (string.IsNullOrEmpty(command)) {
 				command = "%command%";
+			} else if (!command.Contains("%command%", StringComparison.Ordinal)) {
+				command = "%command% " + command;
 			}
 
 			if (string.IsNullOrEmpty(assembleName)) {
@@ -772,12 +810,17 @@ public partial class Main : NativeWindowUtility {
 				.Replace("%tmp_path%", tmp.GetCurrentDir())
 				.Replace("%data_path%", dataPath);
 
+			var environment = LaunchEnvironment.Extract(ref command);
 			var packHooks = ExtractStartupHooks(ref command);
-			var startupHooks = string.IsNullOrEmpty(packHooks)
-				? vsRunHook
-				: vsRunHook + Path.PathSeparator + packHooks;
-			command = command.Replace("%command%",
-				$"DOTNET_STARTUP_HOOKS=\"{startupHooks}\" \"{Tools.DotNetPath}\" \"{vsRunHook}\"");
+			List<string> startupHooks = [vsRunHook];
+			AddHooks(startupHooks, packHooks);
+			if (environment.Remove("DOTNET_STARTUP_HOOKS", out var environmentHooks)) {
+				AddHooks(startupHooks, environmentHooks);
+			}
+
+			environment["DOTNET_STARTUP_HOOKS"] =
+				string.Join(Path.PathSeparator, startupHooks.Distinct(LaunchEnvironment.NameComparer));
+			command = command.Replace("%command%", $"\"{Tools.DotNetPath}\" \"{vsRunHook}\"");
 
 			var process = VsRun(new() {
 					VintageStoryPath = gamePath,
@@ -786,7 +829,8 @@ public partial class Main : NativeWindowUtility {
 					ExecutableType = ExecutableTypeEnum.StartGame,
 					Account = string.IsNullOrEmpty(BaseConfig.CurrentAccount) ? null : Accounts[BaseConfig.CurrentAccount]
 				},
-				command);
+				command,
+				environment);
 
 			if (process is null) {
 				GameExitEvent?.Invoke();
