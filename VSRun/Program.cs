@@ -29,7 +29,7 @@ public static class Program {
 		LogExceptionDetails(e.ExceptionObject as Exception, "UnhandledException: " + sender);
 	}
 
-	public static void Main(string[] args) {
+	public static void Run(string[] args) {
 		Console.WriteLine("VS Run Main");
 		Console.WriteLine($"Dotnet Version: {RuntimeInformation.FrameworkDescription}");
 		try {
@@ -110,13 +110,20 @@ public static class Program {
 		}
 	}
 
+#if NET10_0_OR_GREATER
 	[UnsafeAccessor(UnsafeAccessorKind.StaticField, Name = "state")]
 	static extern ref Dictionary<MethodBase, byte[]>? HarmonySharedState(
 		[UnsafeAccessorType("HarmonyLib.HarmonySharedState, 0Harmony")] object? _);
+#endif
 
 	public static void StartGame(string[] args) {
 		try {
+#if NET10_0_OR_GREATER
 			HarmonySharedState(null)?.Clear();
+#else
+			var state = AccessTools.Field(AccessTools.TypeByName("HarmonyLib.HarmonySharedState"), "state");
+			(state?.GetValue(null) as Dictionary<MethodBase, byte[]>)?.Clear();
+#endif
 		} catch (Exception e) {
 			Console.Error.WriteLine("VSRun: harmony shared state reset failed: " + e.Message);
 		}
@@ -165,7 +172,12 @@ public static class Program {
 
 	static private void AdoptGameIdentity(Assembly game, string gameDirectory) {
 		try {
+#if NET10_0_OR_GREATER
 			Assembly.SetEntryAssembly(game);
+#else
+			typeof(Assembly).GetMethod("SetEntryAssembly", BindingFlags.Static | BindingFlags.NonPublic | BindingFlags.Public,
+				[typeof(Assembly)])?.Invoke(null, [game]);
+#endif
 		} catch (Exception e) {
 			Console.Error.WriteLine("VSRun: SetEntryAssembly failed: " + e.Message);
 		}
@@ -177,14 +189,20 @@ public static class Program {
 		try {
 			var executable = Path.Combine(gameDirectory,
 				RuntimeInformation.IsOSPlatform(OSPlatform.Windows) ? "Vintagestory.exe" : "Vintagestory");
+#if NET10_0_OR_GREATER
 			ProcessPath(null) = executable;
+#else
+			typeof(Environment).GetField("s_processPath", BindingFlags.Static | BindingFlags.NonPublic)?.SetValue(null, executable);
+#endif
 		} catch (Exception e) {
 			Console.Error.WriteLine("VSRun: process path override failed: " + e.Message);
 		}
 	}
 
+#if NET10_0_OR_GREATER
 	[UnsafeAccessor(UnsafeAccessorKind.StaticField, Name = "s_processPath")]
 	static extern ref string? ProcessPath([UnsafeAccessorType("System.Environment")] object? _);
+#endif
 
 	static private string GenerateSha256Uid(string input) {
 		var inputBytes = Encoding.UTF8.GetBytes(input);

@@ -71,8 +71,8 @@ Common path examples: On `Windows`, it is typically located at `%APPDATA%\MVL`, 
 ## Develop and Build
 
 1. Clone the repository: `git clone https://github.com/scgm0/MVL.git`  
-2. Install dependencies (`Python/SCons`, platform toolchain, `.NET 8` + `.NET 10`)  
-3. Prepare the `VINTAGE_STORY` directory (the workflow will download and extract the client, then write it to environment variables)  
+2. Install `Python/SCons`, the platform toolchain, and the .NET 10 and 11 SDKs used by CI.
+3. Point `VINTAGE_STORY` at a .NET 8 client directory for the game assemblies used to compile both VSRun targets (CI uses 1.21.5).
 4. Clone the custom `Godot` branch: the `MVL` branch of `https://github.com/scgm0/godot.git`  
 5. Build the `Godot C# Editor` using `SCons` (refer to the [official documentation](https://docs.godotengine.org/en/latest/engine_details/development/compiling/index.html)). When building `template_release`, optionally apply `MVL/GodotBuildProfile/custom.py` and `custom.build`  
 6. Import `mvl-repo/MVL/project.godot` into the self-built editor  

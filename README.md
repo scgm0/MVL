@@ -71,8 +71,8 @@ MVL 使用 Godot 用户目录（`OS.GetUserDataDir()`），并开启了`use_cust
 ## 开发与构建
 
 1. 克隆仓库：`git clone https://github.com/scgm0/MVL.git`
-2. 安装依赖（`Python/SCons`、平台工具链、`.NET 8`+`.NET 10`）
-3. 准备`VINTAGE_STORY`目录（工作流中会下载并解压客户端后写入环境变量）
+2. 安装依赖（`Python/SCons`、平台工具链、.NET 10 和 11 SDK，与 CI 一致）。
+3. 将 `VINTAGE_STORY` 指向使用 .NET 8 的客户端目录，作为两个 VSRun 版本共用的编译引用（CI 使用 1.21.5）。
 4. 克隆自定义`Godot`分支：`https://github.com/scgm0/godot.git`的`MVL`分支
 5. 用`SCons`构建`Godot C#编辑器`（参考[官方文档](https://docs.godotengine.org/en/latest/engine_details/development/compiling/index.html)），构建`template_release`时可选应用`MVL/GodotBuildProfile/custom.py`与`custom.build`
 6. 将`mvl-repo/MVL/project.godot`导入自构建的编辑器中

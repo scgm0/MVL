@@ -1,20 +1,15 @@
 using System;
 using System.Buffers;
 using System.Collections.Concurrent;
-using System.Diagnostics;
 using System.IO;
-using System.Linq;
 using System.Net;
 using System.Net.Sockets;
 using System.Numerics;
 using System.Runtime.InteropServices;
-using System.Runtime.Versioning;
 using System.Security.Cryptography;
 using System.Threading.Tasks;
-using CSemVer;
 using Flurl.Http;
 using Godot;
-using Mono.Cecil;
 using Nerdbank.MessagePack;
 using FileAccess = Godot.FileAccess;
 
@@ -24,17 +19,6 @@ public static class Tools {
 	public const string VSRunDirPath = "res://Misc/VSRun";
 
 	static private readonly string[] Units = ["B", "KB", "MB", "GB", "TB", "PB", "EB"];
-
-	public static Version VSRunTargetFramework {
-		get {
-			if (field is null) {
-				var version = GetTargetFramework(VSRunDirPath.PathJoin("VSRun.dll")).Version;
-				field = version.Major > 0 ? version : new(System.Environment.Version.Major, System.Environment.Version.Minor);
-			}
-
-			return field;
-		}
-	}
 
 	public static ulong MainThreadId { get; } = OS.GetMainThreadId();
 	public static SceneTree SceneTree { get; } = (SceneTree)Engine.GetMainLoop();
@@ -95,190 +79,6 @@ public static class Tools {
 		}
 
 		return value - Math.Floor(value);
-	}
-
-	public static async Task<(string? FrameworkName, Version Version)> GetTargetFrameworkAsync(string assemblyPath) {
-		return await Task.Run(() => GetTargetFramework(assemblyPath));
-	}
-
-	public static (string? FrameworkName, Version Version) GetTargetFramework(string assemblyPath) {
-		try {
-			if (assemblyPath.StartsWith("res://", StringComparison.Ordinal) ||
-				assemblyPath.StartsWith("user://", StringComparison.Ordinal)) {
-				using var file = FileAccess.Open(assemblyPath, FileAccess.ModeFlags.Read);
-				if (file is null) {
-					Log.Error($"无法打开 {assemblyPath}");
-					return (null, new());
-				}
-
-				using var stream = new MemoryStream(file.GetBuffer((long)file.GetLength()), writable: false);
-				using var godotAssembly = AssemblyDefinition.ReadAssembly(stream);
-				return ReadTargetFramework(godotAssembly);
-			}
-
-			using var assembly = AssemblyDefinition.ReadAssembly(assemblyPath);
-			return ReadTargetFramework(assembly);
-		} catch (Exception ex) {
-			Log.Error($"无法从 {assemblyPath} 读取目标框架", ex);
-		}
-
-		return (null, new());
-	}
-
-	static private (string? FrameworkName, Version Version) ReadTargetFramework(AssemblyDefinition assembly) {
-		var targetFrameworkAttributeName = typeof(TargetFrameworkAttribute).FullName;
-
-		foreach (var attribute in assembly.CustomAttributes) {
-			if (attribute.AttributeType.FullName != targetFrameworkAttributeName) {
-				continue;
-			}
-
-			if (attribute.ConstructorArguments.Count > 0 &&
-				attribute.ConstructorArguments[0].Value is string frameworkString) {
-				return ParseTargetFrameworkInfo(frameworkString);
-			}
-
-			break;
-		}
-
-		return (null, new());
-	}
-
-	static private (string? FrameworkName, Version Version) ParseTargetFrameworkInfo(ReadOnlySpan<char> frameworkSpan) {
-		ReadOnlySpan<char> nameSpan;
-		ReadOnlySpan<char> versionSpan = [];
-
-		var commaIndex = frameworkSpan.IndexOf(',');
-		if (commaIndex != -1) {
-			nameSpan = frameworkSpan[..commaIndex];
-			versionSpan = frameworkSpan[(commaIndex + 1)..];
-		} else {
-			nameSpan = frameworkSpan;
-		}
-
-		var finalName = ParseFrameworkName(nameSpan);
-		var finalVersion = new Version();
-
-		if (versionSpan.IsEmpty) {
-			return (finalName.ToString(), finalVersion);
-		}
-
-		const string versionPrefix = "Version=";
-		var versionPart = versionSpan.Trim();
-		var prefixIndex = versionPart.IndexOf(versionPrefix, StringComparison.OrdinalIgnoreCase);
-
-		if (prefixIndex == -1) {
-			return (finalName.ToString(), finalVersion);
-		}
-
-		var versionValueSpan = versionPart[(prefixIndex + versionPrefix.Length)..];
-		if (versionValueSpan.Length > 0 && (versionValueSpan[0] == 'v' || versionValueSpan[0] == 'V')) {
-			versionValueSpan = versionValueSpan[1..];
-		}
-
-		if (Version.TryParse(versionValueSpan, out finalVersion)) {
-			return (finalName.ToString(), finalVersion);
-		}
-
-		Log.Error($"无法从 {versionSpan} 解析版本");
-		return (finalName.ToString(), new());
-	}
-
-	static private ReadOnlySpan<char> ParseFrameworkName(ReadOnlySpan<char> nameSpan) {
-		var processedSpan = nameSpan.Trim();
-
-		if (!processedSpan.IsEmpty && processedSpan[0] == '.') {
-			processedSpan = processedSpan[1..];
-		}
-
-		if (processedSpan.EndsWith("App", StringComparison.Ordinal)) {
-			processedSpan = processedSpan[..^3];
-		}
-
-		return processedSpan;
-	}
-
-	public static async Task<bool> HasRequiredDotNetVersionInstalledAsync(Version targetFrameworkVersion) {
-		try {
-			if (await IsDotNetX64Async()) {
-				return await HasMatchingRuntimeAsync(targetFrameworkVersion);
-			}
-
-			Log.Warn("检测到DotNet，但其架构不是x64");
-			return false;
-		} catch (Exception e) {
-			Log.Error("检查DotNet环境失败", e);
-			return false;
-		}
-	}
-
-	static private async Task<bool> IsDotNetX64Async() {
-		var output = await ExecuteDotNetCommandAsync("--info");
-
-		return !string.IsNullOrEmpty(output) && output.Contains("Architecture: x64", StringComparison.OrdinalIgnoreCase);
-	}
-
-	static private async Task<bool> HasMatchingRuntimeAsync(Version targetFrameworkVersion) {
-		using var process = CreateDotNetProcess("--list-runtimes");
-		process.Start();
-
-		var has = false;
-		while (await process.StandardOutput.ReadLineAsync() is { } line) {
-			Log.Debug($"检测到运行时: {line}");
-			if (!line.Contains("Microsoft.NETCore.App", StringComparison.OrdinalIgnoreCase)) {
-				continue;
-			}
-
-			var parts = line.Trim().Split(' ', StringSplitOptions.RemoveEmptyEntries);
-			if (parts.Length < 2) {
-				continue;
-			}
-
-			var versionString = parts[1];
-
-			if (!SVersion.TryParse(versionString, out var installedVersion)) {
-				continue;
-			}
-
-			if (installedVersion.Major != targetFrameworkVersion.Major) {
-				continue;
-			}
-
-			Log.Info($"检测到可用的运行时: {parts[0]} {versionString}");
-			has = true;
-		}
-
-		await process.WaitForExitAsync();
-		return has;
-	}
-
-	static private async Task<string?> ExecuteDotNetCommandAsync(string arguments) {
-		using var process = CreateDotNetProcess(arguments);
-		process.Start();
-
-		var output = await process.StandardOutput.ReadToEndAsync();
-		await process.WaitForExitAsync();
-
-		if (process.ExitCode == 0) {
-			return output;
-		}
-
-		Log.Debug($"'{DotNetPath} {arguments}'返回了退出代码 {process.ExitCode}");
-		return null;
-	}
-
-	static private Process CreateDotNetProcess(string arguments) {
-		return new() {
-			StartInfo = new() {
-				FileName = DotNetPath,
-				Arguments = arguments,
-				RedirectStandardOutput = true,
-				RedirectStandardError = true,
-				UseShellExecute = false,
-				CreateNoWindow = true,
-				WindowStyle = ProcessWindowStyle.Hidden
-			}
-		};
 	}
 
 	public static ImageTexture? CreateTextureFromBytes(ReadOnlySpan<byte> iconBytes, ImageFormat format = ImageFormat.Png) {

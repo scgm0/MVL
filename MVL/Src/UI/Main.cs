@@ -564,16 +564,43 @@ public partial class Main : NativeWindowUtility {
 		return null;
 	}
 
-	public static DirAccess CopyVsRun() {
+	private static DirAccess CopyVsRun(GameRuntime runtime) {
+		var vsRunPath = Tools.VSRunDirPath.PathJoin(runtime.Target);
+		if (!Godot.FileAccess.FileExists(vsRunPath.PathJoin("VSRun.dll"))) {
+			var message = string.Format(TranslationServer.Translate("游戏要求 {0}，当前 MVL 未提供对应的 VSRun。请更新启动器。"), runtime.Target);
+			throw new NotSupportedException($"{message}\n{runtime.ConfigPath}");
+		}
 		var tmp = DirAccess.CreateTemp("VSRun");
 		var tmpRunPath = tmp.GetCurrentDir();
-		var vsRunPath = Tools.VSRunDirPath;
 		foreach (var file in DirAccess.GetFilesAt(vsRunPath)) {
 			var fromPath = vsRunPath.PathJoin(file);
-			tmp.Copy(fromPath, tmpRunPath.PathJoin(file).NormalizePath());
+			var error = tmp.Copy(fromPath, tmpRunPath.PathJoin(file).NormalizePath());
+			if (error != Error.Ok) {
+				tmp.Dispose();
+				throw new IOException(string.Format(TranslationServer.Translate("复制 {0} 失败 ({1})"), fromPath, error));
+			}
 		}
 
 		return tmp;
+	}
+
+	private static async Task<string> GetLaunchCommand(GameRuntime runtime, string runner, string gamePath,
+		IReadOnlyDictionary<string, string?>? environment = null) {
+		var result = await runtime.CheckAsync(Tools.DotNetPath, runner, gamePath, environment);
+		Log.Info($"游戏运行时配置: {runtime.ConfigPath} ({runtime.Target})\n{result}");
+		return string.Join(" ", runtime.GetHostArguments(runner).Prepend(Tools.DotNetPath).Select(arg =>
+			OperatingSystem.IsWindows() ? $"\"{arg}\"" : "'" + arg.Replace("'", "'\\''") + "'"));
+	}
+
+	private static async Task ShowLaunchError(Exception error) {
+		Log.Error(error);
+		if (Instance is { } main) {
+			var window = main.OpenConfirmationWindow(error.Message.Replace("[", "[lb]"));
+			window.CancelButton?.Hide();
+			window.Confirm += async () => await window.Hide();
+			window.Hidden += window.QueueFree;
+			await window.Show();
+		}
 	}
 
 	public static Process? VsRun(
@@ -599,7 +626,7 @@ public partial class Main : NativeWindowUtility {
 				Arguments = $"/c \"chcp 65001 >nul & {command}\"",
 #else
 				FileName = "bash",
-				Arguments = $"-c \"{command}\"",
+				ArgumentList = { "-c", command },
 #endif
 
 				RedirectStandardOutput = true,
@@ -655,19 +682,27 @@ public partial class Main : NativeWindowUtility {
 
 	public static async Task InitData(string gamePath, string dataPath) {
 		try {
-			using var tmp = CopyVsRun();
+			var runtime = GameRuntime.Read(gamePath, "Vintagestory.dll");
+			using var tmp = CopyVsRun(runtime);
+			var command = await GetLaunchCommand(runtime, tmp.GetCurrentDir().PathJoin("VSRun.dll").NormalizePath(), gamePath);
 			using var process = VsRun(new() {
 					VintageStoryPath = gamePath,
 					VintageStoryDataPath = dataPath,
 					ExecutableType = ExecutableTypeEnum.InitData
 				},
-				$"\"{Tools.DotNetPath}\" \"{Path.Combine(tmp.GetCurrentDir(), "VSRun.dll").NormalizePath()}\"");
+				command);
 			CurrentGameProcess = process;
 			if (process != null) {
-				await process.WaitForExitAsync();
+				try {
+					await process.WaitForExitAsync();
+				} finally {
+					if (CurrentGameProcess == process) {
+						CurrentGameProcess = null;
+					}
+				}
 			}
 		} catch (Exception e) {
-			Log.Error(e);
+			await ShowLaunchError(e);
 		}
 	}
 
@@ -678,41 +713,6 @@ public partial class Main : NativeWindowUtility {
 			GameExitEvent?.Invoke();
 			CurrentRunModpack = null;
 			Log.Error("ReleaseInfo为空");
-			return;
-		}
-
-		var gameDotnetVersion = await Tools.GetTargetFrameworkAsync(Path.Combine(releaseInfo.Path, "VintagestoryAPI.dll"));
-		Log.Info($"游戏目标框架: {gameDotnetVersion.Version} VSRun目标框架: {Tools.VSRunTargetFramework}");
-		var targetFramework = gameDotnetVersion.Version >= Tools.VSRunTargetFramework
-			? gameDotnetVersion.Version
-			: Tools.VSRunTargetFramework;
-		var hasDotnet = await Tools.HasRequiredDotNetVersionInstalledAsync(targetFramework);
-		if (!hasDotnet) {
-			var confirmationWindow = _confirmationWindowScene!.Instantiate<ConfirmationWindow>();
-			confirmationWindow.Modulate = Colors.Transparent;
-			confirmationWindow.Message =
-				string.Format(
-					Tr(
-						"""
-						需要安装 [b].NET {1} (x64)[/b] 运行时
-						请点击链接下载并安装：
-						[color=#3c7fe1][url]https://dotnet.microsoft.com/download/dotnet/{1}[/url][/color]
-						是否尝试强制启动游戏？
-						"""),
-					releaseInfo.Version.ShortGameVersion,
-					Tools.VSRunTargetFramework);
-			confirmationWindow.Hidden += confirmationWindow.QueueFree;
-			confirmationWindow.Confirm += async () => {
-				confirmationWindow.OkButton?.Disabled = true;
-				await confirmationWindow.Hide();
-				StartGame(releaseInfo.Path, modpackConfig.Path!, modpackConfig.Command, modpackConfig.MainAssembly);
-			};
-			confirmationWindow.Cancel += () => {
-				GameExitEvent?.Invoke();
-				CurrentRunModpack = null;
-			};
-			AddChild(confirmationWindow);
-			await confirmationWindow.Show();
 			return;
 		}
 
@@ -733,7 +733,7 @@ public partial class Main : NativeWindowUtility {
 				confirmationWindow.Confirm += async () => {
 					confirmationWindow.OkButton?.Disabled = true;
 					await confirmationWindow.Hide();
-					StartGame(releaseInfo.Path, modpackConfig.Path!, modpackConfig.Command, modpackConfig.MainAssembly);
+					await StartGame(releaseInfo.Path, modpackConfig.Path!, modpackConfig.Command, modpackConfig.MainAssembly);
 				};
 				confirmationWindow.Cancel += () => {
 					GameExitEvent?.Invoke();
@@ -745,7 +745,7 @@ public partial class Main : NativeWindowUtility {
 			}
 		}
 
-		StartGame(releaseInfo.Path, modpackConfig.Path!, modpackConfig.Command, modpackConfig.MainAssembly);
+		await StartGame(releaseInfo.Path, modpackConfig.Path!, modpackConfig.Command, modpackConfig.MainAssembly);
 	}
 
 	static private readonly Regex StartupHooksPattern = StartupHooksRegex();
@@ -785,7 +785,7 @@ public partial class Main : NativeWindowUtility {
 		}
 	}
 
-	public static void StartGame(
+	public static async Task StartGame(
 		string gamePath,
 		string dataPath,
 		string command,
@@ -793,7 +793,6 @@ public partial class Main : NativeWindowUtility {
 		try {
 			GC.Collect(GC.MaxGeneration, GCCollectionMode.Forced);
 			GC.WaitForPendingFinalizers();
-			var tmp = CopyVsRun();
 			if (string.IsNullOrEmpty(command)) {
 				command = "%command%";
 			} else if (!command.Contains("%command%", StringComparison.Ordinal)) {
@@ -805,12 +804,15 @@ public partial class Main : NativeWindowUtility {
 			}
 
 			var mainAssembly = assembleName.Replace("%game_path%", gamePath).Replace("%data_path%", dataPath);
+			var runtime = GameRuntime.Read(gamePath, mainAssembly);
+			using var tmp = CopyVsRun(runtime);
 			var vsRunHook = Path.Combine(tmp.GetCurrentDir(), "VSRun.dll").NormalizePath();
 			command = command.Replace("%game_path%", gamePath)
 				.Replace("%tmp_path%", tmp.GetCurrentDir())
 				.Replace("%data_path%", dataPath);
 
 			var environment = LaunchEnvironment.Extract(ref command);
+			var launchCommand = await GetLaunchCommand(runtime, vsRunHook, gamePath, environment);
 			var packHooks = ExtractStartupHooks(ref command);
 			List<string> startupHooks = [vsRunHook];
 			AddHooks(startupHooks, packHooks);
@@ -820,7 +822,7 @@ public partial class Main : NativeWindowUtility {
 
 			environment["DOTNET_STARTUP_HOOKS"] =
 				string.Join(Path.PathSeparator, startupHooks.Distinct(LaunchEnvironment.NameComparer));
-			command = command.Replace("%command%", $"\"{Tools.DotNetPath}\" \"{vsRunHook}\"");
+			command = command.Replace("%command%", launchCommand);
 
 			var process = VsRun(new() {
 					VintageStoryPath = gamePath,
@@ -834,23 +836,23 @@ public partial class Main : NativeWindowUtility {
 
 			if (process is null) {
 				GameExitEvent?.Invoke();
-				tmp.Dispose();
 				CurrentRunModpack = null;
 				return;
 			}
 
 			CurrentGameProcess = process;
-			process.Exited += (_, _) => {
-				Log.Info("游戏进程已退出");
-				GameExitEvent?.Invoke();
-				tmp.Dispose();
-				process.Dispose();
-				CurrentGameProcess = null;
-				CurrentRunModpack = null;
-			};
-		} catch (Exception e) {
+			using (process) {
+				await process.WaitForExitAsync();
+			}
+			CurrentGameProcess = null;
+			CurrentRunModpack = null;
+			Log.Info("游戏进程已退出");
 			GameExitEvent?.Invoke();
-			Log.Error(e);
+		} catch (Exception e) {
+			CurrentGameProcess = null;
+			CurrentRunModpack = null;
+			GameExitEvent?.Invoke();
+			await ShowLaunchError(e);
 		}
 	}
 

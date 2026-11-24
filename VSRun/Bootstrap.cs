@@ -1,5 +1,7 @@
 using System.Reflection;
 using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices;
+using System.Runtime.Versioning;
 using System.Text;
 
 namespace VSRun;
@@ -7,8 +9,23 @@ namespace VSRun;
 static class Bootstrap {
 	static private string[] AssemblyPaths { get; set; } = [];
 
+	public static void Main(string[] args) {
+		if (args is ["--mvl-check-runtime"]) {
+			Console.WriteLine(RuntimeInformation.FrameworkDescription);
+			return;
+		}
+
+		Program.Run(args);
+	}
+
 	[ModuleInitializer]
 	internal static void Initialize() {
+		var targetName = typeof(Bootstrap).Assembly.GetCustomAttribute<TargetFrameworkAttribute>()!.FrameworkName;
+		var target = new FrameworkName(targetName).Version;
+		if (Environment.Version.Major != target.Major || Environment.Version.Minor != target.Minor) {
+			throw new PlatformNotSupportedException($"VSRun requires .NET {target}, loaded {Environment.Version}.");
+		}
+
 		Console.OutputEncoding = Encoding.UTF8;
 		Console.WriteLine("VS Run Initialize");
 

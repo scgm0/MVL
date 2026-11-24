@@ -65,20 +65,7 @@
     <Target Name="PreBuild" BeforeTargets="Build">
         <RemoveDir Directories="Misc/VSRun" />
 
-        <Exec Command="dotnet build &quot;../VSRun/VSRun.csproj&quot; /p:Configuration=Release /p:Platform=$(Platform)" />
-
-        <PropertyGroup>
-            <_VSRunOutputPath>../VSRun/bin/Release/net*.0</_VSRunOutputPath>
-            <_VSRunOutputPath Condition=" '$(Platform)' != 'AnyCPU' ">$(_VSRunOutputPath)/$(Platform)</_VSRunOutputPath>
-        </PropertyGroup>
-
-        <ItemGroup>
-            <FilesToCopy Include="$(_VSRunOutputPath)/*.dll" />
-            <FilesToCopy Include="$(_VSRunOutputPath)/*.json" />
-            <FilesToCopy Include="$(_VSRunOutputPath)/*.pdb" />
-        </ItemGroup>
-
-        <Copy SourceFiles="@(FilesToCopy)" DestinationFolder="Misc/VSRun" />
+        <Exec Command="dotnet build &quot;../VSRun/VSRun.csproj&quot; /p:Configuration=Release /p:Platform=$(Platform) &quot;/p:VSRunBundleDir=$(MSBuildProjectDirectory)/Misc/VSRun&quot;" />
     </Target>
 
     <Target Name="SetBuildInfoProperties" BeforeTargets="GenerateMSBuildEditorConfigFileShouldRun">

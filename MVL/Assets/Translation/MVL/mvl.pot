@@ -298,7 +298,25 @@ msgstr ""
 msgid "一个免费、开源且由社区驱动的复古物语启动器"
 msgstr ""
 
-msgid "需要安装 [b].NET {1} (x64)[/b] 运行时\n请点击链接下载并安装：\n[color=#3c7fe1][url]https://dotnet.microsoft.com/download/dotnet/{1}[/url][/color]\n是否尝试强制启动游戏？"
+msgid "游戏配置 {0} 缺少 runtimeOptions。"
+msgstr ""
+
+msgid "游戏配置 {0} 未声明共享运行时。"
+msgstr ""
+
+msgid "无法从 {0} 确定游戏要求的 .NET 版本。"
+msgstr ""
+
+msgid "无法运行 {0}，请检查是否已安装 {1} (x64) 运行时。"
+msgstr ""
+
+msgid "无法启动游戏所需的 {0} (x64)。"
+msgstr ""
+
+msgid "游戏要求 {0}，当前 MVL 未提供对应的 VSRun。请更新启动器。"
+msgstr ""
+
+msgid "复制 {0} 失败 ({1})"
 msgstr ""
 
 msgid "无法登录？检查您的游戏账号"
