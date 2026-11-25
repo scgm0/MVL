@@ -933,3 +933,6 @@ msgstr "Node note (optional)"
 
 msgid "编解码器"
 msgstr "Codec"
+
+msgid "已识别为 {0} 编码"
+msgstr "Detected as {0} encoding"

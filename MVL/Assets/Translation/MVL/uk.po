@@ -943,3 +943,6 @@ msgstr ""
 
 msgid "编解码器"
 msgstr ""
+
+msgid "已识别为 {0} 编码"
+msgstr ""

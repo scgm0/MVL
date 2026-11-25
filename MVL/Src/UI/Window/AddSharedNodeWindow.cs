@@ -45,48 +45,79 @@ public partial class AddSharedNodeWindow : BaseWindow {
 
 	private async void OkButtonOnPressed() {
 		OkButton!.Disabled = true;
-		var address = _address!.Text;
+		var address = _address!.Text.Trim();
 		var name = _name!.Text;
 		var remark = _remark!.Text;
 		var codec = (CodecType)_codec!.Selected;
+		SharedNode.TryDetectCodec(address, out var detectedCodec, out _);
+		if (detectedCodec is not CodecType.None) {
+			codec = detectedCodec;
+		}
+
 		var sharedNode = new SharedNode {
-			Address = string.Empty,
+			Address = address,
 			Name = string.IsNullOrEmpty(name) ? LocalizedString.Empty : new LocalizedString(name),
 			Remark = string.IsNullOrEmpty(remark) ? LocalizedString.Empty : new LocalizedString(remark),
 			Codec = codec == CodecType.None ? null : codec
 		};
-		sharedNode.UpdateAddress(address);
+		if (detectedCodec is CodecType.None) {
+			sharedNode.UpdateAddress(address);
+		}
+
 		await Hide();
 		AddSharedNode?.Invoke(sharedNode);
 	}
 
 	private void AddressOnTextChanged(string newText) {
 		_ = _debouncer.DebounceAsync(() => {
-			if (string.IsNullOrEmpty(newText)) {
-				_tip?.Text = "节点地址不可为空";
-				OkButton?.Disabled = true;
+			var address = newText.Trim();
+			if (string.IsNullOrEmpty(address)) {
+				UnlockCodec();
+				_tip!.Text = "节点地址不可为空";
+				OkButton!.Disabled = true;
 				return;
 			}
 
-			if (!Uri.TryCreate(newText, UriKind.Absolute, out var uri) || uri.HostNameType is UriHostNameType.Unknown ||
-				string.IsNullOrEmpty(uri.Host)) {
-				_tip?.Text = "节点地址格式不正确";
-				OkButton?.Disabled = true;
+			if (!SharedNode.TryDetectCodec(address, out var codec, out var decodedAddress)) {
+				UnlockCodec();
+				_tip!.Text = "节点地址格式不正确";
+				OkButton!.Disabled = true;
 				return;
+			}
+
+			if (codec is CodecType.None) {
+				UnlockCodec();
+			} else {
+				LockCodec(codec);
 			}
 
 			foreach (var customPublicServer in Main.BaseConfig.CustomSharedNodes) {
-				if (customPublicServer.GetDecodedAddress() != newText) {
+				if (!SharedNode.TryDecode(customPublicServer.Address, customPublicServer.Codec ?? CodecType.None,
+					    out var existingAddress) || existingAddress != decodedAddress) {
 					continue;
 				}
 
-				_tip?.Text = "节点地址已存在";
-				OkButton?.Disabled = true;
+				_tip!.Text = "节点地址已存在";
+				OkButton!.Disabled = true;
 				return;
 			}
 
-			_tip?.Text = "";
-			OkButton?.Disabled = false;
+			_tip!.Text = codec is CodecType.None ? string.Empty : string.Format(Tr("已识别为 {0} 编码"), codec);
+			OkButton!.Disabled = false;
 		});
+	}
+
+	private void LockCodec(CodecType codec) {
+		_codec!.Selected = (int)codec;
+		_codec.Disabled = true;
+	}
+
+	private void UnlockCodec() {
+		if (!_codec!.Disabled) {
+			return;
+		}
+
+		_codec.Disabled = false;
+		_codec.Selected = (int)CodecType.None;
 	}
 }
