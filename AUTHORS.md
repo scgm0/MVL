@@ -46,3 +46,6 @@
 ## 乌克兰语翻译
 
     flexioo <https://linktr.ee/flexioo>
+
+## 意大利语翻译
+    Fidel Pablo Vassallo <https://hosted.weblate.org/user/Zalemor>

@@ -1,4 +1,4 @@
-<Project Sdk="Godot.NET.Sdk/4.8.0-beta">
+<Project Sdk="Godot.NET.Sdk/4.8.0-rc">
     <PropertyGroup>
         <TargetFramework>net11.0</TargetFramework>
         <Nullable>enable</Nullable>
@@ -93,8 +93,7 @@
         </PropertyGroup>
     </Target>
 
-    <Target Name="FixMsvcImportLibCase" BeforeTargets="LinkNative"
-            Condition="'$(RuntimeIdentifier)' != '' And $(RuntimeIdentifier.StartsWith('win')) And !$([MSBuild]::IsOSPlatform('Windows'))">
+    <Target Name="FixMsvcImportLibCase" BeforeTargets="LinkNative" Condition="'$(RuntimeIdentifier)' != '' And $(RuntimeIdentifier.StartsWith('win')) And !$([MSBuild]::IsOSPlatform('Windows'))">
         <PropertyGroup>
             <_MsvcBinDir Condition="'$(MSVCWineBinPath)' != ''">$(MSVCWineBinPath)</_MsvcBinDir>
             <_MsvcBinDir Condition="'$(_MsvcBinDir)' == ''">/opt/msvc/bin</_MsvcBinDir>
@@ -117,6 +116,6 @@
             <LinkerArg Include="&quot;$(_SynchronizationLibPath)&quot;" />
         </ItemGroup>
 
-        <Message Importance="normal" Text="FixMsvcImportLibCase: Synchronization.lib -> $(_SynchronizationLibPath)" />
+        <Message Importance="normal" Text="FixMsvcImportLibCase: Synchronization.lib -&gt; $(_SynchronizationLibPath)" />
     </Target>
 </Project>
