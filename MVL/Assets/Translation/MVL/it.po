@@ -266,6 +266,9 @@ msgstr "Traduzione Indonesiana"
 msgid "乌克兰语翻译"
 msgstr "Traduzione Ukraina"
 
+msgid "意大利语翻译"
+msgstr ""
+
 msgid "界面"
 msgstr "Interfaccia"
 
